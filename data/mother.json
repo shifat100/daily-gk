@@ -1,0 +1,10 @@
+[
+  {
+    "title": "সাধারণ জ্ঞান",
+    "path": "data/gk-2025.json"
+  },
+  {
+    "title": "বিজ্ঞান ও প্রযুক্তি",
+    "path": "data/category2/cat2_manifest.json"
+  }
+]
