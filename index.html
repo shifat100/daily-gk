@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Light MCQ App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="brand">MCQ Master</div>
+        <div class="controls">
+            <select id="viewMode">
+                <option value="quiz">Quiz Mode</option>
+                <option value="study">Study Mode</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <select id="categorySelect">
+            <option value="all">All Topics</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search..." />
+    </div>
+
+    <div class="container">
+        <!-- লোডার এবং এরর মেসেজ এরিয়া -->
+        <div id="statusArea" class="status-area">
+            <div id="loader" class="loader">
+                <div class="spinner"></div>
+                <div id="loadingText">Loading Resources...</div>
+            </div>
+            <div id="errorMsg" class="error-msg" style="display:none;"></div>
+        </div>
+
+        <!-- কন্টেন্ট এরিয়া -->
+        <div id="questionList" class="list-area"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
