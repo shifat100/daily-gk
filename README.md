@@ -30,10 +30,4 @@ Daily-GK হলো একটি সহজ এবং হালকা ওয়েব
 
 ## License  
 
-এই প্রোজেক্ট ওপেন-সোর্স। (যদি কোন লাইসেন্স যুক্ত করো, এখানে উল্লেখ করো — যেমন MIT, GPL ইত্যাদি)
-
-## Contact / Maintainer  
-
-- Maintainer: [তোমার নাম বা গিথাব ইউজারনেম]  
-- Project Page: https://shifat100.github.io/daily-gk/  
-- Source Code: (এখানে গিথাব রেপোজিটরির লিংক)
+ ওপেন-সোর্স।
