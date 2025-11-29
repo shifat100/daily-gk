@@ -1,44 +1,188 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Light MCQ App</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic MCQ App</title>
+    <style>
+        /* বেসিক রিসেট */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding-bottom: 60px; /* ফুটারের জন্য জায়গা */
+        }
+
+        /* কন্ট্রোল বার (সার্চ এবং ফিল্টার) */
+        .top-bar {
+            background: #fff;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        select, input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        #searchInput { flex-grow: 1; min-width: 200px; }
+        #categorySelect { min-width: 150px; }
+        
+        /* কন্টেইনার */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* স্ট্যাটিক লোডার (JS লোড হওয়ার আগের জন্য) */
+        #loader {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* এরর মেসেজ */
+        #errorMsg {
+            display: none;
+            background: #ffdddd;
+            color: #d8000c;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #d8000c;
+            text-align: center;
+        }
+
+        /* প্রশ্ন কার্ড ডিজাইন (JS দ্বারা জেনারেট হবে) */
+        .q-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        
+        .q-header {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        .cat-label {
+            background: #e0f7fa;
+            color: #006064;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .q-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        /* অপশন বাটন */
+        .opt-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            background: #eef;
+            border-color: #ccd;
+        }
+
+        /* সঠিক ও ভুল উত্তরের স্টাইল */
+        .opt-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .opt-btn.wrong {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        .opt-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        /* ব্যাখ্যা বক্স */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+    </style>
 </head>
 <body>
 
+    <!-- কন্ট্রোল সেকশন -->
     <div class="top-bar">
-        <div class="brand">Daily GK</div>
-        <div class="controls">
-            <select id="viewMode">
-                <option value="quiz">Quiz Mode</option>
-                <option value="study">Study Mode</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="filter-bar">
+        <!-- ক্যাটাগরি ফিল্টার -->
         <select id="categorySelect">
-            <option value="all">All Topics</option>
+            <option value="all">All Categories</option>
         </select>
-        <input type="text" id="searchInput" placeholder="Search..." />
+
+        <!-- সার্চ বক্স -->
+        <input type="text" id="searchInput" placeholder="Search questions...">
+
+        <!-- মোড পরিবর্তন (কুইজ / স্টাডি) -->
+        <select id="viewMode">
+            <option value="quiz">Quiz Mode</option>
+            <option value="study">Study Mode</option>
+        </select>
     </div>
 
+    <!-- মেইন কন্টেন্ট -->
     <div class="container">
-        <!-- লোডার এবং এরর মেসেজ এরিয়া -->
-        <div id="statusArea" class="status-area">
-            <div id="loader" class="loader">
-                <div class="spinner"></div>
-                <div id="loadingText">Loading Resources...</div>
-            </div>
-            <div id="errorMsg" class="error-msg" style="display:none;"></div>
+        <!-- এরর মেসেজ বক্স -->
+        <div id="errorMsg"></div>
+
+        <!-- ইনিশিয়াল লোডার (JS লোড হওয়ার আগে দেখাবে) -->
+        <div id="loader">
+            <p>Loading Question Engine...</p>
         </div>
 
-        <!-- কন্টেন্ট এরিয়া -->
-        <div id="questionList" class="list-area"></div>
+        <!-- প্রশ্ন তালিকা এখানে লোড হবে -->
+        <div id="questionList"></div>
     </div>
 
+    <!-- জাভাস্ক্রিপ্ট ফাইল কানেকশন -->
     <script src="script.js"></script>
 </body>
 </html>
