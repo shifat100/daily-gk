@@ -3,38 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Daily GK | MCQ App</title>
+    <title>Smart MCQ App</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* বেসিক কিছু স্টাইল যাতে CSS ফাইল লোড না হলেও পেজ ভেঙে না যায় */
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; padding: 10px; padding-bottom: 80px; }
-        
-        /* ইনিশিয়াল লোডার স্টাইল (JS লোড হওয়ার আগের জন্য) */
-        #loader {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 50px 0;
-            color: #666;
-        }
-        .spinner {
-            width: 40px; height: 40px;
-            border: 4px solid #ddd;
-            border-top-color: #007bff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 10px;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-    </style>
 </head>
 <body>
 
-    <!-- টপ বার (ব্র্যান্ডিং + মোড) -->
+    <!-- টপ বার (ব্র্যান্ডিং + মোড সিলেক্টর) -->
     <div class="top-bar">
-        <div class="brand">Daily GK</div>
+        <div class="brand">Daily MCQ</div>
         <div class="controls">
             <select id="viewMode">
                 <option value="quiz">Quiz Mode</option>
@@ -43,30 +19,34 @@
         </div>
     </div>
 
-    <!-- ফিল্টার বার (ক্যাটাগরি + সার্চ) -->
+    <!-- ফিল্টার এবং সার্চ বার -->
     <div class="filter-bar">
         <select id="categorySelect">
             <option value="all">All Topics</option>
         </select>
-        <input type="text" id="searchInput" placeholder="Search..." />
+        <input type="text" id="searchInput" placeholder="Search questions..." />
     </div>
 
+    <!-- মেইন কন্টেইনার -->
     <div class="container">
-        <!-- স্ট্যাটাস এরিয়া: স্ক্রিপ্ট লোড হলে এটি হাইড হয়ে যাবে -->
+        
+        <!-- ইনিশিয়াল লোডার (JS লোড হওয়ার আগে দেখাবে) -->
         <div id="loader">
             <div class="spinner"></div>
-            <div id="loadingText">App Initializing...</div>
+            <p>Starting App...</p>
         </div>
 
-        <!-- এরর মেসেজ বক্স -->
-        <div id="errorMsg" class="error-msg" style="display:none; text-align:center; color:red; padding:20px;"></div>
+        <!-- এরর মেসেজ এরিয়া -->
+        <div id="errorMsg"></div>
 
-        <!-- প্রশ্ন তালিকা (JS এখানে কার্ড জেনারেট করবে) -->
-        <div id="questionList" class="list-area"></div>
+        <!-- প্রশ্ন তালিকা (JS এখানে কার্ড ইনজেক্ট করবে) -->
+        <div id="questionList"></div>
         
-        <!-- ফুটার এবং ফ্লোটিং লোডার JS অটোমেটিক তৈরি করবে, তাই এখানে লেখার দরকার নেই -->
+        <!-- Pagination এবং Footer অটোমেটিক JS দ্বারা যুক্ত হবে -->
+
     </div>
 
+    <!-- স্ক্রিপ্ট ফাইল -->
     <script src="script.js"></script>
 </body>
 </html>
