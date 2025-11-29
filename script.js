@@ -35,7 +35,7 @@ function startLoading() {
     updateStatus("Loading Categories...");
     
     // মাদার ম্যানিফেস্ট লোড
-    ajaxGet('data/mother.json', function(cats) {
+    ajaxGet('data/main.json', function(cats) {
         var catSelect = document.getElementById('categorySelect');
         var manifestQueue = [];
 
