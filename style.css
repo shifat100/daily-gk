@@ -1,40 +1,121 @@
-/* =========================================
-   BASE STYLES (Old Phones / Fallback)
-   ========================================= */
+/* style.css */
+* { box-sizing: border-box; }
+
 body {
-    margin: 0; padding: 0;
-    font-family: Arial, sans-serif;
-    background: #f0f0f0;
+    background-color: #f0f2f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+
+/* টপ বার ডিজাইন */
+.top-bar {
+    background: #ffffff;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1a73e8;
+}
+
+.controls select {
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+/* ফিল্টার বার ডিজাইন */
+.filter-bar {
+    background: #fff;
+    padding: 10px 15px;
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-bar select, 
+.filter-bar input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 14px;
+    outline: none;
 }
 
-/* বেসিক লেআউট */
-.top-bar { background: #fff; border-bottom: 1px solid #ccc; padding: 5px; }
-.brand { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
-.filter-bar { padding: 5px; background: #e0e0e0; }
+.filter-bar select { flex: 1; }
+.filter-bar input { flex: 2; }
 
-/* ইনপুটস */
-select, input {
-    width: 98%; padding: 5px; margin: 2px 0;
-    border: 1px solid #999;
-}
-
-/* কার্ড স্টাইল (ওল্ড ফোন) */
+/* কার্ড ডিজাইন */
 .q-card {
     background: #fff;
-    border: 1px solid #000;
-    padding: 10px; margin: 10px 5px;
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
-.q-title { font-weight: bold; margin-bottom: 5px; }
-.cat-label { font-size: 11px; background: #ddd; padding: 2px; }
 
-/* অপশন বাটন */
-.opt-btn {
-    display: block; width: 100%; text-align: left;
-    padding: 8px; margin-bottom: 4px;
-    background: #fff; border: 1px solid #555;
-    cursor: pointer;
+.cat-label {
+    font-size: 11px;
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
 }
+
+.q-title {
+    margin: 10px 0 15px 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #202124;
+}
+
+.opt-btn {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #dadce0;
+    background: #fff;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 15px;
+    cursor: pointer;
+    color: #3c4043;
+    transition: background 0.2s;
+}
+
+/* ক্লিক করার পর */
+.opt-btn.correct { background: #e6f4ea; border-color: #34a853; color: #137333; font-weight: 500; }
+.opt-btn.wrong { background: #fce8e6; border-color: #d93025; color: #c5221f; }
+
+/* ব্যাখ্যার বক্স */
+.feedback-box {
+    margin-top: 10px;
+    background: #fef7e0;
+    border: 1px solid #f0e68c;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5f370e;
+}
+
+/* রেস্পন্সিভ ফিক্স */
+@media (max-width: 400px) {
+    .filter-bar { flex-direction: column; }
+    .filter-bar select, .filter-bar input { width: 100%; }
+}}
 
 /* লোডার */
 .status-area { text-align: center; padding: 20px; }
