@@ -14,46 +14,58 @@ body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    height: 100vh;
-    overflow: hidden; /* App Shell logic */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent body scroll, handle inside containers */
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- APP SHELL (GRID LAYOUT) --- */
-.app-shell {
-    display: grid;
-    grid-template-columns: var(--sidebar-width) 1fr;
-    grid-template-rows: var(--header-height) 1fr;
-    height: 100%;
-}
-
-/* --- HEADER --- */
+/* --- HEADER (Fixed Top) --- */
 .top-bar {
-    grid-column: 1 / -1;
+    height: var(--header-height);
     background: #fff;
     border-bottom: 1px solid #ddd;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 15px;
+    flex-shrink: 0; /* Prevent shrinking */
     z-index: 100;
 }
 
 .brand-area { display: flex; align-items: center; gap: 15px; }
 .brand { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
 
+#installBtn {
+    display: none; /* Shown via JS */
+    background: var(--primary); color: #fff; border: none;
+    padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;
+}
+
 #menuToggle {
-    display: none; /* Hidden on Desktop */
+    display: none; /* Mobile only */
     background: none; border: none; font-size: 24px; cursor: pointer; color: #555;
 }
 
-/* --- SIDEBAR (TREE VIEW) --- */
-.sidebar {
-    background: #fff;
-    border-right: 1px solid #ddd;
-    overflow-y: auto;
-    grid-row: 2 / -1;
+/* --- APP BODY (Sidebar + Main) --- */
+.app-body {
+    display: flex;
+    flex: 1; /* Take remaining height */
+    overflow: hidden; /* Contain scrolls */
+    position: relative;
 }
 
+/* --- SIDEBAR --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background: #fff;
+    border-right: 1px solid #ddd;
+    overflow-y: auto; /* Internal scroll */
+    flex-shrink: 0;
+    display: block; /* Visible on desktop */
+}
+
+/* Tree Styles */
 .tree-view { list-style: none; padding: 0; margin: 0; }
 .tree-item { border-bottom: 1px solid #f0f0f0; }
 
@@ -61,122 +73,93 @@ body {
     padding: 15px 20px;
     cursor: pointer;
     font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    background: #fff;
-    transition: background 0.2s;
+    display: flex; justify-content: space-between;
+    background: #fff; transition: 0.2s;
 }
 .tree-parent:hover { background: #f9f9f9; }
 
-.tree-children {
-    display: none; /* Hidden by default */
-    background: #f8f9fa;
-    list-style: none;
-    padding: 0;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
-}
+.tree-children { display: none; background: #f8f9fa; list-style: none; padding: 0; }
 .tree-children.open { display: block; }
 
 .tree-child {
-    padding: 12px 20px 12px 40px; /* Indent */
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #555;
+    padding: 10px 20px 10px 40px; cursor: pointer; font-size: 0.9rem; color: #555;
     border-left: 3px solid transparent;
 }
 .tree-child:hover { background: #eef; color: var(--primary); }
 .tree-child.active { background: #e6f2ff; color: var(--primary); border-left-color: var(--primary); font-weight: bold; }
-
 .badge { background: #eee; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; color: #666; }
 
 /* --- MAIN CONTENT --- */
 .main-content {
-    grid-column: 2 / -1;
+    flex: 1;
+    overflow-y: auto; /* Internal scroll */
     padding: 20px;
-    overflow-y: auto; /* Scrollable area */
+    /* Important: Extra bottom padding so buttons aren't cut off */
+    padding-bottom: 80px; 
     scroll-behavior: smooth;
 }
 
-/* Filter Bar */
+/* Controls */
 .controls-area {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+    background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-.controls-area input, .controls-area select {
-    padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex: 1;
-}
+.controls-area input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
 
-/* Question Card */
+/* Cards */
 .q-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border-left: 4px solid var(--primary);
+    background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--primary);
     animation: fadeIn 0.3s ease-in;
 }
-
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.q-meta { font-size: 12px; color: #888; display: flex; justify-content: space-between; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.q-meta { font-size: 12px; color: #888; display: flex; justify-content: space-between; margin-bottom: 10px; text-transform: uppercase; }
 .q-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; line-height: 1.5; }
 
 .opt-btn {
     width: 100%; text-align: left; padding: 12px 15px; margin: 5px 0;
     background: #f8f9fa; border: 1px solid #eee; border-radius: 6px;
-    cursor: pointer; transition: 0.2s; font-size: 0.95rem;
+    cursor: pointer; transition: 0.2s;
 }
 .opt-btn:hover:not(:disabled) { background: #e2e6ea; }
-
 .correct { background-color: #d4edda !important; color: #155724 !important; border-color: #c3e6cb !important; }
 .wrong { background-color: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; }
 
 /* Pagination */
-.pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; flex-wrap: wrap;}
+.pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
 .page-btn { padding: 8px 16px; background: #fff; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
 .page-btn:disabled { opacity: 0.5; cursor: default; }
-.jump-input { width: 60px; text-align: center; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+.jump-input { width: 50px; text-align: center; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
 
-/* --- SKELETON LOADING ANIMATION --- */
-.skeleton-card {
-    background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 15px;
-    border-left: 4px solid #e0e0e0;
-}
+/* Skeleton */
+.skeleton-card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #e0e0e0; }
 .sk-line { height: 12px; background: #eee; margin-bottom: 10px; border-radius: 4px; animation: pulse 1.5s infinite; }
 .sk-title { height: 20px; width: 80%; margin-bottom: 20px; background: #e0e0e0; }
 .sk-opt { height: 40px; margin-bottom: 8px; }
 @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
+/* Footer */
+.app-footer { text-align: center; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; color: #777; font-size: 0.85rem; }
+
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
-    .app-shell { display: block; } /* Disable grid, use relative positioning */
-    .top-bar { position: sticky; top: 0; width: 100%; height: 60px; }
     #menuToggle { display: block; }
     
     .sidebar {
-        position: fixed; top: 60px; left: -100%; /* Hide */
-        width: 80%; height: calc(100vh - 60px);
-        z-index: 999; transition: left 0.3s ease;
-        box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        position: absolute; /* Take out of flow */
+        top: 0; bottom: 0; left: -100%; /* Hide */
+        width: 80%; max-width: 300px;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
     }
     .sidebar.show { left: 0; }
     
-    .main-content {
-        height: calc(100vh - 60px);
-        margin-top: 0;
-    }
-    
-    /* Overlay */
     #sidebarOverlay {
-        display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.5); z-index: 998;
+        display: none; position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 999;
     }
     #sidebarOverlay.show { display: block; }
 }
