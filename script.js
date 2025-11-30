@@ -88,6 +88,20 @@ function setupEventListeners() {
             runFilter();
         };
     }
+
+    var perPageSelect = document.getElementById('perPageSelect');
+    if(perPageSelect) {
+        perPageSelect.onchange = function(e) {
+            // 1. Update the app state
+            app.perPage = parseInt(e.target.value);
+            
+            // 2. Reset to page 1 to prevent empty pages
+            app.page = 1; 
+            
+            // 3. Re-render the list
+            render(); 
+        };
+    }
 }
 
 // ==========================================
