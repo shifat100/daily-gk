@@ -126,6 +126,31 @@ function setupEventListeners() {
         runFilter();
     };
     
+    // === BACK TO TOP LOGIC ===
+    var bttBtn = document.getElementById('backToTop');
+    var scrollContainer = document.getElementById('mainScroll'); // The scrolling div
+
+    if (bttBtn && scrollContainer) {
+        // 1. Show/Hide on Scroll
+        scrollContainer.onscroll = function() {
+            // Show if scrolled down more than 300px
+            if (scrollContainer.scrollTop > 300) {
+                bttBtn.classList.add('show');
+            } else {
+                bttBtn.classList.remove('show');
+            }
+        };
+
+        // 2. Click to Scroll Up
+        bttBtn.onclick = function() {
+            scrollContainer.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth animation
+            });
+        };
+    }
+
+    
 }
 
 function runFilter() {
