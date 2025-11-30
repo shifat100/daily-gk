@@ -1,20 +1,17 @@
 "use strict";
 
 var app = {
-    data: [],           // All questions
-    filteredData: [],   // Currently viewing
-    treeData: {},       // Hierarchical data for sidebar
-    
-    // State
+    data: [],
+    filteredData: [],
+    treeData: {},
     currCat: null,
     currTopic: null,
     mode: 'quiz',
     shuffle: false,
     searchQuery: '',
-    
-    // Pagination
     page: 1,
-    perPage: 10
+    perPage: 10,
+    lastModified: null
 };
 
 window.onload = function() {
@@ -23,11 +20,12 @@ window.onload = function() {
 
 function initApp() {
     setupEventListeners();
-    renderSkeleton(); // Show realtime load effect immediately
+    setupPWA();
+    renderSkeleton(); 
     startDataLoad();
 }
 
-// ========== 1. SETUP & EVENTS ==========
+// ========== 1. SETUP ==========
 
 function setupEventListeners() {
     // Mobile Menu
@@ -49,11 +47,11 @@ function setupEventListeners() {
     // View Mode
     document.getElementById('viewMode').onchange = function(e) {
         app.mode = e.target.value;
-        app.page = 1; // Reset page but keep filter
+        app.page = 1;
         render();
     };
 
-    // Search (Debounced)
+    // Search
     var timeout;
     document.getElementById('searchInput').onkeyup = function(e) {
         clearTimeout(timeout);
@@ -72,12 +70,41 @@ function setupEventListeners() {
     };
 }
 
-// ========== 2. DATA LOADING ==========
+// ========== 2. PWA INSTALL LOGIC ==========
+function setupPWA() {
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(function(err) {
+            console.log('SW Fail:', err);
+        });
+    }
+
+    // Install Button
+    var installBtn = document.getElementById('installBtn');
+    var deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block'; // Show button
+    });
+
+    installBtn.addEventListener('click', function() {
+        installBtn.style.display = 'none';
+        if(deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(result) {
+                deferredPrompt = null;
+            });
+        }
+    });
+}
+
+// ========== 3. DATA & DATE ==========
 
 function startDataLoad() {
     ajaxGet('data/main.json', function(cats) {
         var queue = [];
-        // Init Tree Structure
         for(var i=0; i<cats.length; i++) {
             app.treeData[cats[i].title] = {};
             queue.push({ path: cats[i].path, name: cats[i].title });
@@ -110,7 +137,6 @@ function loadMCQs(queue, idx, doneCallback) {
         return;
     }
 
-    // Extract Topic Name from filename (e.g. 'ancient_history.txt' -> 'ANCIENT HISTORY')
     var urlParts = queue[idx].url.split('/');
     var fileName = urlParts[urlParts.length - 1];
     var topic = fileName.replace('.txt','').replace(/_/g, ' ').toUpperCase();
@@ -119,14 +145,13 @@ function loadMCQs(queue, idx, doneCallback) {
         parseAndStore(text, queue[idx].cat, topic);
         loadMCQs(queue, idx + 1, doneCallback);
     }, function() {
-        loadMCQs(queue, idx + 1, doneCallback); // Skip error
+        loadMCQs(queue, idx + 1, doneCallback);
     }, true);
 }
 
 function parseAndStore(text, cat, topic) {
     var lines = text.replace(/\r\n/g, '\n').split('\n');
     var count = 0;
-
     for (var i = 0; i < lines.length; i += 2) {
         if (i + 1 >= lines.length) break;
         
@@ -162,8 +187,6 @@ function parseAndStore(text, cat, topic) {
         });
         count++;
     }
-
-    // Add to Tree Counts
     if(!app.treeData[cat][topic]) app.treeData[cat][topic] = 0;
     app.treeData[cat][topic] += count;
 }
@@ -171,22 +194,19 @@ function parseAndStore(text, cat, topic) {
 function finishLoading() {
     buildSidebarTree();
     runFilter();
+    updateFooterDate();
 }
 
-// ========== 3. SIDEBAR TREE ==========
+// ========== 4. SIDEBAR & LOGIC ==========
 
 function buildSidebarTree() {
     var ul = document.getElementById('categoryTree');
     ul.innerHTML = '';
 
-    // "All" Button
     var allLi = document.createElement('li');
     allLi.className = 'tree-item';
     allLi.innerHTML = '<div class="tree-parent"><span>All Questions</span> <span class="badge">'+app.data.length+'</span></div>';
-    allLi.onclick = function() { 
-        setFilter(null, null); 
-        closeMobileMenu(); 
-    };
+    allLi.onclick = function() { setFilter(null, null); closeMobileMenu(); };
     ul.appendChild(allLi);
 
     for (var cat in app.treeData) {
@@ -196,38 +216,28 @@ function buildSidebarTree() {
 
         var li = document.createElement('li');
         li.className = 'tree-item';
-
-        // Parent Header
         var header = document.createElement('div');
         header.className = 'tree-parent';
         header.innerHTML = '<span>' + cat + '</span> <span class="badge">' + catTotal + '</span>';
         
-        // Children Container
         var childUl = document.createElement('ul');
         childUl.className = 'tree-children';
 
-        // "All in Category"
         var subAll = document.createElement('li');
         subAll.className = 'tree-child';
         subAll.textContent = "All " + cat;
-        subAll.onclick = (function(c) {
-            return function() { setFilter(c, null); closeMobileMenu(); };
-        })(cat);
+        subAll.onclick = (function(c) { return function() { setFilter(c, null); closeMobileMenu(); }; })(cat);
         childUl.appendChild(subAll);
 
-        // Specific Topics
         for (var topic in topics) {
             var topicLi = document.createElement('li');
             topicLi.className = 'tree-child';
             topicLi.innerHTML = topic + ' <span style="font-size:0.8em; opacity:0.7;">(' + topics[topic] + ')</span>';
-            
             topicLi.onclick = (function(c, t) {
                 return function(e) {
-                    // Highlight Active
                     var all = document.querySelectorAll('.tree-child');
                     for(var k=0; k<all.length; k++) all[k].classList.remove('active');
                     e.target.classList.add('active');
-                    
                     setFilter(c, t);
                     closeMobileMenu();
                     e.stopPropagation();
@@ -236,7 +246,6 @@ function buildSidebarTree() {
             childUl.appendChild(topicLi);
         }
 
-        // Toggle Logic
         header.onclick = function() {
             var sibling = this.nextElementSibling;
             sibling.classList.toggle('open');
@@ -254,8 +263,6 @@ function closeMobileMenu() {
     document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
-// ========== 4. FILTERING & LOGIC ==========
-
 function setFilter(cat, topic) {
     app.currCat = cat;
     app.currTopic = topic;
@@ -263,7 +270,6 @@ function setFilter(cat, topic) {
     app.searchQuery = '';
     document.getElementById('searchInput').value = '';
     
-    // Update Header
     var header = document.getElementById('topicHeader');
     var name = document.getElementById('topicName');
     header.style.display = 'block';
@@ -275,9 +281,7 @@ function setFilter(cat, topic) {
 }
 
 function runFilter() {
-    renderSkeleton(); // Show loading effect
-
-    // Slight delay to simulate realtime load feeling
+    renderSkeleton(); 
     setTimeout(function() {
         var res = app.data.filter(function(q) {
             if (app.currCat && q.cat !== app.currCat) return false;
@@ -287,7 +291,6 @@ function runFilter() {
         });
 
         if (app.shuffle) {
-            // Fisher-Yates
             for (var i = res.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
                 var temp = res[i]; res[i] = res[j]; res[j] = temp;
@@ -295,26 +298,18 @@ function runFilter() {
         } else {
             res.sort(function(a,b){ return a.id - b.id; });
         }
-
         app.filteredData = res;
         render();
-    }, 200); // 200ms delay for smoothness
+    }, 200);
 }
 
-// ========== 5. RENDER & SKELETON ==========
+// ========== 5. RENDER & UTILS ==========
 
 function renderSkeleton() {
     var container = document.getElementById('questionList');
     var html = '';
-    // Generate 3 skeleton cards
     for(var i=0; i<3; i++) {
-        html += `
-        <div class="skeleton-card">
-            <div class="sk-line sk-title"></div>
-            <div class="sk-line sk-opt"></div>
-            <div class="sk-line sk-opt"></div>
-            <div class="sk-line sk-opt"></div>
-        </div>`;
+        html += `<div class="skeleton-card"><div class="sk-line sk-title"></div><div class="sk-line sk-opt"></div><div class="sk-line sk-opt"></div><div class="sk-line sk-opt"></div></div>`;
     }
     container.innerHTML = html;
 }
@@ -329,7 +324,6 @@ function render() {
         return;
     }
 
-    // Pagination Logic
     var totalPages = Math.ceil(app.filteredData.length / app.perPage);
     if(app.page > totalPages) app.page = totalPages;
     if(app.page < 1) app.page = 1;
@@ -338,34 +332,27 @@ function render() {
     var end = start + app.perPage;
     var pageItems = app.filteredData.slice(start, end);
 
-    // Render Cards
     for(var i=0; i<pageItems.length; i++) {
         createCard(pageItems[i], container, start + i + 1);
     }
-
     renderPagination(totalPages);
-    
-    // Scroll to top of Main Content
     document.getElementById('mainScroll').scrollTop = 0;
 }
 
 function createCard(q, container, index) {
     var div = document.createElement('div');
     div.className = 'q-card';
-
-    // Header Meta
+    
     var meta = document.createElement('div');
     meta.className = 'q-meta';
-    meta.innerHTML = `<span>${q.cat} &bull; ${q.topic}</span><span>Q: ${index}</span>`;
+    meta.innerHTML = `<span>${q.cat} &bull; ${q.topic}</span><span>#${index}</span>`;
     div.appendChild(meta);
 
-    // Title
     var h3 = document.createElement('div');
     h3.className = 'q-title';
     h3.textContent = q.title;
     div.appendChild(h3);
 
-    // Options Container
     var optsDiv = document.createElement('div');
     var feedback = document.createElement('div');
     feedback.style.cssText = "display:none; margin-top:15px; padding:10px; background:#f1f8ff; border-radius:5px; border:1px solid #d0e3ff; color:#333;";
@@ -373,51 +360,32 @@ function createCard(q, container, index) {
     q.opts.forEach(function(opt, idx) {
         var btn = document.createElement('button');
         btn.className = 'opt-btn';
-        
         if(app.mode === 'study') {
             btn.textContent = opt;
             btn.disabled = true;
-            if(idx === q.ans) {
-                btn.classList.add('correct');
-                btn.innerHTML += ' &#10004;';
-            }
-            // Show explanation immediately in study mode
-            if(q.desc) {
-                feedback.style.display = 'block';
-                feedback.innerHTML = "<b>Explanation:</b> " + q.desc;
-            }
+            if(idx === q.ans) { btn.classList.add('correct'); btn.innerHTML += ' &#10004;'; }
+            if(q.desc) { feedback.style.display = 'block'; feedback.innerHTML = "<b>Explanation:</b> " + q.desc; }
         } else {
-            // Quiz Mode
             btn.textContent = opt;
             btn.onclick = function() {
                 var siblings = optsDiv.querySelectorAll('.opt-btn');
                 siblings.forEach(function(sb, sIdx) {
                     sb.disabled = true;
-                    if(sIdx === q.ans) {
-                        sb.classList.add('correct');
-                        sb.innerHTML += ' &#10004;';
-                    }
+                    if(sIdx === q.ans) { sb.classList.add('correct'); sb.innerHTML += ' &#10004;'; }
                 });
-
                 if(idx !== q.ans) {
                     this.classList.add('wrong');
                     this.innerHTML += ' &#10006;';
-                    // Show Correct Answer text if wrong
                     feedback.style.display = 'block';
                     feedback.innerHTML = "<b>Correct Answer:</b> " + q.opts[q.ans];
                     if(q.desc) feedback.innerHTML += "<br><br><b>Explanation:</b> " + q.desc;
                 } else {
-                    // Correct
-                    if(q.desc) {
-                        feedback.style.display = 'block';
-                        feedback.innerHTML = "<b>Explanation:</b> " + q.desc;
-                    }
+                    if(q.desc) { feedback.style.display = 'block'; feedback.innerHTML = "<b>Explanation:</b> " + q.desc; }
                 }
             };
         }
         optsDiv.appendChild(btn);
     });
-
     div.appendChild(optsDiv);
     div.appendChild(feedback);
     container.appendChild(div);
@@ -426,71 +394,66 @@ function createCard(q, container, index) {
 function renderPagination(total) {
     var box = document.getElementById('paginationControls');
     box.innerHTML = '';
-
     if(total <= 1) return;
 
-    // Prev
     var prev = document.createElement('button');
     prev.className = 'page-btn';
     prev.innerHTML = '&laquo; Prev';
     prev.disabled = app.page === 1;
     prev.onclick = function() { app.page--; render(); };
 
-    // Info
     var info = document.createElement('span');
     info.innerHTML = ` Page <b>${app.page}</b> of <b>${total}</b> `;
 
-    // Next
     var next = document.createElement('button');
     next.className = 'page-btn';
     next.innerHTML = 'Next &raquo;';
     next.disabled = app.page === total;
     next.onclick = function() { app.page++; render(); };
 
-    // Jump Input (Fixed & Restored)
     var jumpSpan = document.createElement('span');
     jumpSpan.style.marginLeft = "15px";
-    jumpSpan.innerHTML = 'Go to: ';
-    
+    jumpSpan.innerHTML = 'Go: ';
     var inp = document.createElement('input');
     inp.type = 'number';
     inp.className = 'jump-input';
-    inp.min = 1; 
-    inp.max = total;
-    inp.placeholder = '#';
-    
+    inp.min = 1; inp.max = total;
     var goBtn = document.createElement('button');
     goBtn.className = 'page-btn';
     goBtn.textContent = 'Go';
-    goBtn.style.marginLeft = '5px';
     goBtn.onclick = function() {
         var val = parseInt(inp.value);
-        if(val >= 1 && val <= total) {
-            app.page = val;
-            render();
-        } else {
-            alert('Enter page between 1 and ' + total);
-        }
+        if(val >= 1 && val <= total) { app.page = val; render(); }
     };
 
-    box.appendChild(prev);
-    box.appendChild(info);
-    box.appendChild(next);
-    
-    box.appendChild(jumpSpan);
-    box.appendChild(inp);
-    box.appendChild(goBtn);
+    box.appendChild(prev); box.appendChild(info); box.appendChild(next);
+    box.appendChild(jumpSpan); box.appendChild(inp); box.appendChild(goBtn);
 }
 
-// Helper
+function checkLatestDate(headerDate) {
+    if(!headerDate) return;
+    var d = new Date(headerDate);
+    if(!app.lastModified || d > app.lastModified) {
+        app.lastModified = d;
+    }
+}
+
+function updateFooterDate() {
+    var el = document.getElementById('lastUpdateDate');
+    if(el && app.lastModified) {
+        el.textContent = app.lastModified.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+}
+
 function ajaxGet(url, success, error, isText) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url + '?t=' + Date.now(), true);
     xhr.onload = function() {
         if (xhr.status === 200) {
+            checkLatestDate(xhr.getResponseHeader("Last-Modified"));
             success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
         } else if(error) error();
     };
     xhr.onerror = function() { if(error) error(); };
     try { xhr.send(); } catch(e) {}
-            }
+        }
