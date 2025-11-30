@@ -1,74 +1,210 @@
 <!DOCTYPE html>
-<html lang="bn" prefix="og: http://ogp.me/ns#">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
-    <link rel="manifest" href="manifest.json">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- প্রাথমিক SEO মেটা ট্যাগ -->
-    <title>Daily GK MCQ - Smart Quiz & Study App for Competitive Exams</title>
-    <meta name="description" content="Smart GK MCQ App - বিসিএস, ব্যাংক জব এবং অন্যান্য সরকারি চাকরির প্রস্তুতির জন্য সেরা ডেইলি কুইজ অ্যাপ। কুইজ এবং স্টাডি মোডে নিজেকে যাচাই করুন।">
-    <meta name="keywords" content="MCQ App, Daily Quiz, BCS Preparation, Bank Job, General Knowledge, Study Mode, Bangladesh এডুকেশন, বিসিএস প্রস্তুতি, কারেন্ট এফেয়ার্স, সাধারণ জ্ঞান, shifat100">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- SEO Meta Tags -->
+    <title>Daily GK MCQ - Smart Quiz & Study App</title>
+    <meta name="description" content="Best Daily GK MCQ App for BCS, Bank Job and Government Job Preparation. Features Study Mode, Quiz Mode and Progress Tracking.">
+    <meta name="keywords" content="MCQ App, Daily Quiz, BCS Preparation, General Knowledge, Study Mode, Bangladesh Education, GK Bengali">
     <meta name="author" content="A.I. Shifat">
-    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ffffff">
 
-    <!-- ওপেন গ্রাফ (Facebook/LinkedIn ইত্যাদির জন্য) -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://shifat100.github.io/daily-gk/">
-    <meta property="og:title" content="Smart GK MCQ App - Daily Quiz & Study">
-    <meta property="og:description" content="বাংলায় সেরা এমসিকিউ প্র্যাকটিস অ্যাপ। বিসিএস ও অন্যান্য পরীক্ষার প্রস্তুতির জন্য আজই শুরু করুন।">
+    <meta property="og:title" content="Smart GK MCQ App">
+    <meta property="og:description" content="Practice daily GK MCQs with Study & Quiz modes.">
     <meta property="og:image" content="https://shifat100.github.io/daily-gk/thumb.png">
 
-    <!-- টুইটার কার্ড (Twitter এর জন্য) -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Smart GK MCQ App - Daily Quiz & Study">
-    <meta name="twitter:description" content="Practice daily GK MCQs for better preparation.">
-<meta name="google-site-verification" content="XznvlYpqwMQ3fmEJx8_netfMM4Zdh0ITKsQ7DhiIQ48" />
-    <!-- ফেভিকন (ব্রাউজার ট্যাবের আইকন) -->
+    <meta name="twitter:title" content="Smart GK MCQ App">
+    
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- স্টাইলশিট -->
+    <!-- External CSS -->
     <link rel="stylesheet" href="style.css">
-    
-    <!-- স্কিমা মার্কআপ (Google সার্চের জন্য স্ট্রাকচার্ড ডাটা) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Smart MCQ App",
-      "url": "https://shifat100.github.io/daily-gk/",
-      "description": "An interactive GK MCQ application for students, job seekers",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "All"
-    }
-    </script>
 
+    <!-- Inline CSS for Critical UI Components (Loader, Controls) -->
     <style>
-        /* ফুটারের জন্য সামান্য স্টাইল যোগ করা হলো যাতে ডেটটি সুন্দর দেখায় */
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-            background-color: #f4f4f4;
-            color: #666;
-            font-size: 0.9rem;
-            border-top: 1px solid #ddd;
+        :root {
+            --primary-color: #007bff;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
         }
-        footer .service-date {
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding-bottom: 50px;
+            color: var(--text-color);
+        }
+
+        /* Header Styling */
+        .top-bar {
+            background: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-size: 1.2rem;
             font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Filter Section */
+        .filter-bar {
+            background: #fff;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 800px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        @media(min-width: 600px) {
+            .filter-bar { flex-direction: row; }
+        }
+
+        select, input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px; /* Prevents zoom on iPhone */
+            flex: 1;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* Install Button */
+        #installBtn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #installBtn:hover { background-color: #0056b3; }
+
+        /* Question Cards */
+        .q-card {
+            background: #fff;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .q-header { margin-bottom: 10px; font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .q-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; line-height: 1.5; }
+
+        /* Options Buttons */
+        .opt-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
             color: #333;
-            margin-top: 5px;
+        }
+        .opt-btn:hover:not(:disabled) { background: #e2e6ea; }
+        .opt-btn:disabled { cursor: default; opacity: 0.9; }
+        
+        /* Quiz Feedback Colors */
+        .correct { background-color: #d4edda !important; border-color: #c3e6cb !important; color: #155724 !important; }
+        .wrong { background-color: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24 !important; }
+
+        /* Initial Loader */
+        #loader {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Error Message */
+        #errorMsg {
+            display: none;
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 800px;
+            border-radius: 5px;
+            border: 1px solid #ffeeba;
+            text-align: center;
+        }
+
+        /* Static Footer Info */
+        .static-footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
-    <!-- হেডার (SEO এর জন্য Semantic Tag 'header' ব্যবহার করা হয়েছে) -->
+    <!-- Header -->
     <header class="top-bar">
-        <div class="brand">Daily GK</div>
-        <button id="installBtn" style="display: none; padding: 10px; background-color: #fff; color: #000; border: 1px solid #ddd; border-radius: 5px; cursor: pointer;">Install App</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div class="brand">Daily GK</div>
+            <!-- Install Button (Hidden by default, shown by JS) -->
+            <button id="installBtn" style="display: none;">Install App</button>
+        </div>
+        
         <div class="controls">
+            <!-- Shuffle Checkbox will be appended here by JS -->
             <select id="viewMode" aria-label="Select View Mode">
                 <option value="quiz">Quiz Mode</option>
                 <option value="study">Study Mode</option>
@@ -76,35 +212,51 @@
         </div>
     </header>
 
-    <!-- মেইন কন্টেন্ট এরিয়া -->
+    <!-- Main Content -->
     <main class="container">
         
-        <!-- ফিল্টার এবং সার্চ বার -->
+        <!-- Search & Filter -->
         <section class="filter-bar">
+            <!-- Category counts will be added dynamically by JS -->
             <select id="categorySelect" aria-label="Select Category">
-                <option value="all">All Topics</option>
+                <option value="all">Loading Categories...</option>
             </select>
-            <input type="text" id="searchInput" placeholder="Search questions..." aria-label="Search Questions" />
+            <input type="text" id="searchInput" placeholder="Search (e.g., History, 1971)..." aria-label="Search Questions" />
         </section>
 
-        <!-- ইনিশিয়াল লোডার -->
+        <!-- Initial Loading State -->
         <div id="loader">
             <div class="spinner"></div>
-            <p>Starting App...</p>
+            <p>Loading Questions...</p>
         </div>
 
-        <!-- এরর মেসেজ এরিয়া -->
+        <!-- Error Container -->
         <div id="errorMsg" role="alert"></div>
 
-        <!-- প্রশ্ন তালিকা -->
+        <!-- JavaScript Disabled Warning -->
+        <noscript>
+            <div style="text-align:center; padding:20px; color:red;">
+                JavaScript is required to run this app. Please enable it in your browser settings.
+            </div>
+        </noscript>
+
+        <!-- Dynamic Question List -->
         <div id="questionList"></div>
         
+        <!-- Pagination Controls will be inserted here by JS -->
+
+        <!-- Static Footer Info -->
+        <div class="static-footer">
+            Service Started: November 28, 2025
+        </div>
+        
+        <!-- Dynamic Footer (Copyright/Date) will be appended here by JS -->
+
     </main>
 
-    <center><b>Service Started: November 28, 2025</b></center>
-    
+    <!-- App Logic -->
+    <!-- Make sure your updated JavaScript is saved as 'app.js' or update this src -->
+    <script src="app.js"></script>
 
-    <!-- স্ক্রিপ্ট ফাইল -->
-    <script src="script.js"></script>
 </body>
 </html>
