@@ -1,40 +1,18 @@
 "use strict";
 
-// Polyfill for older browsers (Object.assign)
-if (typeof Object.assign !== 'function') {
-  Object.assign = function(target) {
-    if (target == null) throw new TypeError('Cannot convert undefined or null to object');
-    target = Object(target);
-    for (var index = 1; index < arguments.length; index++) {
-      var source = arguments[index];
-      if (source != null) {
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
-        }
-      }
-    }
-    return target;
-  };
-}
-
 var app = {
-    data: [],           // All questions
-    filteredData: [],   // Currently visible questions (after search/filter)
-    catFilter: 'all',
+    data: [],
+    filteredData: [],
+    treeData: {}, // Structure: { "Category": { "Topic": count } }
+    
+    // State
+    currentCategory: null,
+    currentTopic: null, // Sub-category
     searchQuery: '',
-    mode: 'quiz',       // 'quiz' or 'study'
-    shuffle: false,     // Randomize order
-    loading: true,
-    lastModified: null,
-    
-    // Pagination Settings
+    mode: 'quiz',
+    shuffle: false,
     currentPage: 1,
-    itemsPerPage: 20,
-    
-    // Internal use for reset
-    originalOrder: [] 
+    itemsPerPage: 20
 };
 
 window.onload = function() {
@@ -42,161 +20,68 @@ window.onload = function() {
 };
 
 function initApp() {
-    loadSettings(); // Load saved state from LocalStorage
-    createDynamicUI();
-    setupEventListeners();
+    setupUI();
     startLoading();
 }
 
-// ========== SETTINGS & STORAGE ==========
+// ========== UI SETUP ==========
 
-function loadSettings() {
-    var saved = localStorage.getItem('mcq_app_state');
-    if (saved) {
-        try {
-            var parsed = JSON.parse(saved);
-            app.mode = parsed.mode || 'quiz';
-            app.catFilter = parsed.catFilter || 'all';
-            app.currentPage = parsed.currentPage || 1;
-            app.shuffle = parsed.shuffle || false;
-            
-            // Set UI values if elements exist immediately (rare, usually dynamic)
-            // We will sync UI in render/after loading
-        } catch(e) { console.error("Save file corrupted"); }
+function setupUI() {
+    // 1. Mobile Menu Toggles
+    var btn = document.getElementById('menuToggle');
+    var sidebar = document.getElementById('appSidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+
+    function toggleMenu() {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
     }
-}
 
-function saveSettings() {
-    var state = {
-        mode: app.mode,
-        catFilter: app.catFilter,
-        currentPage: app.currentPage,
-        shuffle: app.shuffle
+    if(btn) btn.onclick = toggleMenu;
+    if(overlay) overlay.onclick = toggleMenu;
+
+    // 2. View Mode
+    document.getElementById('viewMode').onchange = function(e) {
+        app.mode = e.target.value;
+        render();
     };
-    localStorage.setItem('mcq_app_state', JSON.stringify(state));
-}
 
-// ========== EVENTS ==========
-
-function setupEventListeners() {
-    var viewModeEl = document.getElementById('viewMode');
-    if(viewModeEl) {
-        viewModeEl.value = app.mode;
-        viewModeEl.onchange = function(e) { 
-            app.mode = e.target.value; 
-            // We do not reset page on mode change, user might want to study same page
-            saveSettings();
-            render(); 
-        };
-    }
-
-    var catSelectEl = document.getElementById('categorySelect');
-    if(catSelectEl) {
-        catSelectEl.onchange = function(e) { 
-            app.catFilter = e.target.value; 
-            document.getElementById('searchInput').value = ''; 
-            app.searchQuery = '';
-            app.currentPage = 1; 
-            saveSettings();
-            applyFilters(); 
-        };
-    }
-
-    var searchInputEl = document.getElementById('searchInput');
+    // 3. Search
     var searchTimeout;
-    if(searchInputEl) {
-        searchInputEl.onkeyup = function(e) { 
-            clearTimeout(searchTimeout);
-            var val = e.target.value.toLowerCase();
-            // Debounce: Wait 300ms before searching
-            searchTimeout = setTimeout(function(){
-                app.searchQuery = val; 
-                app.currentPage = 1; 
-                applyFilters(); 
-            }, 300);
-        };
-    }
-}
-
-// ========== DYNAMIC UI ==========
-
-function createDynamicUI() {
-    // 1. Floating Loader
-    var loader = document.createElement('div');
-    loader.id = 'floatingLoader';
-    loader.style.cssText = "position: fixed; bottom: 15px; left: 15px; background: rgba(0, 0, 0, 0.9); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 13px; font-family: sans-serif; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4);";
-    loader.textContent = "Initializing...";
-    document.body.appendChild(loader);
-
-    // 2. Advanced Controls (Shuffle)
-    var viewModeEl = document.getElementById('viewMode');
-    if(viewModeEl && viewModeEl.parentNode) {
-        var ctrlDiv = document.createElement('div');
-        ctrlDiv.style.cssText = "margin-top: 10px; display: inline-block;";
-        
-        var shufLabel = document.createElement('label');
-        shufLabel.style.cssText = "margin-left: 15px; cursor: pointer; user-select: none;";
-        
-        var shufCheck = document.createElement('input');
-        shufCheck.type = "checkbox";
-        shufCheck.checked = app.shuffle;
-        shufCheck.style.marginRight = "5px";
-        shufCheck.onchange = function(e) {
-            app.shuffle = e.target.checked;
+    document.getElementById('searchInput').onkeyup = function(e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            app.searchQuery = e.target.value.toLowerCase();
             app.currentPage = 1;
-            saveSettings();
-            applyFilters(); // Re-sort/shuffle
-        };
-
-        shufLabel.appendChild(shufCheck);
-        shufLabel.appendChild(document.createTextNode(" Shuffle Questions"));
-        
-        // Insert after select
-        viewModeEl.parentNode.appendChild(shufLabel);
-    }
-
-    // 3. Pagination Container
-    var qList = document.getElementById('questionList');
-    if(qList) {
-        var pagDiv = document.createElement('div');
-        pagDiv.id = 'paginationControls';
-        pagDiv.style.cssText = "display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 30px 0; padding: 15px; background: #f9f9f9; border-radius: 8px;";
-        qList.parentNode.appendChild(pagDiv);
-    }
-
-    // 4. Footer
-    var footer = document.createElement('div');
-    footer.id = 'appFooter';
-    footer.style.cssText = "text-align: center; margin: 30px 0 20px 0; font-size: 0.85em; color: #777; border-top: 1px solid #eee; padding-top: 20px;";
+            runFilter();
+        }, 300);
+    };
     
-    var currentYear = new Date().getFullYear();
-    // Using concatenation for older browser support instead of template literals
-    footer.innerHTML = "<div>&copy; " + currentYear + " All Rights Reserved.</div>" +
-                       "<div style='margin-top: 5px;'>Last Updated: <span id='lastUpdateDate' style='font-weight: bold;'>Calculating...</span></div>";
+    // 4. Shuffle Checkbox (Add to filter bar)
+    var filterBar = document.querySelector('.filter-bar');
+    var shufLabel = document.createElement('label');
+    shufLabel.style.cssText = "display: flex; align-items: center; gap: 5px; font-size: 0.9rem; cursor: pointer;";
+    shufLabel.innerHTML = '<input type="checkbox" id="shuffleCheck"> Shuffle';
+    filterBar.appendChild(shufLabel);
     
-    if(qList && qList.parentNode) {
-        qList.parentNode.appendChild(footer);
-    }
+    document.getElementById('shuffleCheck').onchange = function(e) {
+        app.shuffle = e.target.checked;
+        app.currentPage = 1;
+        runFilter();
+    };
 }
 
-// ========== DATA LOADING ==========
+// ========== DATA LOADING & PARSING ==========
 
 function startLoading() {
-    var bigLoader = document.getElementById('loader');
-    if(bigLoader) bigLoader.style.display = 'none';
-
-    updateStatus("Connecting to server...");
-    
     ajaxGet('data/main.json', function(cats) {
-        var manifestQueue = [];
-        // Just store paths, we will populate Select after counting data
+        var queue = [];
         for(var i=0; i<cats.length; i++) {
-            manifestQueue.push({ path: cats[i].path, name: cats[i].title });
+            // Initialize Tree Category
+            app.treeData[cats[i].title] = {}; 
+            queue.push({ path: cats[i].path, name: cats[i].title });
         }
-        processManifestQueue(manifestQueue, 0);
-
-    }, function(err) {
-        showError("Failed to load 'data/main.json'. Check internet or path.", true);
+        processManifestQueue(queue, 0);
     });
 }
 
@@ -205,378 +90,311 @@ function processManifestQueue(list, index) {
         finishLoading();
         return;
     }
-
+    
     var item = list[index];
-    updateStatus("Checking: " + item.name + " (" + (index+1) + "/" + list.length + ")");
-
     ajaxGet(item.path, function(files) {
-        var mcqQueue = [];
+        var fileQueue = [];
         for(var j=0; j<files.length; j++) {
-            mcqQueue.push({ url: files[j].path, cat: item.name });
+            fileQueue.push({ url: files[j].path, cat: item.name });
         }
-        
-        loadMCQs(mcqQueue, 0, function() {
+        loadMCQFiles(fileQueue, 0, function() {
             processManifestQueue(list, index + 1);
         });
-
-    }, function(err) {
-        console.warn("Skipping category: " + item.path);
-        processManifestQueue(list, index + 1);
     });
 }
 
-function loadMCQs(queue, idx, doneCallback) {
+function loadMCQFiles(queue, idx, doneCallback) {
     if (idx >= queue.length) {
         doneCallback();
         return;
     }
 
-    updateStatus("Loading: " + queue[idx].url.split('/').pop());
+    // Extract "Topic" from filename (e.g., "data/history/ancient.txt" -> "ancient")
+    var urlParts = queue[idx].url.split('/');
+    var fileName = urlParts[urlParts.length - 1];
+    var topicName = fileName.replace('.txt', '').replace(/_/g, ' ').toUpperCase(); // Clean name
 
     ajaxGet(queue[idx].url, function(text) {
-        parseMCQ(text, queue[idx].cat);
-        loadMCQs(queue, idx + 1, doneCallback);
-    }, function(err) {
-        loadMCQs(queue, idx + 1, doneCallback);
+        parseMCQ(text, queue[idx].cat, topicName);
+        loadMCQFiles(queue, idx + 1, doneCallback);
+    }, function() {
+        // Skip on error
+        loadMCQFiles(queue, idx + 1, doneCallback);
     }, true);
 }
 
-// ========== PARSER ==========
-
-function parseMCQ(text, cat) {
+function parseMCQ(text, cat, topic) {
     var lines = text.replace(/\r\n/g, '\n').split('\n');
-    
+    var count = 0;
+
     for (var i = 0; i < lines.length; i += 2) {
         if (i + 1 >= lines.length) break;
-
         var line1 = lines[i].trim();
         var line2 = lines[i+1].trim();
-
         if(!line1 || !line2) continue;
 
-        var title = line1.replace(/\*\*/g, '').trim(); 
+        // Simple Parser logic
         var parts = line2.split('|');
+        if(parts.length > 0 && parts[parts.length-1] === '') parts.pop();
 
-        if(parts.length > 0 && parts[parts.length - 1] === '') {
-            parts.pop();
-        }
+        var ansIndex, desc, opts;
+        var last = parts[parts.length-1];
+        var secondLast = parts[parts.length-2];
 
-        var desc = "";
-        var ansIndex = 0;
-        var options = [];
-
-        var lastItem = parts[parts.length - 1];
-        var secondLastItem = parts[parts.length - 2];
-
-        if (!isNaN(lastItem)) {
-            ansIndex = parseInt(lastItem); 
+        if(!isNaN(last)) {
+            ansIndex = parseInt(last);
             desc = null;
-            options = parts.slice(0, parts.length - 1);
+            opts = parts.slice(0, parts.length-1);
         } else {
-            desc = lastItem;
-            ansIndex = parseInt(secondLastItem);
-            options = parts.slice(0, parts.length - 2);
+            desc = last;
+            ansIndex = parseInt(secondLast);
+            opts = parts.slice(0, parts.length-2);
         }
 
-        var qObj = {
-            id: app.data.length, // Unique ID for stability
+        app.data.push({
+            id: app.data.length,
             cat: cat,
-            title: title,
-            opts: options,
+            topic: topic, // Store the sub-category
+            title: line1.replace(/\*\*/g, ''),
+            opts: opts,
             ans: ansIndex,
             desc: desc
-        };
-        app.data.push(qObj);
-        app.originalOrder.push(qObj);
+        });
+        count++;
     }
+
+    // Update Tree Counts
+    if(!app.treeData[cat][topic]) app.treeData[cat][topic] = 0;
+    app.treeData[cat][topic] += count;
 }
 
 function finishLoading() {
-    var loader = document.getElementById('floatingLoader');
-    if(loader) {
-        loader.textContent = "Data Loaded!";
-        loader.style.backgroundColor = "#28a745";
-        setTimeout(function() { loader.style.display = 'none'; }, 2000);
-    }
-    
-    if (app.data.length === 0) {
-        showError("No questions found!", true);
-        return;
-    }
-
-    populateCategories();
-    applyFilters();
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('totalCount').textContent = app.data.length;
+    renderTree();
+    runFilter();
 }
 
-function populateCategories() {
-    var catSelect = document.getElementById('categorySelect');
-    if(!catSelect) return;
+// ========== TREE VIEW LOGIC ==========
 
-    // Clear existing (except first if needed, but we rebuild usually)
-    catSelect.innerHTML = '<option value="all">All Categories (' + app.data.length + ')</option>';
+function renderTree() {
+    var treeContainer = document.getElementById('categoryTree');
+    treeContainer.innerHTML = '';
 
-    // Count categories
-    var counts = {};
-    for(var i=0; i<app.data.length; i++) {
-        var c = app.data[i].cat;
-        counts[c] = (counts[c] || 0) + 1;
-    }
+    for (var catName in app.treeData) {
+        var topics = app.treeData[catName];
+        var totalInCat = 0;
+        
+        // Calculate total for category
+        for(var t in topics) totalInCat += topics[t];
 
-    for (var catName in counts) {
-        var opt = document.createElement('option');
-        opt.value = catName;
-        opt.textContent = catName + " (" + counts[catName] + ")";
-        catSelect.appendChild(opt);
-    }
-    
-    // Restore selection
-    catSelect.value = app.catFilter;
-    // If saved category no longer exists, revert to all
-    if(catSelect.value === "") {
-        catSelect.value = "all";
-        app.catFilter = "all";
+        // 1. Create Category Header (Parent)
+        var li = document.createElement('li');
+        li.className = 'tree-item';
+
+        var header = document.createElement('div');
+        header.className = 'tree-header';
+        header.innerHTML = '<span>' + catName + '</span> <span class="count">' + totalInCat + '</span>';
+        
+        // 2. Create Sub-menu (Children)
+        var subUl = document.createElement('ul');
+        subUl.className = 'tree-sub';
+
+        // Add "All in [Category]" option
+        var allLi = document.createElement('li');
+        allLi.className = 'sub-item';
+        allLi.textContent = "All " + catName;
+        allLi.onclick = (function(c) { 
+            return function() { app.filterByTopic(c, null); closeMobileMenu(); }; 
+        })(catName);
+        subUl.appendChild(allLi);
+
+        // Add specific topics
+        for (var topicName in topics) {
+            var topicLi = document.createElement('li');
+            topicLi.className = 'sub-item';
+            topicLi.innerHTML = topicName + ' <span style="font-size:0.8em; color:#999;">(' + topics[topicName] + ')</span>';
+            
+            // Closure to capture variables
+            topicLi.onclick = (function(c, t) {
+                return function(e) { 
+                    // Remove active from all others
+                    var all = document.querySelectorAll('.sub-item');
+                    for(var k=0; k<all.length; k++) all[k].classList.remove('active');
+                    e.target.classList.add('active');
+
+                    app.filterByTopic(c, t);
+                    closeMobileMenu();
+                };
+            })(catName, topicName);
+
+            subUl.appendChild(topicLi);
+        }
+
+        // Toggle Expand/Collapse
+        header.onclick = function() {
+            var sibling = this.nextElementSibling;
+            if (sibling.style.display === "block") {
+                sibling.style.display = "none";
+                this.style.backgroundColor = "#fff";
+            } else {
+                sibling.style.display = "block";
+                this.style.backgroundColor = "#f0f0f0";
+            }
+        };
+
+        li.appendChild(header);
+        li.appendChild(subUl);
+        treeContainer.appendChild(li);
     }
 }
 
-// ========== LOGIC & RENDERING ==========
+function closeMobileMenu() {
+    document.getElementById('appSidebar').classList.remove('show');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+}
 
-function applyFilters() {
-    // 1. Filter
+// ========== FILTERING ==========
+
+app.filterByTopic = function(cat, topic) {
+    app.currentCategory = cat;
+    app.currentTopic = topic;
+    app.currentPage = 1;
+    app.searchQuery = ''; // Optional: clear search on nav click
+    document.getElementById('searchInput').value = '';
+
+    // Update Display
+    var display = document.getElementById('currentTopicDisplay');
+    var nameEl = document.getElementById('topicName');
+    display.style.display = 'block';
+    
+    if(!cat) {
+        nameEl.textContent = "All Questions";
+    } else if (!topic) {
+        nameEl.textContent = cat + " (All)";
+    } else {
+        nameEl.textContent = cat + " > " + topic;
+    }
+
+    runFilter();
+};
+
+function runFilter() {
     var temp = app.data.filter(function(q) {
-        if (app.catFilter !== 'all' && q.cat !== app.catFilter) return false;
+        // Tree Filter
+        if (app.currentCategory && q.cat !== app.currentCategory) return false;
+        if (app.currentTopic && q.topic !== app.currentTopic) return false;
+        
+        // Search Filter
         if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+        
         return true;
     });
 
-    // 2. Shuffle or Sort
-    if(app.shuffle) {
-        // Fisher-Yates Shuffle
+    // Shuffle logic
+    if (app.shuffle) {
         for (var i = temp.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
-            var t = temp[i];
-            temp[i] = temp[j];
-            temp[j] = t;
+            var t = temp[i]; temp[i] = temp[j]; temp[j] = t;
         }
     } else {
-        // Restore ID order if not shuffled
-        temp.sort(function(a, b) { return a.id - b.id; });
+        temp.sort(function(a,b){ return a.id - b.id; });
     }
 
     app.filteredData = temp;
     render();
 }
 
+// ========== RENDERING (Card & Pagination) ==========
+
 function render() {
     var container = document.getElementById('questionList');
     var pagContainer = document.getElementById('paginationControls');
-    
-    if(!container) return;
     container.innerHTML = '';
     pagContainer.innerHTML = '';
 
-    if(app.filteredData.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:40px; color:#888; background:#fff; border-radius:8px;"><h3>No questions found.</h3><p>Try changing filters or search query.</p></div>';
+    if (app.filteredData.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">No questions found.</div>';
         return;
     }
 
-    // Pagination Calculation
     var totalPages = Math.ceil(app.filteredData.length / app.itemsPerPage);
-    
-    if (app.currentPage < 1) app.currentPage = 1;
-    if (app.currentPage > totalPages) app.currentPage = totalPages;
-    
-    // Save state whenever we render (ensures page number is saved)
-    saveSettings();
+    if(app.currentPage > totalPages) app.currentPage = totalPages;
+    if(app.currentPage < 1) app.currentPage = 1;
 
     var start = (app.currentPage - 1) * app.itemsPerPage;
     var end = start + app.itemsPerPage;
     var pageData = app.filteredData.slice(start, end);
 
-    // Render Cards
     for (var i = 0; i < pageData.length; i++) {
         createCard(pageData[i], container, start + i + 1);
     }
-
-    // Render Pagination
-    renderPaginationControls(pagContainer, totalPages);
+    
+    createPagination(pagContainer, totalPages);
 }
 
-function renderPaginationControls(container, totalPages) {
-    // --- Prev Button ---
-    var prevBtn = document.createElement('button');
-    prevBtn.innerHTML = "&laquo; Prev";
-    prevBtn.className = "opt-btn";
-    prevBtn.style.cssText = "width: auto; padding: 8px 15px; margin: 0;";
-    prevBtn.disabled = app.currentPage === 1;
-    prevBtn.onclick = function() {
-        if(app.currentPage > 1) {
-            goToPage(app.currentPage - 1);
-        }
-    };
-    container.appendChild(prevBtn);
-
-    // --- Page Info ---
-    var info = document.createElement('span');
-    info.textContent = " Page " + app.currentPage + " of " + totalPages + " ";
-    info.style.cssText = "font-weight: bold; color: #444; font-size: 14px;";
-    container.appendChild(info);
-
-    // --- Next Button ---
-    var nextBtn = document.createElement('button');
-    nextBtn.innerHTML = "Next &raquo;";
-    nextBtn.className = "opt-btn";
-    nextBtn.style.cssText = "width: auto; padding: 8px 15px; margin: 0;";
-    nextBtn.disabled = app.currentPage === totalPages;
-    nextBtn.onclick = function() {
-        if(app.currentPage < totalPages) {
-            goToPage(app.currentPage + 1);
-        }
-    };
-    container.appendChild(nextBtn);
-
-    // --- Jump To Input (New Feature) ---
-    if(totalPages > 1) {
-        var jumpContainer = document.createElement('span');
-        jumpContainer.style.cssText = "margin-left: 15px; padding-left: 15px; border-left: 1px solid #ccc; display: flex; align-items: center;";
-        
-        var jumpInput = document.createElement('input');
-        jumpInput.type = 'number';
-        jumpInput.min = 1;
-        jumpInput.max = totalPages;
-        jumpInput.placeholder = '#';
-        jumpInput.style.cssText = "width: 50px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: center; margin-right: 5px;";
-        
-        // Enter key support
-        jumpInput.onkeyup = function(e) {
-            if(e.key === 'Enter' || e.keyCode === 13) {
-                jumpBtn.click();
-            }
-        };
-
-        var jumpBtn = document.createElement('button');
-        jumpBtn.textContent = "Go";
-        jumpBtn.className = "opt-btn";
-        jumpBtn.style.cssText = "width: auto; padding: 6px 12px; margin: 0; background: #6c757d; font-size: 12px;";
-        jumpBtn.onclick = function() {
-            var val = parseInt(jumpInput.value);
-            if(val >= 1 && val <= totalPages) {
-                goToPage(val);
-            } else {
-                alert("Please enter a page between 1 and " + totalPages);
-            }
-        };
-
-        jumpContainer.appendChild(jumpInput);
-        jumpContainer.appendChild(jumpBtn);
-        container.appendChild(jumpContainer);
-    }
-}
-
-function goToPage(pageNum) {
-    app.currentPage = pageNum;
-    render();
-    // Scroll to Top smoothly
-    try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch(e) {
-        window.scrollTo(0, 0); // Fallback for really old browsers
-    }
-}
-
-function createCard(q, container, absoluteIndex) {
+function createCard(q, container, index) {
     var card = document.createElement('div');
     card.className = 'q-card';
-
-    // Header
-    var header = document.createElement('div');
-    header.className = 'q-header';
-    header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
     
-    var catLabel = document.createElement('span');
-    catLabel.className = 'cat-label';
-    catLabel.textContent = q.cat;
+    var html = '<div style="margin-bottom:10px; font-size:12px; color:#888; display:flex; justify-content:space-between;">';
+    html += '<span>' + q.cat + ' > ' + q.topic + '</span><span>#' + index + '</span></div>';
+    html += '<div style="font-weight:600; font-size:1.1em; margin-bottom:15px;">' + q.title + '</div>';
     
-    var numLabel = document.createElement('span');
-    numLabel.style.cssText = "font-size: 12px; color: #888;";
-    numLabel.textContent = "#" + absoluteIndex;
-
-    header.appendChild(catLabel);
-    header.appendChild(numLabel);
-    card.appendChild(header);
-
-    // Title
-    var h3 = document.createElement('div');
-    h3.className = 'q-title';
-    h3.textContent = q.title;
-    card.appendChild(h3);
-
     var optsDiv = document.createElement('div');
-    
-    // Feedback Box
-    var feedBox = document.createElement('div');
-    feedBox.className = 'feedback-box';
-    feedBox.style.display = 'none'; 
+    var feedDiv = document.createElement('div');
+    feedDiv.style.display = 'none';
+    feedDiv.style.marginTop = "15px";
+    feedDiv.style.padding = "10px";
+    feedDiv.style.background = "#eef";
+    feedDiv.style.borderRadius = "5px";
 
-    var hasDesc = (q.desc && q.desc.trim().length > 0);
-    var feedbackHTML = '';
-
-    // Logic for Correct Answer display
-    var correctText = q.opts[q.ans] || "Unknown";
-
-    if (app.mode === 'study') {
-        feedbackHTML = '<div style="color: #155724; background-color: #d4edda; padding: 10px; border-left: 4px solid #28a745;"><b>Correct Answer:</b> ' + correctText + '</div>';
-        if(hasDesc) {
-            feedbackHTML += '<div style="margin-top:10px; color:#444;">' + q.desc + '</div>';
-        }
-        feedBox.style.display = 'block'; 
-    } else {
-        // Quiz Mode content (Hidden initially)
-        if(hasDesc) {
-            feedbackHTML = '<div style="margin-top:5px;"><b>Explanation:</b> ' + q.desc + '</div>';
-        } else {
-             // If no desc, show simple correct answer on error
-             feedbackHTML = '<div style="margin-top:5px;"><b>Correct Answer was:</b> ' + correctText + '</div>';
-        }
-    }
-    
-    feedBox.innerHTML = feedbackHTML;
-
-    // Generate Options
-    for (var j = 0; j < q.opts.length; j++) {
+    // Options
+    for(var j=0; j<q.opts.length; j++) {
         (function(idx) {
             var btn = document.createElement('button');
             btn.className = 'opt-btn';
             
-            if (app.mode === 'study') {
+            // Study Mode
+            if(app.mode === 'study') {
                 btn.textContent = q.opts[idx];
                 btn.disabled = true;
-                if (idx === q.ans) {
-                    btn.className += ' correct';
+                if(idx === q.ans) {
+                    btn.classList.add('correct');
                     btn.innerHTML += ' &#10004;';
                 }
-            } else {
-                // Quiz Mode
+                // Show desc immediately
+                if(q.desc) {
+                   feedDiv.style.display = 'block';
+                   feedDiv.innerHTML = "<b>Explanation:</b> " + q.desc;
+                }
+            } 
+            // Quiz Mode
+            else {
                 btn.textContent = q.opts[idx];
                 btn.onclick = function() {
-                    // Disable all siblings
-                    var siblings = optsDiv.getElementsByTagName('button');
-                    for(var k=0; k<siblings.length; k++) {
-                        siblings[k].disabled = true;
-                        if(k === q.ans) {
-                            siblings[k].className += ' correct';
-                            siblings[k].innerHTML += ' &#10004;';
+                    // Disable all
+                    var allBtns = optsDiv.querySelectorAll('.opt-btn');
+                    allBtns.forEach(function(b, bIdx) {
+                        b.disabled = true;
+                        if(bIdx === q.ans) {
+                            b.classList.add('correct');
+                            b.innerHTML += ' &#10004;';
                         }
+                    });
+
+                    if(idx !== q.ans) {
+                        this.classList.add('wrong');
+                        this.innerHTML += ' &#10006;';
                     }
                     
-                    if(idx !== q.ans) {
-                        this.className += ' wrong';
-                        this.innerHTML += ' &#10006;';
-                        // Show feedback only on wrong answer or if requested
-                        feedBox.style.display = 'block';
-                    } else {
-                        // Correct answer: Show feedback if explanation exists
-                        if(hasDesc) feedBox.style.display = 'block';
+                    // Show explanation
+                    if(q.desc) {
+                        feedDiv.style.display = 'block';
+                        feedDiv.innerHTML = "<b>Explanation:</b> " + q.desc;
+                    } else if (idx !== q.ans) {
+                         feedDiv.style.display = 'block';
+                         feedDiv.innerHTML = "<b>Correct Answer:</b> " + q.opts[q.ans];
                     }
                 };
             }
@@ -584,99 +402,49 @@ function createCard(q, container, absoluteIndex) {
         })(j);
     }
 
+    card.appendChild(document.createRange().createContextualFragment(html)); // Title
     card.appendChild(optsDiv);
-    card.appendChild(feedBox);
+    card.appendChild(feedDiv);
     container.appendChild(card);
 }
 
-// ========== UTILS ==========
+function createPagination(container, total) {
+    if(total <= 1) return;
 
-function updateStatus(msg) {
-    var el = document.getElementById('floatingLoader');
-    if(el) {
-        el.style.display = 'block';
-        el.textContent = msg;
-    }
+    var prev = document.createElement('button');
+    prev.textContent = "Prev";
+    prev.className = "opt-btn";
+    prev.style.width = "auto";
+    prev.style.display = "inline-block";
+    prev.disabled = app.currentPage === 1;
+    prev.onclick = function() { app.currentPage--; render(); window.scrollTo(0,0); };
+
+    var next = document.createElement('button');
+    next.textContent = "Next";
+    next.className = "opt-btn";
+    next.style.width = "auto";
+    next.style.display = "inline-block";
+    next.disabled = app.currentPage === total;
+    next.onclick = function() { app.currentPage++; render(); window.scrollTo(0,0); };
+
+    var span = document.createElement('span');
+    span.textContent = " Page " + app.currentPage + " of " + total + " ";
+    span.style.margin = "0 10px";
+
+    container.appendChild(prev);
+    container.appendChild(span);
+    container.appendChild(next);
 }
 
-function showError(msg, isFatal) {
-    var loader = document.getElementById('floatingLoader');
-    if(loader) loader.style.display = 'none';
-
-    var errDiv = document.getElementById('errorMsg');
-    if(errDiv) {
-        errDiv.style.display = 'block';
-        errDiv.innerHTML = "&#9888; " + msg;
-    }
-
-    if(isFatal) alert("Error: " + msg);
-}
-
-function checkLatestDate(headerDate) {
-    if(!headerDate) return;
-    var fileDate = new Date(headerDate);
-    if (!app.lastModified || fileDate > app.lastModified) {
-        app.lastModified = fileDate;
-        updateFooterDate();
-    }
-}
-
-function updateFooterDate() {
-    var el = document.getElementById('lastUpdateDate');
-    if(el && app.lastModified) {
-        el.textContent = app.lastModified.toLocaleDateString('en-US', { 
-            year: 'numeric', month: 'short', day: 'numeric' 
-        });
-    }
-}
-
+// Ajax Helper
 function ajaxGet(url, success, error, isText) {
     var xhr = new XMLHttpRequest();
-    // Cache busting
-    var freshUrl = url + '?t=' + new Date().getTime(); 
-    xhr.open('GET', freshUrl, true);
-    
+    xhr.open('GET', url + '?t=' + Date.now(), true);
     xhr.onload = function() {
         if (xhr.status === 200) {
-            checkLatestDate(xhr.getResponseHeader("Last-Modified"));
-            try {
-                var data = isText ? xhr.responseText : JSON.parse(xhr.responseText);
-                success(data);
-            } catch (e) {
-                if (error) error(e);
-            }
-        } else {
-            if (error) error(new Error("Status: " + xhr.status));
-        }
+            success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
+        } else if(error) error();
     };
-    xhr.onerror = function() { if (error) error(new Error("Network Error")); };
-    try { xhr.send(); } catch(e) { if(error) error(e); }
-}
-
-// Service Worker Logic
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(function(err) {
-        console.log('SW Registration failed: ', err);
-    });
-}
-
-var deferredPrompt;
-var installBtn = document.getElementById('installBtn');
-
-if(installBtn) {
-    window.addEventListener('beforeinstallprompt', function(e) {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.style.display = 'block';
-    });
-
-    installBtn.addEventListener('click', function(e) {
-        installBtn.style.display = 'none';
-        if(deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(function(choiceResult) {
-                deferredPrompt = null;
-            });
-        }
-    });
-}
+    xhr.onerror = function() { if(error) error(); };
+    try { xhr.send(); } catch(e) {}
+      }
