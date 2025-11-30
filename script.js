@@ -469,3 +469,37 @@ function ajaxGet(url, success, error, isText) {
     xhr.onerror = function() { if (error) error(new Error("Network")); };
     try { xhr.send(); } catch(e) { if(error) error(e); }
 }
+
+  // Service Worker রেজিস্টার করা
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+
+  // ব্রাউজার যখন ইন্সটল প্রম্পট দিতে চাইবে তখন এই ইভেন্টটি ঘটবে
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // ডিফল্ট প্রম্পট বন্ধ রাখা
+    e.preventDefault();
+    // ইভেন্টটি সেভ করে রাখা যাতে পরে ব্যবহার করা যায়
+    deferredPrompt = e;
+    // এবার বাটনটি দৃশ্যমান করা
+    installBtn.style.display = 'block';
+  });
+
+  // বাটনে ক্লিক করলে যা হবে
+  installBtn.addEventListener('click', (e) => {
+    // বাটনটি আবার লুকিয়ে ফেলা
+    installBtn.style.display = 'none';
+    // ব্রাউজারের ইন্সটল পপ-আপ দেখানো
+    deferredPrompt.prompt();
+    // ইউজার ইন্সটল করল কি না তা চেক করা
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+
