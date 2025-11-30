@@ -163,3 +163,93 @@ body {
     }
     #sidebarOverlay.show { display: block; }
 }
+/* =========================================
+   PRINT STYLES (@media print)
+   ========================================= */
+@media print {
+    /* 1. Reset Layout for Document Flow */
+    body, .app-body, .main-content {
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+        position: static !important;
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* 2. Hide Non-Printable Elements */
+    .top-bar,                /* Header */
+    .sidebar,                /* Sidebar */
+    .controls-area,          /* Search/Filter/Buttons */
+    #menuToggle,             /* Mobile Menu */
+    #installBtn,             /* Install Button */
+    #sidebarOverlay,         /* Mobile Overlay */
+    #paginationControls,     /* Pagination Buttons */
+    .app-footer,             /* Footer Links */
+    .jump-input,             /* Jump Input */
+    button.page-btn {        /* Extra Buttons */
+        display: none !important;
+    }
+
+    /* 3. Style the Question List */
+    #questionList {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* 4. Style Individual Cards for Paper */
+    .q-card {
+        break-inside: avoid;       /* Prevent cutting question in half */
+        page-break-inside: avoid;  /* For older browsers */
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        margin-bottom: 20px !important;
+        padding: 15px !important;
+        background-color: #fff !important;
+    }
+
+    /* 5. Style Options (Remove button look) */
+    .opt-btn {
+        background: none !important;
+        border: 1px solid #eee !important;
+        color: #000 !important;
+        padding: 5px 10px !important;
+        margin: 5px 0 !important;
+        text-align: left !important;
+    }
+
+    /* 6. Keep Highlights (If you print a solved quiz) */
+    .correct {
+        border: 1px solid #000 !important;
+        font-weight: bold !important;
+        text-decoration: underline;
+    }
+    
+    .wrong {
+        text-decoration: line-through;
+        opacity: 0.6;
+    }
+
+    /* 7. Add a Header for the Printout */
+    #questionList::before {
+        content: "Daily GK - Question Sheet";
+        display: block;
+        font-size: 18pt;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #000;
+    }
+
+    /* 8. Show current topic if available */
+    #topicHeader {
+        display: block !important;
+        text-align: center;
+        color: #000 !important;
+        font-size: 12pt;
+        margin-bottom: 10px;
+    }
+}
