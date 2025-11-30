@@ -1,262 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- SEO Meta Tags -->
-    <title>Daily GK MCQ - Smart Quiz & Study App</title>
-    <meta name="description" content="Best Daily GK MCQ App for BCS, Bank Job and Government Job Preparation. Features Study Mode, Quiz Mode and Progress Tracking.">
-    <meta name="keywords" content="MCQ App, Daily Quiz, BCS Preparation, General Knowledge, Study Mode, Bangladesh Education, GK Bengali">
-    <meta name="author" content="A.I. Shifat">
-    <meta name="theme-color" content="#ffffff">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://shifat100.github.io/daily-gk/">
-    <meta property="og:title" content="Smart GK MCQ App">
-    <meta property="og:description" content="Practice daily GK MCQs with Study & Quiz modes.">
-    <meta property="og:image" content="https://shifat100.github.io/daily-gk/thumb.png">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Smart GK MCQ App">
-    
-    <link rel="icon" type="image/png" href="favicon.png">
-    
-    <!-- External CSS -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Inline CSS for Critical UI Components (Loader, Controls) -->
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --bg-color: #f4f7f6;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding-bottom: 50px;
-            color: var(--text-color);
-        }
-
-        /* Header Styling */
-        .top-bar {
-            background: #fff;
-            padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Filter Section */
-        .filter-bar {
-            background: #fff;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 800px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-
-        @media(min-width: 600px) {
-            .filter-bar { flex-direction: row; }
-        }
-
-        select, input[type="text"] {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px; /* Prevents zoom on iPhone */
-            flex: 1;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 10px;
-        }
-
-        /* Install Button */
-        #installBtn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        #installBtn:hover { background-color: #0056b3; }
-
-        /* Question Cards */
-        .q-card {
-            background: #fff;
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .q-header { margin-bottom: 10px; font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
-        .q-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; line-height: 1.5; }
-
-        /* Options Buttons */
-        .opt-btn {
-            display: block;
-            width: 100%;
-            text-align: left;
-            padding: 10px 15px;
-            margin: 8px 0;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.95rem;
-            color: #333;
-        }
-        .opt-btn:hover:not(:disabled) { background: #e2e6ea; }
-        .opt-btn:disabled { cursor: default; opacity: 0.9; }
-        
-        /* Quiz Feedback Colors */
-        .correct { background-color: #d4edda !important; border-color: #c3e6cb !important; color: #155724 !important; }
-        .wrong { background-color: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24 !important; }
-
-        /* Initial Loader */
-        #loader {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Error Message */
-        #errorMsg {
-            display: none;
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 800px;
-            border-radius: 5px;
-            border: 1px solid #ffeeba;
-            text-align: center;
-        }
-
-        /* Static Footer Info */
-        .static-footer {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 40px;
-        }
-    </style>
+    <title>Smart GK - Tree View</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link the CSS above -->
 </head>
 <body>
 
-    <!-- Header -->
+<div class="app-shell">
+    <!-- 1. Header -->
     <header class="top-bar">
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div class="brand-area">
+            <button id="menuToggle" aria-label="Toggle Menu">&#9776;</button>
             <div class="brand">Daily GK</div>
-            <!-- Install Button (Hidden by default, shown by JS) -->
-            <button id="installBtn" style="display: none;">Install App</button>
         </div>
         
         <div class="controls">
-            <!-- Shuffle Checkbox will be appended here by JS -->
-            <select id="viewMode" aria-label="Select View Mode">
+            <select id="viewMode" style="padding: 5px;">
                 <option value="quiz">Quiz Mode</option>
                 <option value="study">Study Mode</option>
             </select>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container">
+    <!-- 2. Sidebar (Tree View) -->
+    <aside class="sidebar" id="appSidebar">
+        <!-- "All" Button -->
+        <div class="tree-header" onclick="app.filterByTopic(null)" style="border-bottom: 2px solid #eee;">
+            <span>All Questions</span>
+            <span class="count" id="totalCount">0</span>
+        </div>
         
-        <!-- Search & Filter -->
-        <section class="filter-bar">
-            <!-- Category counts will be added dynamically by JS -->
-            <select id="categorySelect" aria-label="Select Category">
-                <option value="all">Loading Categories...</option>
-            </select>
-            <input type="text" id="searchInput" placeholder="Search (e.g., History, 1971)..." aria-label="Search Questions" />
-        </section>
+        <!-- Dynamic Tree generated here -->
+        <ul id="categoryTree" class="tree-view"></ul>
+    </aside>
 
-        <!-- Initial Loading State -->
-        <div id="loader">
-            <div class="spinner"></div>
-            <p>Loading Questions...</p>
+    <!-- Overlay for mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- 3. Main Content -->
+    <main class="main-content">
+        <!-- Search & Info -->
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="Search questions..." />
+            <!-- Shuffle will be appended here by JS -->
         </div>
 
-        <!-- Error Container -->
-        <div id="errorMsg" role="alert"></div>
+        <div id="loader" style="text-align: center; padding: 20px;">
+            Loading...
+        </div>
+        
+        <div id="currentTopicDisplay" style="margin-bottom: 15px; color: var(--primary); font-weight: bold; display:none;">
+            Topic: <span id="topicName">All</span>
+        </div>
 
-        <!-- JavaScript Disabled Warning -->
-        <noscript>
-            <div style="text-align:center; padding:20px; color:red;">
-                JavaScript is required to run this app. Please enable it in your browser settings.
-            </div>
-        </noscript>
-
-        <!-- Dynamic Question List -->
         <div id="questionList"></div>
-        
-        <!-- Pagination Controls will be inserted here by JS -->
-
-        <!-- Static Footer Info -->
-        <div class="static-footer">
-            Service Started: November 28, 2025
-        </div>
-        
-        <!-- Dynamic Footer (Copyright/Date) will be appended here by JS -->
-
+        <div id="paginationControls"></div>
     </main>
+</div>
 
-    <!-- App Logic -->
-    <!-- Make sure your updated JavaScript is saved as 'app.js' or update this src -->
-    <script src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
