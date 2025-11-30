@@ -3,63 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart GK - Tree View</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link the CSS above -->
+    <title>Daily GK - Smart Study</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app-shell">
-    <!-- 1. Header -->
+    <!-- Header -->
     <header class="top-bar">
         <div class="brand-area">
-            <button id="menuToggle" aria-label="Toggle Menu">&#9776;</button>
+            <button id="menuToggle">&#9776;</button>
             <div class="brand">Daily GK</div>
         </div>
-        
-        <div class="controls">
-            <select id="viewMode" style="padding: 5px;">
+        <div>
+            <select id="viewMode" style="padding: 6px; border-radius: 4px;">
                 <option value="quiz">Quiz Mode</option>
                 <option value="study">Study Mode</option>
             </select>
         </div>
     </header>
 
-    <!-- 2. Sidebar (Tree View) -->
+    <!-- Sidebar (Tree View) -->
     <aside class="sidebar" id="appSidebar">
-        <!-- "All" Button -->
-        <div class="tree-header" onclick="app.filterByTopic(null)" style="border-bottom: 2px solid #eee;">
-            <span>All Questions</span>
-            <span class="count" id="totalCount">0</span>
-        </div>
-        
-        <!-- Dynamic Tree generated here -->
-        <ul id="categoryTree" class="tree-view"></ul>
+        <!-- Tree content injected by JS -->
+        <ul id="categoryTree" class="tree-view">
+            <li style="padding: 20px; text-align: center; color: #888;">Loading Topics...</li>
+        </ul>
     </aside>
+    
+    <div id="sidebarOverlay"></div>
 
-    <!-- Overlay for mobile -->
-    <div id="sidebarOverlay" class="sidebar-overlay"></div>
-
-    <!-- 3. Main Content -->
-    <main class="main-content">
-        <!-- Search & Info -->
-        <div class="filter-bar">
-            <input type="text" id="searchInput" placeholder="Search questions..." />
-            <!-- Shuffle will be appended here by JS -->
-        </div>
-
-        <div id="loader" style="text-align: center; padding: 20px;">
-            Loading...
-        </div>
+    <!-- Main Content -->
+    <main class="main-content" id="mainScroll">
         
-        <div id="currentTopicDisplay" style="margin-bottom: 15px; color: var(--primary); font-weight: bold; display:none;">
-            Topic: <span id="topicName">All</span>
+        <!-- Controls -->
+        <div class="controls-area">
+            <input type="text" id="searchInput" placeholder="Search questions...">
+            <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                <input type="checkbox" id="shuffleCheck"> Shuffle
+            </label>
         </div>
 
-        <div id="questionList"></div>
-        <div id="paginationControls"></div>
+        <!-- Topic Header -->
+        <div id="topicHeader" style="margin-bottom:15px; color:var(--primary); font-weight:bold; display:none;">
+            Viewing: <span id="topicName">All</span>
+        </div>
+
+        <!-- Question List Container -->
+        <div id="questionList">
+            <!-- Skeletons will appear here initially -->
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationControls" class="pagination"></div>
+
+        <!-- Footer -->
+        <div style="text-align:center; margin-top:40px; color:#999; font-size:0.8rem;">
+            &copy; 2025 Daily GK App
+        </div>
     </main>
 </div>
 
-<script src="script.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
