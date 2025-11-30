@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Daily GK - Smart Study</title>
+    <title>Daily GK App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-<div class="app-shell">
-    <!-- Header -->
+    <!-- HEADER -->
     <header class="top-bar">
         <div class="brand-area">
-            <button id="menuToggle">&#9776;</button>
+            <button id="menuToggle" aria-label="Menu">&#9776;</button>
             <div class="brand">Daily GK</div>
+            <!-- Install Button restored -->
+            <button id="installBtn">Install App</button>
         </div>
         <div>
             <select id="viewMode" style="padding: 6px; border-radius: 4px;">
@@ -23,47 +25,54 @@
         </div>
     </header>
 
-    <!-- Sidebar (Tree View) -->
-    <aside class="sidebar" id="appSidebar">
-        <!-- Tree content injected by JS -->
-        <ul id="categoryTree" class="tree-view">
-            <li style="padding: 20px; text-align: center; color: #888;">Loading Topics...</li>
-        </ul>
-    </aside>
-    
-    <div id="sidebarOverlay"></div>
-
-    <!-- Main Content -->
-    <main class="main-content" id="mainScroll">
+    <!-- BODY CONTAINER -->
+    <div class="app-body">
         
-        <!-- Controls -->
-        <div class="controls-area">
-            <input type="text" id="searchInput" placeholder="Search questions...">
-            <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
-                <input type="checkbox" id="shuffleCheck"> Shuffle
-            </label>
-        </div>
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="appSidebar">
+            <ul id="categoryTree" class="tree-view">
+                <li style="padding: 20px; text-align: center; color: #888;">Loading...</li>
+            </ul>
+        </aside>
+        
+        <!-- OVERLAY (Mobile) -->
+        <div id="sidebarOverlay"></div>
 
-        <!-- Topic Header -->
-        <div id="topicHeader" style="margin-bottom:15px; color:var(--primary); font-weight:bold; display:none;">
-            Viewing: <span id="topicName">All</span>
-        </div>
+        <!-- MAIN CONTENT -->
+        <main class="main-content" id="mainScroll">
+            
+            <!-- Controls -->
+            <div class="controls-area">
+                <input type="text" id="searchInput" placeholder="Search questions...">
+                <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                    <input type="checkbox" id="shuffleCheck"> Shuffle
+                </label>
+            </div>
 
-        <!-- Question List Container -->
-        <div id="questionList">
-            <!-- Skeletons will appear here initially -->
-        </div>
+            <!-- Topic Header -->
+            <div id="topicHeader" style="margin-bottom:15px; color:var(--primary); font-weight:bold; display:none;">
+                Viewing: <span id="topicName">All</span>
+            </div>
 
-        <!-- Pagination -->
-        <div id="paginationControls" class="pagination"></div>
+            <!-- List -->
+            <div id="questionList"></div>
 
-        <!-- Footer -->
-        <div style="text-align:center; margin-top:40px; color:#999; font-size:0.8rem;">
-            &copy; 2025 Daily GK App
-        </div>
-    </main>
-</div>
+            <!-- Pagination -->
+            <div id="paginationControls" class="pagination"></div>
 
-<script src="script.js"></script>
+            <!-- FOOTER INFO Restored -->
+            <footer class="app-footer">
+                <div>&copy; 2025 Daily GK. All Rights Reserved.</div>
+                <div style="margin-top:5px; font-weight:bold;">
+                    Service Started: November 28, 2025
+                </div>
+                <div style="margin-top:5px; font-size:0.8em;">
+                    Last Updated: <span id="lastUpdateDate">Calculating...</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
 </body>
-</html>
+    </html>
