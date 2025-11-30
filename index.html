@@ -107,6 +107,18 @@
                 <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
                     <input type="checkbox" id="shuffleCheck"> Shuffle
                 </label>
+                <br>
+                <select id="perPageSelect" aria-label="Questions per page" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+        <option value="10" selected>10 / Page</option>
+        <option value="20">20 / Page</option>
+        <option value="50">50 / Page</option>
+        <option value="100">100 / Page</option>
+    </select>
+    
+    <!-- Print Button (If you added it earlier) -->
+    <button onclick="window.print()" style="padding: 8px 15px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        &#128424; Print
+    </button>
             </div>
 
             <!-- Topic Header -->
