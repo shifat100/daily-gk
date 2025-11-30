@@ -9,7 +9,7 @@ var app = {
     lastModified: null,
     // Pagination Settings
     currentPage: 1,
-    itemsPerPage: 5 // প্রতি পেজে কয়টি প্রশ্ন দেখাতে চান তা এখানে সেট করুন
+    itemsPerPage: 20 // প্রতি পেজে কয়টি প্রশ্ন দেখাতে চান তা এখানে সেট করুন
 };
 
 window.onload = function() {
