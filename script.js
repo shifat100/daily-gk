@@ -413,7 +413,7 @@ function renderPagination(total) {
 
     var jumpSpan = document.createElement('span');
     jumpSpan.style.marginLeft = "15px";
-    jumpSpan.innerHTML = 'Go: ';
+    jumpSpan.innerHTML = '<hr>Go: ';
     var inp = document.createElement('input');
     inp.type = 'number';
     inp.className = 'jump-input';
