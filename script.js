@@ -227,8 +227,8 @@ function finishLoading() {
         return;
     }
 
-    // Latest First
-    app.data.reverse();
+    
+    //app.data.reverse();
     render();
 }
 
