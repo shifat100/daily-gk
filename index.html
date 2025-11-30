@@ -104,7 +104,11 @@
                 <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
                     <input type="checkbox" id="shuffleCheck"> Shuffle
                 </label>
-                <br>
+                <select id="sortSelect" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+        <option value="asc">Sort: Oldest First (Asc)</option>
+        <option value="desc">Sort: Newest First (Desc)</option>
+    </select>
+
                 <select id="perPageSelect" aria-label="Questions per page" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
         <option value="10" selected>10 / Page</option>
         <option value="20">20 / Page</option>
