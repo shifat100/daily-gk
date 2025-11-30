@@ -228,7 +228,7 @@ function finishLoading() {
     }
 
     
-    app.data.reverse();
+    //app.data.reverse();
     render();
 }
 
