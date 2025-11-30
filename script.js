@@ -1,15 +1,40 @@
 "use strict";
 
+// Polyfill for older browsers (Object.assign)
+if (typeof Object.assign !== 'function') {
+  Object.assign = function(target) {
+    if (target == null) throw new TypeError('Cannot convert undefined or null to object');
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+      var source = arguments[index];
+      if (source != null) {
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+    }
+    return target;
+  };
+}
+
 var app = {
-    data: [],
+    data: [],           // All questions
+    filteredData: [],   // Currently visible questions (after search/filter)
     catFilter: 'all',
     searchQuery: '',
-    mode: 'quiz',
+    mode: 'quiz',       // 'quiz' or 'study'
+    shuffle: false,     // Randomize order
     loading: true,
     lastModified: null,
+    
     // Pagination Settings
     currentPage: 1,
-    itemsPerPage: 20 // প্রতি পেজে কয়টি প্রশ্ন দেখাতে চান তা এখানে সেট করুন
+    itemsPerPage: 20,
+    
+    // Internal use for reset
+    originalOrder: [] 
 };
 
 window.onload = function() {
@@ -17,13 +42,50 @@ window.onload = function() {
 };
 
 function initApp() {
+    loadSettings(); // Load saved state from LocalStorage
     createDynamicUI();
+    setupEventListeners();
+    startLoading();
+}
 
+// ========== SETTINGS & STORAGE ==========
+
+function loadSettings() {
+    var saved = localStorage.getItem('mcq_app_state');
+    if (saved) {
+        try {
+            var parsed = JSON.parse(saved);
+            app.mode = parsed.mode || 'quiz';
+            app.catFilter = parsed.catFilter || 'all';
+            app.currentPage = parsed.currentPage || 1;
+            app.shuffle = parsed.shuffle || false;
+            
+            // Set UI values if elements exist immediately (rare, usually dynamic)
+            // We will sync UI in render/after loading
+        } catch(e) { console.error("Save file corrupted"); }
+    }
+}
+
+function saveSettings() {
+    var state = {
+        mode: app.mode,
+        catFilter: app.catFilter,
+        currentPage: app.currentPage,
+        shuffle: app.shuffle
+    };
+    localStorage.setItem('mcq_app_state', JSON.stringify(state));
+}
+
+// ========== EVENTS ==========
+
+function setupEventListeners() {
     var viewModeEl = document.getElementById('viewMode');
     if(viewModeEl) {
+        viewModeEl.value = app.mode;
         viewModeEl.onchange = function(e) { 
             app.mode = e.target.value; 
-            app.currentPage = 1; // মোড পাল্টালে প্রথম পেজে যাবে
+            // We do not reset page on mode change, user might want to study same page
+            saveSettings();
             render(); 
         };
     }
@@ -34,52 +96,83 @@ function initApp() {
             app.catFilter = e.target.value; 
             document.getElementById('searchInput').value = ''; 
             app.searchQuery = '';
-            app.currentPage = 1; // ফিল্টার করলে প্রথম পেজে যাবে
-            render(); 
+            app.currentPage = 1; 
+            saveSettings();
+            applyFilters(); 
         };
     }
 
     var searchInputEl = document.getElementById('searchInput');
+    var searchTimeout;
     if(searchInputEl) {
         searchInputEl.onkeyup = function(e) { 
-            app.searchQuery = e.target.value.toLowerCase(); 
-            app.currentPage = 1; // সার্চ করলে প্রথম পেজে যাবে
-            render(); 
+            clearTimeout(searchTimeout);
+            var val = e.target.value.toLowerCase();
+            // Debounce: Wait 300ms before searching
+            searchTimeout = setTimeout(function(){
+                app.searchQuery = val; 
+                app.currentPage = 1; 
+                applyFilters(); 
+            }, 300);
         };
     }
-
-    startLoading();
 }
 
 // ========== DYNAMIC UI ==========
 
 function createDynamicUI() {
-    // Floating Loader
+    // 1. Floating Loader
     var loader = document.createElement('div');
     loader.id = 'floatingLoader';
-    loader.style.cssText = "position: fixed; bottom: 15px; left: 15px; background: rgba(0, 0, 0, 0.85); color: #fff; padding: 10px 15px; border-radius: 30px; font-size: 13px; font-family: sans-serif; z-index: 9999; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);";
+    loader.style.cssText = "position: fixed; bottom: 15px; left: 15px; background: rgba(0, 0, 0, 0.9); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 13px; font-family: sans-serif; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4);";
     loader.textContent = "Initializing...";
     document.body.appendChild(loader);
 
-    // Pagination Container (Add below questionList)
+    // 2. Advanced Controls (Shuffle)
+    var viewModeEl = document.getElementById('viewMode');
+    if(viewModeEl && viewModeEl.parentNode) {
+        var ctrlDiv = document.createElement('div');
+        ctrlDiv.style.cssText = "margin-top: 10px; display: inline-block;";
+        
+        var shufLabel = document.createElement('label');
+        shufLabel.style.cssText = "margin-left: 15px; cursor: pointer; user-select: none;";
+        
+        var shufCheck = document.createElement('input');
+        shufCheck.type = "checkbox";
+        shufCheck.checked = app.shuffle;
+        shufCheck.style.marginRight = "5px";
+        shufCheck.onchange = function(e) {
+            app.shuffle = e.target.checked;
+            app.currentPage = 1;
+            saveSettings();
+            applyFilters(); // Re-sort/shuffle
+        };
+
+        shufLabel.appendChild(shufCheck);
+        shufLabel.appendChild(document.createTextNode(" Shuffle Questions"));
+        
+        // Insert after select
+        viewModeEl.parentNode.appendChild(shufLabel);
+    }
+
+    // 3. Pagination Container
     var qList = document.getElementById('questionList');
     if(qList) {
         var pagDiv = document.createElement('div');
         pagDiv.id = 'paginationControls';
-        pagDiv.style.cssText = "display: flex; justify-content: center; gap: 10px; margin: 20px 0;";
+        pagDiv.style.cssText = "display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 30px 0; padding: 15px; background: #f9f9f9; border-radius: 8px;";
         qList.parentNode.appendChild(pagDiv);
     }
 
-    // Footer
+    // 4. Footer
     var footer = document.createElement('div');
     footer.id = 'appFooter';
     footer.style.cssText = "text-align: center; margin: 30px 0 20px 0; font-size: 0.85em; color: #777; border-top: 1px solid #eee; padding-top: 20px;";
     
     var currentYear = new Date().getFullYear();
-    footer.innerHTML = `
-        <div>&copy; ${currentYear} All Rights Reserved.</div>
-        <div style="margin-top: 5px;">Last Updated: <span id="lastUpdateDate" style="font-weight: bold;">Calculating...</span></div>
-    `;
+    // Using concatenation for older browser support instead of template literals
+    footer.innerHTML = "<div>&copy; " + currentYear + " All Rights Reserved.</div>" +
+                       "<div style='margin-top: 5px;'>Last Updated: <span id='lastUpdateDate' style='font-weight: bold;'>Calculating...</span></div>";
     
     if(qList && qList.parentNode) {
         qList.parentNode.appendChild(footer);
@@ -95,23 +188,11 @@ function startLoading() {
     updateStatus("Connecting to server...");
     
     ajaxGet('data/main.json', function(cats) {
-        var catSelect = document.getElementById('categorySelect');
         var manifestQueue = [];
-
-        if(catSelect) {
-            for(var i=0; i<cats.length; i++) {
-                var opt = document.createElement('option');
-                opt.value = cats[i].title;
-                opt.textContent = cats[i].title;
-                catSelect.appendChild(opt);
-                manifestQueue.push({ path: cats[i].path, name: cats[i].title });
-            }
-        } else {
-            for(var i=0; i<cats.length; i++) {
-                manifestQueue.push({ path: cats[i].path, name: cats[i].title });
-            }
+        // Just store paths, we will populate Select after counting data
+        for(var i=0; i<cats.length; i++) {
+            manifestQueue.push({ path: cats[i].path, name: cats[i].title });
         }
-
         processManifestQueue(manifestQueue, 0);
 
     }, function(err) {
@@ -126,7 +207,7 @@ function processManifestQueue(list, index) {
     }
 
     var item = list[index];
-    updateStatus("Checking: " + item.name);
+    updateStatus("Checking: " + item.name + " (" + (index+1) + "/" + list.length + ")");
 
     ajaxGet(item.path, function(files) {
         var mcqQueue = [];
@@ -160,64 +241,60 @@ function loadMCQs(queue, idx, doneCallback) {
     }, true);
 }
 
-// ========== PARSER (UPDATED) ==========
+// ========== PARSER ==========
+
 function parseMCQ(text, cat) {
-    // Windows (\r\n) এবং Linux (\n) উভয় নিউলাইন হ্যান্ডেল করার জন্য
     var lines = text.replace(/\r\n/g, '\n').split('\n');
     
-    // প্রতি ২ লাইন মিলে একটি প্রশ্ন
     for (var i = 0; i < lines.length; i += 2) {
-        if (i + 1 >= lines.length) break; // যদি পেয়ার না থাকে
+        if (i + 1 >= lines.length) break;
 
         var line1 = lines[i].trim();
         var line2 = lines[i+1].trim();
 
         if(!line1 || !line2) continue;
 
-        var title = line1.replace(/\*\*/g, '').trim(); // ** রিমুভ করা
+        var title = line1.replace(/\*\*/g, '').trim(); 
         var parts = line2.split('|');
 
-        // ট্রেলিং পাইপ (|) থাকলে লাস্ট এম্পটি এলিমেন্ট রিমুভ করি
         if(parts.length > 0 && parts[parts.length - 1] === '') {
             parts.pop();
         }
 
-        // ডাটা এক্সট্রাকশন লজিক
         var desc = "";
         var ansIndex = 0;
         var options = [];
 
-        // লাস্ট আইটেমটি কি উত্তর ইনডেক্স নাকি ডেসক্রিপশন?
         var lastItem = parts[parts.length - 1];
         var secondLastItem = parts[parts.length - 2];
 
-        // যদি লাস্ট আইটেম নাম্বার হয়, তাহলে ডেসক্রিপশন নেই
         if (!isNaN(lastItem)) {
-            ansIndex = parseInt(lastItem); // 0-based index (সরাসরি ব্যবহার)
-            desc = null; // কোনো ডেসক্রিপশন নেই
-            options = parts.slice(0, parts.length - 1); // ইনডেক্স ছাড়া বাকি সব অপশন
-        } 
-        // যদি লাস্ট আইটেম নাম্বার না হয়, তাহলে সেটা ডেসক্রিপশন
-        else {
+            ansIndex = parseInt(lastItem); 
+            desc = null;
+            options = parts.slice(0, parts.length - 1);
+        } else {
             desc = lastItem;
-            ansIndex = parseInt(secondLastItem); // ডেসক্রিপশনের আগেরটা ইনডেক্স
-            options = parts.slice(0, parts.length - 2); // ইনডেক্স ও ডেসক্রিপশন বাদে বাকি সব অপশন
+            ansIndex = parseInt(secondLastItem);
+            options = parts.slice(0, parts.length - 2);
         }
 
-        app.data.push({
+        var qObj = {
+            id: app.data.length, // Unique ID for stability
             cat: cat,
             title: title,
             opts: options,
             ans: ansIndex,
             desc: desc
-        });
+        };
+        app.data.push(qObj);
+        app.originalOrder.push(qObj);
     }
 }
 
 function finishLoading() {
     var loader = document.getElementById('floatingLoader');
     if(loader) {
-        loader.textContent = "Done!";
+        loader.textContent = "Data Loaded!";
         loader.style.backgroundColor = "#28a745";
         setTimeout(function() { loader.style.display = 'none'; }, 2000);
     }
@@ -227,12 +304,67 @@ function finishLoading() {
         return;
     }
 
-    
-    //app.data.reverse();
-    render();
+    populateCategories();
+    applyFilters();
 }
 
-// ========== RENDERING & PAGINATION ==========
+function populateCategories() {
+    var catSelect = document.getElementById('categorySelect');
+    if(!catSelect) return;
+
+    // Clear existing (except first if needed, but we rebuild usually)
+    catSelect.innerHTML = '<option value="all">All Categories (' + app.data.length + ')</option>';
+
+    // Count categories
+    var counts = {};
+    for(var i=0; i<app.data.length; i++) {
+        var c = app.data[i].cat;
+        counts[c] = (counts[c] || 0) + 1;
+    }
+
+    for (var catName in counts) {
+        var opt = document.createElement('option');
+        opt.value = catName;
+        opt.textContent = catName + " (" + counts[catName] + ")";
+        catSelect.appendChild(opt);
+    }
+    
+    // Restore selection
+    catSelect.value = app.catFilter;
+    // If saved category no longer exists, revert to all
+    if(catSelect.value === "") {
+        catSelect.value = "all";
+        app.catFilter = "all";
+    }
+}
+
+// ========== LOGIC & RENDERING ==========
+
+function applyFilters() {
+    // 1. Filter
+    var temp = app.data.filter(function(q) {
+        if (app.catFilter !== 'all' && q.cat !== app.catFilter) return false;
+        if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+        return true;
+    });
+
+    // 2. Shuffle or Sort
+    if(app.shuffle) {
+        // Fisher-Yates Shuffle
+        for (var i = temp.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = temp[i];
+            temp[i] = temp[j];
+            temp[j] = t;
+        }
+    } else {
+        // Restore ID order if not shuffled
+        temp.sort(function(a, b) { return a.id - b.id; });
+    }
+
+    app.filteredData = temp;
+    render();
+}
 
 function render() {
     var container = document.getElementById('questionList');
@@ -242,91 +374,135 @@ function render() {
     container.innerHTML = '';
     pagContainer.innerHTML = '';
 
-    // ১. ফিল্টারিং
-    var filteredData = app.data.filter(function(q) {
-        if (app.catFilter !== 'all' && q.cat !== app.catFilter) return false;
-        if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
-        return true;
-    });
-
-    if(filteredData.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:30px; color:#888;">No matching questions found.</div>';
+    if(app.filteredData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:40px; color:#888; background:#fff; border-radius:8px;"><h3>No questions found.</h3><p>Try changing filters or search query.</p></div>';
         return;
     }
 
-    // ২. পেজিনেশন লজিক
-    var totalPages = Math.ceil(filteredData.length / app.itemsPerPage);
+    // Pagination Calculation
+    var totalPages = Math.ceil(app.filteredData.length / app.itemsPerPage);
     
-    // বাউন্ডারি চেক
     if (app.currentPage < 1) app.currentPage = 1;
     if (app.currentPage > totalPages) app.currentPage = totalPages;
+    
+    // Save state whenever we render (ensures page number is saved)
+    saveSettings();
 
     var start = (app.currentPage - 1) * app.itemsPerPage;
     var end = start + app.itemsPerPage;
-    var pageData = filteredData.slice(start, end);
+    var pageData = app.filteredData.slice(start, end);
 
-    // ৩. প্রশ্ন রেন্ডার করা
+    // Render Cards
     for (var i = 0; i < pageData.length; i++) {
-        createCard(pageData[i], container);
+        createCard(pageData[i], container, start + i + 1);
     }
 
-    // ৪. পেজিনেশন বাটন রেন্ডার করা
+    // Render Pagination
     renderPaginationControls(pagContainer, totalPages);
 }
 
 function renderPaginationControls(container, totalPages) {
-    if(totalPages <= 1) return; // এক পেজ হলে বাটন দরকার নেই
-
-    // Previous Button
+    // --- Prev Button ---
     var prevBtn = document.createElement('button');
     prevBtn.innerHTML = "&laquo; Prev";
-    prevBtn.className = "opt-btn"; // সেইম স্টাইল রিইউজ করা
-    prevBtn.style.width = "auto";
-    prevBtn.style.padding = "8px 20px";
-    prevBtn.style.margin = "0";
+    prevBtn.className = "opt-btn";
+    prevBtn.style.cssText = "width: auto; padding: 8px 15px; margin: 0;";
     prevBtn.disabled = app.currentPage === 1;
     prevBtn.onclick = function() {
         if(app.currentPage > 1) {
-            app.currentPage--;
-            render();
-            window.scrollTo(0, 0); // উপরে স্ক্রল করুন
+            goToPage(app.currentPage - 1);
         }
     };
+    container.appendChild(prevBtn);
 
-    // Page Info
+    // --- Page Info ---
     var info = document.createElement('span');
-    info.textContent = "Page " + app.currentPage + " of " + totalPages;
-    info.style.cssText = "align-self: center; font-size: 14px; font-weight: bold; color: #555;";
+    info.textContent = " Page " + app.currentPage + " of " + totalPages + " ";
+    info.style.cssText = "font-weight: bold; color: #444; font-size: 14px;";
+    container.appendChild(info);
 
-    // Next Button
+    // --- Next Button ---
     var nextBtn = document.createElement('button');
     nextBtn.innerHTML = "Next &raquo;";
     nextBtn.className = "opt-btn";
-    nextBtn.style.width = "auto";
-    nextBtn.style.padding = "8px 20px";
-    nextBtn.style.margin = "0";
+    nextBtn.style.cssText = "width: auto; padding: 8px 15px; margin: 0;";
     nextBtn.disabled = app.currentPage === totalPages;
     nextBtn.onclick = function() {
         if(app.currentPage < totalPages) {
-            app.currentPage++;
-            render();
-            window.scrollTo(0, 0);
+            goToPage(app.currentPage + 1);
         }
     };
-
-    container.appendChild(prevBtn);
-    container.appendChild(info);
     container.appendChild(nextBtn);
+
+    // --- Jump To Input (New Feature) ---
+    if(totalPages > 1) {
+        var jumpContainer = document.createElement('span');
+        jumpContainer.style.cssText = "margin-left: 15px; padding-left: 15px; border-left: 1px solid #ccc; display: flex; align-items: center;";
+        
+        var jumpInput = document.createElement('input');
+        jumpInput.type = 'number';
+        jumpInput.min = 1;
+        jumpInput.max = totalPages;
+        jumpInput.placeholder = '#';
+        jumpInput.style.cssText = "width: 50px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: center; margin-right: 5px;";
+        
+        // Enter key support
+        jumpInput.onkeyup = function(e) {
+            if(e.key === 'Enter' || e.keyCode === 13) {
+                jumpBtn.click();
+            }
+        };
+
+        var jumpBtn = document.createElement('button');
+        jumpBtn.textContent = "Go";
+        jumpBtn.className = "opt-btn";
+        jumpBtn.style.cssText = "width: auto; padding: 6px 12px; margin: 0; background: #6c757d; font-size: 12px;";
+        jumpBtn.onclick = function() {
+            var val = parseInt(jumpInput.value);
+            if(val >= 1 && val <= totalPages) {
+                goToPage(val);
+            } else {
+                alert("Please enter a page between 1 and " + totalPages);
+            }
+        };
+
+        jumpContainer.appendChild(jumpInput);
+        jumpContainer.appendChild(jumpBtn);
+        container.appendChild(jumpContainer);
+    }
 }
 
-function createCard(q, container) {
+function goToPage(pageNum) {
+    app.currentPage = pageNum;
+    render();
+    // Scroll to Top smoothly
+    try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch(e) {
+        window.scrollTo(0, 0); // Fallback for really old browsers
+    }
+}
+
+function createCard(q, container, absoluteIndex) {
     var card = document.createElement('div');
     card.className = 'q-card';
 
     // Header
     var header = document.createElement('div');
     header.className = 'q-header';
-    header.innerHTML = '<span class="cat-label">' + q.cat + '</span>';
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    
+    var catLabel = document.createElement('span');
+    catLabel.className = 'cat-label';
+    catLabel.textContent = q.cat;
+    
+    var numLabel = document.createElement('span');
+    numLabel.style.cssText = "font-size: 12px; color: #888;";
+    numLabel.textContent = "#" + absoluteIndex;
+
+    header.appendChild(catLabel);
+    header.appendChild(numLabel);
     card.appendChild(header);
 
     // Title
@@ -340,26 +516,27 @@ function createCard(q, container) {
     // Feedback Box
     var feedBox = document.createElement('div');
     feedBox.className = 'feedback-box';
-    feedBox.style.display = 'none'; // ডিফল্ট হাইড
+    feedBox.style.display = 'none'; 
 
-    // --- Conditional Description Logic ---
     var hasDesc = (q.desc && q.desc.trim().length > 0);
     var feedbackHTML = '';
 
+    // Logic for Correct Answer display
+    var correctText = q.opts[q.ans] || "Unknown";
+
     if (app.mode === 'study') {
-        feedbackHTML = '<b>Correct Answer: ' + q.opts[q.ans] + '</b>';
+        feedbackHTML = '<div style="color: #155724; background-color: #d4edda; padding: 10px; border-left: 4px solid #28a745;"><b>Correct Answer:</b> ' + correctText + '</div>';
         if(hasDesc) {
-            feedbackHTML += '<br><br>' + q.desc;
+            feedbackHTML += '<div style="margin-top:10px; color:#444;">' + q.desc + '</div>';
         }
         feedBox.style.display = 'block'; 
     } else {
+        // Quiz Mode content (Hidden initially)
         if(hasDesc) {
-            feedbackHTML = '<b>Explanation:</b> ' + q.desc;
+            feedbackHTML = '<div style="margin-top:5px;"><b>Explanation:</b> ' + q.desc + '</div>';
         } else {
-            // যদি ডেসক্রিপশন না থাকে, কুইজ মোডে শুধু কারেক্ট বা রং দেখাবে, বক্স আসবে না (যদি ভুল হয়)
-            // অথবা আমরা "Correct Answer is..." দেখাতে পারি।
-            // রিকোয়ারমেন্ট অনুযায়ী "if desc is null not showing description"
-            feedbackHTML = ''; 
+             // If no desc, show simple correct answer on error
+             feedbackHTML = '<div style="margin-top:5px;"><b>Correct Answer was:</b> ' + correctText + '</div>';
         }
     }
     
@@ -382,19 +559,24 @@ function createCard(q, container) {
                 // Quiz Mode
                 btn.textContent = q.opts[idx];
                 btn.onclick = function() {
-                    // Disable all
+                    // Disable all siblings
                     var siblings = optsDiv.getElementsByTagName('button');
                     for(var k=0; k<siblings.length; k++) {
                         siblings[k].disabled = true;
-                        if(k === q.ans) siblings[k].className += ' correct';
+                        if(k === q.ans) {
+                            siblings[k].className += ' correct';
+                            siblings[k].innerHTML += ' &#10004;';
+                        }
                     }
                     
-                    if(idx !== q.ans) this.className += ' wrong';
-                    
-                    // Show feedback ONLY if there is description OR if we want to show correct ans
-                    // রিকোয়ারমেন্ট: "if description is null not showing description"
-                    if(hasDesc) {
+                    if(idx !== q.ans) {
+                        this.className += ' wrong';
+                        this.innerHTML += ' &#10006;';
+                        // Show feedback only on wrong answer or if requested
                         feedBox.style.display = 'block';
+                    } else {
+                        // Correct answer: Show feedback if explanation exists
+                        if(hasDesc) feedBox.style.display = 'block';
                     }
                 };
             }
@@ -407,7 +589,7 @@ function createCard(q, container) {
     container.appendChild(card);
 }
 
-// ========== UTILS & DATE ==========
+// ========== UTILS ==========
 
 function updateStatus(msg) {
     var el = document.getElementById('floatingLoader');
@@ -424,7 +606,7 @@ function showError(msg, isFatal) {
     var errDiv = document.getElementById('errorMsg');
     if(errDiv) {
         errDiv.style.display = 'block';
-        errDiv.innerHTML = "⚠️ " + msg;
+        errDiv.innerHTML = "&#9888; " + msg;
     }
 
     if(isFatal) alert("Error: " + msg);
@@ -450,6 +632,7 @@ function updateFooterDate() {
 
 function ajaxGet(url, success, error, isText) {
     var xhr = new XMLHttpRequest();
+    // Cache busting
     var freshUrl = url + '?t=' + new Date().getTime(); 
     xhr.open('GET', freshUrl, true);
     
@@ -463,43 +646,37 @@ function ajaxGet(url, success, error, isText) {
                 if (error) error(e);
             }
         } else {
-            if (error) error(new Error(xhr.status));
+            if (error) error(new Error("Status: " + xhr.status));
         }
     };
-    xhr.onerror = function() { if (error) error(new Error("Network")); };
+    xhr.onerror = function() { if (error) error(new Error("Network Error")); };
     try { xhr.send(); } catch(e) { if(error) error(e); }
 }
 
-  // Service Worker রেজিস্টার করা
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
-
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
-
-  // ব্রাউজার যখন ইন্সটল প্রম্পট দিতে চাইবে তখন এই ইভেন্টটি ঘটবে
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // ডিফল্ট প্রম্পট বন্ধ রাখা
-    e.preventDefault();
-    // ইভেন্টটি সেভ করে রাখা যাতে পরে ব্যবহার করা যায়
-    deferredPrompt = e;
-    // এবার বাটনটি দৃশ্যমান করা
-    installBtn.style.display = 'block';
-  });
-
-  // বাটনে ক্লিক করলে যা হবে
-  installBtn.addEventListener('click', (e) => {
-    // বাটনটি আবার লুকিয়ে ফেলা
-    installBtn.style.display = 'none';
-    // ব্রাউজারের ইন্সটল পপ-আপ দেখানো
-    deferredPrompt.prompt();
-    // ইউজার ইন্সটল করল কি না তা চেক করা
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      }
-      deferredPrompt = null;
+// Service Worker Logic
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function(err) {
+        console.log('SW Registration failed: ', err);
     });
-  });
+}
 
+var deferredPrompt;
+var installBtn = document.getElementById('installBtn');
+
+if(installBtn) {
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', function(e) {
+        installBtn.style.display = 'none';
+        if(deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choiceResult) {
+                deferredPrompt = null;
+            });
+        }
+    });
+}
