@@ -1,50 +1,110 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart MCQ App</title>
+    
+    <!-- প্রাথমিক SEO মেটা ট্যাগ -->
+    <title>Daily MCQ - Smart Quiz & Study App for Competitive Exams</title>
+    <meta name="description" content="Smart MCQ App - বিসিএস, ব্যাংক জব এবং অন্যান্য সরকারি চাকরির প্রস্তুতির জন্য সেরা ডেইলি কুইজ অ্যাপ। কুইজ এবং স্টাডি মোডে নিজেকে যাচাই করুন।">
+    <meta name="keywords" content="MCQ App, Daily Quiz, BCS Preparation, Bank Job, General Knowledge, Study Mode, Bangladesh Education">
+    <meta name="author" content="Daily MCQ Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- ওপেন গ্রাফ (Facebook/LinkedIn ইত্যাদির জন্য) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/">
+    <meta property="og:title" content="Smart MCQ App - Daily Quiz & Study">
+    <meta property="og:description" content="বাংলায় সেরা এমসিকিউ প্র্যাকটিস অ্যাপ। বিসিএস ও অন্যান্য পরীক্ষার প্রস্তুতির জন্য আজই শুরু করুন।">
+    <meta property="og:image" content="https://yourwebsite.com/preview-image.jpg">
+
+    <!-- টুইটার কার্ড (Twitter এর জন্য) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Smart MCQ App - Daily Quiz & Study">
+    <meta name="twitter:description" content="Practice daily MCQs for better preparation.">
+
+    <!-- ফেভিকন (ব্রাউজার ট্যাবের আইকন) -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- স্টাইলশিট -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- স্কিমা মার্কআপ (Google সার্চের জন্য স্ট্রাকচার্ড ডাটা) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Smart MCQ App",
+      "url": "https://yourwebsite.com/",
+      "description": "An interactive MCQ application for students.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+
+    <style>
+        /* ফুটারের জন্য সামান্য স্টাইল যোগ করা হলো যাতে ডেটটি সুন্দর দেখায় */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: #f4f4f4;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+        footer .service-date {
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- টপ বার (ব্র্যান্ডিং + মোড সিলেক্টর) -->
-    <div class="top-bar">
+    <!-- হেডার (SEO এর জন্য Semantic Tag 'header' ব্যবহার করা হয়েছে) -->
+    <header class="top-bar">
         <div class="brand">Daily MCQ</div>
         <div class="controls">
-            <select id="viewMode">
+            <select id="viewMode" aria-label="Select View Mode">
                 <option value="quiz">Quiz Mode</option>
                 <option value="study">Study Mode</option>
             </select>
         </div>
-    </div>
+    </header>
 
-    <!-- ফিল্টার এবং সার্চ বার -->
-    <div class="filter-bar">
-        <select id="categorySelect">
-            <option value="all">All Topics</option>
-        </select>
-        <input type="text" id="searchInput" placeholder="Search questions..." />
-    </div>
-
-    <!-- মেইন কন্টেইনার -->
-    <div class="container">
+    <!-- মেইন কন্টেন্ট এরিয়া -->
+    <main class="container">
         
-        <!-- ইনিশিয়াল লোডার (JS লোড হওয়ার আগে দেখাবে) -->
+        <!-- ফিল্টার এবং সার্চ বার -->
+        <section class="filter-bar">
+            <select id="categorySelect" aria-label="Select Category">
+                <option value="all">All Topics</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Search questions..." aria-label="Search Questions" />
+        </section>
+
+        <!-- ইনিশিয়াল লোডার -->
         <div id="loader">
             <div class="spinner"></div>
             <p>Starting App...</p>
         </div>
 
         <!-- এরর মেসেজ এরিয়া -->
-        <div id="errorMsg"></div>
+        <div id="errorMsg" role="alert"></div>
 
-        <!-- প্রশ্ন তালিকা (JS এখানে কার্ড ইনজেক্ট করবে) -->
+        <!-- প্রশ্ন তালিকা -->
         <div id="questionList"></div>
         
-        <!-- Pagination এবং Footer অটোমেটিক JS দ্বারা যুক্ত হবে -->
+    </main>
 
-    </div>
+    <!-- ফুটার (এখানে আপনার রিকোয়ারমেন্ট অনুযায়ী তারিখ যোগ করা হয়েছে) -->
+    <footer>
+        <p>&copy; 2024 Daily MCQ. All Rights Reserved.</p>
+        <!-- আপনার রিকোয়ারমেন্ট: সার্ভিস স্টার্ট ডেট ইংরেজিতে -->
+        <p class="service-date">Service Started: November 29</p>
+    </footer>
 
     <!-- স্ক্রিপ্ট ফাইল -->
     <script src="script.js"></script>
