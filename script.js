@@ -4,7 +4,7 @@ var app = {
     data: [],           // All questions
     filteredData: [],   // Currently visible questions
     treeData: {},       // Hierarchy for Sidebar
-    
+    sortOrder: 'asc', 
     // Application State
     currCat: null,      // Current Category Filter
     currTopic: null,    // Current Topic Filter
@@ -102,8 +102,66 @@ function setupEventListeners() {
             render(); 
         };
     }
+
+
+    var sortSelect = document.getElementById('sortSelect');
+    if(sortSelect) {
+        sortSelect.onchange = function(e) {
+            app.sortOrder = e.target.value; // 'asc' or 'desc'
+            
+            // If user explicitly sorts, we usually want to turn off Shuffle
+            app.shuffle = false; 
+            document.getElementById('shuffleCheck').checked = false;
+            
+            app.page = 1;
+            runFilter();
+        };
+    }
+    
+    // UPDATE SHUFFLE LISTENER (Optional but recommended):
+    // When Shuffle is turned ON, it overrides the sort.
+    document.getElementById('shuffleCheck').onchange = function(e) {
+        app.shuffle = e.target.checked;
+        app.page = 1;
+        runFilter();
+    };
+    
 }
 
+function runFilter() {
+    renderSkeleton();
+
+    setTimeout(function() {
+        var res = app.data.filter(function(q) {
+            if (app.currCat && q.cat !== app.currCat) return false;
+            if (app.currTopic && q.topic !== app.currTopic) return false;
+            if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+            return true;
+        });
+
+        // === UPDATED SORTING LOGIC START ===
+        if (app.shuffle) {
+            // Random Shuffle
+            for (var i = res.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = res[i]; res[i] = res[j]; res[j] = temp;
+            }
+        } else {
+            // Sort based on ID (File order)
+            if (app.sortOrder === 'desc') {
+                // Descending (Newest/Last file first)
+                res.sort(function(a, b) { return b.id - a.id; });
+            } else {
+                // Ascending (Oldest/First file first) - Default
+                res.sort(function(a, b) { return a.id - b.id; });
+            }
+        }
+        // === UPDATED SORTING LOGIC END ===
+
+        app.filteredData = res;
+        render();
+    }, 150);
+               }
 // ==========================================
 // 2. PWA INSTALLATION
 // ==========================================
