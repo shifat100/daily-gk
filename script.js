@@ -1,18 +1,20 @@
 "use strict";
 
 var app = {
-    data: [],
-    filteredData: [],
-    treeData: {}, // Structure: { "Category": { "Topic": count } }
+    data: [],           // All questions
+    filteredData: [],   // Currently viewing
+    treeData: {},       // Hierarchical data for sidebar
     
     // State
-    currentCategory: null,
-    currentTopic: null, // Sub-category
-    searchQuery: '',
+    currCat: null,
+    currTopic: null,
     mode: 'quiz',
     shuffle: false,
-    currentPage: 1,
-    itemsPerPage: 20
+    searchQuery: '',
+    
+    // Pagination
+    page: 1,
+    perPage: 10
 };
 
 window.onload = function() {
@@ -20,72 +22,71 @@ window.onload = function() {
 };
 
 function initApp() {
-    setupUI();
-    startLoading();
+    setupEventListeners();
+    renderSkeleton(); // Show realtime load effect immediately
+    startDataLoad();
 }
 
-// ========== UI SETUP ==========
+// ========== 1. SETUP & EVENTS ==========
 
-function setupUI() {
-    // 1. Mobile Menu Toggles
-    var btn = document.getElementById('menuToggle');
+function setupEventListeners() {
+    // Mobile Menu
+    var toggle = document.getElementById('menuToggle');
     var sidebar = document.getElementById('appSidebar');
     var overlay = document.getElementById('sidebarOverlay');
 
-    function toggleMenu() {
-        sidebar.classList.toggle('show');
-        overlay.classList.toggle('show');
+    function closeMenu() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
     }
 
-    if(btn) btn.onclick = toggleMenu;
-    if(overlay) overlay.onclick = toggleMenu;
+    toggle.onclick = function() {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+    };
+    overlay.onclick = closeMenu;
 
-    // 2. View Mode
+    // View Mode
     document.getElementById('viewMode').onchange = function(e) {
         app.mode = e.target.value;
+        app.page = 1; // Reset page but keep filter
         render();
     };
 
-    // 3. Search
-    var searchTimeout;
+    // Search (Debounced)
+    var timeout;
     document.getElementById('searchInput').onkeyup = function(e) {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
             app.searchQuery = e.target.value.toLowerCase();
-            app.currentPage = 1;
+            app.page = 1;
             runFilter();
         }, 300);
     };
-    
-    // 4. Shuffle Checkbox (Add to filter bar)
-    var filterBar = document.querySelector('.filter-bar');
-    var shufLabel = document.createElement('label');
-    shufLabel.style.cssText = "display: flex; align-items: center; gap: 5px; font-size: 0.9rem; cursor: pointer;";
-    shufLabel.innerHTML = '<input type="checkbox" id="shuffleCheck"> Shuffle';
-    filterBar.appendChild(shufLabel);
-    
+
+    // Shuffle
     document.getElementById('shuffleCheck').onchange = function(e) {
         app.shuffle = e.target.checked;
-        app.currentPage = 1;
+        app.page = 1;
         runFilter();
     };
 }
 
-// ========== DATA LOADING & PARSING ==========
+// ========== 2. DATA LOADING ==========
 
-function startLoading() {
+function startDataLoad() {
     ajaxGet('data/main.json', function(cats) {
         var queue = [];
+        // Init Tree Structure
         for(var i=0; i<cats.length; i++) {
-            // Initialize Tree Category
-            app.treeData[cats[i].title] = {}; 
+            app.treeData[cats[i].title] = {};
             queue.push({ path: cats[i].path, name: cats[i].title });
         }
-        processManifestQueue(queue, 0);
+        processQueue(queue, 0);
     });
 }
 
-function processManifestQueue(list, index) {
+function processQueue(list, index) {
     if (index >= list.length) {
         finishLoading();
         return;
@@ -97,155 +98,154 @@ function processManifestQueue(list, index) {
         for(var j=0; j<files.length; j++) {
             fileQueue.push({ url: files[j].path, cat: item.name });
         }
-        loadMCQFiles(fileQueue, 0, function() {
-            processManifestQueue(list, index + 1);
+        loadMCQs(fileQueue, 0, function() {
+            processQueue(list, index + 1);
         });
     });
 }
 
-function loadMCQFiles(queue, idx, doneCallback) {
+function loadMCQs(queue, idx, doneCallback) {
     if (idx >= queue.length) {
         doneCallback();
         return;
     }
 
-    // Extract "Topic" from filename (e.g., "data/history/ancient.txt" -> "ancient")
+    // Extract Topic Name from filename (e.g. 'ancient_history.txt' -> 'ANCIENT HISTORY')
     var urlParts = queue[idx].url.split('/');
     var fileName = urlParts[urlParts.length - 1];
-    var topicName = fileName.replace('.txt', '').replace(/_/g, ' ').toUpperCase(); // Clean name
+    var topic = fileName.replace('.txt','').replace(/_/g, ' ').toUpperCase();
 
     ajaxGet(queue[idx].url, function(text) {
-        parseMCQ(text, queue[idx].cat, topicName);
-        loadMCQFiles(queue, idx + 1, doneCallback);
+        parseAndStore(text, queue[idx].cat, topic);
+        loadMCQs(queue, idx + 1, doneCallback);
     }, function() {
-        // Skip on error
-        loadMCQFiles(queue, idx + 1, doneCallback);
+        loadMCQs(queue, idx + 1, doneCallback); // Skip error
     }, true);
 }
 
-function parseMCQ(text, cat, topic) {
+function parseAndStore(text, cat, topic) {
     var lines = text.replace(/\r\n/g, '\n').split('\n');
     var count = 0;
 
     for (var i = 0; i < lines.length; i += 2) {
         if (i + 1 >= lines.length) break;
+        
         var line1 = lines[i].trim();
         var line2 = lines[i+1].trim();
         if(!line1 || !line2) continue;
 
-        // Simple Parser logic
         var parts = line2.split('|');
         if(parts.length > 0 && parts[parts.length-1] === '') parts.pop();
 
-        var ansIndex, desc, opts;
+        var ans, desc, opts;
         var last = parts[parts.length-1];
         var secondLast = parts[parts.length-2];
 
         if(!isNaN(last)) {
-            ansIndex = parseInt(last);
+            ans = parseInt(last);
             desc = null;
             opts = parts.slice(0, parts.length-1);
         } else {
             desc = last;
-            ansIndex = parseInt(secondLast);
+            ans = parseInt(secondLast);
             opts = parts.slice(0, parts.length-2);
         }
 
         app.data.push({
             id: app.data.length,
             cat: cat,
-            topic: topic, // Store the sub-category
+            topic: topic,
             title: line1.replace(/\*\*/g, ''),
             opts: opts,
-            ans: ansIndex,
+            ans: ans,
             desc: desc
         });
         count++;
     }
 
-    // Update Tree Counts
+    // Add to Tree Counts
     if(!app.treeData[cat][topic]) app.treeData[cat][topic] = 0;
     app.treeData[cat][topic] += count;
 }
 
 function finishLoading() {
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('totalCount').textContent = app.data.length;
-    renderTree();
+    buildSidebarTree();
     runFilter();
 }
 
-// ========== TREE VIEW LOGIC ==========
+// ========== 3. SIDEBAR TREE ==========
 
-function renderTree() {
-    var treeContainer = document.getElementById('categoryTree');
-    treeContainer.innerHTML = '';
+function buildSidebarTree() {
+    var ul = document.getElementById('categoryTree');
+    ul.innerHTML = '';
 
-    for (var catName in app.treeData) {
-        var topics = app.treeData[catName];
-        var totalInCat = 0;
-        
-        // Calculate total for category
-        for(var t in topics) totalInCat += topics[t];
+    // "All" Button
+    var allLi = document.createElement('li');
+    allLi.className = 'tree-item';
+    allLi.innerHTML = '<div class="tree-parent"><span>All Questions</span> <span class="badge">'+app.data.length+'</span></div>';
+    allLi.onclick = function() { 
+        setFilter(null, null); 
+        closeMobileMenu(); 
+    };
+    ul.appendChild(allLi);
 
-        // 1. Create Category Header (Parent)
+    for (var cat in app.treeData) {
+        var topics = app.treeData[cat];
+        var catTotal = 0;
+        for(var t in topics) catTotal += topics[t];
+
         var li = document.createElement('li');
         li.className = 'tree-item';
 
+        // Parent Header
         var header = document.createElement('div');
-        header.className = 'tree-header';
-        header.innerHTML = '<span>' + catName + '</span> <span class="count">' + totalInCat + '</span>';
+        header.className = 'tree-parent';
+        header.innerHTML = '<span>' + cat + '</span> <span class="badge">' + catTotal + '</span>';
         
-        // 2. Create Sub-menu (Children)
-        var subUl = document.createElement('ul');
-        subUl.className = 'tree-sub';
+        // Children Container
+        var childUl = document.createElement('ul');
+        childUl.className = 'tree-children';
 
-        // Add "All in [Category]" option
-        var allLi = document.createElement('li');
-        allLi.className = 'sub-item';
-        allLi.textContent = "All " + catName;
-        allLi.onclick = (function(c) { 
-            return function() { app.filterByTopic(c, null); closeMobileMenu(); }; 
-        })(catName);
-        subUl.appendChild(allLi);
+        // "All in Category"
+        var subAll = document.createElement('li');
+        subAll.className = 'tree-child';
+        subAll.textContent = "All " + cat;
+        subAll.onclick = (function(c) {
+            return function() { setFilter(c, null); closeMobileMenu(); };
+        })(cat);
+        childUl.appendChild(subAll);
 
-        // Add specific topics
-        for (var topicName in topics) {
+        // Specific Topics
+        for (var topic in topics) {
             var topicLi = document.createElement('li');
-            topicLi.className = 'sub-item';
-            topicLi.innerHTML = topicName + ' <span style="font-size:0.8em; color:#999;">(' + topics[topicName] + ')</span>';
+            topicLi.className = 'tree-child';
+            topicLi.innerHTML = topic + ' <span style="font-size:0.8em; opacity:0.7;">(' + topics[topic] + ')</span>';
             
-            // Closure to capture variables
             topicLi.onclick = (function(c, t) {
-                return function(e) { 
-                    // Remove active from all others
-                    var all = document.querySelectorAll('.sub-item');
+                return function(e) {
+                    // Highlight Active
+                    var all = document.querySelectorAll('.tree-child');
                     for(var k=0; k<all.length; k++) all[k].classList.remove('active');
                     e.target.classList.add('active');
-
-                    app.filterByTopic(c, t);
+                    
+                    setFilter(c, t);
                     closeMobileMenu();
+                    e.stopPropagation();
                 };
-            })(catName, topicName);
-
-            subUl.appendChild(topicLi);
+            })(cat, topic);
+            childUl.appendChild(topicLi);
         }
 
-        // Toggle Expand/Collapse
+        // Toggle Logic
         header.onclick = function() {
             var sibling = this.nextElementSibling;
-            if (sibling.style.display === "block") {
-                sibling.style.display = "none";
-                this.style.backgroundColor = "#fff";
-            } else {
-                sibling.style.display = "block";
-                this.style.backgroundColor = "#f0f0f0";
-            }
+            sibling.classList.toggle('open');
+            this.style.backgroundColor = sibling.classList.contains('open') ? '#f0f0f0' : '#fff';
         };
 
         li.appendChild(header);
-        li.appendChild(subUl);
-        treeContainer.appendChild(li);
+        li.appendChild(childUl);
+        ul.appendChild(li);
     }
 }
 
@@ -254,189 +254,235 @@ function closeMobileMenu() {
     document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
-// ========== FILTERING ==========
+// ========== 4. FILTERING & LOGIC ==========
 
-app.filterByTopic = function(cat, topic) {
-    app.currentCategory = cat;
-    app.currentTopic = topic;
-    app.currentPage = 1;
-    app.searchQuery = ''; // Optional: clear search on nav click
+function setFilter(cat, topic) {
+    app.currCat = cat;
+    app.currTopic = topic;
+    app.page = 1;
+    app.searchQuery = '';
     document.getElementById('searchInput').value = '';
-
-    // Update Display
-    var display = document.getElementById('currentTopicDisplay');
-    var nameEl = document.getElementById('topicName');
-    display.style.display = 'block';
     
-    if(!cat) {
-        nameEl.textContent = "All Questions";
-    } else if (!topic) {
-        nameEl.textContent = cat + " (All)";
-    } else {
-        nameEl.textContent = cat + " > " + topic;
-    }
+    // Update Header
+    var header = document.getElementById('topicHeader');
+    var name = document.getElementById('topicName');
+    header.style.display = 'block';
+    if(!cat) name.textContent = "All Questions";
+    else if(!topic) name.textContent = cat + " (All)";
+    else name.textContent = cat + " > " + topic;
 
     runFilter();
-};
-
-function runFilter() {
-    var temp = app.data.filter(function(q) {
-        // Tree Filter
-        if (app.currentCategory && q.cat !== app.currentCategory) return false;
-        if (app.currentTopic && q.topic !== app.currentTopic) return false;
-        
-        // Search Filter
-        if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
-        
-        return true;
-    });
-
-    // Shuffle logic
-    if (app.shuffle) {
-        for (var i = temp.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var t = temp[i]; temp[i] = temp[j]; temp[j] = t;
-        }
-    } else {
-        temp.sort(function(a,b){ return a.id - b.id; });
-    }
-
-    app.filteredData = temp;
-    render();
 }
 
-// ========== RENDERING (Card & Pagination) ==========
+function runFilter() {
+    renderSkeleton(); // Show loading effect
+
+    // Slight delay to simulate realtime load feeling
+    setTimeout(function() {
+        var res = app.data.filter(function(q) {
+            if (app.currCat && q.cat !== app.currCat) return false;
+            if (app.currTopic && q.topic !== app.currTopic) return false;
+            if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+            return true;
+        });
+
+        if (app.shuffle) {
+            // Fisher-Yates
+            for (var i = res.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = res[i]; res[i] = res[j]; res[j] = temp;
+            }
+        } else {
+            res.sort(function(a,b){ return a.id - b.id; });
+        }
+
+        app.filteredData = res;
+        render();
+    }, 200); // 200ms delay for smoothness
+}
+
+// ========== 5. RENDER & SKELETON ==========
+
+function renderSkeleton() {
+    var container = document.getElementById('questionList');
+    var html = '';
+    // Generate 3 skeleton cards
+    for(var i=0; i<3; i++) {
+        html += `
+        <div class="skeleton-card">
+            <div class="sk-line sk-title"></div>
+            <div class="sk-line sk-opt"></div>
+            <div class="sk-line sk-opt"></div>
+            <div class="sk-line sk-opt"></div>
+        </div>`;
+    }
+    container.innerHTML = html;
+}
 
 function render() {
     var container = document.getElementById('questionList');
-    var pagContainer = document.getElementById('paginationControls');
     container.innerHTML = '';
-    pagContainer.innerHTML = '';
-
-    if (app.filteredData.length === 0) {
-        container.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">No questions found.</div>';
+    
+    if(app.filteredData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:30px; color:#777;">No questions found.</div>';
+        document.getElementById('paginationControls').innerHTML = '';
         return;
     }
 
-    var totalPages = Math.ceil(app.filteredData.length / app.itemsPerPage);
-    if(app.currentPage > totalPages) app.currentPage = totalPages;
-    if(app.currentPage < 1) app.currentPage = 1;
+    // Pagination Logic
+    var totalPages = Math.ceil(app.filteredData.length / app.perPage);
+    if(app.page > totalPages) app.page = totalPages;
+    if(app.page < 1) app.page = 1;
 
-    var start = (app.currentPage - 1) * app.itemsPerPage;
-    var end = start + app.itemsPerPage;
-    var pageData = app.filteredData.slice(start, end);
+    var start = (app.page - 1) * app.perPage;
+    var end = start + app.perPage;
+    var pageItems = app.filteredData.slice(start, end);
 
-    for (var i = 0; i < pageData.length; i++) {
-        createCard(pageData[i], container, start + i + 1);
+    // Render Cards
+    for(var i=0; i<pageItems.length; i++) {
+        createCard(pageItems[i], container, start + i + 1);
     }
+
+    renderPagination(totalPages);
     
-    createPagination(pagContainer, totalPages);
+    // Scroll to top of Main Content
+    document.getElementById('mainScroll').scrollTop = 0;
 }
 
 function createCard(q, container, index) {
-    var card = document.createElement('div');
-    card.className = 'q-card';
-    
-    var html = '<div style="margin-bottom:10px; font-size:12px; color:#888; display:flex; justify-content:space-between;">';
-    html += '<span>' + q.cat + ' > ' + q.topic + '</span><span>#' + index + '</span></div>';
-    html += '<div style="font-weight:600; font-size:1.1em; margin-bottom:15px;">' + q.title + '</div>';
-    
+    var div = document.createElement('div');
+    div.className = 'q-card';
+
+    // Header Meta
+    var meta = document.createElement('div');
+    meta.className = 'q-meta';
+    meta.innerHTML = `<span>${q.cat} &bull; ${q.topic}</span><span>Q: ${index}</span>`;
+    div.appendChild(meta);
+
+    // Title
+    var h3 = document.createElement('div');
+    h3.className = 'q-title';
+    h3.textContent = q.title;
+    div.appendChild(h3);
+
+    // Options Container
     var optsDiv = document.createElement('div');
-    var feedDiv = document.createElement('div');
-    feedDiv.style.display = 'none';
-    feedDiv.style.marginTop = "15px";
-    feedDiv.style.padding = "10px";
-    feedDiv.style.background = "#eef";
-    feedDiv.style.borderRadius = "5px";
+    var feedback = document.createElement('div');
+    feedback.style.cssText = "display:none; margin-top:15px; padding:10px; background:#f1f8ff; border-radius:5px; border:1px solid #d0e3ff; color:#333;";
 
-    // Options
-    for(var j=0; j<q.opts.length; j++) {
-        (function(idx) {
-            var btn = document.createElement('button');
-            btn.className = 'opt-btn';
-            
-            // Study Mode
-            if(app.mode === 'study') {
-                btn.textContent = q.opts[idx];
-                btn.disabled = true;
-                if(idx === q.ans) {
-                    btn.classList.add('correct');
-                    btn.innerHTML += ' &#10004;';
-                }
-                // Show desc immediately
-                if(q.desc) {
-                   feedDiv.style.display = 'block';
-                   feedDiv.innerHTML = "<b>Explanation:</b> " + q.desc;
-                }
-            } 
-            // Quiz Mode
-            else {
-                btn.textContent = q.opts[idx];
-                btn.onclick = function() {
-                    // Disable all
-                    var allBtns = optsDiv.querySelectorAll('.opt-btn');
-                    allBtns.forEach(function(b, bIdx) {
-                        b.disabled = true;
-                        if(bIdx === q.ans) {
-                            b.classList.add('correct');
-                            b.innerHTML += ' &#10004;';
-                        }
-                    });
-
-                    if(idx !== q.ans) {
-                        this.classList.add('wrong');
-                        this.innerHTML += ' &#10006;';
-                    }
-                    
-                    // Show explanation
-                    if(q.desc) {
-                        feedDiv.style.display = 'block';
-                        feedDiv.innerHTML = "<b>Explanation:</b> " + q.desc;
-                    } else if (idx !== q.ans) {
-                         feedDiv.style.display = 'block';
-                         feedDiv.innerHTML = "<b>Correct Answer:</b> " + q.opts[q.ans];
-                    }
-                };
+    q.opts.forEach(function(opt, idx) {
+        var btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        
+        if(app.mode === 'study') {
+            btn.textContent = opt;
+            btn.disabled = true;
+            if(idx === q.ans) {
+                btn.classList.add('correct');
+                btn.innerHTML += ' &#10004;';
             }
-            optsDiv.appendChild(btn);
-        })(j);
-    }
+            // Show explanation immediately in study mode
+            if(q.desc) {
+                feedback.style.display = 'block';
+                feedback.innerHTML = "<b>Explanation:</b> " + q.desc;
+            }
+        } else {
+            // Quiz Mode
+            btn.textContent = opt;
+            btn.onclick = function() {
+                var siblings = optsDiv.querySelectorAll('.opt-btn');
+                siblings.forEach(function(sb, sIdx) {
+                    sb.disabled = true;
+                    if(sIdx === q.ans) {
+                        sb.classList.add('correct');
+                        sb.innerHTML += ' &#10004;';
+                    }
+                });
 
-    card.appendChild(document.createRange().createContextualFragment(html)); // Title
-    card.appendChild(optsDiv);
-    card.appendChild(feedDiv);
-    container.appendChild(card);
+                if(idx !== q.ans) {
+                    this.classList.add('wrong');
+                    this.innerHTML += ' &#10006;';
+                    // Show Correct Answer text if wrong
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = "<b>Correct Answer:</b> " + q.opts[q.ans];
+                    if(q.desc) feedback.innerHTML += "<br><br><b>Explanation:</b> " + q.desc;
+                } else {
+                    // Correct
+                    if(q.desc) {
+                        feedback.style.display = 'block';
+                        feedback.innerHTML = "<b>Explanation:</b> " + q.desc;
+                    }
+                }
+            };
+        }
+        optsDiv.appendChild(btn);
+    });
+
+    div.appendChild(optsDiv);
+    div.appendChild(feedback);
+    container.appendChild(div);
 }
 
-function createPagination(container, total) {
+function renderPagination(total) {
+    var box = document.getElementById('paginationControls');
+    box.innerHTML = '';
+
     if(total <= 1) return;
 
+    // Prev
     var prev = document.createElement('button');
-    prev.textContent = "Prev";
-    prev.className = "opt-btn";
-    prev.style.width = "auto";
-    prev.style.display = "inline-block";
-    prev.disabled = app.currentPage === 1;
-    prev.onclick = function() { app.currentPage--; render(); window.scrollTo(0,0); };
+    prev.className = 'page-btn';
+    prev.innerHTML = '&laquo; Prev';
+    prev.disabled = app.page === 1;
+    prev.onclick = function() { app.page--; render(); };
 
+    // Info
+    var info = document.createElement('span');
+    info.innerHTML = ` Page <b>${app.page}</b> of <b>${total}</b> `;
+
+    // Next
     var next = document.createElement('button');
-    next.textContent = "Next";
-    next.className = "opt-btn";
-    next.style.width = "auto";
-    next.style.display = "inline-block";
-    next.disabled = app.currentPage === total;
-    next.onclick = function() { app.currentPage++; render(); window.scrollTo(0,0); };
+    next.className = 'page-btn';
+    next.innerHTML = 'Next &raquo;';
+    next.disabled = app.page === total;
+    next.onclick = function() { app.page++; render(); };
 
-    var span = document.createElement('span');
-    span.textContent = " Page " + app.currentPage + " of " + total + " ";
-    span.style.margin = "0 10px";
+    // Jump Input (Fixed & Restored)
+    var jumpSpan = document.createElement('span');
+    jumpSpan.style.marginLeft = "15px";
+    jumpSpan.innerHTML = 'Go to: ';
+    
+    var inp = document.createElement('input');
+    inp.type = 'number';
+    inp.className = 'jump-input';
+    inp.min = 1; 
+    inp.max = total;
+    inp.placeholder = '#';
+    
+    var goBtn = document.createElement('button');
+    goBtn.className = 'page-btn';
+    goBtn.textContent = 'Go';
+    goBtn.style.marginLeft = '5px';
+    goBtn.onclick = function() {
+        var val = parseInt(inp.value);
+        if(val >= 1 && val <= total) {
+            app.page = val;
+            render();
+        } else {
+            alert('Enter page between 1 and ' + total);
+        }
+    };
 
-    container.appendChild(prev);
-    container.appendChild(span);
-    container.appendChild(next);
+    box.appendChild(prev);
+    box.appendChild(info);
+    box.appendChild(next);
+    
+    box.appendChild(jumpSpan);
+    box.appendChild(inp);
+    box.appendChild(goBtn);
 }
 
-// Ajax Helper
+// Helper
 function ajaxGet(url, success, error, isText) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url + '?t=' + Date.now(), true);
@@ -447,4 +493,4 @@ function ajaxGet(url, success, error, isText) {
     };
     xhr.onerror = function() { if(error) error(); };
     try { xhr.send(); } catch(e) {}
-      }
+            }
