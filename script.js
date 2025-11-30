@@ -549,7 +549,7 @@ function renderPagination(total) {
     // Jump Input
     var jumpSpan = document.createElement('span');
     jumpSpan.style.marginLeft = "15px";
-    jumpSpan.innerHTML = '<br><br>Go: ';
+    jumpSpan.innerHTML = '';
     
     var inp = document.createElement('input');
     inp.type = 'number';
