@@ -163,7 +163,6 @@ body {
     }
     #sidebarOverlay.show { display: block; }
 }
-
 /* =========================================
    PRINT STYLES (@media print)
    ========================================= */
@@ -178,7 +177,6 @@ body {
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
-        font-size: 11pt; /* আদর্শ প্রিন্ট ফন্ট সাইজ */
     }
 
     /* 2. Hide Non-Printable Elements */
@@ -191,10 +189,7 @@ body {
     #paginationControls,     /* Pagination Buttons */
     .app-footer,             /* Footer Links */
     .jump-input,             /* Jump Input */
-    button.page-btn,         /* Extra Buttons */
-    #backToTop,              /* Back to top btn */
-    .q-meta                  /* Meta info hidden for cleaner look */
-    {
+    button.page-btn {        /* Extra Buttons */
         display: none !important;
     }
 
@@ -205,75 +200,57 @@ body {
         margin: 0 !important;
     }
 
-    /* 4. Style Individual Cards - No Box, No Border */
+    /* 4. Style Individual Cards for Paper */
     .q-card {
         break-inside: avoid;       /* Prevent cutting question in half */
-        page-break-inside: avoid;
+        page-break-inside: avoid;  /* For older browsers */
         box-shadow: none !important;
-        border: none !important;       /* বর্ডার রিমুভ করা হয়েছে */
-        border-bottom: 1px dashed #ccc !important; /* হালকা সেপারেটর নিচে */
-        margin-bottom: 10px !important;
-        padding: 10px 0 !important;    /* সাইড প্যাডিং কমানো হয়েছে */
-        background-color: transparent !important;
-    }
-    
-    /* Last card border remove */
-    .q-card:last-child { border-bottom: none !important; }
-
-    .q-title {
-        font-size: 12pt;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #000;
+        border: 1px solid #ccc !important;
+        margin-bottom: 20px !important;
+        padding: 15px !important;
+        background-color: #fff !important;
     }
 
-    /* 5. Style Options - INLINE & NO BORDER */
+    /* 5. Style Options (Remove button look) */
     .opt-btn {
-        display: inline-block !important; /* পাশাপাশি দেখাবে */
-        width: auto !important;           /* লেখার সমান জায়গা নিবে */
         background: none !important;
-        border: none !important;          /* অপশনের বর্ডার রিমুভ */
+        border: 1px solid #eee !important;
         color: #000 !important;
-        padding: 0 !important;            /* প্যাডিং নেই */
-        margin: 0 15px 0 0 !important;    /* ডানদিকে একটু গ্যাপ */
+        padding: 5px 10px !important;
+        margin: 5px 0 !important;
         text-align: left !important;
-        font-size: 10pt;
     }
-    
-    /* অপশনগুলোর আগে বুলেট বা হাইফেন চাইলে নিচের লাইনটি আনকমেন্ট করতে পারেন */
-    /* .opt-btn::before { content: "• "; color: #555; } */
 
-    /* 6. Keep Highlights (Text style only) */
+    /* 6. Keep Highlights (If you print a solved quiz) */
     .correct {
+        border: 1px solid #000 !important;
         font-weight: bold !important;
         text-decoration: underline;
-        color: #000 !important;
     }
     
     .wrong {
         text-decoration: line-through;
-        opacity: 0.5;
+        opacity: 0.6;
     }
 
-    /* 7. Print Header */
+    /* 7. Add a Header for the Printout */
     #questionList::before {
-        content: "GK Question Sheet";
+        content: "Daily GK - Question Sheet";
         display: block;
-        font-size: 16pt;
+        font-size: 18pt;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
         border-bottom: 2px solid #000;
-        padding-bottom: 10px;
     }
 
+    /* 8. Show current topic if available */
     #topicHeader {
         display: block !important;
         text-align: center;
         color: #000 !important;
-        font-size: 11pt;
-        margin-bottom: 15px;
-        font-style: italic;
+        font-size: 12pt;
+        margin-bottom: 10px;
     }
 }
 
@@ -284,7 +261,7 @@ body {
     right: 30px;
     width: 50px;
     height: 50px;
-    background-color: var(--primary);
+    background-color: var(--primary); /* Uses your blue color */
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -292,15 +269,37 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     z-index: 1000;
+    
+    /* Hidden by default */
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
     transition: all 0.3s ease;
 }
 
-#backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
-#backToTop:hover { background-color: var(--primary-dark); transform: translateY(-5px); }
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
+#backToTop:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-5px);
+}
+
+/* Hide on Print */
+@media print {
+    #backToTop { display: none !important; }
+}
+
+/* Adjust for Mobile so it doesn't cover content */
 @media (max-width: 768px) {
-    #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 20px; }
-                 }
+    #backToTop {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+}
