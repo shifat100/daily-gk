@@ -221,7 +221,9 @@ body {
         margin: 5px !important;
         text-align: left !important;
     }
-
+.opt-btn::before {
+    content: '*';
+}
     /* 6. Keep Highlights (If you print a solved quiz) */
     .correct {
         border: 0px solid #000 !important;
