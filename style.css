@@ -213,13 +213,19 @@ body {
 
     /* 5. Style Options (Remove button look) */
     .opt-btn {
-        background: none !important;
-        border: 1px solid #eee !important;
-        color: #000 !important;
-        padding: 5px 10px !important;
-        margin: 5px 0 !important;
-        text-align: left !important;
-    }
+    /* আপনার style.css ফাইলের শেষের দিকে @media print এর ভেতরে এই অংশটি আপডেট করুন */
+
+.opt-btn {
+    display: inline-block !important;  /* পাশাপাশি বসানোর জন্য */
+    width: auto !important;            /* পুরো লাইন দখল করা বন্ধ করতে */
+    background: none !important;
+    border: 1px solid #ccc !important; /* হালকা বর্ডার, যাতে অপশনগুলো আলাদা বোঝা যায় */
+    color: #000 !important;
+    padding: 2px 10px !important;      /* প্যাডিং কমিয়ে জায়গা বাঁচানো হয়েছে */
+    margin: 5px 10px 5px 0 !important; /* ডানদিকে ১০px ফাঁকা রাখা হয়েছে */
+    text-align: left !important;
+    border-radius: 4px !important;
+}
 
     /* 6. Keep Highlights (If you print a solved quiz) */
     .correct {
