@@ -213,11 +213,12 @@ body {
 
     /* 5. Style Options (Remove button look) */
     .opt-btn {
+        width: auto;
         background: none !important;
-        border: 1px solid #eee !important;
+        border: 0px solid #eee !important;
         color: #000 !important;
         padding: 5px 10px !important;
-        margin: 5px 0 !important;
+        margin: 5px !important;
         text-align: left !important;
     }
 
