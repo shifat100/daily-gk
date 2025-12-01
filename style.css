@@ -229,8 +229,8 @@ body {
 /* Styles for elements that have .opt-btn but NOT .correct */
 /* This selector targets an element that has both classes mentioned, but the :not() negates the second one effectively */
 .opt-btn:not(.correct)::before {
-    content: '• '; /* Add the bullet point */
-    font-size: 32px;
+    content: '◯ '; /* Add the bullet point */
+    font-weight: bold;
     
 }
 
