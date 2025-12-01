@@ -224,9 +224,8 @@ body {
 
     /* 6. Keep Highlights (If you print a solved quiz) */
     .correct {
-        border: 1px solid #000 !important;
+        border: 0px solid #000 !important;
         font-weight: bold !important;
-        text-decoration: underline;
     }
     
     .wrong {
