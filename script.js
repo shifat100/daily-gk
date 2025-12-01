@@ -567,7 +567,8 @@ function createCard(q, container, index) {
             btn.disabled = true;
             if(idx === q.ans) { 
                 btn.classList.add('correct'); 
-                btn.innerHTML += ' &#10004;'; 
+                //btn.innerHTML += ' &#10004;';
+                btn.innerHTML = '&#10004; ' + btn.innerHTML;
             }
             // Always show desc in study mode if it exists
             if(q.desc) { 
