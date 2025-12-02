@@ -1,7 +1,6 @@
-// ১. ক্যাশের নাম এবং অফলাইনে দেখানোর জন্য ফাইলের তালিকা
+
 const CACHE_NAME = 'shifat100-daily-gk';
 const urlsToCache = [
-  '/data/2025/1.mcq',
   '/data/2025/0.mcq',
   '/data/2025/1.json',
   '/',                
