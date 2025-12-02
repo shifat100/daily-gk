@@ -4,11 +4,11 @@ const urlsToCache = [
   '/data/2025/1.mcq',
   '/data/2025/0.mcq',
   '/data/2025/1.json',
-  '/',                // হোম পেজ
-  '/index.html',      // মেইন HTML ফাইল
-  '/style.css',       // আপনার CSS ফাইল (নাম চেক করে নিন)
-  '/script.js',       // আপনার JS ফাইল (নাম চেক করে নিন)
-  '/logo.png'         // কোনো লোগো বা ছবি থাকলে
+  '/',                
+  '/index.html',      
+  '/style.css',       
+  '/script.js',       
+  '/logo.png'         
 ];
 
 // ২. Install Event: প্রথমবার ভিজিটের সময় ফাইলগুলো ক্যাশে সেভ হবে
