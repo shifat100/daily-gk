@@ -8,6 +8,10 @@
 }
 
 * { box-sizing: border-box; }
+*:selection {
+    background: black;
+    color:white;
+}
 
 body {
     margin: 0;
