@@ -720,3 +720,64 @@ function ajaxGet(url, success, error, isText) {
     xhr.onerror = function() { if(error) error(); };
     try { xhr.send(); } catch(e) { if(error) error(); }
 }
+
+
+
+    // 1. Disable Right-Click (Context Menu)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+
+    // 2. Disable Text Selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    }, false);
+
+    // 3. Disable Dragging (Images/Text)
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    }, false);
+
+    // 4. Disable Copy, Cut, Paste
+    ['copy', 'cut', 'paste'].forEach(function(event) {
+        document.addEventListener(event, function(e) {
+            e.preventDefault();
+        }, false);
+    });
+
+    // 5. Disable Keyboard Shortcuts (F12, Ctrl+Shift+I, Ctrl+C, Ctrl+U, etc.)
+    document.addEventListener('keydown', function(e) {
+        // Check for F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Check for Ctrl/Cmd combinations
+        if (e.ctrlKey || e.metaKey) {
+            const key = e.key.toLowerCase();
+            
+            // Block Ctrl+C (Copy), Ctrl+V (Paste), Ctrl+X (Cut)
+            // Block Ctrl+S (Save), Ctrl+U (View Source), Ctrl+P (Print)
+            if (['c', 'v', 'x', 's', 'u', 'p'].includes(key)) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Block Ctrl+Shift+I (DevTools), Ctrl+Shift+C (Inspect), Ctrl+Shift+J (Console)
+            if (e.shiftKey && ['i', 'c', 'j'].includes(key)) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }, false);
+
+    // 6. "Debugger" Loop (Freezes browser if DevTools is open)
+    // Note: This can affect performance and is very aggressive.
+    setInterval(function() {
+        // The 'debugger' statement pauses execution if DevTools is open
+        // Wrapping it in a closure makes it harder to locate
+        (function() { debugger; })();
+    }, 100);
+
+
