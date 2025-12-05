@@ -2,7 +2,7 @@
 const CACHE_NAME = 'shifat100-daily-gk';
 const urlsToCache = [
   '/data/2025/0.mcq',
-  '/data/2025/1.json',
+  '/data/2025/set.json',
   '/data/main.json',
   '/',                
   '/index.html',      
