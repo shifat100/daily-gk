@@ -1,15 +1,15 @@
 
 const CACHE_NAME = 'shifat100-daily-gk';
 const urlsToCache = [
-  '/data/2025/nov.mcq',
-  '/data/2025/oct.mcq',
-  '/data/2025/set.json',
-  '/data/main.json',
+  'data/2025/nov.mcq',
+  'data/2025/oct.mcq',
+  'data/2025/set.json',
+  'data/main.json',
   '/',                
-  '/index.html',      
-  '/style.css',       
-  '/script.js',       
-  '/logo.png'         
+  'index.html',      
+  'style.css',       
+  'script.js',       
+  'logo.png'         
 ];
 
 // ২. Install Event: প্রথমবার ভিজিটের সময় ফাইলগুলো ক্যাশে সেভ হবে
