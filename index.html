@@ -86,7 +86,52 @@
             <br>
             <center>
                 <button id="installBtn" style="display:inline-block">Install App</button>
-                <button id="dlBtn" style="margin:5px;background: #fff; color: #000; border: 1px solid #ddd;padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 1.5em;display:none">ↆ</button>
+                <!-- Container: Horizontal Flexbox with Transparent BG -->
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 10px; background-color: transparent; align-items: center;">
+
+    <!-- 1. ANDROID (APK) -->
+    <a href="game.apk" download title="Download APK" style="display: flex; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,128,128,0.3); border-radius: 10px; text-decoration: none; color: #3DDC84; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.0527-.5676.416.416 0 00-.568.0527l-2.0305 3.5164c-2.2038-1.01-4.717-1.01-6.9205 0L8.277 5.3473a.416.416 0 00-.568-.0527.416.416 0 00-.0527.5676l1.9973 3.4592C4.6867 10.8654 1.5 15.2289 1.5 20.25h21c0-5.0211-3.1867-9.3846-8.1525-10.9286"/>
+        </svg>
+    </a>
+
+    <!-- 2. iOS (iPhone/iPad) -->
+    <a href="https://apps.apple.com/app-id" target="_blank" title="Download on App Store" style="display: flex; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,128,128,0.3); border-radius: 10px; text-decoration: none; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.72-3.06 1.64-.65.8-1.23 2.09-1.07 3.12 1.17.09 2.33-.82 3.06-1.65"/>
+        </svg>
+    </a>
+
+    <!-- 3. J2ME (Java) -->
+    <a href="game.jar" download title="Download JAR" style="display: flex; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,128,128,0.3); border-radius: 10px; text-decoration: none; color: #f89820; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <svg style="width: 22px; height: 22px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.97 22c-5.035 0-8.114-3.193-8.114-3.193C3.208 17.51 7.378 18.025 9.4 17.72c2.022-.305 2.022-2.348 2.022-2.348S7.72 16.54 5.337 14.86c-2.106-1.487-1.3-4.595-1.3-4.595s-.62 2.668 1.484 4.18c2.102 1.51 5.955 1.573 5.955 1.573s-.638-2.91-4.706-3.803C2.705 11.32.227 6.42.227 6.42c2.94 4.508 7.218 4.22 8.785 4.032 1.567-.187 2.45-3.328 2.45-3.328S9.332 9.07 7.025 8.924c-2.31-.146-2.613-3.665-2.613-3.665s1.82 2.62 4.192 2.65c2.373.03 4.155-2.22 4.155-2.22S11.45 8.16 16.273 8.35c4.823.19 5.86-3.15 5.86-3.15s-.96 4.703-5.363 4.88c-4.403.176-3.79 3.062-3.79 3.062s4.956-2.16 8.324-1.055c3.367 1.104 1.192 4.675 1.192 4.675s-2.003-2.128-5.31-2.433c-3.308-.306-2.58 1.703-2.58 1.703s4.053-.414 5.61 1.76c1.558 2.174-1.928 3.515-1.928 3.515s1.552-.405 1.05-1.896c-.503-1.49-3.26-1.185-3.26-1.185s.447 2.137-3.905 3.07C14.71 21.72 12.872 22 11.97 22z"/>
+        </svg>
+    </a>
+
+    <!-- 4. KaiOS -->
+    <a href="https://www.kaiostech.com/store/" target="_blank" title="KaiOS Store" style="display: flex; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,128,128,0.3); border-radius: 10px; text-decoration: none; color: #6f02b5; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.5 2h4.8l2.9 8 5.8-8h5.5l-8.5 11 9 9h-5.2l-6.2-7.5-3.3 3.5V22H2.5V2zm5 7.5L7.5 7V5h.2l3 4.5-3.2 0z" fill-rule="evenodd"/>
+        </svg>
+    </a>
+
+    <!-- 5. Windows -->
+    <a href="setup.exe" download title="Download for Windows" style="display: flex; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,128,128,0.3); border-radius: 10px; text-decoration: none; color: #00a4ef; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <svg style="width: 22px; height: 22px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.55m10.949-7.95H24V24l-13.051-1.849"/>
+        </svg>
+    </a>
+
+    <!-- 6. Linux -->
+    <a href="package.deb" download title="Download for Linux" style="display: flex; justify-content: center; align-items: center; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,128,128,0.3); border-radius: 10px; text-decoration: none; color: #FCC624; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0c-4.406 0-7.394 2.378-7.394 2.378-.656.494-1.294 1.547-1.397 2.222L3.08 6.556s-.806.947-.697 1.834c.11.888 1.488 4.653 1.488 4.653s-1.86.375-1.93 2.053c-.073 1.678.96 2.753.96 2.753s1.775 5.347 5.253 5.81c.54 1.402 3.12 1.402 3.662 0 3.48-.463 5.254-5.81 5.254-5.81s1.03-1.075.958-2.753c-.07-1.678-1.928-2.053-1.928-2.053s1.378-3.765 1.49-4.653c.108-.887-.698-1.834-.698-1.834l-.13-1.956c-.104-.675-.74-1.728-1.397-2.222C19.394 2.378 16.406 0 12 0zm-.98 4.666c1.192 0 1.95.834 1.95 2.07 0 1.233-.94 2.023-2.13 2.023-1.194 0-1.875-.785-1.875-2.022 0-1.236.865-2.07 2.056-2.07zM14.9 8.758c.844 0 1.45.626 1.45 1.527 0 .9-.68 1.48-1.576 1.48-.894 0-1.402-.574-1.402-1.48 0-.904.683-1.527 1.528-1.527zM7.18 13.91l.82 1.703c1.61-.318 2.65-.46 3.992-.46 1.353 0 2.392.142 4.002.46l.82-1.702c-1.826-.376-2.956-.563-4.822-.563-1.854 0-2.984.187-4.81.562z"/>
+        </svg>
+    </a>
+
+</div>
             </center>
         </aside>
         
