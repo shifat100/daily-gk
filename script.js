@@ -1,23 +1,28 @@
 "use strict";
 
 var app = {
-    data: [],           // All questions
-    filteredData: [],   // Currently visible questions
-    treeData: {},       // Hierarchy for Sidebar
-    sortOrder: 'asc', 
-    // Application State
-    currCat: null,      // Current Category Filter
-    currTopic: null,    // Current Topic Filter
-    mode: 'quiz',       // 'quiz' or 'study'
-    shuffle: false,     // Randomize order
+    data: [],           // সকল প্রশ্ন এখানে জমা হবে
+    filteredData: [],   // ফিল্টার করা প্রশ্ন
+    treeData: {},       // সাইডবার ট্রি স্ট্রাকচার
+    cart: JSON.parse(localStorage.getItem('gk_cart')) || [], // কার্ট ডেটা (সেভড)
+    isCartView: false,  // ইউজার কার্ট ভিউতে আছে কি না
+    
+    // ফিল্টার এবং সেটিংস
+    currCat: null,
+    currTopic: null,
+    mode: 'quiz',
+    shuffle: false,
+    sortOrder: 'asc',
     searchQuery: '',
     
-    // Pagination
+    // পেজিনেশন
     page: 1,
     perPage: 10,
     
-    // Meta
-    lastModified: null
+    // মেটা তথ্য
+    lastModified: null,
+    filesLoaded: 0,
+    totalFiles: 0
 };
 
 window.onload = function() {
@@ -27,24 +32,19 @@ window.onload = function() {
 function initApp() {
     setupEventListeners();
     setupPWA();
-    renderSkeleton(); // Show placeholder immediately
-    startDataLoad();
+    setupSecurity(); // রাইট ক্লিক ও কপি প্রোটেকশন
+    renderSkeleton();
+    startIncrementalLoad(); // ইনক্রিমেন্টাল লোডিং শুরু
 }
 
 // ==========================================
-// 1. SETUP & EVENT LISTENERS
+// ১. ইভেন্ট লিসেনার সেটআপ
 // ==========================================
-
 function setupEventListeners() {
-    // Mobile Sidebar Toggle
+    // মোবাইল সাইডবার কন্ট্রোল
     var toggle = document.getElementById('menuToggle');
     var sidebar = document.getElementById('appSidebar');
     var overlay = document.getElementById('sidebarOverlay');
-
-    function closeMenu() {
-        sidebar.classList.remove('show');
-        overlay.classList.remove('show');
-    }
 
     if(toggle) {
         toggle.onclick = function() {
@@ -52,558 +52,283 @@ function setupEventListeners() {
             overlay.classList.toggle('show');
         };
     }
-    
-    if(overlay) overlay.onclick = closeMenu;
+    if(overlay) overlay.onclick = function() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    };
 
-    // View Mode (Quiz vs Study)
-    var viewModeEl = document.getElementById('viewMode');
-    if(viewModeEl) {
-        viewModeEl.onchange = function(e) {
-            app.mode = e.target.value;
-            app.page = 1; // Reset to page 1
-            render();     // Re-render without reloading data
-        };
-    }
+    // ভিউ মোড (Quiz/Study)
+    document.getElementById('viewMode').onchange = function(e) {
+        app.mode = e.target.value;
+        render();
+    };
 
-    // Search Input (Debounced)
-    var searchInput = document.getElementById('searchInput');
+    // সার্চ ইনপুট
     var searchTimeout;
-    if(searchInput) {
-        searchInput.onkeyup = function(e) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function() {
-                app.searchQuery = e.target.value.toLowerCase();
-                app.page = 1;
-                runFilter();
-            }, 300);
-        };
-    }
-
-    // Shuffle Checkbox
-    var shuffleCheck = document.getElementById('shuffleCheck');
-    if(shuffleCheck) {
-        shuffleCheck.onchange = function(e) {
-            app.shuffle = e.target.checked;
+    document.getElementById('searchInput').onkeyup = function(e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            app.searchQuery = e.target.value.toLowerCase();
             app.page = 1;
             runFilter();
-        };
-    }
+        }, 300);
+    };
 
-    var perPageSelect = document.getElementById('perPageSelect');
-    if(perPageSelect) {
-        perPageSelect.onchange = function(e) {
-            // 1. Update the app state
-            app.perPage = parseInt(e.target.value);
-            
-            // 2. Reset to page 1 to prevent empty pages
-            app.page = 1; 
-            
-            // 3. Re-render the list
-            render(); 
-        };
-    }
-
-
-    var sortSelect = document.getElementById('sortSelect');
-    if(sortSelect) {
-        sortSelect.onchange = function(e) {
-            app.sortOrder = e.target.value; // 'asc' or 'desc'
-            
-            // If user explicitly sorts, we usually want to turn off Shuffle
-            app.shuffle = false; 
-            document.getElementById('shuffleCheck').checked = false;
-            
-            app.page = 1;
-            runFilter();
-        };
-    }
-    
-    // UPDATE SHUFFLE LISTENER (Optional but recommended):
-    // When Shuffle is turned ON, it overrides the sort.
+    // সেটিংস কন্ট্রোল
     document.getElementById('shuffleCheck').onchange = function(e) {
         app.shuffle = e.target.checked;
-        app.page = 1;
         runFilter();
     };
-    
-    // === BACK TO TOP LOGIC ===
-    var bttBtn = document.getElementById('backToTop');
-    var scrollContainer = document.getElementById('mainScroll'); // The scrolling div
-
-    if (bttBtn && scrollContainer) {
-        // 1. Show/Hide on Scroll
-        scrollContainer.onscroll = function() {
-            // Show if scrolled down more than 300px
-            if (scrollContainer.scrollTop > 300) {
-                bttBtn.classList.add('show');
-            } else {
-                bttBtn.classList.remove('show');
-            }
-        };
-
-        // 2. Click to Scroll Up
-        bttBtn.onclick = function() {
-            scrollContainer.scrollTo({
-                top: 0,
-                behavior: 'smooth' // Smooth animation
-            });
-        };
-    }
-
-    
-}
-
-function runFilter() {
-    renderSkeleton();
-
-    setTimeout(function() {
-        var res = app.data.filter(function(q) {
-            if (app.currCat && q.cat !== app.currCat) return false;
-            if (app.currTopic && q.topic !== app.currTopic) return false;
-            if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
-            return true;
-        });
-
-        // === UPDATED SORTING LOGIC START ===
-        if (app.shuffle) {
-            // Random Shuffle
-            for (var i = res.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = res[i]; res[i] = res[j]; res[j] = temp;
-            }
-        } else {
-            // Sort based on ID (File order)
-            if (app.sortOrder === 'desc') {
-                // Descending (Newest/Last file first)
-                res.sort(function(a, b) { return b.id - a.id; });
-            } else {
-                // Ascending (Oldest/First file first) - Default
-                res.sort(function(a, b) { return a.id - b.id; });
-            }
-        }
-        // === UPDATED SORTING LOGIC END ===
-
-        app.filteredData = res;
+    document.getElementById('sortSelect').onchange = function(e) {
+        app.sortOrder = e.target.value;
+        app.shuffle = false;
+        document.getElementById('shuffleCheck').checked = false;
+        runFilter();
+    };
+    document.getElementById('perPageSelect').onchange = function(e) {
+        app.perPage = parseInt(e.target.value);
+        app.page = 1;
         render();
-    }, 150);
-               }
-// ==========================================
-// 2. PWA INSTALLATION
-// ==========================================
+    };
 
-function setupPWA() {
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(function(err) {
-            console.log('SW Registration failed:', err);
-        });
-    }
+    // কার্ট ভিউ কন্ট্রোল
+    document.getElementById('cartViewBtn').onclick = function() {
+        app.isCartView = true;
+        app.page = 1;
+        render();
+    };
+    document.getElementById('exitCart').onclick = function() {
+        app.isCartView = false;
+        app.page = 1;
+        render();
+    };
 
-    // Handle Install Prompt
-    var installBtn = document.getElementById('installBtn');
-    var deferredPrompt;
+    // ব্যাক টু টপ
+    var bttBtn = document.getElementById('backToTop');
+    var scrollContainer = document.getElementById('mainScroll');
+    scrollContainer.onscroll = function() {
+        if (scrollContainer.scrollTop > 300) bttBtn.classList.add('show');
+        else bttBtn.classList.remove('show');
+    };
+    bttBtn.onclick = function() {
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
-    window.addEventListener('beforeinstallprompt', function(e) {
-        e.preventDefault();
-        deferredPrompt = e;
-        if(installBtn) installBtn.style.display = 'block';
-    });
-
-    if(installBtn) {
-        installBtn.addEventListener('click', function() {
-            installBtn.style.display = 'none';
-            if(deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(function(result) {
-                    deferredPrompt = null;
-                });
-            }
-        });
-    }
+    updateCartBadge();
 }
 
 // ==========================================
-// 3. DATA LOADING (UPDATED FOR TITLES)
+// ২. ইনক্রিমেন্টাল লোডিং (ব্যাকগ্রাউন্ডে লোড হবে)
 // ==========================================
-
-function startDataLoad() {
-    // Load main categories
+function startIncrementalLoad() {
     ajaxGet('data/main.json', function(cats) {
-        var queue = [];
-        for(var i=0; i<cats.length; i++) {
-            // Initialize tree container for this category
-            app.treeData[cats[i].title] = {};
-            queue.push({ path: cats[i].path, name: cats[i].title });
-        }
-        processQueue(queue, 0);
-    });
-}
+        var fileTasks = [];
+        var pendingCats = cats.length;
 
-function processQueue(list, index) {
-    if (index >= list.length) {
-        finishLoading();
-        return;
-    }
-    
-    var item = list[index]; // Category Item
-    
-    // Load the sub-json for this category
-    ajaxGet(item.path, function(files) {
-        var fileQueue = [];
-        for(var j=0; j<files.length; j++) {
-            // FIX APPLIED HERE:
-            // We read "title" from the JSON (e.g., "December 2025") 
-            // and pass it as "topic".
-            fileQueue.push({ 
-                url: files[j].path, 
-                cat: item.name,
-                topic: files[j].title // Using the title field
+        cats.forEach(function(cat) {
+            app.treeData[cat.title] = {};
+            // ক্যাটাগরির ফাইল লিস্ট আনা
+            ajaxGet(cat.path, function(files) {
+                files.forEach(function(f) {
+                    fileTasks.push({ url: f.path, cat: cat.title, topic: f.title });
+                });
+                pendingCats--;
+                
+                // সব ক্যাটাগরির লিস্ট পাওয়া গেলে লোডিং শুরু
+                if (pendingCats === 0) {
+                    app.totalFiles = fileTasks.length;
+                    processFilesSequentially(fileTasks, 0);
+                }
             });
-        }
-        
-        loadMCQs(fileQueue, 0, function() {
-            processQueue(list, index + 1);
         });
     });
 }
 
-function loadMCQs(queue, idx, doneCallback) {
-    if (idx >= queue.length) {
-        doneCallback();
-        return;
-    }
+function processFilesSequentially(tasks, index) {
+    if (index >= tasks.length) return;
 
-    // FIX APPLIED HERE:
-    // We use the topic we extracted in processQueue.
-    // Fallback to filename if title is missing.
-    var topicName = queue[idx].topic;
-    
-    if(!topicName) {
-        var parts = queue[idx].url.split('/');
-        topicName = parts[parts.length - 1]; // Fallback to filename
-    }
-
-    ajaxGet(queue[idx].url, function(text) {
-        parseAndStore(text, queue[idx].cat, topicName);
-        loadMCQs(queue, idx + 1, doneCallback);
+    var task = tasks[index];
+    ajaxGet(task.url, function(text) {
+        parseAndStore(text, task.cat, task.topic);
+        app.filesLoaded++;
+        
+        // UI আপডেট (অপেক্ষা করবে না, লোড হলেই দেখাবে)
+        buildSidebarTree();
+        if(!app.isCartView) runFilter();
+        
+        // পরবর্তী ফাইল লোড
+        processFilesSequentially(tasks, index + 1);
     }, function() {
-        // Skip file on error
-        loadMCQs(queue, idx + 1, doneCallback);
+        processFilesSequentially(tasks, index + 1);
     }, true);
 }
 
 function parseAndStore(text, cat, topic) {
     var lines = text.replace(/\r\n/g, '\n').split('\n');
-    var count = 0;
-
     for (var i = 0; i < lines.length; i += 2) {
-        if (i + 1 >= lines.length) break;
-        
-        var line1 = lines[i].trim();
-        var line2 = lines[i+1].trim();
+        var line1 = (lines[i] || "").trim();
+        var line2 = (lines[i+1] || "").trim();
         if(!line1 || !line2) continue;
 
         var parts = line2.split('|');
-        if(parts.length > 0 && parts[parts.length-1] === '') parts.pop();
+        if(parts[parts.length-1] === '') parts.pop();
 
-        var ans, desc, opts;
+        var ans, desc = null, opts;
         var last = parts[parts.length-1];
-        var secondLast = parts[parts.length-2];
-
-        // Parser logic to detect if description exists
-        if(!isNaN(last)) {
+        if(!isNaN(last) && last !== "") {
             ans = parseInt(last);
-            desc = null;
-            opts = parts.slice(0, parts.length-1);
+            opts = parts.slice(0, -1);
         } else {
+            ans = parseInt(parts[parts.length-2]);
             desc = last;
-            ans = parseInt(secondLast);
-            opts = parts.slice(0, parts.length-2);
+            opts = parts.slice(0, -2);
         }
 
         app.data.push({
             id: app.data.length,
             cat: cat,
             topic: topic,
-            title: line1.replace(/\*\*/g, ''), // Remove markdown bold if present
+            title: line1.replace(/\*\*/g, ''),
             opts: opts,
             ans: ans,
             desc: desc
         });
-        count++;
+        app.treeData[cat][topic] = (app.treeData[cat][topic] || 0) + 1;
     }
-
-    // Add count to Tree Data
-    if(!app.treeData[cat][topic]) app.treeData[cat][topic] = 0;
-    app.treeData[cat][topic] += count;
-}
-
-function finishLoading() {
-    buildSidebarTree();
-    runFilter();
-    updateFooterDate();
 }
 
 // ==========================================
-// 4. SIDEBAR & TREE VIEW
+// ৩. কার্ট লজিক
 // ==========================================
-
-function buildSidebarTree() {
-    var ul = document.getElementById('categoryTree');
-    if(!ul) return;
-    ul.innerHTML = '';
-
-    // "All Questions" Main Link
-    var allLi = document.createElement('li');
-    allLi.className = 'tree-item';
-    allLi.innerHTML = '<div class="tree-parent"><span>All Questions</span> <span class="badge">'+app.data.length+'</span></div>';
-    allLi.onclick = function() { setFilter(null, null); closeMobileMenu(); };
-    ul.appendChild(allLi);
-
-    // Loop through Categories
-    for (var cat in app.treeData) {
-        var topics = app.treeData[cat];
-        var catTotal = 0;
-        for(var t in topics) catTotal += topics[t];
-
-        var li = document.createElement('li');
-        li.className = 'tree-item';
-
-        // Category Header
-        var header = document.createElement('div');
-        header.className = 'tree-parent';
-        header.innerHTML = '<span>' + cat + '</span> <span class="badge">' + catTotal + '</span>';
-        
-        // Sub-menu (Topics)
-        var childUl = document.createElement('ul');
-        childUl.className = 'tree-children';
-
-        // "All in [Category]" Link
-        var subAll = document.createElement('li');
-        subAll.className = 'tree-child';
-        subAll.textContent = "All " + cat;
-        subAll.onclick = (function(c) { return function() { setFilter(c, null); closeMobileMenu(); }; })(cat);
-        childUl.appendChild(subAll);
-
-        // Specific Topic Links
-        for (var topic in topics) {
-            var topicLi = document.createElement('li');
-            topicLi.className = 'tree-child';
-            topicLi.innerHTML = topic + ' <span style="font-size:0.8em; opacity:0.7;">(' + topics[topic] + ')</span>';
-            
-            topicLi.onclick = (function(c, t) {
-                return function(e) {
-                    // Highlight Active
-                    var all = document.querySelectorAll('.tree-child');
-                    for(var k=0; k<all.length; k++) all[k].classList.remove('active');
-                    e.target.classList.add('active');
-                    
-                    setFilter(c, t);
-                    closeMobileMenu();
-                    e.stopPropagation();
-                };
-            })(cat, topic);
-            childUl.appendChild(topicLi);
+function toggleCart(qId) {
+    var index = app.cart.indexOf(qId);
+    if (index === -1) {
+        app.cart.push(qId);
+    } else {
+        app.cart.splice(index, 1);
+    }
+    localStorage.setItem('gk_cart', JSON.stringify(app.cart));
+    updateCartBadge();
+    
+    if(app.isCartView) render();
+    else {
+        var btn = document.querySelector(`.cart-toggle-btn[data-qid="${qId}"]`);
+        if(btn) {
+            btn.innerHTML = (app.cart.indexOf(qId) === -1) ? '+' : '-';
+            btn.classList.toggle('added');
         }
-
-        // Expand/Collapse Logic
-        header.onclick = function() {
-            var sibling = this.nextElementSibling;
-            sibling.classList.toggle('open');
-            this.style.backgroundColor = sibling.classList.contains('open') ? '#f0f0f0' : '#fff';
-        };
-
-        li.appendChild(header);
-        li.appendChild(childUl);
-        ul.appendChild(li);
     }
 }
 
-function closeMobileMenu() {
-    var sidebar = document.getElementById('appSidebar');
-    var overlay = document.getElementById('sidebarOverlay');
-    if(sidebar) sidebar.classList.remove('show');
-    if(overlay) overlay.classList.remove('show');
+function updateCartBadge() {
+    document.getElementById('cartCount').textContent = app.cart.length;
 }
 
 // ==========================================
-// 5. FILTERING & LOGIC
+// ৪. ফিল্টার ও রেন্ডারিং
 // ==========================================
-
-function setFilter(cat, topic) {
-    app.currCat = cat;
-    app.currTopic = topic;
-    app.page = 1;
-    app.searchQuery = '';
-    document.getElementById('searchInput').value = '';
-    
-    // Update "Viewing: ..." Header
-    var header = document.getElementById('topicHeader');
-    var name = document.getElementById('topicName');
-    if(header) header.style.display = 'block';
-    
-    if(name) {
-        if(!cat) name.textContent = "All Questions";
-        else if(!topic) name.textContent = cat + " (All)";
-        else name.textContent = cat + " > " + topic;
-    }
-
-    runFilter();
-}
-
 function runFilter() {
-    renderSkeleton(); // Visual feedback
+    var res = app.data.filter(function(q) {
+        if (app.currCat && q.cat !== app.currCat) return false;
+        if (app.currTopic && q.topic !== app.currTopic) return false;
+        if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+        return true;
+    });
 
-    // Slight delay to allow skeleton to render and simulate processing
-    setTimeout(function() {
-        var res = app.data.filter(function(q) {
-            if (app.currCat && q.cat !== app.currCat) return false;
-            if (app.currTopic && q.topic !== app.currTopic) return false;
-            if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
-            return true;
-        });
-
-        // Shuffle or Sort
-        if (app.shuffle) {
-            // Fisher-Yates Shuffle
-            for (var i = res.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = res[i]; res[i] = res[j]; res[j] = temp;
-            }
-        } else {
-            // Original Order
-            res.sort(function(a,b){ return a.id - b.id; });
-        }
-
-        app.filteredData = res;
-        render();
-    }, 150);
-}
-
-// ==========================================
-// 6. RENDERING
-// ==========================================
-
-function renderSkeleton() {
-    var container = document.getElementById('questionList');
-    if(!container) return;
-    
-    var html = '';
-    // Create 3 skeleton cards
-    for(var i=0; i<3; i++) {
-        html += '<div class="skeleton-card">' +
-                '<div class="sk-line sk-title"></div>' +
-                '<div class="sk-line sk-opt"></div>' +
-                '<div class="sk-line sk-opt"></div>' +
-                '<div class="sk-line sk-opt"></div>' +
-                '</div>';
+    if (app.shuffle) {
+        res.sort(function() { return 0.5 - Math.random(); });
+    } else {
+        if (app.sortOrder === 'desc') res.sort(function(a, b) { return b.id - a.id; });
+        else res.sort(function(a, b) { return a.id - b.id; });
     }
-    container.innerHTML = html;
+
+    app.filteredData = res;
+    render();
 }
 
 function render() {
     var container = document.getElementById('questionList');
-    if(!container) return;
+    var cartActions = document.getElementById('cartActions');
+    var topicHeader = document.getElementById('topicHeader');
+    var topicName = document.getElementById('topicName');
+
     container.innerHTML = '';
     
-    if(app.filteredData.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:30px; color:#777;">No questions found.</div>';
+    // কার্ট মোড না কি সাধারণ মোড?
+    var sourceData = app.isCartView ? app.data.filter(q => app.cart.includes(q.id)) : app.filteredData;
+    
+    if(cartActions) cartActions.style.display = app.isCartView ? 'flex' : 'none';
+    if(topicHeader) {
+        topicHeader.style.display = 'block';
+        topicName.textContent = app.isCartView ? "Selected Questions (Cart)" : (app.currTopic || app.currCat || "All Questions");
+    }
+
+    if(sourceData.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:40px; color:#777;">${app.isCartView ? 'কার্ট খালি। প্রশ্ন যোগ করতে (+) বাটনে চাপ দিন।' : 'কোনো প্রশ্ন পাওয়া যায়নি।'}</div>`;
         document.getElementById('paginationControls').innerHTML = '';
         return;
     }
 
-    // Pagination Calculation
-    var totalPages = Math.ceil(app.filteredData.length / app.perPage);
+    var totalPages = Math.ceil(sourceData.length / app.perPage);
     if(app.page > totalPages) app.page = totalPages;
-    if(app.page < 1) app.page = 1;
-
     var start = (app.page - 1) * app.perPage;
-    var end = start + app.perPage;
-    var pageItems = app.filteredData.slice(start, end);
+    var pageItems = sourceData.slice(start, start + app.perPage);
 
-    // Create Cards
-    for(var i=0; i<pageItems.length; i++) {
-        createCard(pageItems[i], container, start + i + 1);
-    }
+    pageItems.forEach(function(q, i) {
+        createCard(q, container, start + i + 1);
+    });
 
     renderPagination(totalPages);
-    
-    // Scroll to top of content
-    var mainScroll = document.getElementById('mainScroll');
-    if(mainScroll) mainScroll.scrollTop = 0;
 }
 
 function createCard(q, container, index) {
     var div = document.createElement('div');
     div.className = 'q-card';
     
-    // Meta (Category & Index)
+    var isAdded = app.cart.includes(q.id);
+    var cartBtn = `<button class="cart-toggle-btn ${isAdded ? 'added' : ''}" data-qid="${q.id}" onclick="toggleCart(${q.id})">${isAdded ? '-' : '+'}</button>`;
+
     var meta = document.createElement('div');
     meta.className = 'q-meta';
-    meta.innerHTML = '<span>' + q.cat + ' &bull; ' + q.topic + '</span><span>#' + index + '</span>';
+    meta.innerHTML = `<span>${q.cat} &bull; ${q.topic}</span> <div> <span style="margin-left:10px">#${index}</span></div>`;
     div.appendChild(meta);
 
-    // Question Title
     var h3 = document.createElement('div');
     h3.className = 'q-title';
-    h3.textContent = q.title;
+    h3.innerHTML = q.title + cartBtn;
+    
     div.appendChild(h3);
 
-    // Options Area
     var optsDiv = document.createElement('div');
-    
-    // Feedback Box (Hidden initially)
     var feedback = document.createElement('div');
-    feedback.style.cssText = "display:none; margin-top:15px; padding:10px; background:#f1f8ff; border-radius:5px; border:1px solid #d0e3ff; color:#333; font-size: 0.95rem;";
+    feedback.className = 'feedback';
+    feedback.style.cssText = "display:none; margin-top:10px; padding:10px; background:#eef5ff; border-radius:5px; font-size:0.9rem;";
 
-    // Loop through options
     q.opts.forEach(function(opt, idx) {
         var btn = document.createElement('button');
         btn.className = 'opt-btn';
+        btn.textContent = opt;
         
         if(app.mode === 'study') {
-            // STUDY MODE: Show answer immediately
-            btn.textContent = opt;
             btn.disabled = true;
             if(idx === q.ans) { 
                 btn.classList.add('correct'); 
-                //btn.innerHTML += ' &#10004;';
                 btn.innerHTML = '&#10004; ' + btn.innerHTML;
             }
-            // Always show desc in study mode if it exists
-            if(q.desc) { 
-                feedback.style.display = 'block'; 
-                feedback.innerHTML = "<b>Explanation:</b> " + q.desc; 
-            }
+            if(q.desc) { feedback.style.display = 'block'; feedback.innerHTML = "<b>ব্যাখ্যা:</b> " + q.desc; }
         } else {
-            // QUIZ MODE: Interactive
-            btn.textContent = opt;
             btn.onclick = function() {
-                // Disable all buttons in this card
                 var siblings = optsDiv.querySelectorAll('.opt-btn');
-                siblings.forEach(function(sb, sIdx) {
-                    sb.disabled = true;
-                    if(sIdx === q.ans) { 
-                        sb.classList.add('correct'); 
-                        sb.innerHTML += ' &#10004;'; 
-                    }
-                });
+                siblings.forEach(sb => sb.disabled = true);
+                siblings[q.ans].classList.add('correct');
 
                 if(idx !== q.ans) {
-                    // User clicked Wrong
                     this.classList.add('wrong');
-                    this.innerHTML += ' &#10006;';
-                    
-                    // Show Correct Answer text
                     feedback.style.display = 'block';
-                    feedback.innerHTML = "<b>Correct Answer:</b> " + q.opts[q.ans];
-                    if(q.desc) feedback.innerHTML += "<br><br><b>Explanation:</b> " + q.desc;
-                } else {
-                    // User clicked Correct
-                    if(q.desc) { 
-                        feedback.style.display = 'block'; 
-                        feedback.innerHTML = "<b>Explanation:</b> " + q.desc; 
-                    }
+                    feedback.innerHTML = `<b>সঠিক উত্তর:</b> ${q.opts[q.ans]} ${q.desc ? '<br><b>ব্যাখ্যা:</b> ' + q.desc : ''}`;
+                } else if(q.desc) {
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = "<b>ব্যাখ্যা:</b> " + q.desc;
                 }
             };
         }
@@ -616,171 +341,120 @@ function createCard(q, container, index) {
 }
 
 // ==========================================
-// 7. PAGINATION
+// ৫. সাইডবার ট্রি
 // ==========================================
+function buildSidebarTree() {
+    var ul = document.getElementById('categoryTree');
+    if(!ul) return;
+    ul.innerHTML = '<li class="tree-parent" onclick="setFilter(null, null)"><span>All Questions</span></li>';
 
+    for (var cat in app.treeData) {
+        var topics = app.treeData[cat];
+        var total = Object.values(topics).reduce((a, b) => a + b, 0);
+
+        var li = document.createElement('li');
+        li.className = 'tree-item';
+        li.innerHTML = `<div class="tree-parent"><span>${cat}</span> <span class="badge">${total}</span></div>`;
+        
+        var childUl = document.createElement('ul');
+        childUl.className = 'tree-children';
+
+        for (var topic in topics) {
+            var tLi = document.createElement('li');
+            tLi.className = 'tree-child';
+            tLi.innerHTML = `${topic} <small>(${topics[topic]})</small>`;
+            tLi.onclick = (function(c, t) {
+                return function(e) { e.stopPropagation(); setFilter(c, t); };
+            })(cat, topic);
+            childUl.appendChild(tLi);
+        }
+
+        li.onclick = function() {
+            var cul = this.querySelector('.tree-children');
+            if(cul) cul.classList.toggle('open');
+        };
+
+        li.appendChild(childUl);
+        ul.appendChild(li);
+    }
+}
+
+function setFilter(cat, topic) {
+    app.currCat = cat;
+    app.currTopic = topic;
+    app.isCartView = false;
+    app.page = 1;
+    runFilter();
+    // মোবাইলে সাইডবার বন্ধ করা
+    if(window.innerWidth < 768) {
+        document.getElementById('appSidebar').classList.remove('show');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+}
+
+// ==========================================
+// ৬. ইউটিলিটি (Pagination, AJAX, Security)
+// ==========================================
 function renderPagination(total) {
     var box = document.getElementById('paginationControls');
-    if(!box) return;
     box.innerHTML = '';
+    if(total <= 1) return;
 
-    if(total <= 1) return; // Hide if only 1 page
-
-    // Prev Button
     var prev = document.createElement('button');
     prev.className = 'page-btn';
-    prev.innerHTML = '&laquo; Prev';
+    prev.textContent = "Prev";
     prev.disabled = app.page === 1;
     prev.onclick = function() { app.page--; render(); };
 
-    // Info Text
     var info = document.createElement('span');
-    info.innerHTML = ' Page <b>' + app.page + '</b> of <b>' + total + '</b> ';
+    info.innerHTML = ` Page ${app.page} of ${total} `;
 
-    // Next Button
     var next = document.createElement('button');
     next.className = 'page-btn';
-    next.innerHTML = 'Next &raquo;';
+    next.textContent = "Next";
     next.disabled = app.page === total;
     next.onclick = function() { app.page++; render(); };
 
-    // Jump Input
-    var jumpSpan = document.createElement('span');
-    jumpSpan.style.marginLeft = "15px";
-    jumpSpan.innerHTML = '';
-    
-    var inp = document.createElement('input');
-    inp.type = 'number';
-    inp.className = 'jump-input';
-    inp.min = 1; 
-    inp.max = total;
-    
-    var goBtn = document.createElement('button');
-    goBtn.className = 'page-btn';
-    goBtn.textContent = 'Go';
-    goBtn.onclick = function() {
-        var val = parseInt(inp.value);
-        if(val >= 1 && val <= total) { 
-            app.page = val; 
-            render(); 
-        }
-    };
-
-    box.appendChild(prev); 
-    box.appendChild(info); 
+    box.appendChild(prev);
+    box.appendChild(info);
     box.appendChild(next);
-    box.appendChild(jumpSpan); 
-    box.appendChild(inp); 
-    box.appendChild(goBtn);
 }
 
-// ==========================================
-// 8. UTILITIES (Date & Ajax)
-// ==========================================
-
-function checkLatestDate(headerDate) {
-    if(!headerDate) return;
-    var d = new Date(headerDate);
-    if(!app.lastModified || d > app.lastModified) {
-        app.lastModified = d;
-    }
-}
-
-function updateFooterDate() {
-    var el = document.getElementById('lastUpdateDate');
-    if(el && app.lastModified) {
-        el.textContent = app.lastModified.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true 
-        });
-    }
+function renderSkeleton() {
+    var container = document.getElementById('questionList');
+    container.innerHTML = '<div class="skeleton-card" style="height:200px; background:#eee; margin-bottom:15px; border-radius:8px; animation: pulse 1.5s infinite;"></div>'.repeat(3);
 }
 
 function ajaxGet(url, success, error, isText) {
     var xhr = new XMLHttpRequest();
-    // Cache busting with timestamp
     xhr.open('GET', url + '?t=' + Date.now(), true);
-    
     xhr.onload = function() {
-        if (xhr.status === 200) {
-            checkLatestDate(xhr.getResponseHeader("Last-Modified"));
-            try {
-                success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
-            } catch(e) {
-                if(error) error(e);
-            }
-        } else {
-            if(error) error();
-        }
+        if (xhr.status === 200) success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
+        else if(error) error();
     };
-    xhr.onerror = function() { if(error) error(); };
-    try { xhr.send(); } catch(e) { if(error) error(); }
+    xhr.onerror = error;
+    xhr.send();
 }
 
+function setupPWA() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW fail', err));
+    }
+}
 
-
-    // 1. Disable Right-Click (Context Menu)
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-    }, false);
-
-    // 2. Disable Text Selection
-    document.addEventListener('selectstart', function(e) {
-        e.preventDefault();
-    }, false);
-
-    // 3. Disable Dragging (Images/Text)
-    document.addEventListener('dragstart', function(e) {
-        e.preventDefault();
-    }, false);
-
-    // 4. Disable Copy, Cut, Paste
-    ['copy', 'cut', 'paste'].forEach(function(event) {
-        document.addEventListener(event, function(e) {
-            e.preventDefault();
-        }, false);
-    });
-
-    // 5. Disable Keyboard Shortcuts (F12, Ctrl+Shift+I, Ctrl+C, Ctrl+U, etc.)
+function setupSecurity() {
+    // ১. রাইট ক্লিক বন্ধ
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    // ২. টেক্সট সিলেকশন বন্ধ
+    document.addEventListener('selectstart', e => e.preventDefault());
+    // ৩. কি-বোর্ড শর্টকাট (F12, Ctrl+U, Ctrl+Shift+I) বন্ধ
     document.addEventListener('keydown', function(e) {
-        // Check for F12
-        if (e.key === 'F12' || e.keyCode === 123) {
+        if (e.keyCode === 123 || (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) || (e.ctrlKey && e.keyCode === 85)) {
             e.preventDefault();
-            return false;
         }
-
-        // Check for Ctrl/Cmd combinations
-        if (e.ctrlKey || e.metaKey) {
-            const key = e.key.toLowerCase();
-            
-            // Block Ctrl+C (Copy), Ctrl+V (Paste), Ctrl+X (Cut)
-            // Block Ctrl+S (Save), Ctrl+U (View Source), Ctrl+P (Print)
-            if (['c', 'v', 'x', 's', 'u', 'p'].includes(key)) {
-                e.preventDefault();
-                return false;
-            }
-
-            // Block Ctrl+Shift+I (DevTools), Ctrl+Shift+C (Inspect), Ctrl+Shift+J (Console)
-            if (e.shiftKey && ['i', 'c', 'j'].includes(key)) {
-                e.preventDefault();
-                return false;
-            }
-        }
-    }, false);
-
-    // 6. "Debugger" Loop (Freezes browser if DevTools is open)
-    // Note: This can affect performance and is very aggressive.
-    setInterval(function() {
-        // The 'debugger' statement pauses execution if DevTools is open
-        // Wrapping it in a closure makes it harder to locate
-        (function() { debugger; })();
-    }, 100);
-
-document.addEventListener('visibilitychange', () => {
-  document.body.style.filter =
-    document.hidden ? 'blur(10px)' : 'none';
-});
+    });
+    // ৪. ট্যাব পরিবর্তন করলে ব্লার করা
+    document.addEventListener('visibilitychange', () => {
+        document.body.style.filter = document.hidden ? 'blur(8px)' : 'none';
+    });
+}
