@@ -19,6 +19,17 @@ input, textarea {
     user-select: text;
 }
 
+body::after {
+  content: "© shifat100.github.io";
+  position: fixed;
+  top: 40%;
+  left: 20%;
+  font-size: 40px;
+  color: rgba(0,0,0,0.1);
+  transform: rotate(-30deg);
+  pointer-events: none;
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
