@@ -780,4 +780,7 @@ function ajaxGet(url, success, error, isText) {
         (function() { debugger; })();
     }, 100);
 
-
+document.addEventListener('visibilitychange', () => {
+  document.body.style.filter =
+    document.hidden ? 'blur(10px)' : 'none';
+});
