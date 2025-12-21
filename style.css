@@ -23,7 +23,7 @@ body::after {
   content: "shifat100.github.io";
   position: fixed;
   top: 40%;
-  left: 10%;
+  left: 35%;
   font-size: 40px;
   color: rgba(0,0,0,0.1);
   transform: rotate(-30deg);
@@ -204,6 +204,16 @@ body {
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
+    body::after {
+  content: "shifat100.github.io";
+  position: fixed;
+  top: 40%;
+  left: 10%;
+  font-size: 40px;
+  color: rgba(0,0,0,0.1);
+  transform: rotate(-30deg);
+  pointer-events: none;
+    }
     #menuToggle { display: block; }
     
     .sidebar {
