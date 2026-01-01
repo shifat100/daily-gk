@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- SEO Meta Tags -->
+    <title>সাধারণ জ্ঞান ২০২৫ (General Knowledge) | ভূগোল ও কুইজ - Daily GK MCQ</title>
+    <meta name="description" content="২০২৫ সালের সেরা সাধারণ জ্ঞান (GK) অ্যাপ। বাংলাদেশ, আন্তর্জাতিক, ভূগোল ও বিজ্ঞান বিষয়ক এমসিকিউ।">
+    <meta name="keywords" content="General Knowledge 2025, GK Bangla, BCS Preparation, Daily GK Quiz">
+    <meta name="author" content="A.I. Shifat">
+    
+    <!-- Icons & Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="thumb.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="সাধারণ জ্ঞান ২০২৫ - Daily GK">
+    <meta property="og:image" content="https://shifat100.github.io/daily-gk/thumb.png">
+
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-dark: #0056b3;
+            --bg-color: #f4f7f6;
+            --sidebar-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+            --correct: #d4edda;
+            --correct-border: #28a745;
+            --wrong: #f8d7da;
+            --wrong-border: #dc3545;
+        }
+
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-color); font-size: 16px; line-height: 1.5; }
+
+        /* --- Header --- */
+        .top-bar {
+            background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 10px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; height: 60px;
+        }
+        .brand-area { display: flex; align-items: center; gap: 10px; }
+        .brand { font-size: 1.2rem; font-weight: bold; margin: 0; color: var(--primary); }
+        #menuToggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; display: none; }
+        
+        .header-controls { display: flex; align-items: center; gap: 10px; }
+        .cart-btn-head { position: relative; background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 1.1rem; }
+        .cart-badge { position: absolute; top: -5px; right: -5px; background: red; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; display: none; }
+        #viewMode { padding: 6px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9rem; }
+
+        /* --- Layout --- */
+        .app-body { display: flex; min-height: calc(100vh - 60px); }
+        
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color);
+            padding: 15px; overflow-y: auto; height: calc(100vh - 60px); position: fixed;
+            transition: transform 0.3s ease;
+        }
+        .tree-view { list-style: none; padding: 0; margin: 0; }
+        .tree-view li { margin: 5px 0; }
+        .tree-view li span { display: block; padding: 8px; cursor: pointer; border-radius: 4px; transition: background 0.2s; font-size: 0.95rem; }
+        .tree-view li span:hover { background: #f0f0f0; }
+        .tree-view .folder > span { font-weight: 600; color: #444; }
+        .tree-view .file > span { color: #555; padding-left: 25px; }
+        .tree-view .active > span { background: #e8f0fe; color: var(--primary); }
+        .tree-view ul.nested { list-style: none; padding-left: 15px; display: none; }
+        .tree-view li.active > ul.nested { display: block; }
+        .icon-folder::before { content: '📁'; margin-right: 5px; }
+        .icon-file::before { content: '📄'; margin-right: 5px; }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 280px; flex: 1; padding: 20px; width: 100%;
+            height: calc(100vh - 60px); overflow-y: auto;
+        }
+
+        /* Controls */
+        .controls-area {
+            background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px;
+        }
+        #searchInput { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; min-width: 200px; }
+        select, button.print-btn { padding: 8px; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; }
+
+        /* Question Card */
+        .question-card { background: #fff; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid transparent; }
+        .question-header { display: flex; justify-content: space-between; color: #888; font-size: 0.85rem; margin-bottom: 10px; }
+        .question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: #222; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 8px; }
+        .option-label {
+            display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #eee;
+            border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .option-label:hover { background: #f9f9f9; }
+        .option-label input { margin: 0; }
+        
+        /* Result Styles */
+        .correct-answer { background: var(--correct) !important; border-color: var(--correct-border) !important; color: #155724; }
+        .incorrect-answer { background: var(--wrong) !important; border-color: var(--wrong-border) !important; color: #721c24; }
+        .disabled-opt { pointer-events: none; opacity: 0.9; }
+
+        /* Explanation & Footer */
+        .explanation { background: #e2e3e5; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9rem; color: #383d41; }
+        .question-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; }
+        .add-to-cart-btn {
+            background: var(--primary); color: white; border: none; padding: 6px 12px;
+            border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.3s;
+        }
+        .add-to-cart-btn.added { background: #dc3545; }
+
+        /* Pagination */
+        .pagination { display: flex; justify-content: center; gap: 5px; margin-top: 20px; }
+        .pagination button { padding: 6px 12px; background: #fff; border: 1px solid #ddd; cursor: pointer; }
+        .pagination button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Download Section */
+        .download-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; }
+        .dl-icon { width: 40px; height: 40px; background: rgba(0,0,0,0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+        .dl-icon img, .dl-icon svg { width: 24px; height: 24px; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            #menuToggle { display: block; }
+            .sidebar { transform: translateX(-100%); z-index: 1001; }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            #sidebarOverlay {
+                display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 1000;
+            }
+            #sidebarOverlay.show { display: block; }
+        }
+
+        /* Print Style */
+        @media print {
+            .sidebar, .top-bar, .controls-area, .question-footer, #backToTop, .download-grid { display: none !important; }
+            .main-content { margin: 0; width: 100%; height: auto; }
+            .question-card { break-inside: avoid; border: 1px solid #000; box-shadow: none; }
+        }
+
+        /* Animation */
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="top-bar">
+        <div class="brand-area">
+            <button id="menuToggle" aria-label="Menu">&#9776;</button>
+            <h1 class="brand">Daily GK</h1>
+        </div>
+        <div class="header-controls">
+            <button id="cartViewBtn" class="cart-btn-head" title="View Cart">
+                🛒 <span id="cartCount" class="cart-badge">0</span>
+            </button>
+            
+            <select id="viewMode" title="Change Mode">
+                <option value="quiz">Quiz Mode</option>
+                <option value="study">Study Mode</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="app-body">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="appSidebar">
+            <ul id="categoryTree" class="tree-view">
+                <li style="padding:10px; text-align:center; color:#888;">Loading topics...</li>
+            </ul>
+            
+            <br>
+            <center>
+                <button id="installBtn" style="display:none; padding:8px 15px; background:var(--primary); color:#fff; border:none; border-radius:4px; margin-bottom:15px;">Install App</button>
+                
+                <div class="download-grid">
+                    <!-- Android APK -->
+                    <a href="app-release.apk" download class="dl-icon" title="Android">
+                        <svg viewBox="0 0 24 24" fill="#3DDC84"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.25l-1.87 3.23a9.75 9.75 0 00-9.2 0L5.35 5.7c-.18-.31-.54-.4-.83-.25-.3.16-.42.54-.26.85l1.84 3.18C2.65 11.25.92 13.9.92 17.58h22.16c0-3.68-1.73-6.33-5.48-8.1zM7.83 14.43c-.6 0-1.1-.5-1.1-1.1 0-.6.5-1.1 1.1-1.1.6 0 1.1.5 1.1 1.1 0 .6-.5 1.1-1.1 1.1zm8.34 0c-.6 0-1.1-.5-1.1-1.1 0-.6.5-1.1 1.1-1.1.6 0 1.1.5 1.1 1.1 0 .6-.5 1.1-1.1 1.1z"/></svg>
+                    </a>
+                    <!-- Java -->
+                    <a href="Daily-GK.jar" download class="dl-icon" title="Java">
+                        <svg viewBox="0 0 24 24" fill="#E76F00"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    </a>
+                    <!-- Windows -->
+                    <a href="Daily-GK.bat" download class="dl-icon" title="Windows">
+                        <svg viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.55m10.949-7.95H24V24l-13.051-1.849"/></svg>
+                    </a>
+                </div>
+            </center>
+        </aside>
+        
+        <!-- Overlay -->
+        <div id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainScroll">
+            
+            <div id="cartActions" style="display:none; margin-bottom: 20px; background: #fff; padding: 10px; border-radius: 5px; justify-content: space-between; align-items: center;">
+                <strong style="color:var(--primary);">Viewing Cart Questions</strong>
+                <button id="exitCart" style="padding: 6px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Exit Cart</button>
+            </div>  
+
+            <!-- Controls -->
+            <div class="controls-area">
+                <input type="text" id="searchInput" placeholder="Search questions...">
+                
+                <label style="display:flex; align-items:center; gap:5px; cursor:pointer; font-size: 0.9rem;">
+                    <input type="checkbox" id="shuffleCheck"> Shuffle
+                </label>
+                
+                <select id="sortSelect">
+                    <option value="asc">Oldest First</option>
+                    <option value="desc">Newest First</option>
+                </select>
+
+                <select id="perPageSelect">
+                    <option value="10">10 / Page</option>
+                    <option value="20">20 / Page</option>
+                    <option value="50">50 / Page</option>
+                    <option value="100">100 / Page</option>
+                </select>
+    
+                <button class="print-btn" onclick="window.print()" title="Print Questions">🖨️</button>
+            </div>
+
+            <!-- Topic Info -->
+            <div id="topicHeader" style="margin-bottom:15px; font-weight:bold; color:var(--primary-dark); display:none;">
+                Topic: <span id="topicName">All</span>
+            </div>
+
+            <!-- List -->
+            <div id="questionList"></div>
+
+            <!-- Pagination -->
+            <div id="paginationControls" class="pagination"></div>
+
+            <!-- SEO Footer Text -->
+            <section style="margin-top: 40px; color: #777; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 20px;">
+                <h2>সাধারণ জ্ঞান (General Knowledge) ২০২৫</h2>
+                <p>Daily GK MCQ অ্যাপে স্বাগতম। এখানে আপনি পাবেন ভূগোল, বিজ্ঞান, বাংলাদেশ ও আন্তর্জাতিক বিষয়াবলি। বিসিএস ও ব্যাংক জবের প্রস্তুতির জন্য স্টাডি মোড ব্যবহার করুন।</p>
+            </section>
+            
+            <footer style="text-align:center; padding: 20px 0; color: #999; font-size: 0.8rem;">
+                &copy; 2025 Daily GK MCQ. Service Started: Nov 2025.
+            </footer>
+        </main>
+    </div>
+    
+    <button id="backToTop" style="display:none; position:fixed; bottom:20px; right:20px; padding:10px 15px; background:#333; color:#fff; border:none; border-radius:50%; cursor:pointer;">&#9650;</button>
+
+    <!-- JavaScript Logic -->
+    <script>
+        "use strict";
+
+        // CONFIGURATION
+        const GITHUB_USERNAME = "shifat100";
+        const GITHUB_REPO = "daily-gk";
+        const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/data`;
+
+        var app = {
+            data: [],
+            filteredData: [],
+            treeData: {},
+            cart: JSON.parse(localStorage.getItem('gk_cart')) || [],
+            isCartView: false,
+            currCat: null,
+            currTopic: null,
+            mode: 'quiz', // 'quiz' or 'study'
+            shuffle: false,
+            sortOrder: 'asc',
+            searchQuery: '',
+            page: 1,
+            perPage: 10
+        };
+
+        window.onload = function() {
+            initApp();
+        };
+
+        function initApp() {
+            setupEventListeners();
+            setupSecurity();
+            renderSkeleton();
+            loadContentFromGitHub();
+        }
+
+        // --- 1. GITHUB FETCHING LOGIC ---
+        async function loadContentFromGitHub() {
+            try {
+                // Fetch root data folder
+                let response = await fetch(GITHUB_API_BASE);
+                if (!response.ok) throw new Error("API Limit/Network Error");
+                let items = await response.json();
+
+                let folders = items.filter(item => item.type === 'dir');
+                let rootFiles = items.filter(item => item.type === 'file' && !item.name.endsWith('.json') && !item.name.endsWith('.md'));
+
+                // Process Folders
+                for (let folder of folders) {
+                    let catName = folder.name;
+                    app.treeData[catName] = {};
+                    await loadTopicFiles(folder.url, catName);
+                }
+
+                // Process Root Files
+                if (rootFiles.length > 0) {
+                    app.treeData["Others"] = {};
+                    rootFiles.forEach(file => {
+                        let topic = file.name.replace(/\.[^/.]+$/, "");
+                        fetchAndParseFile(file.download_url, "Others", topic);
+                    });
+                }
+                
+                // If loading finishes and tree is empty-ish, check console
+            } catch (error) {
+                console.error("GitHub Load Error:", error);
+                document.getElementById('questionList').innerHTML = `<p style="text-align:center; color:red">Failed to load data. ${error.message}</p>`;
+            }
+        }
+
+        async function loadTopicFiles(apiUrl, catName) {
+            try {
+                let res = await fetch(apiUrl);
+                let files = await res.json();
+                files.forEach(file => {
+                    if (file.type === 'file' && !file.name.endsWith('.md') && !file.name.endsWith('.json')) {
+                        let topicName = file.name.replace(/\.[^/.]+$/, "");
+                        fetchAndParseFile(file.download_url, catName, topicName);
+                    }
+                });
+            } catch (err) { console.log("Skipped folder:", catName); }
+        }
+
+        function fetchAndParseFile(url, cat, topic) {
+            fetch(url)
+                .then(r => r.text())
+                .then(text => {
+                    parseAndStore(text, cat, topic);
+                    buildSidebarTree(); // Update UI dynamically
+                    if (!app.isCartView) runFilter();
+                })
+                .catch(e => console.error("File load error:", topic));
+        }
+
+        function parseAndStore(text, cat, topic) {
+            var lines = text.replace(/\r\n/g, '\n').split('\n');
+            var count = 0;
+
+            for (var i = 0; i < lines.length; i++) {
+                var line1 = (lines[i] || "").trim();
+                if (!line1 || i + 1 >= lines.length) continue;
+                
+                var line2 = (lines[i+1] || "").trim();
+                if (!line2.includes('|')) continue; // Must have options separator
+
+                i++; // Skip next line in loop since we processed it
+
+                var parts = line2.split('|');
+                if(parts[parts.length-1] === '') parts.pop(); // Remove trailing pipe empty string
+
+                var ans, desc = null, opts;
+                var last = parts[parts.length-1];
+
+                // Determine answer index and explanation
+                if(!isNaN(last) && last !== "") {
+                    ans = parseInt(last);
+                    opts = parts.slice(0, -1);
+                } else {
+                    ans = parseInt(parts[parts.length-2]);
+                    desc = last;
+                    opts = parts.slice(0, -2);
+                }
+
+                app.data.push({
+                    id: app.data.length + 1, // Simple ID
+                    cat: cat,
+                    topic: topic,
+                    title: line1.replace(/\*\*/g, ''),
+                    opts: opts,
+                    ans: ans,
+                    desc: desc
+                });
+                count++;
+            }
+
+            if (!app.treeData[cat]) app.treeData[cat] = {};
+            app.treeData[cat][topic] = (app.treeData[cat][topic] || 0) + count;
+        }
+
+        // --- 2. RENDER & UI ---
+        function runFilter() {
+            var res = app.data.filter(q => {
+                if (app.currCat && q.cat !== app.currCat) return false;
+                if (app.currTopic && q.topic !== app.currTopic) return false;
+                if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+                return true;
+            });
+
+            if (app.shuffle) {
+                res.sort(() => 0.5 - Math.random());
+            } else {
+                if (app.sortOrder === 'desc') res.sort((a, b) => b.id - a.id);
+                else res.sort((a, b) => a.id - b.id);
+            }
+
+            app.filteredData = res;
+            render();
+        }
+
+        function render() {
+            var container = document.getElementById('questionList');
+            var cartActions = document.getElementById('cartActions');
+            var topicHeader = document.getElementById('topicHeader');
+            var topicName = document.getElementById('topicName');
+
+            container.innerHTML = '';
+            
+            var sourceData = app.isCartView ? app.data.filter(q => app.cart.includes(q.id)) : app.filteredData;
+            
+            cartActions.style.display = app.isCartView ? 'flex' : 'none';
+            topicHeader.style.display = 'block';
+            topicName.textContent = app.isCartView ? "Cart Items" : (app.currTopic ? `${app.currCat} > ${app.currTopic}` : (app.currCat || "All Questions"));
+
+            if(sourceData.length === 0) {
+                if(app.data.length > 0) {
+                    container.innerHTML = `<div style="text-align:center; padding:40px; color:#777;">${app.isCartView ? 'Your cart is empty.' : 'No questions found matching filters.'}</div>`;
+                }
+                document.getElementById('paginationControls').innerHTML = '';
+                return;
+            }
+
+            var totalPages = Math.ceil(sourceData.length / app.perPage);
+            if(app.page > totalPages) app.page = totalPages;
+            if(app.page < 1) app.page = 1;
+            
+            var start = (app.page - 1) * app.perPage;
+            var pageItems = sourceData.slice(start, start + app.perPage);
+
+            pageItems.forEach((q, i) => createCard(q, container, start + i + 1));
+            renderPagination(totalPages);
+        }
+
+        function createCard(q, container, index) {
+            var div = document.createElement('div');
+            div.className = 'question-card';
+            
+            var isAdded = app.cart.includes(q.id);
+            
+            // Header
+            var meta = document.createElement('div');
+            meta.className = 'question-header';
+            meta.innerHTML = `<span class="question-number">#${index}</span> <span>${q.cat} / ${q.topic}</span>`;
+            div.appendChild(meta);
+
+            // Title
+            var h3 = document.createElement('div');
+            h3.className = 'question-text';
+            h3.innerHTML = q.title;
+            div.appendChild(h3);
+
+            // Options
+            var optsDiv = document.createElement('div');
+            optsDiv.className = 'options-container';
+            
+            var feedback = document.createElement('div');
+            feedback.className = 'explanation';
+            feedback.style.display = 'none';
+
+            q.opts.forEach((opt, idx) => {
+                var label = document.createElement('label');
+                label.className = 'option-label';
+                
+                var input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `q-${q.id}`;
+                
+                // Mode Logic
+                if(app.mode === 'study') {
+                    input.disabled = true;
+                    if(idx === q.ans) { 
+                        input.checked = true;
+                        label.classList.add('correct-answer');
+                        if(q.desc) { feedback.style.display = 'block'; feedback.innerHTML = "<b>ব্যাখ্যা:</b> " + q.desc; }
+                    }
+                } else {
+                    input.onclick = function() {
+                        var allLabels = optsDiv.querySelectorAll('.option-label');
+                        allLabels.forEach(l => l.classList.add('disabled-opt'));
+                        
+                        if(idx === q.ans) {
+                            label.classList.add('correct-answer');
+                        } else {
+                            label.classList.add('incorrect-answer');
+                            allLabels[q.ans].classList.add('correct-answer'); // Show correct
+                        }
+
+                        if(q.desc) {
+                            feedback.style.display = 'block';
+                            feedback.innerHTML = `<b>${idx === q.ans ? 'সঠিক!' : 'ভুল!'}</b> ব্যাখ্যা: ${q.desc}`;
+                        } else if (idx !== q.ans) {
+                            feedback.style.display = 'block';
+                            feedback.innerHTML = `সঠিক উত্তর: ${q.opts[q.ans]}`;
+                        }
+                        
+                        // Disable inputs
+                        optsDiv.querySelectorAll('input').forEach(inp => inp.disabled = true);
+                    };
+                }
+
+                var span = document.createElement('span');
+                span.textContent = opt;
+                
+                label.appendChild(input);
+                label.appendChild(span);
+                optsDiv.appendChild(label);
+            });
+
+            div.appendChild(optsDiv);
+            div.appendChild(feedback);
+
+            // Footer
+            var footer = document.createElement('div');
+            footer.className = 'question-footer';
+            
+            var cartBtn = document.createElement('button');
+            cartBtn.className = `add-to-cart-btn ${isAdded ? 'added' : ''}`;
+            cartBtn.textContent = isAdded ? 'Remove from Cart' : 'Add to Cart 🛒';
+            cartBtn.onclick = function() { toggleCart(q.id); };
+
+            footer.appendChild(cartBtn);
+            div.appendChild(footer);
+            
+            container.appendChild(div);
+        }
+
+        // --- 3. SIDEBAR & NAVIGATION ---
+        function buildSidebarTree() {
+            var ul = document.getElementById('categoryTree');
+            if(!ul) return;
+            ul.innerHTML = '';
+            
+            // All Questions Link
+            var allLi = document.createElement('li');
+            allLi.innerHTML = `<span><i class="icon-folder"></i> All Questions (${app.data.length})</span>`;
+            allLi.onclick = () => setFilter(null, null);
+            ul.appendChild(allLi);
+
+            var sortedCats = Object.keys(app.treeData).sort();
+
+            for (var cat of sortedCats) {
+                var topics = app.treeData[cat];
+                var total = Object.values(topics).reduce((a, b) => a + b, 0);
+                if(total === 0) continue;
+
+                var li = document.createElement('li');
+                li.className = 'folder';
+                li.innerHTML = `<span><i class="icon-folder"></i> ${cat} (${total})</span>`;
+                
+                var childUl = document.createElement('ul');
+                childUl.className = 'nested';
+
+                for (var topic in topics) {
+                    var tLi = document.createElement('li');
+                    tLi.className = 'file';
+                    tLi.innerHTML = `<span><i class="icon-file"></i> ${topic} (${topics[topic]})</span>`;
+                    
+                    // IIFE to capture variables
+                    (function(c, t) {
+                        tLi.onclick = (e) => { 
+                            e.stopPropagation(); 
+                            setFilter(c, t); 
+                            if (window.innerWidth <= 768) {
+                                document.getElementById('appSidebar').classList.remove('show');
+                                document.getElementById('sidebarOverlay').classList.remove('show');
+                            }
+                        };
+                    })(cat, topic);
+
+                    childUl.appendChild(tLi);
+                }
+
+                // Toggle Folder
+                li.querySelector('span').onclick = function(e) {
+                    e.stopPropagation();
+                    this.parentElement.classList.toggle('active');
+                };
+
+                li.appendChild(childUl);
+                ul.appendChild(li);
+            }
+        }
+
+        function setFilter(cat, topic) {
+            app.currCat = cat;
+            app.currTopic = topic;
+            app.isCartView = false;
+            app.page = 1;
+            app.searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            runFilter();
+        }
+
+        // --- 4. CART & CONTROLS ---
+        function toggleCart(qId) {
+            var index = app.cart.indexOf(qId);
+            if (index === -1) app.cart.push(qId);
+            else app.cart.splice(index, 1);
+            
+            localStorage.setItem('gk_cart', JSON.stringify(app.cart));
+            updateCartBadge();
+            
+            if(app.isCartView) render();
+            else {
+                // Update button text in current view
+                render(); // Easiest way to refresh button state
+            }
+        }
+
+        function updateCartBadge() {
+            var count = document.getElementById('cartCount');
+            count.textContent = app.cart.length;
+            count.style.display = app.cart.length > 0 ? 'inline-block' : 'none';
+        }
+
+        function renderPagination(total) {
+            var box = document.getElementById('paginationControls');
+            box.innerHTML = '';
+            if(total <= 1) return;
+
+            var prev = document.createElement('button');
+            prev.textContent = "Prev";
+            prev.disabled = app.page === 1;
+            prev.onclick = () => { app.page--; render(); document.getElementById('mainScroll').scrollTo(0,0); };
+
+            var info = document.createElement('span');
+            info.textContent = ` Page ${app.page} of ${total} `;
+            info.style.alignSelf = 'center';
+
+            var next = document.createElement('button');
+            next.textContent = "Next";
+            next.disabled = app.page === total;
+            next.onclick = () => { app.page++; render(); document.getElementById('mainScroll').scrollTo(0,0); };
+
+            box.appendChild(prev);
+            box.appendChild(info);
+            box.appendChild(next);
+        }
+
+        // --- 5. EVENT LISTENERS & UTILS ---
+        function setupEventListeners() {
+            // Sidebar Toggle
+            document.getElementById('menuToggle').onclick = () => {
+                document.getElementById('appSidebar').classList.toggle('show');
+                document.getElementById('sidebarOverlay').classList.toggle('show');
+            };
+            document.getElementById('sidebarOverlay').onclick = () => {
+                document.getElementById('appSidebar').classList.remove('show');
+                document.getElementById('sidebarOverlay').classList.remove('show');
+            };
+
+            // Filters
+            document.getElementById('searchInput').oninput = (e) => {
+                app.searchQuery = e.target.value.toLowerCase();
+                app.page = 1;
+                runFilter();
+            };
+            document.getElementById('shuffleCheck').onchange = (e) => {
+                app.shuffle = e.target.checked;
+                runFilter();
+            };
+            document.getElementById('sortSelect').onchange = (e) => {
+                app.sortOrder = e.target.value;
+                app.shuffle = false;
+                document.getElementById('shuffleCheck').checked = false;
+                runFilter();
+            };
+            document.getElementById('perPageSelect').onchange = (e) => {
+                app.perPage = parseInt(e.target.value);
+                app.page = 1;
+                render();
+            };
+            document.getElementById('viewMode').onchange = (e) => {
+                app.mode = e.target.value;
+                render();
+            };
+
+            // Cart
+            document.getElementById('cartViewBtn').onclick = () => {
+                app.isCartView = true;
+                app.page = 1;
+                render();
+            };
+            document.getElementById('exitCart').onclick = () => {
+                app.isCartView = false;
+                app.page = 1;
+                render();
+            };
+
+            // Back to Top
+            var bttBtn = document.getElementById('backToTop');
+            document.getElementById('mainScroll').onscroll = function() {
+                bttBtn.style.display = this.scrollTop > 300 ? 'block' : 'none';
+            };
+            bttBtn.onclick = () => {
+                document.getElementById('mainScroll').scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            
+            // PWA Install Prompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                let installBtn = document.getElementById('installBtn');
+                installBtn.style.display = 'inline-block';
+                installBtn.onclick = () => {
+                    e.prompt();
+                    installBtn.style.display = 'none';
+                };
+            });
+
+            updateCartBadge();
+        }
+
+        function renderSkeleton() {
+            var container = document.getElementById('questionList');
+            container.innerHTML = `<div class="question-card" style="height:150px; opacity:0.5; display:flex; align-items:center; justify-content:center;">Loading data from GitHub...</div>`;
+        }
+
+        function setupSecurity() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === 123 || (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) || (e.ctrlKey && e.keyCode === 85)) {
+                    e.preventDefault();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
