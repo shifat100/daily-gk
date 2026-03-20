@@ -58,22 +58,26 @@ body {
   justify-content: space-between;
   padding: 0 15px;
   z-index: 100;
+  flex-shrink: 0;
 }
 .brand { color: var(--primary); font-size: 1.2rem; margin: 0; font-weight: bold; }
 
 /* Buttons & Inputs */
 .icon-btn {
-  background: var(--opt-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  padding: 6px 10px;
-  border-radius: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
 }
-.icon-btn:hover { background: var(--hover-bg); }
+.icon-btn:hover { background: var(--hover-bg); color: var(--text-color); }
+#menuToggle { font-size: 24px; color: var(--text-color); }
+
 .cart-badge {
   position: absolute; top: -5px; right: -5px;
   background: red; color: white; font-size: 10px;
@@ -94,7 +98,7 @@ body {
 
 /* Tree */
 .tree-view { list-style: none; padding: 0; margin: 0; }
-.tree-parent { padding: 15px 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); transition: 0.2s; }
+.tree-parent { padding: 15px 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); transition: background-color 0.2s; }
 .tree-parent:hover { background: var(--hover-bg); }
 .tree-children { display: none; background: var(--opt-bg); list-style: none; padding: 0; }
 .tree-children.open { display: block; }
@@ -106,13 +110,15 @@ body {
 .controls-area { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
 .controls-area input[type="text"] { flex: 1; padding: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); border-radius: 4px; }
 
-.q-card { background: var(--card-bg); border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-color); animation: fadeIn 0.3s; }
+.q-card { background: var(--card-bg); border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-color); animation: fadeIn 0.3s; position:relative; }
 .q-meta { font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 10px; }
-.q-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; line-height: 1.5; display: flex; align-items: flex-start; justify-content: space-between; }
+.q-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; line-height: 1.5; padding-right: 70px; /* Space for buttons */ }
+.card-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 5px; }
 
-/* TTS Button */
-.tts-btn { background: none; border: none; cursor: pointer; color: var(--primary); opacity: 0.7; padding: 5px; }
-.tts-btn:hover { opacity: 1; transform: scale(1.1); }
+/* TTS & Cart Button in Card */
+.tts-btn, .cart-toggle-btn { background: none; border: 1px solid var(--border-color); border-radius: 50%; cursor: pointer; color: var(--text-muted); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.tts-btn:hover, .cart-toggle-btn:hover { color: var(--primary); background: var(--hover-bg); }
+.cart-toggle-btn.added { background: #ff4757; color: white; border-color: #ff4757; }
 
 .opt-btn { width: 100%; text-align: left; padding: 12px 15px; margin: 5px 0; background: var(--opt-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; transition: 0.2s; }
 .opt-btn:hover:not(:disabled) { background: var(--hover-bg); }
@@ -139,9 +145,19 @@ body {
 #backToTop { position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; background: var(--primary); color: #fff; border: none; border-radius: 50%; font-size: 20px; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
 #backToTop.show { opacity: 1; visibility: visible; }
 
+/* Mobile Responsive */
 @media (max-width: 768px) {
-  .sidebar { position: absolute; top: 0; bottom: 0; left: -100%; width: 80%; max-width: 300px; z-index: 1000; transition: left 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+  .sidebar { position: absolute; top: var(--header-height); bottom: 0; left: -100%; width: 80%; max-width: 300px; z-index: 1000; transition: left 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
   .sidebar.show { left: 0; }
-  #sidebarOverlay { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+  #sidebarOverlay { display: none; position: fixed; top: var(--header-height); left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; }
   #sidebarOverlay.show { display: block; }
+  .q-title { padding-right: 0; }
+  .card-actions { position: relative; top: auto; right: auto; justify-content: flex-end; margin-top: -10px; margin-bottom: 10px; }
+}
+
+@media print {
+  body, .main-content { overflow: visible !important; }
+  .top-bar, .sidebar, .controls-area, #paginationControls, .app-footer, .card-actions, #backToTop, #examHeader, #examResultBox { display: none !important; }
+  .q-card { page-break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .opt-btn { border: 1px solid #eee !important; background: none !important; }
 }
