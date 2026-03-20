@@ -1,460 +1,612 @@
 "use strict";
 
+// ============ CONFIGURATION ============
+var REPO_CONFIG = {
+    base_url: 'https://raw.githubusercontent.com/shifat100/daily-gk/main/' 
+};
+
+// ============ APP STATE ============
 var app = {
-    data: [],           // সকল প্রশ্ন এখানে জমা হবে
-    filteredData: [],   // ফিল্টার করা প্রশ্ন
-    treeData: {},       // সাইডবার ট্রি স্ট্রাকচার
-    cart: JSON.parse(localStorage.getItem('gk_cart')) || [], // কার্ট ডেটা (সেভড)
-    isCartView: false,  // ইউজার কার্ট ভিউতে আছে কি না
+    // Data Storage
+    rawData: [],        // Flat array of all questions
+    treeData: {},       // { "Category": { "Topic": count, "total": count } }
     
-    // ফিল্টার এবং সেটিংস
-    currCat: null,
-    currTopic: null,
-    mode: 'quiz',
-    shuffle: false,
-    sortOrder: 'asc',
+    // Filter State
+    filteredData: [],
+    currCat: null,      // Current Category Name
+    currTopic: null,    // Current Topic Name
     searchQuery: '',
+
+    // Settings
+    mode: 'quiz',       // 'quiz' or 'study'
+    shuffle: false,
     
-    // পেজিনেশন
-    page: 1,
-    perPage: 10,
+    // Pagination (List View)
+    currentPage: 1,
+    itemsPerPage: 10,   // KaiOS safe limit per render
     
-    // মেটা তথ্য
-    lastModified: null,
-    filesLoaded: 0,
-    totalFiles: 0
+    // UI State
+    menuOpen: false,
+    menuLevel: 'root',  // 'root' (Categories) or 'topic' (Topics inside Cat)
+    selectedCatInMenu: null // Temp store when diving into topics
 };
 
 window.onload = function() {
     initApp();
+    setupKeypad();
 };
 
 function initApp() {
-    setupEventListeners();
-    setupPWA();
-    setupSecurity(); // রাইট ক্লিক ও কপি প্রোটেকশন
-    renderSkeleton();
-    startIncrementalLoad(); // ইনক্রিমেন্টাল লোডিং শুরু
+    startDataLoad();
 }
 
 // ==========================================
-// ১. ইভেন্ট লিসেনার সেটআপ
+// 1. DATA LOADING & PARSING
 // ==========================================
-function setupEventListeners() {
-    // মোবাইল সাইডবার কন্ট্রোল
-    var toggle = document.getElementById('menuToggle');
-    var sidebar = document.getElementById('appSidebar');
-    var overlay = document.getElementById('sidebarOverlay');
 
-    if(toggle) {
-        toggle.onclick = function() {
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-        };
-    }
-    if(overlay) overlay.onclick = function() {
-        sidebar.classList.remove('show');
-        overlay.classList.remove('show');
-    };
-
-    // ভিউ মোড (Quiz/Study)
-    document.getElementById('viewMode').onchange = function(e) {
-        app.mode = e.target.value;
-        render();
-    };
-
-    // সার্চ ইনপুট
-    var searchTimeout;
-    document.getElementById('searchInput').onkeyup = function(e) {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(function() {
-            app.searchQuery = e.target.value.toLowerCase();
-            app.page = 1;
-            runFilter();
-        }, 300);
-    };
-
-    // সেটিংস কন্ট্রোল
-    document.getElementById('shuffleCheck').onchange = function(e) {
-        app.shuffle = e.target.checked;
-        runFilter();
-    };
-    document.getElementById('sortSelect').onchange = function(e) {
-        app.sortOrder = e.target.value;
-        app.shuffle = false;
-        document.getElementById('shuffleCheck').checked = false;
-        runFilter();
-    };
-    document.getElementById('perPageSelect').onchange = function(e) {
-        app.perPage = parseInt(e.target.value);
-        app.page = 1;
-        render();
-    };
-
-    // কার্ট ভিউ কন্ট্রোল
-    document.getElementById('cartViewBtn').onclick = function() {
-        app.isCartView = true;
-        app.page = 1;
-        render();
-    };
-    document.getElementById('exitCart').onclick = function() {
-        app.isCartView = false;
-        app.page = 1;
-        render();
-    };
-
-    // ব্যাক টু টপ
-    var bttBtn = document.getElementById('backToTop');
-    var scrollContainer = document.getElementById('mainScroll');
-    scrollContainer.onscroll = function() {
-        if (scrollContainer.scrollTop > 300) bttBtn.classList.add('show');
-        else bttBtn.classList.remove('show');
-    };
-    bttBtn.onclick = function() {
-        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    updateCartBadge();
-}
-
-// ==========================================
-// ২. ইনক্রিমেন্টাল লোডিং (ব্যাকগ্রাউন্ডে লোড হবে)
-// ==========================================
-function startIncrementalLoad() {
-    ajaxGet('data/main.json', function(cats) {
-        var fileTasks = [];
-        var pendingCats = cats.length;
-
-        cats.forEach(function(cat) {
-            app.treeData[cat.title] = {};
-            // ক্যাটাগরির ফাইল লিস্ট আনা
-            ajaxGet(cat.path, function(files) {
-                files.forEach(function(f) {
-                    fileTasks.push({ url: f.path, cat: cat.title, topic: f.title });
-                });
-                pendingCats--;
-                
-                // সব ক্যাটাগরির লিস্ট পাওয়া গেলে লোডিং শুরু
-                if (pendingCats === 0) {
-                    app.totalFiles = fileTasks.length;
-                    processFilesSequentially(fileTasks, 0);
-                }
-            });
-        });
+function startDataLoad() {
+    // Load main categories
+    ajaxGet(REPO_CONFIG.base_url + 'data/main.json', function(cats) {
+        var queue = [];
+        // Initialize Tree
+        for(var i=0; i<cats.length; i++) {
+            app.treeData[cats[i].title] = { total: 0, topics: {} };
+            queue.push({ path: cats[i].path, name: cats[i].title });
+        }
+        processQueue(queue, 0);
+    }, function() {
+        document.getElementById('loaderText').innerHTML = "<center><br><br><b>Connection Error</b>: Please Check Your Internet Connection or Update To Latest Version.</center>";
     });
 }
 
-function processFilesSequentially(tasks, index) {
-    if (index >= tasks.length) return;
-
-    var task = tasks[index];
-    ajaxGet(task.url, function(text) {
-        parseAndStore(text, task.cat, task.topic);
-        app.filesLoaded++;
-        
-        // UI আপডেট (অপেক্ষা করবে না, লোড হলেই দেখাবে)
-        buildSidebarTree();
-        if(!app.isCartView) runFilter();
-        
-        // পরবর্তী ফাইল লোড
-        processFilesSequentially(tasks, index + 1);
+function processQueue(list, index) {
+    if (index >= list.length) {
+        finishLoading();
+        return;
+    }
+    
+    var item = list[index]; // Category Item
+    var loader = document.getElementById('loaderText');
+    if(loader) loader.textContent = "Loading: " + item.name;
+    
+    ajaxGet(REPO_CONFIG.base_url + item.path, function(files) {
+        var fileQueue = [];
+        for(var j=0; j<files.length; j++) {
+            // Use title from JSON or fallback to filename
+            var tName = files[j].title || files[j].path.split('/').pop();
+            fileQueue.push({ 
+                url: REPO_CONFIG.base_url + files[j].path, 
+                cat: item.name,
+                topic: tName 
+            });
+        }
+        loadMCQs(fileQueue, 0, function() {
+            processQueue(list, index + 1);
+        });
     }, function() {
-        processFilesSequentially(tasks, index + 1);
+        processQueue(list, index + 1);
+    });
+}
+
+function loadMCQs(queue, idx, doneCallback) {
+    if (idx >= queue.length) {
+        doneCallback();
+        return;
+    }
+
+    ajaxGet(queue[idx].url, function(text) {
+        parseAndStore(text, queue[idx].cat, queue[idx].topic);
+        loadMCQs(queue, idx + 1, doneCallback);
+    }, function() {
+        loadMCQs(queue, idx + 1, doneCallback); // Skip on error
     }, true);
 }
 
 function parseAndStore(text, cat, topic) {
     var lines = text.replace(/\r\n/g, '\n').split('\n');
+    var count = 0;
+
     for (var i = 0; i < lines.length; i += 2) {
-        var line1 = (lines[i] || "").trim();
-        var line2 = (lines[i+1] || "").trim();
+        if (i + 1 >= lines.length) break;
+        var line1 = lines[i].trim();
+        var line2 = lines[i+1].trim();
         if(!line1 || !line2) continue;
 
         var parts = line2.split('|');
-        if(parts[parts.length-1] === '') parts.pop();
+        if(parts.length > 0 && parts[parts.length-1] === '') parts.pop();
 
-        var ans, desc = null, opts;
+        var ans, desc, opts;
         var last = parts[parts.length-1];
-        if(!isNaN(last) && last !== "") {
+        var secondLast = parts[parts.length-2];
+
+        // Robust Parser
+        if(!isNaN(last)) {
             ans = parseInt(last);
-            opts = parts.slice(0, -1);
+            desc = null;
+            opts = parts.slice(0, parts.length-1);
         } else {
-            ans = parseInt(parts[parts.length-2]);
             desc = last;
-            opts = parts.slice(0, -2);
+            ans = parseInt(secondLast);
+            opts = parts.slice(0, parts.length-2);
         }
 
-        app.data.push({
-            id: app.data.length,
+        app.rawData.push({
+            id: app.rawData.length,
             cat: cat,
             topic: topic,
-            title: line1.replace(/\*\*/g, ''),
+            title: line1.replace(/\*\*/g, ''), 
             opts: opts,
             ans: ans,
             desc: desc
         });
-        app.treeData[cat][topic] = (app.treeData[cat][topic] || 0) + 1;
+        count++;
+    }
+
+    // Update Tree Counts
+    if(app.treeData[cat]) {
+        if(!app.treeData[cat].topics[topic]) app.treeData[cat].topics[topic] = 0;
+        app.treeData[cat].topics[topic] += count;
+        app.treeData[cat].total += count;
     }
 }
 
-// ==========================================
-// ৩. কার্ট লজিক
-// ==========================================
-function toggleCart(qId) {
-    var index = app.cart.indexOf(qId);
-    if (index === -1) {
-        app.cart.push(qId);
-    } else {
-        app.cart.splice(index, 1);
-    }
-    localStorage.setItem('gk_cart', JSON.stringify(app.cart));
-    updateCartBadge();
-    
-    if(app.isCartView) render();
-    else {
-        var btn = document.querySelector(`.cart-toggle-btn[data-qid="${qId}"]`);
-        if(btn) {
-            btn.innerHTML = (app.cart.indexOf(qId) === -1) ? '+' : '-';
-            btn.classList.toggle('added');
-        }
-    }
-}
-
-function updateCartBadge() {
-    document.getElementById('cartCount').textContent = app.cart.length;
+function finishLoading() {
+    document.getElementById('loader').classList.add('hidden');
+    // Reverse data so newest is first by default
+    //app.rawData.reverse();
+    runFilter(); // Initial Render
 }
 
 // ==========================================
-// ৪. ফিল্টার ও রেন্ডারিং
+// 2. FILTER & LOGIC
 // ==========================================
+
 function runFilter() {
-    var res = app.data.filter(function(q) {
+    // 1. Filtering
+    var res = app.rawData.filter(function(q) {
         if (app.currCat && q.cat !== app.currCat) return false;
         if (app.currTopic && q.topic !== app.currTopic) return false;
         if (app.searchQuery && q.title.toLowerCase().indexOf(app.searchQuery) === -1) return false;
         return true;
     });
 
+    // 2. Shuffling (Only if enabled)
     if (app.shuffle) {
-        res.sort(function() { return 0.5 - Math.random(); });
-    } else {
-        if (app.sortOrder === 'desc') res.sort(function(a, b) { return b.id - a.id; });
-        else res.sort(function(a, b) { return a.id - b.id; });
+        // Simple Fisher-Yates for display array
+        // We clone to not mess up rawData order permanently
+        res = res.slice(0); 
+        for (var i = res.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = res[i]; res[i] = res[j]; res[j] = temp;
+        }
     }
 
     app.filteredData = res;
-    render();
+    app.currentPage = 1;
+    setTimeout(renderList, 100);
+    updateTitle();
 }
 
-function render() {
-    var container = document.getElementById('questionList');
-    var cartActions = document.getElementById('cartActions');
-    var topicHeader = document.getElementById('topicHeader');
-    var topicName = document.getElementById('topicName');
+function updateTitle() {
+    var t = document.getElementById('appTitle');
+    if(app.currTopic) t.textContent = app.currTopic;
+    else if(app.currCat) t.textContent = app.currCat;
+    else t.textContent = "GK Quiz";
+}
 
+// ==========================================
+// 3. RENDERING (LIST VIEW)
+// ==========================================
+
+function renderList() {
+    var container = document.getElementById('questionList');
     container.innerHTML = '';
     
-    // কার্ট মোড না কি সাধারণ মোড?
-    var sourceData = app.isCartView ? app.data.filter(q => app.cart.includes(q.id)) : app.filteredData;
+    var total = app.filteredData.length;
     
-    if(cartActions) cartActions.style.display = app.isCartView ? 'flex' : 'none';
-    if(topicHeader) {
-        topicHeader.style.display = 'block';
-        topicName.textContent = app.isCartView ? "Selected Questions (Cart)" : (app.currTopic || app.currCat || "All Questions");
-    }
-
-    if(sourceData.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:40px; color:#777;">${app.isCartView ? 'কার্ট খালি। প্রশ্ন যোগ করতে (+) বাটনে চাপ দিন।' : 'কোনো প্রশ্ন পাওয়া যায়নি।'}</div>`;
-        document.getElementById('paginationControls').innerHTML = '';
+    if(total === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center;">No questions found.</div>';
+        document.getElementById('pagination').classList.add('hidden');
+        document.getElementById('pageIndicator').textContent = "0/0";
         return;
     }
 
-    var totalPages = Math.ceil(sourceData.length / app.perPage);
-    if(app.page > totalPages) app.page = totalPages;
-    var start = (app.page - 1) * app.perPage;
-    var pageItems = sourceData.slice(start, start + app.perPage);
+    var totalPages = Math.ceil(total / app.itemsPerPage);
+    if(app.currentPage > totalPages) app.currentPage = totalPages;
+    
+    var start = (app.currentPage - 1) * app.itemsPerPage;
+    var end = start + app.itemsPerPage;
+    var pageItems = app.filteredData.slice(start, end);
 
-    pageItems.forEach(function(q, i) {
-        createCard(q, container, start + i + 1);
+    document.getElementById('pageIndicator').textContent = app.currentPage + '/' + totalPages + ' (' + total + ')';
+
+    // Generate Cards
+    for(var i=0; i<pageItems.length; i++) {
+        createCard(pageItems[i], container, start + i + 1);
+    }
+
+    // Pagination UI
+    var pagi = document.getElementById('pagination');
+    pagi.classList.remove('hidden');
+    document.getElementById('pagiText').textContent = app.currentPage + " / " + totalPages;
+    
+    // Scroll top
+    document.getElementById('mainContainer').scrollTop = 0;
+    
+    // Focus first element
+    var firstQ = container.querySelector('.opt-btn');
+    if(firstQ && !app.menuOpen) firstQ.focus();
+
+    // ===============================================
+    // KAIAD FIX: Create specific container & load ad
+    // ===============================================
+    
+    // 1. Create a unique ID for this specific ad render
+    var uniqueAdId = 'kaiad-container-' + Date.now();
+    
+    // 2. Create the div element and append it to the bottom of the list
+    var adDiv = document.createElement('div');
+    adDiv.id = uniqueAdId;
+    adDiv.style.width = '100%';
+    adDiv.style.minHeight = '60px'; // Reserve space to prevent layout jump
+    adDiv.style.display = 'flex';
+    adDiv.style.justifyContent = 'center';
+    adDiv.style.marginTop = '10px';
+    container.appendChild(adDiv);
+
+    
+    getKaiAd({
+        publisher: '080b82ab-b33a-4763-a498-50f464567e49',
+        app: 'Daily-GK',
+        slot: 'gk-slot-' + Math.floor(Math.random() * 1000000), 
+        onerror: function (err) { 
+            console.error('KaiAd Error:', err); 
+        },
+        onready: function (ad) { 
+            ad.call('display'); 
+        }
     });
-
-    renderPagination(totalPages);
 }
 
 function createCard(q, container, index) {
-    var div = document.createElement('div');
-    div.className = 'q-card';
-    
-    var isAdded = app.cart.includes(q.id);
-    var cartBtn = `<button class="cart-toggle-btn ${isAdded ? 'added' : ''}" data-qid="${q.id}" onclick="toggleCart(${q.id})">${isAdded ? '-' : '+'}</button>`;
+    var card = document.createElement('div');
+    card.className = 'q-card';
 
+    // Meta
     var meta = document.createElement('div');
     meta.className = 'q-meta';
-    meta.innerHTML = `<span>${q.cat} &bull; ${q.topic}</span> <div> <span style="margin-left:10px">#${index}</span></div>`;
-    div.appendChild(meta);
+    meta.innerHTML = '<span>' + q.cat + '</span><span>#' + index + '</span>';
+    card.appendChild(meta);
 
+    // Title
     var h3 = document.createElement('div');
     h3.className = 'q-title';
-    h3.innerHTML = q.title + cartBtn;
-    
-    div.appendChild(h3);
+    h3.textContent = q.title;
+    card.appendChild(h3);
 
+    // Options
     var optsDiv = document.createElement('div');
-    var feedback = document.createElement('div');
-    feedback.className = 'feedback';
-    feedback.style.cssText = "display:none; margin-top:10px; padding:10px; background:#eef5ff; border-radius:5px; font-size:0.9rem;";
+    var feedBox = document.createElement('div');
+    feedBox.className = 'feedback-box';
+    feedBox.style.display = 'none';
 
     q.opts.forEach(function(opt, idx) {
         var btn = document.createElement('button');
         btn.className = 'opt-btn';
         btn.textContent = opt;
-        
+
         if(app.mode === 'study') {
-            btn.disabled = true;
-            if(idx === q.ans) { 
-                btn.classList.add('correct'); 
-                btn.innerHTML = '&#10004; ' + btn.innerHTML;
+            // STUDY MODE
+            if(idx === q.ans) {
+                btn.classList.add('correct');
+                btn.innerHTML = '&#10004; ' + opt;
             }
-            if(q.desc) { feedback.style.display = 'block'; feedback.innerHTML = "<b>ব্যাখ্যা:</b> " + q.desc; }
+            if(q.desc) {
+                feedBox.style.display = 'block';
+                feedBox.innerHTML = '<b>Exp:</b> ' + q.desc;
+            }
         } else {
+            // QUIZ MODE
             btn.onclick = function() {
-                var siblings = optsDiv.querySelectorAll('.opt-btn');
-                siblings.forEach(sb => sb.disabled = true);
-                siblings[q.ans].classList.add('correct');
+                // Prevent multiple clicks
+                if(btn.disabled) return;
+                
+                // Disable siblings
+                var sibs = optsDiv.querySelectorAll('.opt-btn');
+                sibs.forEach(function(s, sIdx) {
+                    // s.disabled = true; // Don't use disabled attribute as it ruins focus
+                    s.setAttribute('data-clicked', 'true');
+                    if(sIdx === q.ans) s.classList.add('correct');
+                });
 
                 if(idx !== q.ans) {
-                    this.classList.add('wrong');
-                    feedback.style.display = 'block';
-                    feedback.innerHTML = `<b>সঠিক উত্তর:</b> ${q.opts[q.ans]} ${q.desc ? '<br><b>ব্যাখ্যা:</b> ' + q.desc : ''}`;
-                } else if(q.desc) {
-                    feedback.style.display = 'block';
-                    feedback.innerHTML = "<b>ব্যাখ্যা:</b> " + q.desc;
+                    btn.classList.add('wrong');
+                    if(q.desc) {
+                        feedBox.style.display = 'block';
+                        feedBox.innerHTML = '<b>Ans:</b> ' + q.opts[q.ans] + '<br><b>Exp:</b> ' + q.desc;
+                    } else {
+                        feedBox.style.display = 'block';
+                        feedBox.innerHTML = '<b>Correct:</b> ' + q.opts[q.ans];
+                    }
+                } else {
+                     if(q.desc) {
+                        feedBox.style.display = 'block';
+                        feedBox.innerHTML = '<b>Exp:</b> ' + q.desc;
+                    }
                 }
+                btn.focus(); // Keep focus
             };
         }
         optsDiv.appendChild(btn);
     });
 
-    div.appendChild(optsDiv);
-    div.appendChild(feedback);
-    container.appendChild(div);
+    card.appendChild(optsDiv);
+    card.appendChild(feedBox);
+    container.appendChild(card);
 }
 
 // ==========================================
-// ৫. সাইডবার ট্রি
+// 4. MENU & SETTINGS LOGIC
 // ==========================================
-function buildSidebarTree() {
-    var ul = document.getElementById('categoryTree');
-    if(!ul) return;
-    ul.innerHTML = '<li class="tree-parent" onclick="setFilter(null, null)"><span>All Questions</span></li>';
 
-    for (var cat in app.treeData) {
-        var topics = app.treeData[cat];
-        var total = Object.values(topics).reduce((a, b) => a + b, 0);
+function renderMenuRoot() {
+    var list = document.getElementById('menuList');
+    list.innerHTML = '';
+    app.menuLevel = 'root';
+    
+    // 1. All Questions Option
+    var allBtn = document.createElement('div');
+    allBtn.className = 'menu-btn';
+    allBtn.tabIndex = 0;
+    allBtn.innerHTML = '<span>All Questions</span> <span class="badge">'+app.rawData.length+'</span>';
+    allBtn.onclick = function() {
+        app.currCat = null; app.currTopic = null;
+        toggleMenu();
+        runFilter();
+    };
+    list.appendChild(allBtn);
 
-        var li = document.createElement('li');
-        li.className = 'tree-item';
-        li.innerHTML = `<div class="tree-parent"><span>${cat}</span> <span class="badge">${total}</span></div>`;
-        
-        var childUl = document.createElement('ul');
-        childUl.className = 'tree-children';
+    // 2. Categories
+    for(var cat in app.treeData) {
+        (function(c) {
+            var btn = document.createElement('div');
+            btn.className = 'menu-btn';
+            btn.tabIndex = 0;
+            btn.innerHTML = '<span>'+c+'</span> <span class="badge">'+app.treeData[c].total+'</span>';
+            
+            // Highlight if selected
+            if(app.currCat === c) btn.classList.add('selected-cat');
 
-        for (var topic in topics) {
-            var tLi = document.createElement('li');
-            tLi.className = 'tree-child';
-            tLi.innerHTML = `${topic} <small>(${topics[topic]})</small>`;
-            tLi.onclick = (function(c, t) {
-                return function(e) { e.stopPropagation(); setFilter(c, t); };
-            })(cat, topic);
-            childUl.appendChild(tLi);
+            btn.onclick = function() {
+                app.selectedCatInMenu = c;
+                renderMenuTopics(c);
+            };
+            list.appendChild(btn);
+        })(cat);
+    }
+}
+
+function renderMenuTopics(cat) {
+    var list = document.getElementById('menuList');
+    list.innerHTML = '';
+    app.menuLevel = 'topic';
+
+    // Header Back Button
+    var backBtn = document.createElement('div');
+    backBtn.className = 'menu-btn';
+    backBtn.style.background = '#eee';
+    backBtn.tabIndex = 0;
+    backBtn.innerHTML = '<b>&laquo; Back to Categories</b>';
+    backBtn.onclick = function() { renderMenuRoot(); };
+    list.appendChild(backBtn);
+
+    // "All in [Category]"
+    var allCatBtn = document.createElement('div');
+    allCatBtn.className = 'menu-btn';
+    allCatBtn.tabIndex = 0;
+    allCatBtn.innerHTML = '<span>All '+cat+'</span>';
+    allCatBtn.onclick = function() {
+        app.currCat = cat; app.currTopic = null;
+        toggleMenu();
+        runFilter();
+    };
+    list.appendChild(allCatBtn);
+
+    // Topics
+    var topics = app.treeData[cat].topics;
+    for(var t in topics) {
+        (function(topicName) {
+            var btn = document.createElement('div');
+            btn.className = 'menu-btn';
+            btn.tabIndex = 0;
+            btn.innerHTML = '<span>'+topicName+'</span> <span class="badge">'+topics[topicName]+'</span>';
+            
+            if(app.currTopic === topicName) btn.classList.add('selected-cat');
+
+            btn.onclick = function() {
+                app.currCat = cat;
+                app.currTopic = topicName;
+                toggleMenu();
+                runFilter();
+            };
+            list.appendChild(btn);
+        })(t);
+    }
+    
+    // Focus first item
+    if(list.children.length > 1) list.children[1].focus();
+}
+
+// ==========================================
+// 5. KEYPAD & NAVIGATION
+// ==========================================
+
+function setupKeypad() {
+    // Search Input Logic
+    document.getElementById('menuSearch').addEventListener('input', function(e) {
+        app.searchQuery = e.target.value.toLowerCase();
+        // If searching, we reset filters to show all matches
+        if(app.searchQuery.length > 0) {
+            app.currCat = null; app.currTopic = null;
         }
+    });
 
-        li.onclick = function() {
-            var cul = this.querySelector('.tree-children');
-            if(cul) cul.classList.toggle('open');
-        };
+    document.getElementById('menuSearch').addEventListener('keydown', function(e) {
+        if(e.key === 'Enter') {
+            toggleMenu();
+            runFilter();
+        }
+    });
 
-        li.appendChild(childUl);
-        ul.appendChild(li);
+    // Toggle Buttons Click Events
+    document.getElementById('btnMode').onclick = function() {
+        app.mode = (app.mode === 'quiz') ? 'study' : 'quiz';
+        updateToggleUI();
+        // If menu is closed later, we need to re-render questions to show/hide answers
+        app.pendingRender = true; 
+    };
+
+    document.getElementById('btnShuffle').onclick = function() {
+        app.shuffle = !app.shuffle;
+        updateToggleUI();
+        app.pendingRender = true;
+    };
+
+    // Global Key Listener
+    document.addEventListener('keydown', function(e) {
+        switch(e.key) {
+            case 'SoftLeft':
+            case 'F1': 
+                toggleMenu();
+                break;
+           
+            case 'ArrowUp':
+            case 'ArrowDown':
+                handleNav(e.key === 'ArrowDown' ? 1 : -1);
+                e.preventDefault();
+                break;
+            case 'ArrowLeft':
+                // Pagination Prev
+                if(!app.menuOpen) {
+                    if(app.currentPage > 1) { app.currentPage--;  setTimeout(renderList, 100); }
+                }
+                break;
+            case 'ArrowRight':
+                // Pagination Next
+                if(!app.menuOpen) {
+                    var max = Math.ceil(app.filteredData.length / app.itemsPerPage);
+                    if(app.currentPage < max) { app.currentPage++;  setTimeout(renderList, 100); }
+                }
+                break;
+            case 'Enter':
+            case 'NumpadEnter':
+                document.activeElement.click();
+                break;
+            case 'F2': case 'SoftRight':
+                if(app.menuOpen) {
+                    e.preventDefault();
+                    if(app.menuLevel === 'topic') renderMenuRoot();
+                    else toggleMenu();
+                }
+                break;
+        }
+    });
+}
+
+var btnnext = document.getElementById('btnNext');
+var btnprev = document.getElementById('btnPrev');
+btnnext.addEventListener('click', function() {
+    if(app.currentPage < Math.ceil(app.filteredData.length / app.itemsPerPage)) {
+        app.currentPage++;
+         setTimeout(renderList, 100);
+    }
+});
+
+btnprev.addEventListener('click', function() {
+    if(app.currentPage > 1) {
+        app.currentPage--;
+         setTimeout(renderList, 100);
+    }
+});
+
+function handleNav(dir) {
+    // Select all focusable elements based on context
+    var selector = app.menuOpen 
+        ? '#controlsArea .menu-input, #controlsArea .toggle-btn, #controlsArea .menu-btn'
+        : '.opt-btn, .nav-btn'; // Question options + pagination buttons
+        
+    var els = document.querySelectorAll(selector);
+    var arr = Array.prototype.slice.call(els); // Convert to array
+    
+    // Filter out hidden elements
+    arr = arr.filter(function(el) { return el.offsetParent !== null; });
+
+    if(arr.length === 0) return;
+
+    var cur = document.activeElement;
+    var idx = arr.indexOf(cur);
+    var next = idx + dir;
+
+    if(next < 0) next = 0;
+    if(next >= arr.length) next = arr.length - 1;
+
+    arr[next].focus();
+    arr[next].scrollIntoView({block: 'center'});
+}
+
+function toggleMenu() {
+    var el = document.getElementById('controlsArea');
+    app.menuOpen = !app.menuOpen;
+    
+    if(app.menuOpen) {
+        el.classList.remove('hidden');
+        renderMenuRoot();
+        updateToggleUI();
+        document.getElementById('menuSearch').focus();
+        updateSoftKeys("Close", "Select", "");
+    } else {
+        el.classList.add('hidden');
+        updateSoftKeys("Menu", "Select", "");
+        
+        // If settings changed, re-render
+        if(app.pendingRender || app.searchQuery.length > 0) {
+            app.pendingRender = false;
+            runFilter();
+        } else {
+            // Restore focus to list
+            var btn = document.querySelector('.opt-btn');
+            if(btn) btn.focus();
+        }
     }
 }
 
-function setFilter(cat, topic) {
-    app.currCat = cat;
-    app.currTopic = topic;
-    app.isCartView = false;
-    app.page = 1;
-    runFilter();
-    // মোবাইলে সাইডবার বন্ধ করা
-    if(window.innerWidth < 768) {
-        document.getElementById('appSidebar').classList.remove('show');
-        document.getElementById('sidebarOverlay').classList.remove('show');
-    }
+function updateToggleUI() {
+    var mBtn = document.getElementById('btnMode');
+    var sBtn = document.getElementById('btnShuffle');
+    
+    mBtn.textContent = app.mode.toUpperCase();
+    mBtn.className = 'toggle-btn ' + (app.mode === 'study' ? 'on' : '');
+    
+    sBtn.textContent = app.shuffle ? 'ON' : 'OFF';
+    sBtn.className = 'toggle-btn ' + (app.shuffle ? 'on' : '');
 }
 
-// ==========================================
-// ৬. ইউটিলিটি (Pagination, AJAX, Security)
-// ==========================================
-function renderPagination(total) {
-    var box = document.getElementById('paginationControls');
-    box.innerHTML = '';
-    if(total <= 1) return;
-
-    var prev = document.createElement('button');
-    prev.className = 'page-btn';
-    prev.textContent = "Prev";
-    prev.disabled = app.page === 1;
-    prev.onclick = function() { app.page--; render(); };
-
-    var info = document.createElement('span');
-    info.innerHTML = ` Page ${app.page} of ${total} `;
-
-    var next = document.createElement('button');
-    next.className = 'page-btn';
-    next.textContent = "Next";
-    next.disabled = app.page === total;
-    next.onclick = function() { app.page++; render(); };
-
-    box.appendChild(prev);
-    box.appendChild(info);
-    box.appendChild(next);
-}
-
-function renderSkeleton() {
-    var container = document.getElementById('questionList');
-    container.innerHTML = '<div class="skeleton-card" style="height:200px; background:#eee; margin-bottom:15px; border-radius:8px; animation: pulse 1.5s infinite;"></div>'.repeat(3);
+function updateSoftKeys(l, c, r) {
+    document.getElementById('softLeft').textContent = l;
+    document.getElementById('softCenter').textContent = c;
+    document.getElementById('softRight').textContent = r;
 }
 
 function ajaxGet(url, success, error, isText) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url + '?t=' + Date.now(), true);
     xhr.onload = function() {
-        if (xhr.status === 200) success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
-        else if(error) error();
+        if (xhr.status === 200) {
+            try {
+                success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
+            } catch(e) { if(error) error(e); }
+        } else { if(error) error(); }
     };
-    xhr.onerror = error;
-    xhr.send();
-}
-
-function setupPWA() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW fail', err));
-    }
-}
-
-function setupSecurity() {
-    // ১. রাইট ক্লিক বন্ধ
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    // ২. টেক্সট সিলেকশন বন্ধ
-    document.addEventListener('selectstart', e => e.preventDefault());
-    // ৩. কি-বোর্ড শর্টকাট (F12, Ctrl+U, Ctrl+Shift+I) বন্ধ
-    document.addEventListener('keydown', function(e) {
-        if (e.keyCode === 123 || (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) || (e.ctrlKey && e.keyCode === 85)) {
-            e.preventDefault();
-        }
-    });
-    // ৪. ট্যাব পরিবর্তন করলে ব্লার করা
-    document.addEventListener('visibilitychange', () => {
-        document.body.style.filter = document.hidden ? 'blur(8px)' : 'none';
-    });
+    xhr.onerror = function() { if(error) error(); };
+    try { xhr.send(); } catch(e) { if(error) error(); }
 }
