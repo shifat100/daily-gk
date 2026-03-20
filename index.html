@@ -6,8 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>সাধারণ জ্ঞান ২০২৫ (General Knowledge) | Daily GK MCQ</title>
-    <meta name="description" content="২০২৫ সালের সেরা সাধারণ জ্ঞান (GK) অ্যাপ। বাংলাদেশ, আন্তর্জাতিক, ভূগোল, বিজ্ঞান বিষয়ক এমসিকিউ। বিসিএস ও ব্যাংক জব প্রস্তুতির জন্য আজই কুইজ শুরু করুন।">
+    <!-- ==========================================
+         ULTIMATE SEO META TAGS (2025 Edition)
+         ========================================== -->
+    <title>সাধারণ জ্ঞান ২০২৫ (General Knowledge) | ভূগোল ও কুইজ - Daily GK MCQ</title>
+    
+    <meta name="description" content="২০২৫ সালের সেরা সাধারণ জ্ঞান (GK) অ্যাপ। বাংলাদেশ, আন্তর্জাতিক, ভূগোল (Geography), বিজ্ঞান ও কম্পিউটার বিষয়ক এমসিকিউ। বিসিএস ও ব্যাংক জব প্রস্তুতির জন্য আজই কুইজ শুরু করুন।">
+    <meta name="keywords" content="সাধারণ জ্ঞান, General Knowledge 2025, Sadharon Gyan, ভূগোল সাধারণ জ্ঞান, Geography GK Bangla, বিসিএস প্রস্তুতি, BCS Preparation, Daily GK Quiz, সাধারণ জ্ঞান প্রশ্ন ও উত্তর, সাম্প্রতিক বিশ্ব, shifat100, কারেন্ট এফেয়ার্স">
     <meta name="author" content="A.I. Shifat">
     
     <link rel="icon" type="image/png" href="favicon.png">
@@ -18,33 +23,25 @@
     <!-- HEADER -->
     <header class="top-bar">
         <div class="brand-area">
-            <button id="menuToggle" aria-label="Menu">&#9776;</button>
+            <button id="menuToggle" class="icon-btn" aria-label="Menu">&#9776;</button>
             <h1 class="brand">Daily GK</h1>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             
             <!-- Dark Mode Toggle Button (SVG) -->
-            <button id="darkModeBtn" aria-label="Toggle Dark Mode" class="icon-btn">
+            <button id="darkModeBtn" class="icon-btn" aria-label="Toggle Dark Mode">
                 <!-- Moon Icon -->
                 <svg id="moonIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
                 <!-- Sun Icon -->
                 <svg id="sunIcon" style="display:none;" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
             </button>
 
             <!-- Cart Button -->
-            <button id="cartViewBtn" class="icon-btn" style="position: relative;">
+            <button id="cartViewBtn" class="icon-btn" style="position: relative;" aria-label="View Cart">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
@@ -73,7 +70,6 @@
         <!-- MAIN CONTENT -->
         <main class="main-content" id="mainScroll">
             
-            <!-- Cart Actions -->
             <div id="cartActions" style="display:none;float:right">
                 <button id="exitCart" class="danger-btn">Exit Cart</button>
             </div>  
@@ -88,20 +84,21 @@
                     <option value="asc">Sort: Asc</option>
                     <option value="desc">Sort: Desc</option>
                 </select>
-                <select id="perPageSelect" class="styled-select">
+                <select id="perPageSelect" class="styled-select" aria-label="Questions per page">
                     <option value="10" selected>10 / Page</option>
                     <option value="20">20 / Page</option>
                     <option value="50">50 / Page</option>
+                    <option value="100">100 / Page</option>
                 </select>
             </div>
 
             <!-- EXAM HEADER (Hidden by default) -->
             <div id="examHeader" class="exam-header" style="display:none;">
-                <div style="display:flex; align-items:center; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px; font-weight:bold;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    <span id="examTimerDisplay" style="font-size: 1.2rem;">00:00</span>
+                    Time Left: <span id="examTimerDisplay" style="font-size: 1.2rem;">00:00</span>
                 </div>
                 <button id="submitExamBtn" class="primary-btn">Submit Exam</button>
             </div>
