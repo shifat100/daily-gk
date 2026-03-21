@@ -29,6 +29,8 @@ Daily-GK হলো একটি সহজ এবং হালকা ওয়েব
 - Fork করো → clone করো → প্রয়োজনীয় পরিবর্তন করো → pull request পাঠাও।  
 - দয়া করে নিশ্চিত করো যে নতুন JS / HTML / CSS কোড মূল ডিজাইনের সাথে সামঞ্জস্যপূর্ণ।  
 
+simple And FastMode: `https://shifat100.github.io/daily-gk/fastmode.html`
+
 ## License  
 
  MIT
