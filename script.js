@@ -580,3 +580,24 @@ function setupSecurity() {
         document.body.style.filter = document.hidden ? 'blur(8px)' : 'none';
     });
 }
+// ==========================================
+// 10. Advanced Print Formatting
+// ==========================================
+function printQuestions() {
+    var format = document.getElementById('printFormatSelect').value;
+    var body = document.body;
+
+    // আগে যদি কোনো প্রিন্ট ক্লাস থাকে তা মুছে ফেলা
+    body.classList.remove('print-simple', 'print-grid', 'print-twocol');
+    
+    // ইউজার যে ফরম্যাট সিলেক্ট করেছে সেই ক্লাস বডিতে যুক্ত করা
+    body.classList.add('print-' + format);
+    
+    // প্রিন্ট ডায়ালগ ওপেন করা
+    window.print();
+    
+    // প্রিন্ট শেষে (বা ক্যানসেল করলে) ক্লাস রিমুভ করে আগের অবস্থায় ফিরিয়ে আনা
+    setTimeout(() => {
+        body.classList.remove('print-' + format);
+    }, 1000);
+}
