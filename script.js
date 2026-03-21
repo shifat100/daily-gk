@@ -208,6 +208,9 @@ function parseAndStore(text, cat, topic) {
 // ==========================================
 // 5. Cart Logic
 // ==========================================
+// ==========================================
+// 5. Cart Logic (Fixed + / -)
+// ==========================================
 window.toggleCart = function(qId) {
     var index = app.cart.indexOf(qId);
     if (index === -1) app.cart.push(qId);
@@ -216,10 +219,16 @@ window.toggleCart = function(qId) {
     localStorage.setItem('gk_cart', JSON.stringify(app.cart));
     updateCartBadge();
     
-    if(app.isCartView) render();
-    else {
+    if(app.isCartView) {
+        render(); // কার্ট ভিউতে থাকলে সাথে সাথে রেন্ডার হবে
+    } else {
         var btn = document.querySelector(`.cart-toggle-btn[data-qid="${qId}"]`);
-        if(btn) btn.classList.toggle('added');
+        if(btn) {
+            btn.classList.toggle('added');
+            // বাটন ক্লিক হলে + অথবা - চিহ্ন চেঞ্জ হবে
+            btn.innerHTML = app.cart.includes(qId) ? '&minus;' : '&plus;';
+            btn.title = app.cart.includes(qId) ? 'Remove from cart' : 'Add to cart';
+        }
     }
 }
 
@@ -355,9 +364,9 @@ function createCard(q, container, index) {
     div.className = 'q-card';
     
     var isAdded = app.cart.includes(q.id);
-    // Add/Remove Cart SVG Button
+    // Add/Remove Cart Button (Fixed text instead of SVG)
     var cartBtn = `<button class="cart-toggle-btn ${isAdded ? 'added' : ''}" data-qid="${q.id}" onclick="toggleCart(${q.id})" title="${isAdded ? 'Remove from cart' : 'Add to cart'}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        ${isAdded ? '&minus;' : '&plus;'}
     </button>`;
 
     var meta = document.createElement('div');
