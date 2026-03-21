@@ -148,11 +148,15 @@ body {
 
 .cart-toggle-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  background: #28a745; border: none; padding: 0; border-radius: 50%; width: 26px; height: 26px;
-  color: #fff; cursor: pointer; transition: all 0.3s;
+  background: #28a745; border: none; padding: 0; border-radius: 50%; 
+  width: 28px; height: 28px; /* একটু বড় করা হলো */
+  color: #fff; cursor: pointer; transition: all 0.3s ease;
+  font-size: 22px; font-weight: bold; line-height: 1; /* + এবং - এর সাইজ */
 }
-.cart-toggle-btn svg { width: 16px; height: 16px; }
-.cart-toggle-btn.added { background: #dc3545; transform: rotate(180deg); }
+.cart-toggle-btn.added { 
+  background: #dc3545; 
+  transform: rotate(360deg); /* ক্লিক করলে সুন্দর করে একবার ঘুরে - হবে */
+}
 
 .opt-btn {
   width: 100%; text-align: left; padding: 12px 15px; margin: 5px 0;
