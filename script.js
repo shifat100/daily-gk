@@ -486,21 +486,65 @@ function renderPagination(total) {
     box.innerHTML = '';
     if(total <= 1 || app.examActive) return; // Hide pagination during active exam
 
+    // Prev Button
     var prev = document.createElement('button');
     prev.className = 'page-btn'; prev.textContent = "Prev";
     prev.disabled = app.page === 1;
     prev.onclick = () => { app.page--; render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
+    // Page Info
     var info = document.createElement('span');
     info.innerHTML = ` Page ${app.page} of ${total} `;
 
+    // Next Button
     var next = document.createElement('button');
     next.className = 'page-btn'; next.textContent = "Next";
     next.disabled = app.page === total;
     next.onclick = () => { app.page++; render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
-    box.appendChild(prev); box.appendChild(info); box.appendChild(next);
-}
+    // --- JUMP TO PAGE FEATURE ---
+    var jumpContainer = document.createElement('div');
+    jumpContainer.style.display = "flex";
+    jumpContainer.style.gap = "5px";
+    jumpContainer.style.alignItems = "center";
+    jumpContainer.style.marginLeft = "10px";
+
+    var jumpInput = document.createElement('input');
+    jumpInput.type = "number";
+    jumpInput.className = "jump-input";
+    jumpInput.min = 1;
+    jumpInput.max = total;
+    jumpInput.placeholder = "Page";
+
+    var jumpBtn = document.createElement('button');
+    jumpBtn.className = 'page-btn';
+    jumpBtn.textContent = "Go";
+    
+    // Go বাটনে ক্লিক করলে অথবা Enter চাপলে পেজ পরিবর্তন হবে
+    var goToPage = () => {
+        var p = parseInt(jumpInput.value);
+        if(p >= 1 && p <= total) {
+            app.page = p;
+            render();
+            document.getElementById('mainScroll').scrollTo(0,0);
+        } else {
+            alert(`দয়া করে ১ থেকে ${total} এর মধ্যে একটি পেজ নম্বর দিন।`);
+        }
+    };
+
+    jumpBtn.onclick = goToPage;
+    jumpInput.onkeypress = (e) => { if(e.key === 'Enter') goToPage(); };
+
+    jumpContainer.appendChild(jumpInput);
+    jumpContainer.appendChild(jumpBtn);
+    // -----------------------------
+
+    // Append everything to the box
+    box.appendChild(prev); 
+    box.appendChild(info); 
+    box.appendChild(next);
+    box.appendChild(jumpContainer); // Jump To Page যুক্ত করা হলো
+        }
 
 function renderSkeleton() {
     var container = document.getElementById('questionList');
