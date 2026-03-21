@@ -202,7 +202,7 @@ body {
 }
 
 /* --- PRINT STYLES --- */
-@media print {
+/* @media print {
   body, .app-body, .main-content { height: auto !important; overflow: visible !important; display: block !important; position: static !important; background: #fff !important; color: #000 !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
   .top-bar, .sidebar, .controls-area, #menuToggle, #installBtn, #sidebarOverlay, #paginationControls, .app-footer, .seo-text, #cartActions, .exam-header, .tts-btn, .cart-toggle-btn { display: none !important; }
   .q-card { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; margin-bottom: 20px !important; padding: 15px !important; background-color: #fff !important; }
@@ -212,6 +212,74 @@ body {
   .correct { border: 0px solid #000 !important; font-weight: bold !important; }
   .wrong { text-decoration: line-through; opacity: 0.6; }
   #questionList::before { content: "Daily GK - Question Sheet"; display: block; font-size: 18pt; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; }
+} */
+/* =========================================
+   ADVANCED PRINT STYLES (@media print)
+   ========================================= */
+@media print {
+  /* বেসিক প্রিন্ট রিসেট (আগের মতোই থাকবে) */
+  body, .app-body, .main-content { height: auto !important; overflow: visible !important; display: block !important; position: static !important; background: #fff !important; color: #000 !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
+  .top-bar, .sidebar, .controls-area, #menuToggle, #installBtn, #sidebarOverlay, #paginationControls, .app-footer, .seo-text, #cartActions, .exam-header, .tts-btn, .cart-toggle-btn { display: none !important; }
+  
+  /* কার্ড এবং টাইটেল ডিজাইন */
+  .q-card { 
+      break-inside: avoid; page-break-inside: avoid; 
+      box-shadow: none !important; border: 0 !important; 
+      margin-bottom: 15px !important; padding: 0 0 15px 0 !important; 
+      background-color: #fff !important;
+      border-bottom: 1px dashed #ccc !important; /* প্রশ্নের মাঝে হালকা দাগ */
+  }
+  .q-meta { font-size: 9pt; color: #555; margin-bottom: 5px; }
+  .q-title { font-size: 12pt; margin-bottom: 5px; color: #000; font-weight: bold;}
+  
+  /* অপশন বাটনকে সিম্পল টেক্সট বানানো */
+  .opt-btn { 
+      width: 100%; background: none !important; border: 0px solid #eee !important; 
+      color: #000 !important; padding: 2px 5px !important; margin: 2px 0 !important; 
+      font-size: 11pt;
+  }
+  .opt-btn:not(.correct)::before { content: '◯ '; font-weight: bold; }
+  .opt-btn:has(.correct)::before { content: '✔ '; font-weight: bold; }
+  
+  /* হেডার টেক্সট */
+  #questionList::before { 
+      content: "Daily GK - Exam Question Paper"; 
+      display: block; font-size: 16pt; font-weight: bold; text-align: center; 
+      margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #000; 
+  }
+
+  /* ---------------------------------------------------
+     Format 1: Simple (Default - No extra CSS needed)
+     --------------------------------------------------- */
+
+  /* ---------------------------------------------------
+     Format 2: 2x2 Grid Options (কাগজ বাঁচানোর জন্য)
+     --------------------------------------------------- */
+  body.print-grid .q-card > div:nth-child(3) { /* optsDiv কে টার্গেট করা */
+      display: flex;
+      flex-wrap: wrap;
+  }
+  body.print-grid .opt-btn {
+      width: 48% !important; /* পাশাপাশি ২টি অপশন */
+      display: inline-block;
+  }
+
+  /* ---------------------------------------------------
+     Format 3: BCS Exam Format (2 Columns Layout)
+     --------------------------------------------------- */
+  body.print-twocol #questionList {
+      column-count: 2 !important; /* পুরো পেজ ২ কলাম হবে */
+      column-gap: 40px !important; /* কলামের মাঝে ফাঁকা জায়গা */
+      column-rule: 1px solid #ddd; /* কলামের মাঝে চিকন দাগ */
+  }
+  body.print-twocol .q-card {
+      break-inside: avoid !important; /* কোনো প্রশ্ন যেন ভেঙে দুই কলামে না যায় */
+      page-break-inside: avoid !important;
+  }
+  /* ২ কলামে অপশনগুলো যেন দেখতে সুন্দর লাগে */
+  body.print-twocol .opt-btn {
+      font-size: 10pt; /* কলামের জন্য ফন্ট একটু ছোট */
+  }
 }
 
 /* --- BACK TO TOP BUTTON --- */
