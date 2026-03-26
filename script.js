@@ -36,11 +36,12 @@ window.onload = function() {
 
 function initApp() {
     initDarkMode();
+    readURLParams(); // <-- Read URL on load for SPA/SEO
     setupEventListeners();
     setupPWA();
     setupSecurity(); 
     renderSkeleton();
-    startIncrementalLoad(); // Your ORIGINAL AJAX loader
+    startIncrementalLoad(); 
 }
 
 // ==========================================
@@ -76,15 +77,70 @@ function initDarkMode() {
 // ==========================================
 function readAloud(text) {
     if (!window.speechSynthesis) return alert('আপনার ব্রাউজার Text-to-Speech সাপোর্ট করে না।');
-    window.speechSynthesis.cancel(); // Stop current playing audio
+    window.speechSynthesis.cancel(); 
     let utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'bn-BD'; // Bengali Language
+    utterance.lang = 'bn-BD'; 
     utterance.rate = 0.9;     
     window.speechSynthesis.speak(utterance);
 }
 
 // ==========================================
-// 3. Event Listeners Setup
+// 3. SPA Routing & SEO Logic (NEW)
+// ==========================================
+function readURLParams() {
+    const params = new URLSearchParams(window.location.search);
+    app.currCat = params.get('cat') || null;
+    app.currTopic = params.get('topic') || null;
+    app.page = parseInt(params.get('page')) || 1;
+    app.mode = params.get('mode') || 'quiz';
+    app.isCartView = params.get('cart') === 'true';
+
+    // Sync UI Dropdowns based on URL
+    var modeSelect = document.getElementById('viewMode');
+    if(modeSelect) modeSelect.value = app.mode;
+    
+    updateSEO();
+}
+
+function updateURL() {
+    const params = new URLSearchParams();
+    if (app.currCat) params.set('cat', app.currCat);
+    if (app.currTopic) params.set('topic', app.currTopic);
+    if (app.page > 1) params.set('page', app.page); // Only add page if > 1 to keep URL clean
+    if (app.mode !== 'quiz') params.set('mode', app.mode);
+    if (app.isCartView) params.set('cart', 'true');
+
+    const queryString = params.toString();
+    const newUrl = window.location.pathname + (queryString ? '?' + queryString : '');
+    
+    // Only push if URL actually changed
+    if (newUrl !== window.location.pathname + window.location.search) {
+        window.history.pushState({ path: newUrl }, '', newUrl);
+        updateSEO();
+    }
+}
+
+function updateSEO() {
+    let titleParts = [];
+    if (app.isCartView) titleParts.push("My Saved Questions");
+    else {
+        if (app.currTopic) titleParts.push(app.currTopic);
+        if (app.currCat) titleParts.push(app.currCat);
+    }
+    
+    let baseTitle = "General Knowledge App"; // Your base site name
+    document.title = titleParts.length > 0 ? `${titleParts.join(' - ')} | ${baseTitle}` : baseTitle;
+
+    // Optional: Dynamically update Meta Description for SEO
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if(metaDesc) {
+        let descText = titleParts.length > 0 ? `Practice MCQs and Quiz for ${titleParts.join(', ')}.` : "Best app for General Knowledge and Exam Preparation.";
+        metaDesc.setAttribute("content", descText);
+    }
+}
+
+// ==========================================
+// 4. Event Listeners Setup
 // ==========================================
 function setupEventListeners() {
     var toggle = document.getElementById('menuToggle');
@@ -96,6 +152,7 @@ function setupEventListeners() {
 
     document.getElementById('viewMode').onchange = function(e) {
         app.mode = e.target.value;
+        updateURL(); // <-- SPA Update
         if(app.mode === 'exam') startExam();
         else endExam();
         render();
@@ -111,8 +168,8 @@ function setupEventListeners() {
     document.getElementById('sortSelect').onchange = (e) => { app.sortOrder = e.target.value; app.shuffle = false; document.getElementById('shuffleCheck').checked = false; runFilter(); };
     document.getElementById('perPageSelect').onchange = (e) => { app.perPage = parseInt(e.target.value); app.page = 1; render(); };
 
-    document.getElementById('cartViewBtn').onclick = () => { app.isCartView = true; app.page = 1; render(); };
-    document.getElementById('exitCart').onclick = () => { app.isCartView = false; app.page = 1; render(); };
+    document.getElementById('cartViewBtn').onclick = () => { app.isCartView = true; app.page = 1; updateURL(); render(); };
+    document.getElementById('exitCart').onclick = () => { app.isCartView = false; app.page = 1; updateURL(); render(); };
     document.getElementById('submitExamBtn').onclick = submitExam;
 
     var bttBtn = document.getElementById('backToTop');
@@ -123,11 +180,17 @@ function setupEventListeners() {
     };
     bttBtn.onclick = () => scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
 
+    // Handle Browser Back/Forward Buttons for SPA
+    window.addEventListener('popstate', function() {
+        readURLParams(); // Read state from the URL we just popped back to
+        runFilter();     // Apply the filters and re-render
+    });
+
     updateCartBadge();
 }
 
 // ==========================================
-// 4. ORIGINAL Incremental AJAX Loading
+// 5. Incremental AJAX Loading
 // ==========================================
 function startIncrementalLoad() {
     ajaxGet('data/main.json', function(cats) {
@@ -152,7 +215,6 @@ function startIncrementalLoad() {
 
 function processFilesSequentially(tasks, index) {
     if (index >= tasks.length) {
-        // All files loaded
         document.getElementById('lastUpdateDate').textContent = new Date().toLocaleDateString();
         return;
     }
@@ -206,10 +268,7 @@ function parseAndStore(text, cat, topic) {
 }
 
 // ==========================================
-// 5. Cart Logic
-// ==========================================
-// ==========================================
-// 5. Cart Logic (Fixed + / -)
+// 6. Cart Logic
 // ==========================================
 window.toggleCart = function(qId) {
     var index = app.cart.indexOf(qId);
@@ -220,12 +279,11 @@ window.toggleCart = function(qId) {
     updateCartBadge();
     
     if(app.isCartView) {
-        render(); // কার্ট ভিউতে থাকলে সাথে সাথে রেন্ডার হবে
+        render(); 
     } else {
         var btn = document.querySelector(`.cart-toggle-btn[data-qid="${qId}"]`);
         if(btn) {
             btn.classList.toggle('added');
-            // বাটন ক্লিক হলে + অথবা - চিহ্ন চেঞ্জ হবে
             btn.innerHTML = app.cart.includes(qId) ? '&minus;' : '&plus;';
             btn.title = app.cart.includes(qId) ? 'Remove from cart' : 'Add to cart';
         }
@@ -237,7 +295,7 @@ function updateCartBadge() {
 }
 
 // ==========================================
-// 6. Exam Mode Logic
+// 7. Exam Mode Logic
 // ==========================================
 function startExam() {
     app.examActive = true;
@@ -247,7 +305,6 @@ function startExam() {
     document.getElementById('examHeader').style.display = 'flex';
     document.getElementById('examResultBox').style.display = 'none';
     
-    // Auto calculate time: 30 seconds per question on current page
     let currentQuestionsCount = Math.min(app.perPage, app.filteredData.length - ((app.page - 1) * app.perPage));
     app.examTimeLeft = currentQuestionsCount * 30; 
     
@@ -306,11 +363,11 @@ function submitExam() {
     document.getElementById('examHeader').style.display = 'none';
     document.getElementById('mainControls').style.display = 'flex';
     
-    render(); // Re-render to show correct/wrong
+    render(); 
 }
 
 // ==========================================
-// 7. Render & Filter Engine
+// 8. Render & Filter Engine
 // ==========================================
 function runFilter() {
     var res = app.data.filter(function(q) {
@@ -351,7 +408,8 @@ function render() {
     }
 
     var totalPages = Math.ceil(sourceData.length / app.perPage);
-    if(app.page > totalPages) app.page = totalPages;
+    if(app.page > totalPages) { app.page = totalPages; updateURL(); } // Sync URL if page exceeds limit
+    
     var start = (app.page - 1) * app.perPage;
     var pageItems = sourceData.slice(start, start + app.perPage);
 
@@ -364,7 +422,6 @@ function createCard(q, container, index) {
     div.className = 'q-card';
     
     var isAdded = app.cart.includes(q.id);
-    // Add/Remove Cart Button (Fixed text instead of SVG)
     var cartBtn = `<button class="cart-toggle-btn ${isAdded ? 'added' : ''}" data-qid="${q.id}" onclick="toggleCart(${q.id})" title="${isAdded ? 'Remove from cart' : 'Add to cart'}">
         ${isAdded ? '&minus;' : '&plus;'}
     </button>`;
@@ -374,7 +431,6 @@ function createCard(q, container, index) {
     meta.innerHTML = `<span>${q.cat} &bull; ${q.topic}</span> <span>#${index}</span>`;
     div.appendChild(meta);
 
-    // TTS SVG Icon Button
     let fullTextToRead = q.title + " অপশনগুলো হলো: " + q.opts.join(", ");
     let ttsBtn = `<button class="tts-btn" onclick="readAloud('${fullTextToRead.replace(/'/g, "\\'")}')" title="Read Aloud">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
@@ -415,7 +471,7 @@ function createCard(q, container, index) {
                 if(q.desc) { feedback.style.display = 'block'; feedback.innerHTML = "<b>ব্যাখ্যা:</b> " + q.desc; }
             }
         }
-        else { // Quiz Mode
+        else { 
             btn.onclick = function() {
                 var siblings = optsDiv.querySelectorAll('.opt-btn');
                 siblings.forEach(sb => sb.disabled = true);
@@ -440,7 +496,7 @@ function createCard(q, container, index) {
 }
 
 // ==========================================
-// 8. Sidebar Tree Logic
+// 9. Sidebar Tree Logic
 // ==========================================
 function buildSidebarTree() {
     var ul = document.getElementById('categoryTree');
@@ -453,14 +509,19 @@ function buildSidebarTree() {
 
         var li = document.createElement('li');
         li.className = 'tree-item';
-        li.innerHTML = `<div class="tree-parent"><span>${cat}</span> <span class="badge">${total}</span></div>`;
+        
+        // Highlight active category
+        var isActiveCat = (app.currCat === cat) ? 'style="color:var(--primary-color); font-weight:bold;"' : '';
+        li.innerHTML = `<div class="tree-parent" ${isActiveCat}><span>${cat}</span> <span class="badge">${total}</span></div>`;
         
         var childUl = document.createElement('ul');
         childUl.className = 'tree-children';
+        if (app.currCat === cat) childUl.classList.add('open');
 
         for (var topic in topics) {
             var tLi = document.createElement('li');
             tLi.className = 'tree-child';
+            if(app.currTopic === topic) tLi.style.cssText = "color:var(--primary-color); font-weight:bold; border-left: 2px solid var(--primary-color);";
             tLi.innerHTML = `${topic} <small>(${topics[topic]})</small>`;
             tLi.onclick = (function(c, t) { return function(e) { e.stopPropagation(); setFilter(c, t); }; })(cat, topic);
             childUl.appendChild(tLi);
@@ -480,7 +541,11 @@ function setFilter(cat, topic) {
     app.currTopic = topic;
     app.isCartView = false;
     app.page = 1;
+    
+    updateURL();  // <-- Update URL immediately when filtering
     runFilter();
+    buildSidebarTree(); // Refresh Sidebar highlighting
+    
     if(window.innerWidth < 768) {
         document.getElementById('appSidebar').classList.remove('show');
         document.getElementById('sidebarOverlay').classList.remove('show');
@@ -488,30 +553,26 @@ function setFilter(cat, topic) {
 }
 
 // ==========================================
-// 9. Utilities (Pagination, AJAX, Security)
+// 10. Utilities (Pagination, AJAX, Security)
 // ==========================================
 function renderPagination(total) {
     var box = document.getElementById('paginationControls');
     box.innerHTML = '';
-    if(total <= 1 || app.examActive) return; // Hide pagination during active exam
+    if(total <= 1 || app.examActive) return; 
 
-    // Prev Button
     var prev = document.createElement('button');
     prev.className = 'page-btn'; prev.textContent = "Prev";
     prev.disabled = app.page === 1;
-    prev.onclick = () => { app.page--; render(); document.getElementById('mainScroll').scrollTo(0,0); };
+    prev.onclick = () => { app.page--; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
-    // Page Info
     var info = document.createElement('span');
     info.innerHTML = ` Page ${app.page} of ${total} `;
 
-    // Next Button
     var next = document.createElement('button');
     next.className = 'page-btn'; next.textContent = "Next";
     next.disabled = app.page === total;
-    next.onclick = () => { app.page++; render(); document.getElementById('mainScroll').scrollTo(0,0); };
+    next.onclick = () => { app.page++; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
-    // --- JUMP TO PAGE FEATURE ---
     var jumpContainer = document.createElement('div');
     jumpContainer.style.display = "flex";
     jumpContainer.style.gap = "5px";
@@ -529,11 +590,11 @@ function renderPagination(total) {
     jumpBtn.className = 'page-btn';
     jumpBtn.textContent = "Go";
     
-    // Go বাটনে ক্লিক করলে অথবা Enter চাপলে পেজ পরিবর্তন হবে
     var goToPage = () => {
         var p = parseInt(jumpInput.value);
         if(p >= 1 && p <= total) {
             app.page = p;
+            updateURL(); // <-- Update URL on jump
             render();
             document.getElementById('mainScroll').scrollTo(0,0);
         } else {
@@ -546,14 +607,12 @@ function renderPagination(total) {
 
     jumpContainer.appendChild(jumpInput);
     jumpContainer.appendChild(jumpBtn);
-    // -----------------------------
-
-    // Append everything to the box
+    
     box.appendChild(prev); 
     box.appendChild(info); 
     box.appendChild(next);
-    box.appendChild(jumpContainer); // Jump To Page যুক্ত করা হলো
-        }
+    box.appendChild(jumpContainer); 
+}
 
 function renderSkeleton() {
     var container = document.getElementById('questionList');
@@ -589,23 +648,18 @@ function setupSecurity() {
         document.body.style.filter = document.hidden ? 'blur(8px)' : 'none';
     });
 }
+
 // ==========================================
-// 10. Advanced Print Formatting
+// 11. Advanced Print Formatting
 // ==========================================
 function printQuestions() {
     var format = document.getElementById('printFormatSelect').value;
     var body = document.body;
 
-    // আগে যদি কোনো প্রিন্ট ক্লাস থাকে তা মুছে ফেলা
     body.classList.remove('print-simple', 'print-grid', 'print-twocol');
-    
-    // ইউজার যে ফরম্যাট সিলেক্ট করেছে সেই ক্লাস বডিতে যুক্ত করা
     body.classList.add('print-' + format);
-    
-    // প্রিন্ট ডায়ালগ ওপেন করা
     window.print();
     
-    // প্রিন্ট শেষে (বা ক্যানসেল করলে) ক্লাস রিমুভ করে আগের অবস্থায় ফিরিয়ে আনা
     setTimeout(() => {
         body.classList.remove('print-' + format);
     }, 1000);
