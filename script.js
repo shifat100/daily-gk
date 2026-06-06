@@ -194,17 +194,35 @@ function setupEventListeners() {
 // ==========================================
 function startIncrementalLoad() {
     ajaxGet('data/main.json', function(cats) {
-        var fileTasks = [];
+        // ক্যাটাগরিগুলোর ক্রমানুসার ধরে রাখার জন্য একটি অ্যারে তৈরি করছি
+        var tasksPerCat = new Array(cats.length);
         var pendingCats = cats.length;
 
-        cats.forEach(function(cat) {
-            app.treeData[cat.title] = {};
+        cats.forEach(function(cat, index) {
+            // ক্যাটাগরি ডুপ্লিকেট হলে (যেমন: "সাধারণ জ্ঞান") যেন আগের ডাটা মুছে না যায়
+            if (!app.treeData[cat.title]) {
+                app.treeData[cat.title] = {};
+            }
+
             ajaxGet(cat.path, function(files) {
+                var currentCatTasks = [];
                 files.forEach(function(f) {
-                    fileTasks.push({ url: f.path, cat: cat.title, topic: f.title });
+                    currentCatTasks.push({ url: f.path, cat: cat.title, topic: f.title });
                 });
+                
+                // মূল ইনডেক্স অনুযায়ী টাস্কগুলো স্টোর করা হচ্ছে
+                tasksPerCat[index] = currentCatTasks;
+
                 pendingCats--;
                 if (pendingCats === 0) {
+                    // সব ক্যাটাগরি লোড শেষ হলে main.json-এর ক্রমানুসারে fileTasks সাজানো হচ্ছে
+                    var fileTasks = [];
+                    for (var i = 0; i < tasksPerCat.length; i++) {
+                        if (tasksPerCat[i]) {
+                            fileTasks = fileTasks.concat(tasksPerCat[i]);
+                        }
+                    }
+                    
                     app.totalFiles = fileTasks.length;
                     processFilesSequentially(fileTasks, 0);
                 }
