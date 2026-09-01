@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#0061a4">
     <link rel="manifest" href="manifest.json">
     
-    <title>Daily GK MCQ | General Knowledge & Competitive Exam Prep</title>
+    <title>Daily GK MCQ | General Knowledge & Exam Prep</title>
     <meta name="description" content="Ultimate General Knowledge (GK) practice app. Science, Geography, History, and IT MCQs for competitive exams and daily quizzes.">
     <meta name="keywords" content="General Knowledge, GK MCQ, Quiz App, Daily GK, Competitive Exams, Study Mode, Exam Mode">
     <meta name="author" content="Daily GK">
@@ -19,7 +19,7 @@
 
     <style>
         /* ============================================================
-           ANDROID MATERIAL DESIGN 3 (MD3) NATIVE SHELL
+           ANDROID MATERIAL DESIGN 3 (MD3) FULL SYSTEM
            ============================================================ */
         :root {
             --font-main: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -50,9 +50,9 @@
 
             --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
             --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
-            --elevation-3: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.06);
+            --elevation-3: 0 10px 20px rgba(0,0,0,0.2), 0 6px 6px rgba(0,0,0,0.1);
 
-            --header-height: 60px;
+            --header-height: 58px;
             --bottom-nav-height: 60px;
         }
 
@@ -102,7 +102,7 @@
             -webkit-user-select: none;
         }
 
-        /* Full App Frame Container */
+        /* Native App Frame Container */
         .app-root {
             display: flex;
             flex-direction: column;
@@ -124,7 +124,7 @@
         .svg-icon.sm { width: 16px; height: 16px; }
         .svg-icon.md { width: 26px; height: 26px; }
 
-        /* Top Bar */
+        /* Top App Bar */
         .md-top-app-bar {
             height: var(--header-height);
             background: var(--md-surface);
@@ -146,7 +146,7 @@
             flex-direction: column;
         }
         .brand-title {
-            font-size: 1.18rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--md-primary);
             line-height: 1.2;
@@ -159,15 +159,15 @@
         .app-bar-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .md-icon-btn {
             background: transparent;
             border: none;
             color: var(--md-on-surface);
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: var(--radius-full);
             display: inline-flex;
             align-items: center;
@@ -182,11 +182,11 @@
         .badge-btn { position: relative; }
         .md-badge {
             position: absolute;
-            top: 4px;
-            right: 4px;
+            top: 2px;
+            right: 2px;
             background: var(--md-primary);
             color: var(--md-on-primary);
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: bold;
             min-width: 18px;
             height: 18px;
@@ -205,7 +205,7 @@
             padding: 7px 12px;
             border-radius: var(--radius-full);
             font-family: inherit;
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             font-weight: 600;
             outline: none;
             cursor: pointer;
@@ -237,33 +237,55 @@
         .md-btn-danger-tonal { background: var(--md-wrong-bg); color: var(--md-wrong); }
         .w-100 { width: 100%; }
 
-        /* Main Workspace Structure (Flex: 1) */
+        /* Main App Workspace (Flex Layout) */
         .md-app-layout {
             display: flex;
             flex: 1;
-            min-height: 0; /* CRITICAL: Enables clean scrolling without overflow */
+            min-height: 0;
             position: relative;
             overflow: hidden;
         }
 
-        /* Sidebar / Navigation Drawer */
+        /* ============================================================
+           SIDEBAR / NATIVE NAVIGATION DRAWER (FULL SCREEN MODAL)
+           ============================================================ */
         .md-navigation-drawer {
-            width: 300px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 82%;
+            max-width: 320px;
+            height: 100%;
+            height: 100dvh;
             background: var(--md-surface-container);
             border-right: 1px solid var(--md-outline-variant);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 30;
-            flex-shrink: 0;
-            height: 100%;
+            z-index: 1200; /* Overlays header & bottom nav cleanly */
+            transform: translateX(-100%);
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--elevation-3);
         }
+        .md-navigation-drawer.show {
+            transform: translateX(0);
+        }
+
         .drawer-header {
-            padding: 16px 16px 10px;
+            padding: 16px;
             border-bottom: 1px solid var(--md-outline-variant);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--md-surface);
+            flex-shrink: 0;
+        }
+        .drawer-title-group {
+            display: flex;
+            flex-direction: column;
         }
         .drawer-title { font-size: 1.05rem; font-weight: 700; color: var(--md-on-surface); }
-        .drawer-subtitle { font-size: 0.75rem; color: var(--md-on-surface-variant); margin-top: 2px; }
+        .drawer-subtitle { font-size: 0.72rem; color: var(--md-on-surface-variant); margin-top: 2px; }
         
         .drawer-content {
             flex: 1;
@@ -279,6 +301,7 @@
             flex-direction: column;
             gap: 10px;
             background: var(--md-surface);
+            flex-shrink: 0;
         }
 
         .download-platforms-title {
@@ -319,37 +342,51 @@
             border-color: var(--md-primary);
         }
 
+        .md-scrim {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .md-scrim.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Scrolled Main View Area */
         .md-main-content {
             flex: 1;
             height: 100%;
             overflow-y: auto;
-            padding: 16px;
+            padding: 14px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
         
         .content-container {
-            max-width: 860px;
+            max-width: 840px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            padding-bottom: 24px;
+            gap: 12px;
+            padding-bottom: 16px;
         }
 
-        /* Cards & Search */
+        /* Cards & Search Deck */
         .md-card {
             background: var(--md-surface-container);
             border-radius: var(--radius-md);
-            padding: 16px;
+            padding: 14px 16px;
             box-shadow: var(--elevation-1);
             border: 1px solid var(--md-outline-variant);
         }
         .controls-card {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
         .search-field-wrapper {
             position: relative;
@@ -363,12 +400,12 @@
         }
         .md-search-input {
             width: 100%;
-            padding: 11px 16px 11px 44px;
+            padding: 10px 16px 10px 42px;
             background: var(--md-surface);
             border: 1px solid var(--md-outline-variant);
             border-radius: var(--radius-full);
             color: var(--md-on-surface);
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             outline: none;
             font-family: inherit;
         }
@@ -393,11 +430,11 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: var(--radius-full);
             border: 1px solid var(--md-outline-variant);
             background: var(--md-surface);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 500;
             color: var(--md-on-surface-variant);
             transition: 0.2s;
@@ -423,7 +460,7 @@
             background: transparent;
             color: inherit;
             font-family: inherit;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 500;
             outline: none;
             cursor: pointer;
@@ -460,7 +497,7 @@
             gap: 6px;
         }
 
-        /* Questions Stream */
+        /* Question Stream */
         .questions-stream {
             display: flex;
             flex-direction: column;
@@ -496,7 +533,7 @@
             align-items: flex-start;
             justify-content: space-between;
             gap: 12px;
-            font-size: 1rem;
+            font-size: 0.98rem;
             font-weight: 600;
             line-height: 1.45;
             margin-bottom: 12px;
@@ -507,7 +544,7 @@
             gap: 2px;
         }
 
-        /* Options */
+        /* MCQ Options */
         .opts-deck {
             display: grid;
             grid-template-columns: 1fr;
@@ -519,9 +556,9 @@
             background: var(--md-surface);
             border: 1px solid var(--md-outline-variant);
             border-radius: var(--radius-md);
-            padding: 10px 14px;
+            padding: 9px 12px;
             font-family: inherit;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             color: var(--md-on-surface);
             cursor: pointer;
             display: flex;
@@ -542,7 +579,7 @@
             border-radius: var(--radius-full);
             background: var(--md-surface-container);
             border: 1px solid var(--md-outline-variant);
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--md-on-surface-variant);
             flex-shrink: 0;
@@ -577,16 +614,16 @@
         }
 
         .q-explanation-box {
-            margin-top: 12px;
-            padding: 10px 14px;
+            margin-top: 10px;
+            padding: 9px 12px;
             background: var(--md-surface-container-high);
             border-left: 3px solid var(--md-primary);
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             line-height: 1.4;
         }
 
-        /* Exam Mode Header & Result */
+        /* Exam Mode Banner */
         .exam-active-banner {
             display: flex;
             align-items: center;
@@ -599,7 +636,7 @@
             gap: 10px;
         }
         .timer-digits small { display: block; font-size: 0.68rem; color: var(--md-on-surface-variant); text-transform: uppercase; font-weight: 600; }
-        .timer-digits span { font-size: 1.3rem; font-weight: 700; color: var(--md-primary); }
+        .timer-digits span { font-size: 1.25rem; font-weight: 700; color: var(--md-primary); }
 
         .pulse { animation: pulseAnim 1.5s infinite; color: var(--md-primary); }
         @keyframes pulseAnim {
@@ -610,14 +647,14 @@
 
         .exam-score-card {
             text-align: center;
-            padding: 20px;
+            padding: 18px;
             border: 2px solid var(--md-primary);
         }
         .score-stat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 14px 0;
+            gap: 10px;
+            margin: 12px 0;
         }
         .score-pill {
             padding: 10px;
@@ -626,7 +663,7 @@
             flex-direction: column;
             gap: 4px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
         }
         .score-pill.correct { background: var(--md-correct-bg); color: var(--md-correct); }
         .score-pill.wrong { background: var(--md-wrong-bg); color: var(--md-wrong); }
@@ -639,7 +676,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 8px;
-            padding: 10px 0;
+            padding: 8px 0;
         }
         .jump-group {
             display: inline-flex;
@@ -656,7 +693,7 @@
             color: var(--md-on-surface);
             font-family: inherit;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
         }
 
         /* Sidebar Tree */
@@ -666,7 +703,7 @@
             border-radius: var(--radius-md);
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -678,7 +715,7 @@
         .tree-sub-node {
             padding: 7px 12px;
             border-radius: var(--radius-sm);
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             color: var(--md-on-surface-variant);
             cursor: pointer;
             display: flex;
@@ -713,7 +750,7 @@
             align-items: center;
             gap: 2px;
             font-family: inherit;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
             padding: 6px 12px;
@@ -727,7 +764,7 @@
         .md-fab {
             position: fixed;
             bottom: 74px;
-            right: 18px;
+            right: 16px;
             width: 46px;
             height: 46px;
             border-radius: var(--radius-md);
@@ -753,15 +790,15 @@
             transform: translateX(-50%) translateY(40px);
             background: var(--md-on-surface);
             color: var(--md-surface);
-            padding: 9px 18px;
+            padding: 8px 18px;
             border-radius: var(--radius-full);
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             font-weight: 500;
             box-shadow: var(--elevation-3);
             opacity: 0;
             visibility: hidden;
             transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
+            z-index: 2000;
             text-align: center;
             white-space: nowrap;
         }
@@ -771,21 +808,10 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        .md-scrim {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            z-index: 25;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.25s;
-        }
-        .md-scrim.show { opacity: 1; visibility: visible; }
-
         .skeleton-card {
             background: var(--md-surface-container);
             border-radius: var(--radius-md);
-            height: 140px;
+            height: 130px;
             animation: pulseSkeleton 1.5s infinite ease-in-out;
         }
         @keyframes pulseSkeleton {
@@ -794,22 +820,22 @@
             100% { opacity: 0.6; }
         }
 
-        /* Responsive Layout Behavior */
-        @media (max-width: 768px) {
-            .md-navigation-drawer {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                transform: translateX(-100%);
-            }
-            .md-navigation-drawer.show { transform: translateX(0); }
+        /* Responsive Layout Rules */
+        @media (max-width: 991px) {
             .md-bottom-nav { display: flex; }
             .mode-select-wrapper { display: none; }
             .print-actions { margin-left: 0; width: 100%; justify-content: space-between; }
         }
 
-        @media (min-width: 769px) {
+        @media (min-width: 992px) {
+            .md-navigation-drawer {
+                position: relative;
+                transform: none;
+                z-index: 10;
+                width: 280px;
+                box-shadow: none;
+            }
+            .drawer-header button { display: none; }
             .md-fab { bottom: 24px; }
             .md-toast { bottom: 30px; }
         }
@@ -817,7 +843,7 @@
         /* Print Formats */
         @media print {
             .md-top-app-bar, .md-bottom-nav, .controls-card, .md-pagination-bar, 
-            .app-footer, .md-fab, #appSidebar, .q-action-btns, #sidebarOverlay,
+            .app-footer, .md-fab, .md-navigation-drawer, .q-action-btns, .md-scrim,
             #examHeader, #topicHeaderCard, .drawer-footer { display: none !important; }
             
             body, .app-root, .md-app-layout, .md-main-content, .content-container {
@@ -888,11 +914,16 @@
         <!-- 2. MIDDLE WORKSPACE -->
         <div class="md-app-layout">
             
-            <!-- SIDEBAR / DRAWER -->
+            <!-- SIDEBAR / FULL SCREEN MODAL NAVIGATION DRAWER -->
             <aside class="md-navigation-drawer" id="appSidebar">
                 <div class="drawer-header">
-                    <div class="drawer-title">Categories & Topics</div>
-                    <div class="drawer-subtitle">Select a topic to start practicing</div>
+                    <div class="drawer-title-group">
+                        <div class="drawer-title">Categories & Topics</div>
+                        <div class="drawer-subtitle">Select a topic to practice</div>
+                    </div>
+                    <button class="md-icon-btn" onclick="closeSidebarDrawer()" title="Close drawer">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
                 </div>
                 
                 <div class="drawer-content">
@@ -903,7 +934,7 @@
                     </ul>
                 </div>
 
-                <!-- DRAWER FOOTER: DIRECT PWA INSTALL & PLATFORMS -->
+                <!-- DRAWER FOOTER: DIRECT PWA INSTALL & PLATFORM DOWNLOADS -->
                 <div class="drawer-footer">
                     <!-- Direct PWA Install Button -->
                     <button id="installBtn" class="md-btn md-btn-primary w-100">
@@ -949,9 +980,9 @@
             </aside>
 
             <!-- SCRIM OVERLAY -->
-            <div id="sidebarOverlay" class="md-scrim"></div>
+            <div id="sidebarOverlay" class="md-scrim" onclick="closeSidebarDrawer()"></div>
 
-            <!-- MAIN SCROLLABLE CONTENT (100% IN-VIEW) -->
+            <!-- MAIN SCROLLABLE CONTENT (100% IN-VIEW, NEVER CUT OFF) -->
             <main class="md-main-content" id="mainScroll">
                 <div class="content-container">
 
@@ -1046,22 +1077,22 @@
 
                     <!-- SEO DESCRIPTION CARD -->
                     <article class="md-card" id="seoTextSec">
-                        <h2 style="font-size:1.05rem; font-weight:700; margin-bottom:6px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
-                        <p style="font-size:0.86rem; color:var(--md-on-surface-variant); line-height:1.5;">
+                        <h2 style="font-size:1.02rem; font-weight:700; margin-bottom:6px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
+                        <p style="font-size:0.84rem; color:var(--md-on-surface-variant); line-height:1.5;">
                             Welcome to <strong>Daily GK MCQ</strong>. Master subjects including General Science, Geography, History, Information Technology, and Current Affairs with our interactive Quiz, Study, and Exam modes.
                         </p>
                     </article>
 
                     <!-- FOOTER -->
-                    <footer class="app-footer" style="text-align:center; padding:12px 0; font-size:0.78rem; color:var(--md-on-surface-variant);">
+                    <footer class="app-footer" style="text-align:center; padding:10px 0; font-size:0.76rem; color:var(--md-on-surface-variant);">
                         <div>&copy; 2026 Daily GK MCQ &bull; All Rights Reserved</div>
-                        <div style="margin-top:4px;">Last Updated: <span id="lastUpdateDate">Loading...</span></div>
+                        <div style="margin-top:3px;">Last Updated: <span id="lastUpdateDate">Loading...</span></div>
                     </footer>
                 </div>
             </main>
         </div>
 
-        <!-- 3. BOTTOM NAVIGATION (DOCKED CLEANLY AT BOTTOM OF SCREEN) -->
+        <!-- 3. BOTTOM NAVIGATION (IN-FLOW FLEX ELEMENT) -->
         <nav class="md-bottom-nav">
             <button class="nav-item active" onclick="setModeNav('quiz')">
                 <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1075,7 +1106,7 @@
                 <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                 <span>Exam</span>
             </button>
-            <button class="nav-item" onclick="openSidebarMobile()">
+            <button class="nav-item" onclick="openSidebarDrawer()">
                 <svg class="svg-icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
                 <span>Topics</span>
             </button>
@@ -1090,7 +1121,7 @@
     <!-- TOAST NOTIFICATION -->
     <div id="mdToast" class="md-toast"></div>
 
-    <!-- SCRIPT ENGINE -->
+    <!-- JAVASCRIPT ENGINE -->
     <script>
         "use strict";
 
@@ -1123,7 +1154,7 @@
         // PWA Install Prompt Holder
         let deferredPrompt = null;
 
-        // Fallback demo questions if JSON files are not deployed locally
+        // Built-in Demo Data (Used if data/main.json is unreachable)
         const sampleFallbackData = [
             {
                 id: 0,
@@ -1175,7 +1206,7 @@
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 2600);
+            }, 2500);
         }
 
         function initDarkMode() {
@@ -1261,19 +1292,7 @@
 
         function setupEventListeners() {
             var toggle = document.getElementById('menuToggle');
-            var sidebar = document.getElementById('appSidebar');
-            var overlay = document.getElementById('sidebarOverlay');
-
-            var closeDrawer = () => {
-                sidebar.classList.remove('show');
-                overlay.classList.remove('show');
-            };
-
-            if(toggle) toggle.onclick = () => {
-                sidebar.classList.toggle('show');
-                overlay.classList.toggle('show');
-            };
-            if(overlay) overlay.onclick = closeDrawer;
+            if(toggle) toggle.onclick = openSidebarDrawer;
 
             var modeSelect = document.getElementById('viewMode');
             if (modeSelect) {
@@ -1343,6 +1362,16 @@
             updateCartBadge();
         }
 
+        window.openSidebarDrawer = function() {
+            document.getElementById('appSidebar').classList.add('show');
+            document.getElementById('sidebarOverlay').classList.add('show');
+        };
+
+        window.closeSidebarDrawer = function() {
+            document.getElementById('appSidebar').classList.remove('show');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        };
+
         function switchMode(newMode) {
             app.mode = newMode;
             var modeSelect = document.getElementById('viewMode');
@@ -1365,11 +1394,6 @@
 
         window.setModeNav = function(mode) {
             switchMode(mode);
-        };
-
-        window.openSidebarMobile = function() {
-            document.getElementById('appSidebar').classList.add('show');
-            document.getElementById('sidebarOverlay').classList.add('show');
         };
 
         function startIncrementalLoad() {
@@ -1621,7 +1645,7 @@
                         <span>Skipped: ${skipped}</span>
                     </div>
                 </div>
-                <p style="font-size:0.85rem; color:var(--md-on-surface-variant);">Review your answers in detail below.</p>
+                <p style="font-size:0.84rem; color:var(--md-on-surface-variant);">Review your answers in detail below.</p>
             `;
             resBox.style.display = 'block';
             document.getElementById('examHeader').style.display = 'none';
@@ -1844,9 +1868,7 @@
             updateURL();
             runFilter();
             buildSidebarTree();
-            
-            document.getElementById('appSidebar').classList.remove('show');
-            document.getElementById('sidebarOverlay').classList.remove('show');
+            closeSidebarDrawer();
         }
 
         function renderPagination(total) {
@@ -1861,7 +1883,7 @@
             prev.onclick = () => { app.page--; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
             var info = document.createElement('span');
-            info.style.cssText = "font-size:0.85rem; font-weight:600; padding:0 8px;";
+            info.style.cssText = "font-size:0.84rem; font-weight:600; padding:0 8px;";
             info.innerHTML = `Page ${app.page} of ${total}`;
 
             var next = document.createElement('button');
@@ -1947,7 +1969,6 @@
                 navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
             }
 
-            // Capture beforeinstallprompt event
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
@@ -1966,7 +1987,6 @@
                     } else if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
                         showToast('App is already installed!');
                     } else {
-                        // Directly trigger browser install prompt if available
                         showToast('Initiating installation...');
                     }
                 });
@@ -1987,4 +2007,4 @@
         }
     </script>
 </body>
-    </html>
+</html>
