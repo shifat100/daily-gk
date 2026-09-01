@@ -1275,8 +1275,13 @@
 
         function readAloud(text) {
             if (!window.speechSynthesis) {
-                showToast('Speech synthesis is not supported on your browser.');
+                if (typeof AndroidBridge !== "undefined" && typeof AndroidBridge.speak === "function") {
+        AndroidBridge.speak(text);
+        
+    } else {
+            showToast('Speech synthesis is not supported on your browser.');
                 return;
+                }
             }
             window.speechSynthesis.cancel(); 
             let utterance = new SpeechSynthesisUtterance(text);
