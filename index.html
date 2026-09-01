@@ -1750,8 +1750,15 @@
                 return;
             }
 
-            var totalPages = Math.ceil(sourceData.length / app.perPage);
-            if(app.page > totalPages) { app.page = totalPages; updateURL(); }
+            var totalPages = Math.ceil(sourceData.length / app.perPage) || 1;
+    
+
+    if (!app.isLoading) {
+        if (app.page > totalPages) { 
+            app.page = totalPages; 
+            updateURL(); 
+        }
+    }
             
             var start = (app.page - 1) * app.perPage;
             var pageItems = sourceData.slice(start, start + app.perPage);
