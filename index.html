@@ -1177,6 +1177,8 @@
             
             page: 1,
             perPage: 10,
+            isLoading: true,
+            targetPage: 1,
             
             filesLoaded: 0,
             totalFiles: 0,
@@ -1284,17 +1286,18 @@
         }
 
         function readURLParams() {
-            const params = new URLSearchParams(window.location.search);
-            app.currCat = params.get('cat') || null;
-            app.currTopic = params.get('topic') || null;
-            app.page = parseInt(params.get('page')) || 1;
-            app.mode = params.get('mode') || 'quiz';
-            app.isCartView = params.get('cart') === 'true';
+    const params = new URLSearchParams(window.location.search);
+    app.currCat = params.get('cat') || null;
+    app.currTopic = params.get('topic') || null;
+    app.page = parseInt(params.get('page')) || 1;
+    app.targetPage = app.page; // <-- এই লাইনটি যুক্ত করুন (ইউআরএল-এর পেজ মনে রাখার জন্য)
+    app.mode = params.get('mode') || 'quiz';
+    app.isCartView = params.get('cart') === 'true';
 
-            var modeSelect = document.getElementById('viewMode');
-            if(modeSelect) modeSelect.value = app.mode;
-            syncBottomNav(app.mode);
-            updateSEO();
+    var modeSelect = document.getElementById('viewMode');
+    if(modeSelect) modeSelect.value = app.mode;
+    syncBottomNav(app.mode);
+    updateSEO();
         }
 
         function updateURL() {
@@ -1488,22 +1491,25 @@
         }
 
         function processFilesSequentially(tasks, index) {
-            if (index >= tasks.length) {
-                document.getElementById('lastUpdateDate').textContent = new Date().toLocaleDateString('en-US');
-                return;
-            }
+    if (index >= tasks.length) {
+        app.isLoading = false;      // <-- লোডিং শেষ চিহ্নিত করা
+        app.page = app.targetPage;  // <-- ইউআরএল-এর মূল পেজে ফিরে যাওয়া
+        runFilter();                // <-- পেজ সহ পুনরায় রেন্ডার
+        document.getElementById('lastUpdateDate').textContent = new Date().toLocaleDateString('en-US');
+        return;
+    }
 
-            var task = tasks[index];
-            ajaxGet(task.url, function(text) {
-                parseAndStore(text, task.cat, task.topic);
-                app.filesLoaded++;
-                buildSidebarTree();
-                if(!app.isCartView) runFilter();
-                processFilesSequentially(tasks, index + 1);
-            }, function() {
-                processFilesSequentially(tasks, index + 1);
-            }, true);
-        }
+    var task = tasks[index];
+    ajaxGet(task.url, function(text) {
+        parseAndStore(text, task.cat, task.topic);
+        app.filesLoaded++;
+        buildSidebarTree();
+        if(!app.isCartView) runFilter();
+        processFilesSequentially(tasks, index + 1);
+    }, function() {
+        processFilesSequentially(tasks, index + 1);
+    }, true);
+            }
 
         function parseAndStore(text, cat, topic) {
             var lines = text.replace(/\r\n/g, '\n').split('\n');
