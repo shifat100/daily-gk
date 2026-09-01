@@ -19,7 +19,7 @@ Built with pure Vanilla HTML5, CSS3, and JavaScript, it runs completely client-s
 ## 🚀 Live Demo & Links
 
 - 🌐 **Live Web App:** [https://shifat100.github.io/daily-gk/](https://shifat100.github.io/daily-gk/)
-- ⚡ **Fast Mode Version:** [https://shifat100.github.io/daily-gk/fastmode.html](https://shifat100.github.io/daily-gk/index1.html)
+- ⚡ **Old Version:** [https://shifat100.github.io/daily-gk/index1.html](https://shifat100.github.io/daily-gk/index1.html)
 
 ---
 
