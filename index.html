@@ -1315,15 +1315,26 @@
         }
 
         function updateSEO() {
-            let titleParts = [];
-            if (app.isCartView) titleParts.push("Saved Questions");
-            else {
-                if (app.currTopic) titleParts.push(app.currTopic);
-                if (app.currCat) titleParts.push(app.currCat);
-            }
-            
-            let baseTitle = "Daily GK MCQ - General Knowledge & Quiz";
-            document.title = titleParts.length > 0 ? `${titleParts.join(' - ')} | ${baseTitle}` : baseTitle;
+    let titleParts = [];
+    if (app.isCartView) {
+        titleParts.push("Saved Questions");
+    } else {
+        if (app.currTopic) titleParts.push(app.currTopic);
+        if (app.currCat) titleParts.push(app.currCat);
+    }
+    
+    let baseTitle = "Daily GK MCQ - General Knowledge & Quiz";
+    let fullTitle = titleParts.length > 0 ? `${titleParts.join(' - ')} | ${baseTitle}` : baseTitle;
+    document.title = fullTitle;
+
+    // Dynamically update Meta Description for better Google indexing
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+        let desc = titleParts.length > 0 
+            ? `Practice MCQs on ${titleParts.join(', ')}. Prepare for competitive exams with Quiz and Exam modes.`
+            : "Master General Knowledge with Daily GK MCQ. Practice Science, Geography, History, and IT questions.";
+        metaDesc.setAttribute("content", desc);
+    }
         }
 
         function setupEventListeners() {
