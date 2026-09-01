@@ -1,3 +1,20 @@
+# Robots.txt for Daily GK MCQ Web App
+# Target Domain: https://shifat100.github.io/daily-gk/
+
 User-agent: *
 Allow: /
+
+# Allow rendering assets (Crucial for Client-Side Rendered SPA)
+Allow: /data/
+Allow: /*.js
+Allow: /*.css
+Allow: /*.json
+Allow: /*.png
+Allow: /*.svg
+
+# Disallow user private local cart view & utility scripts from search index
+Disallow: /*?cart=true
+Disallow: /generate-sitemap.php
+
+# Reference XML Sitemap
 Sitemap: https://shifat100.github.io/daily-gk/sitemap.xml
