@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0061a4">
+    <link rel="manifest" href="manifest.json">
     
     <title>Daily GK MCQ | General Knowledge & Competitive Exam Prep</title>
     <meta name="description" content="Ultimate General Knowledge (GK) practice app. Science, Geography, History, and IT MCQs for competitive exams and daily quizzes.">
@@ -18,7 +19,7 @@
 
     <style>
         /* ============================================================
-           MATERIAL DESIGN 3 (MD3) ANDROID UI SYSTEM
+           ANDROID MATERIAL DESIGN 3 (MD3) NATIVE SHELL
            ============================================================ */
         :root {
             --font-main: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -51,8 +52,8 @@
             --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
             --elevation-3: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.06);
 
-            --header-height: 64px;
-            --bottom-nav-height: 64px;
+            --header-height: 60px;
+            --bottom-nav-height: 60px;
         }
 
         [data-theme="dark"] {
@@ -88,18 +89,28 @@
 
         html, body {
             height: 100%;
-            height: 100dvh; /* Accurate mobile viewport height */
+            height: 100dvh;
+            width: 100%;
+            overflow: hidden;
         }
 
         body {
             font-family: var(--font-main);
             background-color: var(--md-surface);
             color: var(--md-on-surface);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
+        }
+
+        /* Full App Frame Container */
+        .app-root {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            height: 100dvh;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
         }
 
         /* SVG Utility */
@@ -113,7 +124,7 @@
         .svg-icon.sm { width: 16px; height: 16px; }
         .svg-icon.md { width: 26px; height: 26px; }
 
-        /* Top App Bar */
+        /* Top Bar */
         .md-top-app-bar {
             height: var(--header-height);
             background: var(--md-surface);
@@ -135,14 +146,14 @@
             flex-direction: column;
         }
         .brand-title {
-            font-size: 1.2rem;
+            font-size: 1.18rem;
             font-weight: 700;
             color: var(--md-primary);
             line-height: 1.2;
             letter-spacing: -0.2px;
         }
         .brand-subtitle {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: var(--md-on-surface-variant);
         }
         .app-bar-actions {
@@ -186,15 +197,15 @@
             padding: 0 4px;
         }
 
-        /* Material Inputs & Selects */
+        /* Material UI Controls */
         .md-select, .md-select-inline {
             background: var(--md-surface-container);
             color: var(--md-on-surface);
             border: 1px solid var(--md-outline-variant);
-            padding: 8px 12px;
+            padding: 7px 12px;
             border-radius: var(--radius-full);
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             font-weight: 600;
             outline: none;
             cursor: pointer;
@@ -226,13 +237,13 @@
         .md-btn-danger-tonal { background: var(--md-wrong-bg); color: var(--md-wrong); }
         .w-100 { width: 100%; }
 
-        /* App Layout */
+        /* Main Workspace Structure (Flex: 1) */
         .md-app-layout {
             display: flex;
             flex: 1;
-            overflow: hidden;
+            min-height: 0; /* CRITICAL: Enables clean scrolling without overflow */
             position: relative;
-            height: calc(100% - var(--header-height));
+            overflow: hidden;
         }
 
         /* Sidebar / Navigation Drawer */
@@ -248,7 +259,7 @@
             height: 100%;
         }
         .drawer-header {
-            padding: 18px 16px 12px;
+            padding: 16px 16px 10px;
             border-bottom: 1px solid var(--md-outline-variant);
         }
         .drawer-title { font-size: 1.05rem; font-weight: 700; color: var(--md-on-surface); }
@@ -258,6 +269,7 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px 8px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .drawer-footer {
@@ -270,7 +282,7 @@
         }
 
         .download-platforms-title {
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 700;
             color: var(--md-on-surface-variant);
             text-transform: uppercase;
@@ -307,14 +319,13 @@
             border-color: var(--md-primary);
         }
 
-        /* Main View - FIXED OVERFLOW & CUTOFF */
+        /* Scrolled Main View Area */
         .md-main-content {
             flex: 1;
+            height: 100%;
             overflow-y: auto;
             padding: 16px;
             scroll-behavior: smooth;
-            /* Extra bottom space so bottom navigation never cuts off cards/footer */
-            padding-bottom: calc(var(--bottom-nav-height) + 40px);
             -webkit-overflow-scrolling: touch;
         }
         
@@ -324,9 +335,10 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
+            padding-bottom: 24px;
         }
 
-        /* Cards */
+        /* Cards & Search */
         .md-card {
             background: var(--md-surface-container);
             border-radius: var(--radius-md);
@@ -442,7 +454,6 @@
             font-weight: 600;
             font-size: 0.82rem;
         }
-
         .cart-action-group {
             display: flex;
             align-items: center;
@@ -565,7 +576,6 @@
             font-weight: 600;
         }
 
-        /* Explanation Box */
         .q-explanation-box {
             margin-top: 12px;
             padding: 10px 14px;
@@ -576,7 +586,7 @@
             line-height: 1.4;
         }
 
-        /* Exam Mode Banner & Scorecard */
+        /* Exam Mode Header & Result */
         .exam-active-banner {
             display: flex;
             align-items: center;
@@ -629,7 +639,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 8px;
-            padding: 12px 0;
+            padding: 10px 0;
         }
         .jump-group {
             display: inline-flex;
@@ -682,20 +692,17 @@
             font-weight: 600;
         }
 
-        /* Bottom Nav for Mobile */
+        /* Bottom Nav (IN-FLOW FLEX ITEM ON MOBILE) */
         .md-bottom-nav {
             display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
             height: var(--bottom-nav-height);
             background: var(--md-surface-container);
             border-top: 1px solid var(--md-outline-variant);
             z-index: 100;
             justify-content: space-around;
             align-items: center;
-            padding-bottom: env(safe-area-inset-bottom, 0px);
+            flex-shrink: 0;
+            padding-bottom: max(0px, env(safe-area-inset-bottom));
         }
         .nav-item {
             background: none;
@@ -716,13 +723,13 @@
             font-weight: 700;
         }
 
-        /* FAB & Toast (Positioned above bottom nav on mobile) */
+        /* FAB & Toast */
         .md-fab {
             position: fixed;
-            bottom: calc(var(--bottom-nav-height) + 16px);
+            bottom: 74px;
             right: 18px;
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: var(--radius-md);
             background: var(--md-primary-container);
             color: var(--md-on-primary-container);
@@ -741,7 +748,7 @@
 
         .md-toast {
             position: fixed;
-            bottom: calc(var(--bottom-nav-height) + 20px);
+            bottom: 74px;
             left: 50%;
             transform: translateX(-50%) translateY(40px);
             background: var(--md-on-surface);
@@ -787,10 +794,10 @@
             100% { opacity: 0.6; }
         }
 
-        /* Responsive */
+        /* Responsive Layout Behavior */
         @media (max-width: 768px) {
             .md-navigation-drawer {
-                position: fixed;
+                position: absolute;
                 top: 0;
                 bottom: 0;
                 left: 0;
@@ -803,12 +810,8 @@
         }
 
         @media (min-width: 769px) {
-            .md-fab {
-                bottom: 24px;
-            }
-            .md-toast {
-                bottom: 30px;
-            }
+            .md-fab { bottom: 24px; }
+            .md-toast { bottom: 30px; }
         }
 
         /* Print Formats */
@@ -817,7 +820,7 @@
             .app-footer, .md-fab, #appSidebar, .q-action-btns, #sidebarOverlay,
             #examHeader, #topicHeaderCard, .drawer-footer { display: none !important; }
             
-            body, .md-app-layout, .md-main-content, .content-container {
+            body, .app-root, .md-app-layout, .md-main-content, .content-container {
                 height: auto !important;
                 overflow: visible !important;
                 background: #ffffff !important;
@@ -845,239 +848,239 @@
 </head>
 <body>
 
-    <!-- TOP ANDROID APP BAR -->
-    <header class="md-top-app-bar">
-        <div class="app-bar-leading">
-            <button id="menuToggle" class="md-icon-btn" aria-label="Open Navigation Drawer" title="Categories">
-                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
-            <div class="brand-info">
-                <span class="brand-title">Daily GK</span>
-                <span class="brand-subtitle">General Knowledge & Exam MCQ</span>
-            </div>
-        </div>
-
-        <div class="app-bar-actions">
-            <!-- Mode Switcher (Desktop) -->
-            <div class="mode-select-wrapper">
-                <select id="viewMode" class="md-select">
-                    <option value="quiz">Quiz Mode</option>
-                    <option value="study">Study Mode</option>
-                    <option value="exam">Exam Mode</option>
-                </select>
+    <div class="app-root">
+        <!-- 1. TOP APP BAR -->
+        <header class="md-top-app-bar">
+            <div class="app-bar-leading">
+                <button id="menuToggle" class="md-icon-btn" aria-label="Open Navigation Drawer" title="Categories">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+                <div class="brand-info">
+                    <span class="brand-title">Daily GK</span>
+                    <span class="brand-subtitle">General Knowledge & Exam MCQ</span>
+                </div>
             </div>
 
-            <!-- Dark Theme Toggle -->
-            <button id="darkModeBtn" class="md-icon-btn" aria-label="Toggle Dark Theme" title="Toggle Theme">
-                <svg id="moonIcon" class="svg-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <svg id="sunIcon" class="svg-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
+            <div class="app-bar-actions">
+                <!-- Mode Switcher (Desktop) -->
+                <div class="mode-select-wrapper">
+                    <select id="viewMode" class="md-select">
+                        <option value="quiz">Quiz Mode</option>
+                        <option value="study">Study Mode</option>
+                        <option value="exam">Exam Mode</option>
+                    </select>
+                </div>
 
-            <!-- Bookmarks / Cart -->
-            <button id="cartViewBtn" class="md-icon-btn badge-btn" aria-label="Saved Questions" title="Saved Questions">
-                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span id="cartCount" class="md-badge">0</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- APP SHELL LAYOUT -->
-    <div class="md-app-layout">
-        
-        <!-- SIDEBAR / DRAWER -->
-        <aside class="md-navigation-drawer" id="appSidebar">
-            <div class="drawer-header">
-                <div class="drawer-title">Categories & Topics</div>
-                <div class="drawer-subtitle">Select a topic to start practicing</div>
-            </div>
-            
-            <div class="drawer-content">
-                <ul id="categoryTree" class="md-tree-view">
-                    <li style="padding: 16px; text-align: center; color: var(--md-on-surface-variant);">
-                        <span>Loading topics...</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- DRAWER FOOTER (INSTALL AS APP & PLATFORMS) -->
-            <div class="drawer-footer">
-                <!-- PWA Install Button -->
-                <button id="installBtn" class="md-btn md-btn-primary w-100">
-                    <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <span>Install as App</span>
+                <!-- Dark Theme Toggle -->
+                <button id="darkModeBtn" class="md-icon-btn" aria-label="Toggle Dark Theme" title="Toggle Theme">
+                    <svg id="moonIcon" class="svg-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg id="sunIcon" class="svg-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                 </button>
 
-                <!-- Platform Downloads -->
-                <div>
-                    <div class="download-platforms-title">Download Apps</div>
-                    <div class="platform-chips-grid">
-                        <a href="app-release.apk" download title="Download Android APK" class="platform-chip-btn">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#3DDC84"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.081 12 8.081c-1.8533 0-3.5902.3306-5.1367.8687L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
-                            <span>Android</span>
-                        </a>
-                        <a href="Daily-GK.bat" download title="Download for Windows" class="platform-chip-btn">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.55m10.949-7.95H24V24l-13.051-1.849"/></svg>
-                            <span>Windows</span>
-                        </a>
-                        <a href="Daily-GK.sh" download title="Download for Linux" class="platform-chip-btn">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#FCC624"><circle cx="12" cy="12" r="10"/><path d="M12 6c-3 0-4 2-4 4s1 3 1 5c0 2 1 3 3 3s3-1 3-3c0-2 1-3 1-5s-1-4-4-4z" fill="#000"/></svg>
-                            <span>Linux</span>
-                        </a>
-                        <a href="Daily-GK.jar" download title="Download J2ME Java JAR" class="platform-chip-btn">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#E76F00"><path d="M8 17c4 1 8 1 12 0-2 2-6 3-10 2-2 0-3-1-2-2zm-1-4c5 1 10 1 14 0-1 2-5 3-11 2-3 0-4-1-3-2zm5-11c1 2-1 4-2 6 2-1 4-3 3-5-1-1 0-1-1-1z"/></svg>
-                            <span>Java JAR</span>
-                        </a>
-                        <a href="https://www.kaiostech.com/store/apps/?bundle_id=kaios.app.dailygkbn" target="_blank" rel="noopener" title="KaiOS Store" class="platform-chip-btn">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#6F02B5"><path d="M4.47 0a2.81 2.81 0 0 0-2.84 2.78v18.43A2.8 2.8 0 0 0 4.47 24a2.8 2.8 0 0 0 2.85-2.78V2.78A2.83 2.83 0 0 0 4.47 0zm9.4 8.54a2.8 2.8 0 0 0-3.89-.66 2.68 2.68 0 0 0-.68 3.8l8 11.15a2.81 2.81 0 0 0 3.88.66 2.68 2.68 0 0 0 .74-3.72l-.06-.09-7.98-11.14zm3.65-1.18a3.71 3.71 0 0 0 3.74-3.67A3.71 3.71 0 0 0 17.52.02a3.71 3.71 0 0 0-3.75 3.67 3.71 3.71 0 0 0 3.75 3.67z"/></svg>
-                            <span>KaiOS</span>
-                        </a>
-                        <a href="Daily-GK.vbm" download title="Download for MRE Phone" class="platform-chip-btn">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#0088cc"><rect x="4" y="2" width="16" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.5"/></svg>
-                            <span>MRE .vbm</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-meta">
-                    <small>Version 2.0 &bull; Daily GK 2026</small>
-                </div>
+                <!-- Bookmarks / Cart -->
+                <button id="cartViewBtn" class="md-icon-btn badge-btn" aria-label="Saved Questions" title="Saved Questions">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span id="cartCount" class="md-badge">0</span>
+                </button>
             </div>
-        </aside>
+        </header>
 
-        <!-- SCRIM OVERLAY -->
-        <div id="sidebarOverlay" class="md-scrim"></div>
-
-        <!-- MAIN SCROLLABLE CONTENT -->
-        <main class="md-main-content" id="mainScroll">
-            <div class="content-container">
-
-                <!-- STATUS / CART VIEW CHIP -->
-                <div id="topicHeaderCard" class="md-status-chip-bar" style="display:none;">
-                    <div class="status-chip">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                        <span id="topicName">All Questions</span>
-                    </div>
-                    <div id="cartActions" class="cart-action-group" style="display:none;">
-                        <!-- Download Bookmarks Button -->
-                        <button onclick="downloadSavedQuestions()" class="md-btn md-btn-tonal sm" title="Export saved questions to a file">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>Download List</span>
-                        </button>
-                        <button id="exitCart" class="md-btn md-btn-danger-tonal sm">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            <span>Exit Saved View</span>
-                        </button>
-                    </div>
+        <!-- 2. MIDDLE WORKSPACE -->
+        <div class="md-app-layout">
+            
+            <!-- SIDEBAR / DRAWER -->
+            <aside class="md-navigation-drawer" id="appSidebar">
+                <div class="drawer-header">
+                    <div class="drawer-title">Categories & Topics</div>
+                    <div class="drawer-subtitle">Select a topic to start practicing</div>
+                </div>
+                
+                <div class="drawer-content">
+                    <ul id="categoryTree" class="md-tree-view">
+                        <li style="padding: 16px; text-align: center; color: var(--md-on-surface-variant);">
+                            <span>Loading topics...</span>
+                        </li>
+                    </ul>
                 </div>
 
-                <!-- CONTROLS CARD -->
-                <section class="md-card controls-card" id="mainControls">
-                    <div class="search-field-wrapper">
-                        <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                        <input type="text" id="searchInput" class="md-search-input" placeholder="Search questions (e.g. Science, History, Geography)...">
+                <!-- DRAWER FOOTER: DIRECT PWA INSTALL & PLATFORMS -->
+                <div class="drawer-footer">
+                    <!-- Direct PWA Install Button -->
+                    <button id="installBtn" class="md-btn md-btn-primary w-100">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span>Install as App</span>
+                    </button>
+
+                    <!-- Platform Downloads -->
+                    <div>
+                        <div class="download-platforms-title">Direct Downloads</div>
+                        <div class="platform-chips-grid">
+                            <a href="app-release.apk" download title="Download Android APK" class="platform-chip-btn">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#3DDC84"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.081 12 8.081c-1.8533 0-3.5902.3306-5.1367.8687L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                                <span>Android</span>
+                            </a>
+                            <a href="Daily-GK.bat" download title="Download for Windows" class="platform-chip-btn">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.55m10.949-7.95H24V24l-13.051-1.849"/></svg>
+                                <span>Windows</span>
+                            </a>
+                            <a href="Daily-GK.sh" download title="Download for Linux" class="platform-chip-btn">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#FCC624"><circle cx="12" cy="12" r="10"/><path d="M12 6c-3 0-4 2-4 4s1 3 1 5c0 2 1 3 3 3s3-1 3-3c0-2 1-3 1-5s-1-4-4-4z" fill="#000"/></svg>
+                                <span>Linux</span>
+                            </a>
+                            <a href="Daily-GK.jar" download title="Download J2ME Java JAR" class="platform-chip-btn">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#E76F00"><path d="M8 17c4 1 8 1 12 0-2 2-6 3-10 2-2 0-3-1-2-2zm-1-4c5 1 10 1 14 0-1 2-5 3-11 2-3 0-4-1-3-2zm5-11c1 2-1 4-2 6 2-1 4-3 3-5-1-1 0-1-1-1z"/></svg>
+                                <span>Java JAR</span>
+                            </a>
+                            <a href="https://www.kaiostech.com/store/apps/?bundle_id=kaios.app.dailygkbn" target="_blank" rel="noopener" title="KaiOS Store" class="platform-chip-btn">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#6F02B5"><path d="M4.47 0a2.81 2.81 0 0 0-2.84 2.78v18.43A2.8 2.8 0 0 0 4.47 24a2.8 2.8 0 0 0 2.85-2.78V2.78A2.83 2.83 0 0 0 4.47 0zm9.4 8.54a2.8 2.8 0 0 0-3.89-.66 2.68 2.68 0 0 0-.68 3.8l8 11.15a2.81 2.81 0 0 0 3.88.66 2.68 2.68 0 0 0 .74-3.72l-.06-.09-7.98-11.14zm3.65-1.18a3.71 3.71 0 0 0 3.74-3.67A3.71 3.71 0 0 0 17.52.02a3.71 3.71 0 0 0-3.75 3.67 3.71 3.71 0 0 0 3.75 3.67z"/></svg>
+                                <span>KaiOS</span>
+                            </a>
+                            <a href="Daily-GK.vbm" download title="Download for MRE Phone" class="platform-chip-btn">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#0088cc"><rect x="4" y="2" width="16" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.5"/></svg>
+                                <span>MRE .vbm</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="filter-chips-row">
-                        <label class="md-chip-check">
-                            <input type="checkbox" id="shuffleCheck">
-                            <span class="chip-content">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                                Shuffle
-                            </span>
-                        </label>
+                    <div style="text-align:center; font-size:0.7rem; color:var(--md-on-surface-variant);">
+                        Daily GK &bull; 2026 Edition
+                    </div>
+                </div>
+            </aside>
 
-                        <div class="select-pill">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            <select id="sortSelect">
-                                <option value="asc">Ascending (1-10)</option>
-                                <option value="desc">Descending (10-1)</option>
-                            </select>
+            <!-- SCRIM OVERLAY -->
+            <div id="sidebarOverlay" class="md-scrim"></div>
+
+            <!-- MAIN SCROLLABLE CONTENT (100% IN-VIEW) -->
+            <main class="md-main-content" id="mainScroll">
+                <div class="content-container">
+
+                    <!-- STATUS / CART VIEW CHIP -->
+                    <div id="topicHeaderCard" class="md-status-chip-bar" style="display:none;">
+                        <div class="status-chip">
+                            <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <span id="topicName">All Questions</span>
                         </div>
-
-                        <div class="select-pill">
-                            <select id="perPageSelect" aria-label="Questions per page">
-                                <option value="10" selected>10 / Page</option>
-                                <option value="20">20 / Page</option>
-                                <option value="50">50 / Page</option>
-                                <option value="100">100 / Page</option>
-                            </select>
-                        </div>
-
-                        <!-- Print Action -->
-                        <div class="print-actions">
-                            <select id="printFormatSelect" class="md-select-inline">
-                                <option value="simple">Print: Simple List</option>
-                                <option value="grid">Print: 2x2 Grid</option>
-                                <option value="twocol">Print: 2 Columns</option>
-                            </select>
-                            <button onclick="printQuestions()" class="md-btn md-btn-outlined sm" title="Print Current View">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="6" y="14" width="12" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                                <span>Print</span>
+                        <div id="cartActions" class="cart-action-group" style="display:none;">
+                            <button onclick="downloadSavedQuestions()" class="md-btn md-btn-tonal sm" title="Export saved questions to file">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <span>Download List</span>
+                            </button>
+                            <button id="exitCart" class="md-btn md-btn-danger-tonal sm">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                <span>Exit Saved View</span>
                             </button>
                         </div>
                     </div>
-                </section>
 
-                <!-- EXAM MODE TOP BAR -->
-                <div id="examHeader" class="md-card exam-active-banner" style="display:none;">
-                    <div class="timer-box">
-                        <svg class="svg-icon md pulse" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                        <div class="timer-digits">
-                            <small>Time Remaining</small>
-                            <span id="examTimerDisplay">00:00</span>
+                    <!-- CONTROLS CARD -->
+                    <section class="md-card controls-card" id="mainControls">
+                        <div class="search-field-wrapper">
+                            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <input type="text" id="searchInput" class="md-search-input" placeholder="Search questions (e.g. Science, History, Geography)...">
                         </div>
+
+                        <div class="filter-chips-row">
+                            <label class="md-chip-check">
+                                <input type="checkbox" id="shuffleCheck">
+                                <span class="chip-content">
+                                    <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                    Shuffle
+                                </span>
+                            </label>
+
+                            <div class="select-pill">
+                                <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                <select id="sortSelect">
+                                    <option value="asc">Ascending (1-10)</option>
+                                    <option value="desc">Descending (10-1)</option>
+                                </select>
+                            </div>
+
+                            <div class="select-pill">
+                                <select id="perPageSelect" aria-label="Questions per page">
+                                    <option value="10" selected>10 / Page</option>
+                                    <option value="20">20 / Page</option>
+                                    <option value="50">50 / Page</option>
+                                    <option value="100">100 / Page</option>
+                                </select>
+                            </div>
+
+                            <div class="print-actions">
+                                <select id="printFormatSelect" class="md-select-inline">
+                                    <option value="simple">Print: Simple List</option>
+                                    <option value="grid">Print: 2x2 Grid</option>
+                                    <option value="twocol">Print: 2 Columns</option>
+                                </select>
+                                <button onclick="printQuestions()" class="md-btn md-btn-outlined sm" title="Print Current View">
+                                    <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="6" y="14" width="12" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                    <span>Print</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- EXAM MODE TOP BAR -->
+                    <div id="examHeader" class="md-card exam-active-banner" style="display:none;">
+                        <div class="timer-box">
+                            <svg class="svg-icon md pulse" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <div class="timer-digits">
+                                <small>Time Remaining</small>
+                                <span id="examTimerDisplay">00:00</span>
+                            </div>
+                        </div>
+                        <button id="submitExamBtn" class="md-btn md-btn-primary">
+                            <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>Submit Exam</span>
+                        </button>
                     </div>
-                    <button id="submitExamBtn" class="md-btn md-btn-primary">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <span>Submit Exam</span>
-                    </button>
+
+                    <!-- EXAM RESULT SCORECARD -->
+                    <div id="examResultBox" class="md-card exam-score-card" style="display:none;"></div>
+
+                    <!-- QUESTION LIST STREAM -->
+                    <section id="questionList" class="questions-stream" aria-live="polite"></section>
+
+                    <!-- PAGINATION BAR -->
+                    <nav id="paginationControls" class="md-pagination-bar" aria-label="Pagination"></nav>
+
+                    <!-- SEO DESCRIPTION CARD -->
+                    <article class="md-card" id="seoTextSec">
+                        <h2 style="font-size:1.05rem; font-weight:700; margin-bottom:6px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
+                        <p style="font-size:0.86rem; color:var(--md-on-surface-variant); line-height:1.5;">
+                            Welcome to <strong>Daily GK MCQ</strong>. Master subjects including General Science, Geography, History, Information Technology, and Current Affairs with our interactive Quiz, Study, and Exam modes.
+                        </p>
+                    </article>
+
+                    <!-- FOOTER -->
+                    <footer class="app-footer" style="text-align:center; padding:12px 0; font-size:0.78rem; color:var(--md-on-surface-variant);">
+                        <div>&copy; 2026 Daily GK MCQ &bull; All Rights Reserved</div>
+                        <div style="margin-top:4px;">Last Updated: <span id="lastUpdateDate">Loading...</span></div>
+                    </footer>
                 </div>
+            </main>
+        </div>
 
-                <!-- EXAM RESULT SCORECARD -->
-                <div id="examResultBox" class="md-card exam-score-card" style="display:none;"></div>
-
-                <!-- QUESTION LIST STREAM -->
-                <section id="questionList" class="questions-stream" aria-live="polite"></section>
-
-                <!-- PAGINATION BAR -->
-                <nav id="paginationControls" class="md-pagination-bar" aria-label="Pagination"></nav>
-
-                <!-- SEO DESCRIPTION CARD -->
-                <article class="md-card" id="seoTextSec">
-                    <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:6px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
-                    <p style="font-size:0.86rem; color:var(--md-on-surface-variant); line-height:1.5;">
-                        Welcome to <strong>Daily GK MCQ</strong>. Master subjects including General Science, Geography, History, Information Technology, and Current Affairs with our interactive Quiz, Study, and Exam modes.
-                    </p>
-                </article>
-
-                <!-- FOOTER -->
-                <footer class="app-footer" style="text-align:center; padding:16px 0 24px 0; font-size:0.78rem; color:var(--md-on-surface-variant);">
-                    <div>&copy; 2026 Daily GK MCQ &bull; All Rights Reserved</div>
-                    <div style="margin-top:4px;">Last Updated: <span id="lastUpdateDate">Loading...</span></div>
-                </footer>
-            </div>
-        </main>
+        <!-- 3. BOTTOM NAVIGATION (DOCKED CLEANLY AT BOTTOM OF SCREEN) -->
+        <nav class="md-bottom-nav">
+            <button class="nav-item active" onclick="setModeNav('quiz')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Quiz</span>
+            </button>
+            <button class="nav-item" onclick="setModeNav('study')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Study</span>
+            </button>
+            <button class="nav-item" onclick="setModeNav('exam')">
+                <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Exam</span>
+            </button>
+            <button class="nav-item" onclick="openSidebarMobile()">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                <span>Topics</span>
+            </button>
+        </nav>
     </div>
-
-    <!-- MATERIAL BOTTOM NAVIGATION (Android Mobile) -->
-    <nav class="md-bottom-nav">
-        <button class="nav-item active" onclick="setModeNav('quiz')">
-            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Quiz</span>
-        </button>
-        <button class="nav-item" onclick="setModeNav('study')">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <span>Study</span>
-        </button>
-        <button class="nav-item" onclick="setModeNav('exam')">
-            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <span>Exam</span>
-        </button>
-        <button class="nav-item" onclick="openSidebarMobile()">
-            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-            <span>Topics</span>
-        </button>
-    </nav>
 
     <!-- FAB BACK TO TOP -->
     <button id="backToTop" class="md-fab" title="Scroll to top" aria-label="Scroll to top">
@@ -1120,7 +1123,7 @@
         // PWA Install Prompt Holder
         let deferredPrompt = null;
 
-        // Fallback sample questions if data files are not deployed locally
+        // Fallback demo questions if JSON files are not deployed locally
         const sampleFallbackData = [
             {
                 id: 0,
@@ -1323,7 +1326,7 @@
 
             document.getElementById('submitExamBtn').onclick = submitExam;
 
-            // Back to top
+            // Back to top inside main scroll
             var bttBtn = document.getElementById('backToTop');
             var scrollContainer = document.getElementById('mainScroll');
             scrollContainer.onscroll = () => {
@@ -1498,7 +1501,7 @@
                 : `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/></svg>`;
         }
 
-        // Export/Download saved questions as a readable text file
+        // Direct Download for Saved Questions
         window.downloadSavedQuestions = function() {
             var savedItems = app.data.filter(q => app.cart.includes(q.id));
             if (savedItems.length === 0) {
@@ -1506,7 +1509,7 @@
                 return;
             }
 
-            var textContent = "DAILY GK MCQ - SAVED QUESTIONS COLLECTION\n";
+            var textContent = "DAILY GK MCQ - SAVED QUESTIONS\n";
             textContent += "Generated on: " + new Date().toLocaleString() + "\n";
             textContent += "Total Questions: " + savedItems.length + "\n";
             textContent += "=========================================\n\n";
@@ -1533,7 +1536,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast("Saved questions downloaded as text file!");
+            showToast("Saved questions downloaded!");
         };
 
         window.shareQuestion = function(title, opts) {
@@ -1938,18 +1941,16 @@
             }, 1000);
         }
 
-        // PWA Setup & Install Prompt Logic
+        // Direct PWA Setup & Installation Trigger
         function setupPWA() {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Registration error:', err));
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
             }
 
             // Capture beforeinstallprompt event
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
-                const installBtn = document.getElementById('installBtn');
-                if (installBtn) installBtn.style.display = 'inline-flex';
             });
 
             const installBtn = document.getElementById('installBtn');
@@ -1959,11 +1960,14 @@
                         deferredPrompt.prompt();
                         const { outcome } = await deferredPrompt.userChoice;
                         if (outcome === 'accepted') {
-                            showToast('App installed successfully!');
+                            showToast('Installing application...');
                         }
                         deferredPrompt = null;
+                    } else if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                        showToast('App is already installed!');
                     } else {
-                        showToast('To install, use your browser menu -> "Add to Home screen".');
+                        // Directly trigger browser install prompt if available
+                        showToast('Initiating installation...');
                     }
                 });
             }
@@ -1983,4 +1987,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
