@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- হোমপেজ -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/</loc>
     <lastmod>2026-09-07</lastmod>
@@ -8,15 +7,12 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- ফাস্ট মোড পেজ (এক্সট্রা, রাখা ভালো) -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/fastmode.html</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ===================== ক্যাটেগরি: সাধারণ জ্ঞান ===================== -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/?cat=%E0%A6%B8%E0%A6%BE%E0%A6%A7%E0%A6%BE%E0%A6%B0%E0%A6%A3+%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8</loc>
     <lastmod>2026-09-07</lastmod>
@@ -35,8 +31,6 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ----- মাস: ডিসেম্বর ২০২৫ (সাধারণ জ্ঞান) ----- -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/?cat=%E0%A6%B8%E0%A6%BE%E0%A6%A7%E0%A6%BE%E0%A6%B0%E0%A6%A3+%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8&amp;topic=%E0%A6%A1%E0%A6%BF%E0%A6%B8%E0%A7%87%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%B0+%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AB</loc>
     <lastmod>2026-09-07</lastmod>
@@ -55,8 +49,6 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ----- মাস: নভেম্বর ২০২৫ (সাধারণ জ্ঞান) ----- -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/?cat=%E0%A6%B8%E0%A6%BE%E0%A6%A7%E0%A6%BE%E0%A6%B0%E0%A6%A3+%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8&amp;topic=%E0%A6%A8%E0%A6%AD%E0%A7%87%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%B0+%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AB</loc>
     <lastmod>2026-09-07</lastmod>
@@ -75,8 +67,6 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ----- মাস: অক্টোবর ২০২৫ (সাধারণ জ্ঞান) ----- -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/?cat=%E0%A6%B8%E0%A6%BE%E0%A6%A7%E0%A6%BE%E0%A6%B0%E0%A6%A3+%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8&amp;topic=%E0%A6%85%E0%A6%95%E0%A7%8D%E0%A6%9F%E0%A7%8B%E0%A6%AC%E0%A6%B0+%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AB</loc>
     <lastmod>2026-09-07</lastmod>
@@ -95,8 +85,6 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ===================== ক্যাটেগরি: বই থেকে ===================== -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/?cat=%E0%A6%AC%E0%A6%87+%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87</loc>
     <lastmod>2026-09-07</lastmod>
@@ -115,8 +103,6 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- ----- টপিক: বিজ্ঞান (বই থেকে) ----- -->
   <url>
     <loc>https://shifat100.github.io/daily-gk/?cat=%E0%A6%AC%E0%A6%87+%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87&amp;topic=%E0%A6%AC%E0%A6%BF%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%A8</loc>
     <lastmod>2026-09-07</lastmod>
