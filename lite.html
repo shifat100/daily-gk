@@ -1,337 +1,484 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="bn">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daily GK Lite - সাধারণ জ্ঞান</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Daily GK MCQ - Lite Edition</title>
     <style type="text/css">
-        /* Opera Mini 4.x Compatible Pure CSS2 */
+        /* =========================================================
+           Opera Mini 4.x / 2G Pure ASCII CSS2 Layout (Zero Emoji)
+           ========================================================= */
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Tahoma, Arial, Helvetica, sans-serif;
             font-size: 13px;
             line-height: 1.4;
-            background-color: #f7f9fa;
+            background-color: #f2f5f8;
             color: #222222;
             margin: 0;
-            padding: 4px;
+            padding: 0;
         }
-        .header {
+
+        /* Top Header */
+        .header-bar {
             background-color: #005a9c;
             color: #ffffff;
             padding: 8px;
             text-align: center;
-            border-bottom: 2px solid #003e6b;
+            border-bottom: 2px solid #00365d;
         }
-        .header h1 {
+        .header-bar h1 {
             font-size: 16px;
             margin: 0;
             padding: 0;
+            text-transform: uppercase;
         }
-        .header small {
-            font-size: 11px;
-            color: #d1e4ff;
+        .header-bar .tagline {
+            font-size: 10px;
+            color: #cce0ff;
+            margin-top: 2px;
+            display: block;
         }
-        .nav-bar {
-            background-color: #e6edf5;
+
+        /* Container */
+        .wrapper {
             padding: 6px;
-            margin: 5px 0;
-            border: 1px solid #c0d1e3;
-            text-align: center;
-            font-size: 12px;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .nav-bar a {
-            color: #005a9c;
+
+        /* Navigation Mode Tabs */
+        .nav-tabs {
+            background-color: #ffffff;
+            border: 1px solid #b0c4de;
+            margin-bottom: 6px;
+            text-align: center;
+            padding: 4px;
+        }
+        .tab-link {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 12px;
             font-weight: bold;
             text-decoration: none;
-            padding: 2px 5px;
+            color: #005a9c;
         }
-        .category-box {
+        .tab-link.active {
+            background-color: #005a9c;
+            color: #ffffff;
+        }
+
+        /* Filter Panel */
+        .filter-box {
             background-color: #ffffff;
-            border: 1px solid #dcdcdc;
+            border: 1px solid #b0c4de;
             padding: 6px;
             margin-bottom: 6px;
         }
-        .q-card {
-            background-color: #ffffff;
-            border: 1px solid #cccccc;
-            padding: 8px;
-            margin-bottom: 8px;
+        .filter-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .q-meta {
+        .filter-table td {
+            padding: 2px;
+        }
+        .select-input {
+            width: 100%;
+            padding: 3px;
             font-size: 11px;
-            color: #666666;
-            border-bottom: 1px dashed #dddddd;
-            padding-bottom: 3px;
-            margin-bottom: 5px;
+            border: 1px solid #8099b3;
+            background-color: #fafbfc;
         }
-        .q-title {
+        .submit-btn {
+            background-color: #005a9c;
+            color: #ffffff;
+            border: 1px solid #00365d;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Question Cards */
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #c2d1e0;
+            border-top: 3px solid #005a9c;
+            padding: 8px;
+            margin-bottom: 6px;
+        }
+        .card-meta {
+            width: 100%;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #d1dbe6;
+            padding-bottom: 3px;
+            font-size: 11px;
+        }
+        .badge-cat {
+            background-color: #e3edf7;
+            color: #00365d;
+            padding: 1px 5px;
+            font-weight: bold;
+        }
+        .badge-id {
+            color: #667788;
+            font-weight: bold;
+            text-align: right;
+        }
+        .q-text {
             font-size: 13px;
             font-weight: bold;
             color: #111111;
             margin-bottom: 6px;
         }
-        .opt-list {
-            margin: 0 0 6px 0;
-            padding-left: 18px;
+
+        /* Options Table */
+        .opt-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 6px;
         }
-        .opt-list li {
-            margin-bottom: 3px;
+        .opt-table td {
+            padding: 3px 2px;
+            vertical-align: top;
+            font-size: 12px;
+        }
+        .opt-prefix {
+            width: 25px;
+            font-weight: bold;
+            color: #005a9c;
+        }
+        .opt-val {
             color: #333333;
         }
-        .btn-ans {
+
+        /* Answer & Explanation Box */
+        .ans-btn {
             display: inline-block;
-            background-color: #e9ecef;
-            border: 1px solid #999999;
-            color: #003366;
+            background-color: #eef3f8;
+            border: 1px solid #8099b3;
+            color: #00365d;
             padding: 3px 8px;
             font-size: 11px;
+            font-weight: bold;
             text-decoration: none;
-            cursor: pointer;
         }
-        .ans-box {
+        .ans-panel {
             display: none;
-            background-color: #eafaf1;
-            border: 1px solid #a3e4d7;
+            background-color: #edf7ed;
+            border: 1px solid #a3d4a6;
+            border-left: 3px solid #2e7d32;
             padding: 6px;
-            margin-top: 5px;
-            font-size: 12px;
-            color: #145a32;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #1e4620;
         }
-        .ans-box.show {
+        .ans-panel.open {
             display: block;
         }
-        .pagination {
+        .ans-correct {
+            font-weight: bold;
+            color: #1b5e20;
+            margin-bottom: 3px;
+        }
+        .ans-desc {
+            color: #334433;
+            border-top: 1px dotted #a3d4a6;
+            padding-top: 3px;
+            margin-top: 3px;
+        }
+
+        /* Pagination Panel */
+        .pag-panel {
             background-color: #ffffff;
-            border: 1px solid #cccccc;
+            border: 1px solid #b0c4de;
             padding: 6px;
             text-align: center;
-            margin-top: 10px;
-            font-size: 12px;
+            margin-top: 8px;
+            font-size: 11px;
         }
-        .pagination a {
+        .pag-btn {
             display: inline-block;
             background-color: #005a9c;
             color: #ffffff;
             padding: 3px 8px;
             text-decoration: none;
-            margin: 0 3px;
+            font-weight: bold;
+            margin: 1px;
+            border: 1px solid #00365d;
         }
-        .footer {
+
+        /* Footer */
+        .footer-panel {
             text-align: center;
-            font-size: 10px;
-            color: #777777;
+            font-size: 11px;
+            color: #667788;
             margin-top: 12px;
-            padding: 6px;
-            border-top: 1px solid #dddddd;
+            padding: 8px 4px;
+            border-top: 1px solid #c2d1e0;
         }
-        .footer a {
+        .footer-panel a {
             color: #005a9c;
+            font-weight: bold;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Header -->
-    <div class="header">
-        <h1>Daily GK (Lite)</h1>
-        <small>Opera Mini &amp; 2G Optimized Edition</small>
+    <!-- 1. Top Header -->
+    <div class="header-bar">
+        <h1>Daily GK MCQ</h1>
+        <span class="tagline">Lite Edition - Fast &amp; 2G Compatible</span>
     </div>
 
-    <!-- Mode Selector Bar -->
-    <div class="nav-bar">
-        <strong>মোড:</strong>
-        <a href="lite.html?mode=quiz" id="modeQuizLink">[কুইজ]</a> | 
-        <a href="lite.html?mode=study" id="modeStudyLink">[স্টাডি/উত্তরসহ]</a>
-    </div>
+    <div class="wrapper">
+        <!-- 2. Mode Switcher -->
+        <div class="nav-tabs">
+            <a href="lite.html?mode=quiz" class="tab-link" id="linkQuiz">[ Quiz Mode ]</a>
+            <a href="lite.html?mode=study" class="tab-link" id="linkStudy">[ Study Mode ]</a>
+        </div>
 
-    <!-- Category Filter Form -->
-    <div class="category-box">
-        <form method="get" action="lite.html">
-            <input type="hidden" name="mode" id="formModeInput" value="quiz" />
-            <label for="catSelect"><b>বিষয়:</b></label>
-            <select name="cat" id="catSelect" style="font-size: 11px;">
-                <option value="">সকল বিষয় (All)</option>
-                <option value="General Science">General Science</option>
-                <option value="World Geography">World Geography</option>
-                <option value="Information Technology">Information Technology</option>
-                <option value="Bangladesh Affairs">Bangladesh Affairs</option>
-                <option value="International Affairs">International Affairs</option>
-            </select>
-            <input type="submit" value="ফিল্টার" style="font-size: 11px; padding: 1px 4px;" />
-        </form>
-    </div>
+        <!-- 3. Category Filter -->
+        <div class="filter-box">
+            <form method="get" action="lite.html">
+                <input type="hidden" name="mode" id="formModeField" value="quiz" />
+                <table class="filter-table">
+                    <tr>
+                        <td style="width:75%;">
+                            <select name="cat" id="catSelector" class="select-input">
+                                <option value="">-- All Categories --</option>
+                                <option value="General Science">General Science</option>
+                                <option value="World Geography">World Geography</option>
+                                <option value="History & Civilization">History &amp; Civilization</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="International Affairs">International Affairs</option>
+                            </select>
+                        </td>
+                        <td style="width:25%;">
+                            <input type="submit" value="Filter" class="submit-btn" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
 
-    <!-- Questions Stream -->
-    <div id="qStream">
-        <!-- জাভাস্ক্রিপ্ট অথবা ডিফল্ট এইচটিএমএল দিয়ে প্রশ্ন লোড হবে -->
-    </div>
+        <!-- 4. Questions Stream -->
+        <div id="qOutput">
+            <!-- Questions rendered via pure ES3 script -->
+        </div>
 
-    <!-- Pagination Controls -->
-    <div class="pagination" id="pagDiv"></div>
+        <!-- 5. Pagination Bar -->
+        <div class="pag-panel" id="paginationBar"></div>
 
-    <!-- Footer & Switch Back Link -->
-    <div class="footer">
-        <div>&copy; 2026 Daily GK MCQ Lite</div>
-        <div style="margin-top: 4px;">
-            <a href="index.html?force_full=1">ফুল ভার্সনে যান (Android/PC)</a>
+        <!-- 6. Bottom Links -->
+        <div class="footer-panel">
+            <div>(c) 2026 Daily GK MCQ - Lite Edition</div>
+            <div style="margin-top: 5px;">
+                <a href="index.html?force_full=1">&gt;&gt; Switch to Full App (Android/PC)</a>
+            </div>
         </div>
     </div>
 
-    <!-- Pure ES3 JavaScript (Works on Opera Mini 4.2 / 4.4 Engine) -->
+    <!-- Pure ES3 JavaScript (Zero Emojis, Bulletproof on Opera Mini 4.x) -->
     <script type="text/javascript">
-        // Data Bank (Self-contained for single roundtrip)
-        var gkQuestions = [
+        // Standard ASCII English Dataset
+        var gkDataset = [
             {
                 id: 1,
                 cat: "General Science",
                 topic: "Physics & Space",
-                q: "Which planet in our solar system is known as the 'Red Planet'?",
+                q: "Which planet in our solar system is famously known as the 'Red Planet'?",
                 opts: ["Venus", "Mars", "Jupiter", "Saturn"],
                 ans: 1,
-                desc: "Mars appears red due to iron oxide (rust) on its surface."
+                desc: "Mars appears red due to large amounts of iron oxide (rust) on its surface."
             },
             {
                 id: 2,
                 cat: "World Geography",
                 topic: "Rivers & Lakes",
-                q: "What is the longest river in the world?",
+                q: "What is considered the longest river in the world?",
                 opts: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"],
                 ans: 1,
-                desc: "The Nile River in Africa is approximately 6,650 km long."
+                desc: "The Nile River in Africa spans approximately 6,650 kilometers (4,132 miles)."
             },
             {
                 id: 3,
                 cat: "Information Technology",
-                topic: "Computer Science",
+                topic: "Internet Protocols",
                 q: "What does 'HTTP' stand for in web browsing protocols?",
-                opts: ["HyperText Transfer Protocol", "High Transfer Tech Protocol", "Hyperlink Text Test Process", "Hyper Transfer Point"],
+                opts: [
+                    "HyperText Transfer Protocol",
+                    "High Transfer Tech Protocol",
+                    "Hyperlink Text Terminal Process",
+                    "Hyper Transfer Tool Protocol"
+                ],
                 ans: 0,
-                desc: "HTTP is the foundation of data communication for the World Wide Web."
+                desc: "HTTP is the foundation protocol used for data communication on the World Wide Web."
             },
             {
                 id: 4,
-                cat: "Bangladesh Affairs",
-                topic: "History",
-                q: "মুজিবনগর সরকার কোন তারিখে শপথ গ্রহণ করেছিল?",
-                opts: ["১০ এপ্রিল ১৯৭১", "১৭ এপ্রিল ১৯৭১", "২৬ মার্চ ১৯৭১", "১৬ ডিসেম্বর ১৯৭১"],
+                cat: "History & Civilization",
+                topic: "World History",
+                q: "In which year did the Second World War officially end?",
+                opts: ["1942", "1945", "1948", "1950"],
                 ans: 1,
-                desc: "১৭ এপ্রিল ১৯৭১ তারিখে মেহেরপুরের বৈদ্যনাথতলায় (মুজিবনগর) শপথ গ্রহণ অনুষ্ঠিত হয়।"
+                desc: "World War II ended in September 1945 following the surrender of Axis forces."
             },
             {
                 id: 5,
                 cat: "International Affairs",
-                topic: "Headquarters",
-                q: "জাতিসংঘের (UN) সদর দপ্তর কোথায় অবস্থিত?",
-                opts: ["জেনেভা", "লন্ডন", "নিউইয়র্ক", "প্যারিস"],
+                topic: "Organizations",
+                q: "Where is the official headquarters of the United Nations (UN) located?",
+                opts: ["Geneva, Switzerland", "London, UK", "New York City, USA", "Paris, France"],
                 ans: 2,
-                desc: "জাতিসংঘের প্রধান সদর দপ্তর যুক্তরাষ্ট্রের নিউইয়র্ক শহরে অবস্থিত।"
+                desc: "The headquarters of the United Nations is situated in New York City, USA."
+            },
+            {
+                id: 6,
+                cat: "General Science",
+                topic: "Chemistry",
+                q: "What is the chemical symbol for Gold?",
+                opts: ["Ag", "Au", "Fe", "Pb"],
+                ans: 1,
+                desc: "Au is derived from the Latin word 'Aurum', meaning shining dawn or gold."
             }
         ];
 
-        // URL Query Parser (Pure ES3)
-        function getQueryParam(param) {
+        // Safe Query Parser
+        function getParam(key) {
             var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if (decodeURIComponent(pair[0]) == param) {
-                    return decodeURIComponent(pair[1] || "");
+            var pairs = query.split("&");
+            for (var i = 0; i < pairs.length; i++) {
+                var p = pairs[i].split("=");
+                if (decodeURIComponent(p[0]) === key) {
+                    return decodeURIComponent(p[1] || "");
                 }
             }
             return null;
         }
 
-        var currentMode = getQueryParam("mode") || "quiz";
-        var currentCat = getQueryParam("cat") || "";
-        var currentPage = parseInt(getQueryParam("page") || "1", 10);
-        if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
-        var perPage = 3; // ছোট স্ক্রিনের জন্য ৩টি করে প্রশ্ন
+        var activeMode = getParam("mode") || "quiz";
+        var activeCat = getParam("cat") || "";
+        var activePage = parseInt(getParam("page") || "1", 10);
+        if (isNaN(activePage) || activePage < 1) activePage = 1;
+        var itemsPerPage = 3;
 
-        // UI Setup
-        document.getElementById("formModeInput").value = currentMode;
-        var catSelect = document.getElementById("catSelect");
-        for (var i = 0; i < catSelect.options.length; i++) {
-            if (catSelect.options[i].value === currentCat) {
-                catSelect.selectedIndex = i;
+        // Tab state updates
+        document.getElementById("formModeField").value = activeMode;
+        if (activeMode === "study") {
+            document.getElementById("linkStudy").className = "tab-link active";
+        } else {
+            document.getElementById("linkQuiz").className = "tab-link active";
+        }
+
+        // Category dropdown sync
+        var sel = document.getElementById("catSelector");
+        for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === activeCat) {
+                sel.selectedIndex = i;
                 break;
             }
         }
 
-        // Toggle Answer Function
-        function showAnswer(boxId) {
-            var box = document.getElementById(boxId);
-            if (box) {
-                box.className = (box.className.indexOf("show") === -1) ? "ans-box show" : "ans-box";
+        // Show/Hide Answer Toggle
+        function toggleAnswer(targetId) {
+            var el = document.getElementById(targetId);
+            if (el) {
+                if (el.className.indexOf("open") === -1) {
+                    el.className = "ans-panel open";
+                } else {
+                    el.className = "ans-panel";
+                }
             }
         }
 
-        // Filter Data
-        var filtered = [];
-        for (var i = 0; i < gkQuestions.length; i++) {
-            var item = gkQuestions[i];
-            if (!currentCat || item.cat === currentCat) {
-                filtered.push(item);
+        // Data Filtering
+        var filteredList = [];
+        for (var i = 0; i < gkDataset.length; i++) {
+            var item = gkDataset[i];
+            if (!activeCat || item.cat === activeCat) {
+                filteredList.push(item);
             }
         }
+
+        // Pagination Calculations
+        var totalPages = Math.ceil(filteredList.length / itemsPerPage) || 1;
+        if (activePage > totalPages) activePage = totalPages;
+
+        var startIdx = (activePage - 1) * itemsPerPage;
+        var currentItems = filteredList.slice(startIdx, startIdx + itemsPerPage);
 
         // Render Questions
-        var container = document.getElementById("qStream");
-        var totalPages = Math.ceil(filtered.length / perPage) || 1;
-        if (currentPage > totalPages) currentPage = totalPages;
+        var container = document.getElementById("qOutput");
+        var letters = ["A", "B", "C", "D", "E"];
+        var out = "";
 
-        var start = (currentPage - 1) * perPage;
-        var pageItems = filtered.slice(start, start + perPage);
-
-        var letters = ["A", "B", "C", "D"];
-        var html = "";
-
-        if (pageItems.length === 0) {
-            html = '<div class="q-card" style="text-align:center;">কোনো প্রশ্ন পাওয়া যায়নি।</div>';
+        if (currentItems.length === 0) {
+            out = '<div class="card" style="text-align:center; padding:12px;">No questions found in this category.</div>';
         } else {
-            for (var i = 0; i < pageItems.length; i++) {
-                var qObj = pageItems[i];
-                var qIndex = start + i + 1;
-                var boxId = "ans_" + qObj.id;
+            for (var i = 0; i < currentItems.length; i++) {
+                var q = currentItems[i];
+                var qNo = startIdx + i + 1;
+                var ansId = "ans_box_" + q.id;
 
-                html += '<div class="q-card">';
-                html += '<div class="q-meta">' + qObj.cat + ' &bull; #' + qIndex + '</div>';
-                html += '<div class="q-title">' + qIndex + '. ' + qObj.q + '</div>';
+                out += '<div class="card">';
                 
+                // Meta info
+                out += '<table class="card-meta"><tr>';
+                out += '<td><span class="badge-cat">' + q.cat + '</span></td>';
+                out += '<td class="badge-id">Question #' + qNo + '</td>';
+                out += '</tr></table>';
+
+                // Question Title
+                out += '<div class="q-text">' + qNo + '. ' + q.q + '</div>';
+
                 // Options
-                html += '<ol class="opt-list" type="A">';
-                for (var j = 0; j < qObj.opts.length; j++) {
-                    html += '<li>' + qObj.opts[j] + '</li>';
+                out += '<table class="opt-table">';
+                for (var j = 0; j < q.opts.length; j++) {
+                    out += '<tr>';
+                    out += '<td class="opt-prefix">(' + letters[j] + ')</td>';
+                    out += '<td class="opt-val">' + q.opts[j] + '</td>';
+                    out += '</tr>';
                 }
-                html += '</ol>';
+                out += '</table>';
 
-                // Quiz Mode vs Study Mode
-                if (currentMode === "study") {
-                    html += '<div class="ans-box show"><b>সঠিক উত্তর:</b> [' + letters[qObj.ans] + '] ' + qObj.opts[qObj.ans];
-                    if (qObj.desc) html += '<br/><b>ব্যাখ্যা:</b> ' + qObj.desc;
-                    html += '</div>';
+                // Answer Area
+                if (activeMode === "study") {
+                    out += '<div class="ans-panel open">';
+                    out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                    if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
+                    out += '</div>';
                 } else {
-                    html += '<a href="javascript:void(0);" onclick="showAnswer(\'' + boxId + '\');" class="btn-ans">উত্তর দেখুন</a>';
-                    html += '<div id="' + boxId + '" class="ans-box"><b>সঠিক উত্তর:</b> [' + letters[qObj.ans] + '] ' + qObj.opts[qObj.ans];
-                    if (qObj.desc) html += '<br/><b>ব্যাখ্যা:</b> ' + qObj.desc;
-                    html += '</div>';
+                    out += '<a href="javascript:void(0);" onclick="toggleAnswer(\'' + ansId + '\');" class="ans-btn">[+] View Answer</a>';
+                    out += '<div id="' + ansId + '" class="ans-panel">';
+                    out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                    if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
+                    out += '</div>';
                 }
 
-                html += '</div>';
+                out += '</div>';
             }
         }
-        container.innerHTML = html;
+        container.innerHTML = out;
 
-        // Render Pagination (Pure Links for Opera Mini)
-        var pagHtml = 'পৃষ্ঠা: ' + currentPage + ' / ' + totalPages + '<br/>';
-        var baseQuery = 'lite.html?mode=' + encodeURIComponent(currentMode) + '&cat=' + encodeURIComponent(currentCat);
+        // Render Pagination
+        var pagBox = document.getElementById("paginationBar");
+        var baseLink = "lite.html?mode=" + encodeURIComponent(activeMode) + "&cat=" + encodeURIComponent(activeCat);
+        var pagHtml = '<div style="margin-bottom:4px; font-weight:bold;">Page ' + activePage + ' of ' + totalPages + '</div>';
 
-        if (currentPage > 1) {
-            pagHtml += '<a href="' + baseQuery + '&page=' + (currentPage - 1) + '">&laquo; পূর্ববর্তী</a> ';
+        if (activePage > 1) {
+            pagHtml += '<a href="' + baseLink + '&page=' + (activePage - 1) + '" class="pag-btn">&lt;&lt; Prev</a> ';
         }
-        if (currentPage < totalPages) {
-            pagHtml += '<a href="' + baseQuery + '&page=' + (currentPage + 1) + '">পরবর্তী &raquo;</a>';
+        if (activePage < totalPages) {
+            pagHtml += '<a href="' + baseLink + '&page=' + (activePage + 1) + '" class="pag-btn">Next &gt;&gt;</a>';
         }
-        document.getElementById("pagDiv").innerHTML = pagHtml;
+        pagBox.innerHTML = pagHtml;
     </script>
 </body>
 </html>
