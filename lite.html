@@ -3,10 +3,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Daily GK MCQ - Lite Edition</title>
+    <title>Daily GK MCQ - Advanced Lite Edition</title>
     <style type="text/css">
         /* =========================================================
-           Opera Mini 4.x Compatible Pure ASCII CSS2 Layout
+           Opera Mini 4.x Compatible Pure CSS2 Multi-Layout Engine
            ========================================================= */
         * {
             box-sizing: border-box;
@@ -22,26 +22,66 @@
             margin: 0;
             padding: 0;
         }
+        
+        /* Font Sizing Controls */
+        body.f-sm { font-size: 11px; }
+        body.f-md { font-size: 13px; }
+        body.f-lg { font-size: 15px; }
+
+        /* Dark Theme Support */
+        body.theme-dark {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.theme-dark .card,
+        body.theme-dark .nav-tabs,
+        body.theme-dark .filter-box,
+        body.theme-dark .pag-panel,
+        body.theme-dark .status-card {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border-color: #333333;
+        }
+        body.theme-dark .q-text { color: #ffffff; }
+        body.theme-dark .opt-val { color: #cccccc; }
+        body.theme-dark .select-input,
+        body.theme-dark .input-text {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-color: #444444;
+        }
 
         /* Top Header */
         .header-bar {
             background-color: #005a9c;
             color: #ffffff;
-            padding: 8px;
+            padding: 6px 8px;
             text-align: center;
             border-bottom: 2px solid #00365d;
         }
         .header-bar h1 {
-            font-size: 16px;
+            font-size: 15px;
             margin: 0;
             padding: 0;
             text-transform: uppercase;
         }
-        .header-bar .tagline {
-            font-size: 10px;
-            color: #cce0ff;
-            margin-top: 2px;
-            display: block;
+
+        /* Utility Bar (Font size & Theme) */
+        .util-bar {
+            background-color: #dbe4ee;
+            border-bottom: 1px solid #b8c8d8;
+            padding: 3px 6px;
+            font-size: 11px;
+            text-align: right;
+        }
+        .util-link {
+            color: #00365d;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 1px 4px;
+            border: 1px solid #8fa8bf;
+            background-color: #ffffff;
+            margin-left: 2px;
         }
 
         /* Main Container */
@@ -57,12 +97,12 @@
             border: 1px solid #b0c4de;
             margin-bottom: 6px;
             text-align: center;
-            padding: 4px;
+            padding: 3px;
         }
         .tab-link {
             display: inline-block;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 4px 6px;
+            font-size: 11px;
             font-weight: bold;
             text-decoration: none;
             color: #005a9c;
@@ -72,11 +112,11 @@
             color: #ffffff;
         }
 
-        /* Filter Box */
+        /* Filter Section */
         .filter-box {
             background-color: #ffffff;
             border: 1px solid #b0c4de;
-            padding: 6px;
+            padding: 5px;
             margin-bottom: 6px;
         }
         .filter-table {
@@ -85,8 +125,9 @@
         }
         .filter-table td {
             padding: 2px;
+            vertical-align: middle;
         }
-        .select-input {
+        .input-text, .select-input {
             width: 100%;
             padding: 3px;
             font-size: 11px;
@@ -97,11 +138,27 @@
             background-color: #005a9c;
             color: #ffffff;
             border: 1px solid #00365d;
-            padding: 3px 8px;
+            padding: 3px 6px;
             font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            background-color: #eaf1f8;
+            border: 1px solid #c0d3e6;
+            padding: 4px;
+            margin-bottom: 6px;
+            text-align: center;
+            font-size: 11px;
+        }
+        .action-link {
+            color: #004080;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 0 4px;
         }
 
         /* Question Cards */
@@ -114,15 +171,15 @@
         }
         .card-meta {
             width: 100%;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             border-bottom: 1px dashed #d1dbe6;
-            padding-bottom: 3px;
-            font-size: 11px;
+            padding-bottom: 2px;
+            font-size: 10px;
         }
         .badge-cat {
             background-color: #e3edf7;
             color: #00365d;
-            padding: 1px 5px;
+            padding: 1px 4px;
             font-weight: bold;
         }
         .badge-id {
@@ -193,6 +250,17 @@
             margin-top: 3px;
         }
 
+        /* Exam Scorecard Box */
+        .exam-score-box {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
         /* Status & Pagination */
         .status-card {
             background-color: #ffffff;
@@ -214,7 +282,7 @@
             display: inline-block;
             background-color: #005a9c;
             color: #ffffff;
-            padding: 3px 8px;
+            padding: 3px 6px;
             text-decoration: none;
             font-weight: bold;
             margin: 1px;
@@ -237,68 +305,121 @@
         }
     </style>
 </head>
-<body>
+<body class="f-md" id="appBody">
+
+    <!-- Top Utility Controls (Font Size & Theme) -->
+    <div class="util-bar">
+        <span>Font:</span>
+        <a href="javascript:void(0);" onclick="setFont('sm')" class="util-link">A-</a>
+        <a href="javascript:void(0);" onclick="setFont('md')" class="util-link">A</a>
+        <a href="javascript:void(0);" onclick="setFont('lg')" class="util-link">A+</a>
+        | 
+        <a href="javascript:void(0);" onclick="toggleTheme()" class="util-link" id="themeBtn">Dark Mode</a>
+    </div>
 
     <!-- 1. Header -->
     <div class="header-bar">
         <h1>Daily GK MCQ</h1>
-        <span class="tagline">Lite Edition - Fast &amp; 2G Compatible</span>
     </div>
 
     <div class="wrapper">
-        <!-- 2. Mode Tabs -->
+        <!-- 2. Multi-Layout Mode Switcher -->
         <div class="nav-tabs">
-            <a href="lite.html?mode=quiz" class="tab-link" id="linkQuiz">[ Quiz Mode ]</a>
-            <a href="lite.html?mode=study" class="tab-link" id="linkStudy">[ Study Mode ]</a>
+            <a href="lite.html?mode=quiz" class="tab-link" id="linkQuiz">Quiz List</a> | 
+            <a href="lite.html?mode=study" class="tab-link" id="linkStudy">Study Mode</a> | 
+            <a href="lite.html?mode=exam" class="tab-link" id="linkExam">Exam Test</a> | 
+            <a href="lite.html?mode=card&per_page=1" class="tab-link" id="linkCard">1-by-1 Card</a>
         </div>
 
-        <!-- 3. Category Filter Box -->
+        <!-- 3. Advanced Filter Section -->
         <div class="filter-box">
             <form method="get" action="lite.html">
                 <input type="hidden" name="mode" id="formModeField" value="quiz" />
                 <table class="filter-table">
                     <tr>
-                        <td style="width:75%;">
+                        <td style="width:50%;">
                             <select name="cat" id="catSelector" class="select-input">
                                 <option value="">-- All Categories --</option>
                             </select>
                         </td>
-                        <td style="width:25%;">
-                            <input type="submit" value="Filter" class="submit-btn" />
+                        <td style="width:50%;">
+                            <input type="text" name="q" id="searchField" placeholder="Keywords..." class="input-text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table style="width:100%; border-collapse:collapse;">
+                                <tr>
+                                    <td style="width:30%;">
+                                        <select name="per_page" id="perPageSelector" class="select-input">
+                                            <option value="1">1 / Card</option>
+                                            <option value="5">5 / Page</option>
+                                            <option value="10" selected="selected">10 / Page</option>
+                                            <option value="25">25 / Page</option>
+                                        </select>
+                                    </td>
+                                    <td style="width:30%;">
+                                        <input type="number" name="page" id="pageJumpInput" placeholder="Page #" class="input-text" min="1" />
+                                    </td>
+                                    <td style="width:20%; font-size:10px; text-align:center;">
+                                        <label><input type="checkbox" name="shuffle" id="shuffleCheck" value="1" /> Rand</label>
+                                    </td>
+                                    <td style="width:20%;">
+                                        <input type="submit" value="Filter" class="submit-btn" />
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
             </form>
         </div>
 
-        <!-- 4. Questions Stream Output -->
+        <!-- 4. Quick Action Bar -->
+        <div class="action-bar" id="actionBar" style="display:none;">
+            <a href="javascript:void(0);" onclick="setAllAnswers(true);" class="action-link" accesskey="a">[+] Reveal All</a> | 
+            <a href="javascript:void(0);" onclick="setAllAnswers(false);" class="action-link">[-] Hide All</a>
+        </div>
+
+        <!-- Exam Result Display -->
+        <div id="examResultOutput" style="display:none;"></div>
+
+        <!-- 5. Questions Output -->
         <div id="qOutput">
             <div class="status-card">Loading questions from server...</div>
         </div>
 
-        <!-- 5. Pagination Box -->
+        <!-- Exam Submit Button -->
+        <div id="examSubmitContainer" style="display:none; margin:8px 0;">
+            <input type="button" value="[ SUBMIT EXAM ANSWERS ]" onclick="gradeExam()" class="submit-btn" style="padding:8px; font-size:13px; background-color:#28a745; border-color:#1e7e34;" />
+        </div>
+
+        <!-- 6. Pagination Box -->
         <div class="pag-panel" id="paginationBar" style="display:none;"></div>
 
-        <!-- 6. Footer & Switcher -->
+        <!-- 7. Footer -->
         <div class="footer-panel">
-            <div>(c) 2026 Daily GK MCQ - Lite Edition</div>
+            <div>(c) 2026 Daily GK MCQ &bull; Lite Engine</div>
             <div style="margin-top: 5px;">
-                <a href="index.html?force_full=1">&gt;&gt; Switch to Full App (Android/PC)</a>
+                <a href="index.html?force_full=1">&gt;&gt; Switch to Modern App</a>
             </div>
         </div>
     </div>
 
-    <!-- Pure ES3 JavaScript Engine -->
+    <!-- Pure ES3 JavaScript Multi-Layout Engine -->
     <script type="text/javascript">
         var appState = {
             data: [],
             mode: "quiz",
             cat: "",
+            search: "",
             page: 1,
-            perPage: 5
+            perPage: 10,
+            shuffle: false,
+            renderedItems: []
         };
 
-        // Fallback Backup Data (Used ONLY if server JSON fails)
+        // Fallback Backup Data
         var fallbackBackup = [
             {
                 id: 1,
@@ -320,7 +441,7 @@
             }
         ];
 
-        // Safe Query Parser (Correctly handles '+' as spaces and encoded characters)
+        // Safe Query Parser
         function getParam(key) {
             var query = window.location.search.substring(1);
             if (!query) return "";
@@ -335,7 +456,18 @@
             return "";
         }
 
-        // ES3 Cross-Browser AJAX Handler
+        // Font Size & Theme Switcher
+        function setFont(size) {
+            document.getElementById("appBody").className = "f-" + size;
+        }
+        var isDark = false;
+        function toggleTheme() {
+            isDark = !isDark;
+            document.getElementById("appBody").className = isDark ? "theme-dark" : "";
+            document.getElementById("themeBtn").innerHTML = isDark ? "Light Mode" : "Dark Mode";
+        }
+
+        // ES3 AJAX Handler
         function ajaxGet(url, onSuccess, onError, isText) {
             var xhr = null;
             if (window.XMLHttpRequest) {
@@ -375,7 +507,6 @@
             }
         }
 
-        // Answer Toggle Handler
         function toggleAnswer(targetId) {
             var el = document.getElementById(targetId);
             if (el) {
@@ -387,24 +518,53 @@
             }
         }
 
+        function setAllAnswers(show) {
+            var panels = document.getElementsByTagName("div");
+            for (var i = 0; i < panels.length; i++) {
+                if (panels[i].className.indexOf("ans-panel") !== -1) {
+                    panels[i].className = show ? "ans-panel open" : "ans-panel";
+                }
+            }
+        }
+
         // 1. Initialize State
         appState.mode = getParam("mode") || "quiz";
         appState.cat = getParam("cat") || "";
+        appState.search = getParam("q") || "";
         appState.page = parseInt(getParam("page") || "1", 10);
+        appState.perPage = parseInt(getParam("per_page") || "10", 10);
+        appState.shuffle = getParam("shuffle") === "1";
+
+        if (appState.mode === "card") appState.perPage = 1;
         if (isNaN(appState.page) || appState.page < 1) appState.page = 1;
+        if (isNaN(appState.perPage) || appState.perPage < 1) appState.perPage = 10;
 
         document.getElementById("formModeField").value = appState.mode;
+        document.getElementById("searchField").value = appState.search;
+        document.getElementById("pageJumpInput").value = appState.page;
+        document.getElementById("shuffleCheck").checked = appState.shuffle;
 
-        // Preserve current Category when clicking Quiz/Study tabs
-        var catQuery = appState.cat ? "&cat=" + encodeURIComponent(appState.cat) : "";
-        document.getElementById("linkQuiz").href = "lite.html?mode=quiz" + catQuery;
-        document.getElementById("linkStudy").href = "lite.html?mode=study" + catQuery;
-
-        if (appState.mode === "study") {
-            document.getElementById("linkStudy").className = "tab-link active";
-        } else {
-            document.getElementById("linkQuiz").className = "tab-link active";
+        var perPageSel = document.getElementById("perPageSelector");
+        for (var i = 0; i < perPageSel.options.length; i++) {
+            if (parseInt(perPageSel.options[i].value, 10) === appState.perPage) {
+                perPageSel.selectedIndex = i;
+                break;
+            }
         }
+
+        // Highlight Active Tab
+        var extraQueries = (appState.cat ? "&cat=" + encodeURIComponent(appState.cat) : "") +
+                           (appState.search ? "&q=" + encodeURIComponent(appState.search) : "");
+
+        document.getElementById("linkQuiz").href = "lite.html?mode=quiz" + extraQueries;
+        document.getElementById("linkStudy").href = "lite.html?mode=study" + extraQueries;
+        document.getElementById("linkExam").href = "lite.html?mode=exam" + extraQueries;
+        document.getElementById("linkCard").href = "lite.html?mode=card&per_page=1" + extraQueries;
+
+        if (appState.mode === "study") document.getElementById("linkStudy").className = "tab-link active";
+        else if (appState.mode === "exam") document.getElementById("linkExam").className = "tab-link active";
+        else if (appState.mode === "card") document.getElementById("linkCard").className = "tab-link active";
+        else document.getElementById("linkQuiz").className = "tab-link active";
 
         // 2. Load Data from Server
         loadDataFromServer();
@@ -413,17 +573,13 @@
             ajaxGet("data/main.json", function(categories) {
                 populateCategoryDropdown(categories);
 
-                // Selectively load categories (If category is chosen, load only that category to save memory and speed up filter)
                 var activeCats = [];
                 for (var k = 0; k < categories.length; k++) {
                     if (!appState.cat || categories[k].title.toLowerCase() === appState.cat.toLowerCase()) {
                         activeCats.push(categories[k]);
                     }
                 }
-
-                if (activeCats.length === 0) {
-                    activeCats = categories; // Fallback to all if name doesn't match
-                }
+                if (activeCats.length === 0) activeCats = categories;
 
                 var topicTasks = [];
                 var pendingCats = activeCats.length;
@@ -439,19 +595,14 @@
                                 });
                             }
                             pendingCats--;
-                            if (pendingCats === 0) {
-                                processTopicFiles(topicTasks, 0);
-                            }
+                            if (pendingCats === 0) processTopicFiles(topicTasks, 0);
                         }, function() {
                             pendingCats--;
-                            if (pendingCats === 0) {
-                                processTopicFiles(topicTasks, 0);
-                            }
+                            if (pendingCats === 0) processTopicFiles(topicTasks, 0);
                         });
                     })(activeCats[i]);
                 }
             }, function() {
-                // If main.json unreachable (e.g. offline testing)
                 appState.data = fallbackBackup;
                 renderQuestions();
             });
@@ -470,12 +621,9 @@
             }
         }
 
-        // Load Topic Text Files Sequentially
         function processTopicFiles(tasks, index) {
             if (index >= tasks.length) {
-                if (appState.data.length === 0) {
-                    appState.data = fallbackBackup;
-                }
+                if (appState.data.length === 0) appState.data = fallbackBackup;
                 renderQuestions();
                 return;
             }
@@ -489,7 +637,6 @@
             }, true);
         }
 
-        // Parse Question Lines
         function parseTextQuestions(text, cat, topic) {
             var lines = text.replace(/\r\n/g, "\n").split("\n");
             for (var i = 0; i < lines.length; i += 2) {
@@ -500,9 +647,7 @@
                 var parts = line2.split("|");
                 if (parts[parts.length - 1] === "") parts.pop();
 
-                var ans = 0;
-                var desc = null;
-                var opts = [];
+                var ans = 0, desc = null, opts = [];
                 var last = parts[parts.length - 1];
 
                 if (!isNaN(last) && last !== "") {
@@ -526,13 +671,25 @@
             }
         }
 
-        // 3. Filter and Render onto Screen
+        // 3. Render
         function renderQuestions() {
             var filtered = [];
+            var searchLower = appState.search.toLowerCase();
+
             for (var i = 0; i < appState.data.length; i++) {
                 var item = appState.data[i];
-                if (!appState.cat || item.cat.toLowerCase() === appState.cat.toLowerCase()) {
-                    filtered.push(item);
+                var catMatch = !appState.cat || (item.cat.toLowerCase() === appState.cat.toLowerCase());
+                var searchMatch = !appState.search || (item.q.toLowerCase().indexOf(searchLower) !== -1);
+
+                if (catMatch && searchMatch) filtered.push(item);
+            }
+
+            if (appState.shuffle) {
+                for (var j = filtered.length - 1; j > 0; j--) {
+                    var rand = Math.floor(Math.random() * (j + 1));
+                    var temp = filtered[j];
+                    filtered[j] = filtered[rand];
+                    filtered[rand] = temp;
                 }
             }
 
@@ -541,15 +698,21 @@
 
             var startIdx = (appState.page - 1) * appState.perPage;
             var currentItems = filtered.slice(startIdx, startIdx + appState.perPage);
+            appState.renderedItems = currentItems;
 
             var container = document.getElementById("qOutput");
             var letters = ["A", "B", "C", "D", "E"];
             var out = "";
 
             if (currentItems.length === 0) {
-                out = '<div class="status-card">No questions found matching this category.</div>';
+                out = '<div class="status-card">No questions found matching your criteria.</div>';
                 document.getElementById("paginationBar").style.display = "none";
+                document.getElementById("actionBar").style.display = "none";
+                document.getElementById("examSubmitContainer").style.display = "none";
             } else {
+                document.getElementById("actionBar").style.display = (appState.mode === "quiz") ? "block" : "none";
+                document.getElementById("examSubmitContainer").style.display = (appState.mode === "exam") ? "block" : "none";
+
                 for (var i = 0; i < currentItems.length; i++) {
                     var q = currentItems[i];
                     var qNo = startIdx + i + 1;
@@ -557,7 +720,7 @@
 
                     out += '<div class="card">';
                     
-                    // Category & Index Meta
+                    // Meta
                     out += '<table class="card-meta"><tr>';
                     out += '<td><span class="badge-cat">' + q.cat + '</span></td>';
                     out += '<td class="badge-id">Question #' + qNo + '</td>';
@@ -566,26 +729,37 @@
                     // Title
                     out += '<div class="q-text">' + qNo + '. ' + q.q + '</div>';
 
-                    // Options
+                    // Options Table (Different for Exam Mode)
                     out += '<table class="opt-table">';
                     for (var j = 0; j < q.opts.length; j++) {
                         out += '<tr>';
-                        out += '<td class="opt-prefix">(' + letters[j] + ')</td>';
-                        out += '<td class="opt-val">' + q.opts[j] + '</td>';
+                        if (appState.mode === "exam") {
+                            out += '<td style="width:25px;"><input type="radio" name="exam_ans_' + q.id + '" value="' + j + '" /></td>';
+                            out += '<td class="opt-prefix">[' + letters[j] + ']</td>';
+                            out += '<td class="opt-val">' + q.opts[j] + '</td>';
+                        } else {
+                            out += '<td class="opt-prefix">(' + letters[j] + ')</td>';
+                            out += '<td class="opt-val">' + q.opts[j] + '</td>';
+                        }
                         out += '</tr>';
                     }
                     out += '</table>';
 
-                    // Answer & Explanation
+                    // Mode Behavior
                     if (appState.mode === "study") {
                         out += '<div class="ans-panel open">';
-                        out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                        out += '<div class="ans-correct">[OK] Correct: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                        if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
+                        out += '</div>';
+                    } else if (appState.mode === "exam") {
+                        out += '<div id="' + ansId + '" class="ans-panel">';
+                        out += '<div class="ans-correct">[OK] Correct: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
                         if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
                         out += '</div>';
                     } else {
                         out += '<a href="javascript:void(0);" onclick="toggleAnswer(\'' + ansId + '\');" class="ans-btn">[+] View Answer</a>';
                         out += '<div id="' + ansId + '" class="ans-panel">';
-                        out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                        out += '<div class="ans-correct">[OK] Correct: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
                         if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
                         out += '</div>';
                     }
@@ -593,16 +767,21 @@
                     out += '</div>';
                 }
 
-                // Render Pagination (Keeps category query intact)
+                // Render Pagination
                 var pagContainer = document.getElementById("paginationBar");
-                var baseLink = "lite.html?mode=" + encodeURIComponent(appState.mode) + (appState.cat ? "&cat=" + encodeURIComponent(appState.cat) : "");
-                var pagHtml = '<div style="margin-bottom:4px; font-weight:bold;">Page ' + appState.page + ' of ' + totalPages + ' (' + filtered.length + ' Total Questions)</div>';
+                var baseLink = "lite.html?mode=" + encodeURIComponent(appState.mode) +
+                               (appState.cat ? "&cat=" + encodeURIComponent(appState.cat) : "") +
+                               (appState.search ? "&q=" + encodeURIComponent(appState.search) : "") +
+                               (appState.perPage !== 10 ? "&per_page=" + appState.perPage : "") +
+                               (appState.shuffle ? "&shuffle=1" : "");
+
+                var pagHtml = '<div style="margin-bottom:4px; font-weight:bold;">Page ' + appState.page + ' of ' + totalPages + ' (' + filtered.length + ' Total)</div>';
 
                 if (appState.page > 1) {
-                    pagHtml += '<a href="' + baseLink + '&page=' + (appState.page - 1) + '" class="pag-btn">&lt;&lt; Prev</a> ';
+                    pagHtml += '<a href="' + baseLink + '&page=' + (appState.page - 1) + '" class="pag-btn" accesskey="p">&lt;&lt; Prev (P)</a> ';
                 }
                 if (appState.page < totalPages) {
-                    pagHtml += '<a href="' + baseLink + '&page=' + (appState.page + 1) + '" class="pag-btn">Next &gt;&gt;</a>';
+                    pagHtml += '<a href="' + baseLink + '&page=' + (appState.page + 1) + '" class="pag-btn" accesskey="n">Next (N) &gt;&gt;</a>';
                 }
                 pagContainer.innerHTML = pagHtml;
                 pagContainer.style.display = "block";
@@ -610,6 +789,39 @@
 
             container.innerHTML = out;
         }
+
+        // Grade Exam Mode
+        function gradeExam() {
+            var correctCount = 0;
+            var total = appState.renderedItems.length;
+
+            for (var i = 0; i < total; i++) {
+                var q = appState.renderedItems[i];
+                var radios = document.getElementsByName("exam_ans_" + q.id);
+                var selected = -1;
+
+                for (var r = 0; r < radios.length; r++) {
+                    if (radios[r].checked) {
+                        selected = parseInt(radios[r].value, 10);
+                        break;
+                    }
+                }
+
+                // Reveal answers
+                var ansBox = document.getElementById("ans_box_" + q.id);
+                if (ansBox) ansBox.className = "ans-panel open";
+
+                if (selected === q.ans) {
+                    correctCount++;
+                }
+            }
+
+            var resBox = document.getElementById("examResultOutput");
+            resBox.className = "exam-score-box";
+            resBox.innerHTML = "EXAM RESULT: " + correctCount + " / " + total + " Correct (" + Math.round((correctCount / total) * 100) + "%)";
+            resBox.style.display = "block";
+            window.scrollTo(0, 0);
+        }
     </script>
 </body>
-        </html>
+</html>
