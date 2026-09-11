@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Daily GK MCQ | iOS Cupertino Edition</title>
+    <title>Daily GK MCQ | iOS Pro Edition</title>
     
     <!-- Legacy Opera Mini & J2ME Auto-Router -->
     <script type="text/javascript">
     (function() {
         var ua = navigator.userAgent || navigator.vendor || window.opera || '';
-        var isLegacy = /Opera Mini|Opera Mobi|J2ME|MIDP|NetFront|UCWEB|Series60|SymbianOS|NokiaBrowser|MAUI/i.test(ua);
+        var isLegacy = /Opera Mini|Opera Mobi|J2ME|MIDP|NetFront|UCWEB|Series60|SymbianOS|NokiaBrowser|MAUI|BlackBerry/i.test(ua);
         var search = window.location.search || '';
         if (isLegacy && search.indexOf('force_full=1') === -1) {
             window.location.replace('lite.html' + search);
@@ -22,13 +22,13 @@
 
     <style>
         /* ============================================================
-           APPLE iOS / iPadOS HUMAN INTERFACE GUIDELINES (HIG) SYSTEM
+           APPLE iOS / iPadOS CUPERTINO DESIGN SYSTEM (PERFECT HIG)
            ============================================================ */
         :root {
-            --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --ios-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
 
-            /* iOS Light Mode System Colors */
+            /* Light Mode System Colors */
             --ios-blue: #007aff;
             --ios-blue-rgb: 0, 122, 255;
             --ios-green: #34c759;
@@ -47,8 +47,8 @@
             --ios-text-secondary: #6c6c70;
             --ios-text-tertiary: #aeaeb2;
 
-            --ios-nav-bg: rgba(249, 249, 249, 0.78);
-            --ios-tab-bg: rgba(249, 249, 249, 0.85);
+            --ios-nav-bg: rgba(249, 249, 249, 0.82);
+            --ios-tab-bg: rgba(249, 249, 249, 0.88);
             --ios-segment-bg: rgba(118, 118, 128, 0.12);
             --ios-segment-active: #ffffff;
 
@@ -57,14 +57,14 @@
             --ios-radius-lg: 16px;
             --ios-radius-pill: 9999px;
 
-            --ios-nav-height: 54px;
+            --ios-nav-height: 52px;
             --ios-tab-height: 60px;
             --ios-safe-bottom: env(safe-area-inset-bottom, 0px);
             --ios-safe-top: env(safe-area-inset-top, 0px);
         }
 
         [data-theme="dark"] {
-            /* iOS Dark Mode System Colors */
+            /* Dark Mode System Colors */
             --ios-blue: #0a84ff;
             --ios-blue-rgb: 10, 132, 255;
             --ios-green: #30d158;
@@ -83,8 +83,8 @@
             --ios-text-secondary: #8e8e93;
             --ios-text-tertiary: #636366;
 
-            --ios-nav-bg: rgba(28, 28, 30, 0.78);
-            --ios-tab-bg: rgba(28, 28, 30, 0.85);
+            --ios-nav-bg: rgba(28, 28, 30, 0.82);
+            --ios-tab-bg: rgba(28, 28, 30, 0.88);
             --ios-segment-bg: rgba(118, 118, 128, 0.24);
             --ios-segment-active: #636366;
         }
@@ -107,7 +107,7 @@
             -webkit-user-select: none;
         }
 
-        /* SF Symbol Style SVG Icons */
+        /* SVG Vector Icon Utilities */
         .sf-icon {
             width: 20px;
             height: 20px;
@@ -122,7 +122,6 @@
         }
         .sf-icon-sm { width: 16px; height: 16px; }
 
-        /* Master App Shell */
         .ios-shell {
             display: flex;
             flex-direction: column;
@@ -133,7 +132,7 @@
             background: var(--ios-bg);
         }
 
-        /* 1. iOS Top Navigation Bar (Frosted Vibrancy) */
+        /* 1. iOS Translucent Navigation Bar */
         .ios-nav-bar {
             position: sticky;
             top: 0;
@@ -142,8 +141,8 @@
             height: calc(var(--ios-nav-height) + var(--ios-safe-top));
             padding-top: var(--ios-safe-top);
             background: var(--ios-nav-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
             border-bottom: 0.5px solid var(--ios-separator);
             display: flex;
             align-items: center;
@@ -157,7 +156,7 @@
         .ios-nav-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .ios-nav-title {
             font-size: 1.15rem;
@@ -173,7 +172,7 @@
         .ios-nav-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
         .ios-icon-btn {
             background: none;
@@ -187,24 +186,24 @@
             border-radius: var(--ios-radius-pill);
             transition: opacity 0.15s;
         }
-        .ios-icon-btn:active { opacity: 0.5; }
+        .ios-icon-btn:active { opacity: 0.4; }
 
-        /* 2. Scrollable View Area */
+        /* 2. Main Scrollable Workspace */
         .ios-content-view {
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 12px 16px calc(var(--ios-tab-height) + var(--ios-safe-bottom) + 20px) 16px;
+            padding: 12px 16px calc(var(--ios-tab-height) + var(--ios-safe-bottom) + 24px) 16px;
         }
         .ios-container {
-            max-width: 680px;
+            max-width: 640px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
 
-        /* iOS Segmented Control */
+        /* Segmented Control */
         .ios-segmented-control {
             background: var(--ios-segment-bg);
             border-radius: 9px;
@@ -228,11 +227,11 @@
         }
         .ios-segment-tab.active {
             background: var(--ios-segment-active);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12), 0 0.5px 1px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 0.5px 1px rgba(0, 0, 0, 0.04);
             color: var(--ios-text-primary);
         }
 
-        /* Search Bar */
+        /* Search Box */
         .ios-search-deck {
             position: relative;
             display: flex;
@@ -248,15 +247,23 @@
             background: var(--ios-segment-bg);
             border: none;
             border-radius: 10px;
-            padding: 8px 12px 8px 34px;
+            padding: 8px 30px 8px 34px;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--ios-text-primary);
             outline: none;
         }
-        .ios-search-input::placeholder { color: var(--ios-text-tertiary); }
+        .ios-search-clear {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--ios-text-tertiary);
+            cursor: pointer;
+            display: none;
+        }
 
-        /* Chips Carousel Bar */
+        /* Quick Filter Carousel */
         .ios-chips-carousel {
             display: flex;
             gap: 6px;
@@ -282,12 +289,12 @@
             border-color: var(--ios-blue);
         }
 
-        /* Inset Grouped Question Card */
+        /* Question Cards (Inset Grouped) */
         .ios-card {
             background: var(--ios-card);
             border-radius: var(--ios-radius-lg);
             padding: 16px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
             border: 0.5px solid var(--ios-separator-subtle);
         }
         .ios-card-header {
@@ -313,7 +320,7 @@
             margin-bottom: 14px;
         }
 
-        /* iOS Option Rows */
+        /* Options */
         .ios-options-stack {
             display: flex;
             flex-direction: column;
@@ -323,9 +330,9 @@
             background: var(--ios-card-secondary);
             border: 0.5px solid var(--ios-separator-subtle);
             border-radius: var(--ios-radius-md);
-            padding: 10px 14px;
+            padding: 11px 14px;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--ios-text-primary);
             text-align: left;
             display: flex;
@@ -352,7 +359,7 @@
             flex-shrink: 0;
         }
 
-        /* Option Verification Colors */
+        /* Correct / Wrong States */
         .ios-option-row.correct {
             background: var(--ios-green-bg) !important;
             border-color: var(--ios-green) !important;
@@ -397,7 +404,45 @@
             color: var(--ios-text-secondary);
         }
 
-        /* 3. Bottom Navigation Tab Bar (Apple Style) */
+        /* 3D Flashcard Mode View */
+        .flashcard-3d-wrap {
+            perspective: 1000px;
+            min-height: 280px;
+            cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 280px;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flashcard-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: var(--ios-radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--ios-card);
+            border: 1px solid var(--ios-separator-subtle);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: var(--ios-card-secondary);
+        }
+
+        /* 3. Bottom Navigation Tab Bar */
         .ios-tab-bar {
             position: fixed;
             bottom: 0;
@@ -406,8 +451,8 @@
             height: calc(var(--ios-tab-height) + var(--ios-safe-bottom));
             padding-bottom: var(--ios-safe-bottom);
             background: var(--ios-tab-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
             border-top: 0.5px solid var(--ios-separator);
             display: flex;
             align-items: center;
@@ -421,17 +466,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             font-family: inherit;
             font-size: 0.65rem;
             font-weight: 600;
             cursor: pointer;
             padding: 4px 12px;
-            transition: color 0.15s;
         }
         .ios-tab-item.active { color: var(--ios-blue); }
 
-        /* 4. iOS Cupertino Bottom Sheet Modal */
+        /* 4. iOS Cupertino Bottom Sheet */
         .ios-sheet-overlay {
             position: fixed;
             inset: 0;
@@ -441,7 +485,7 @@
             z-index: 200;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+            transition: opacity 0.25s;
         }
         .ios-sheet-overlay.show { opacity: 1; visibility: visible; }
 
@@ -452,7 +496,7 @@
             bottom: 0;
             background: var(--ios-card);
             border-radius: 20px 20px 0 0;
-            max-height: 75vh;
+            max-height: 80vh;
             display: flex;
             flex-direction: column;
             z-index: 210;
@@ -467,7 +511,7 @@
             height: 5px;
             background: var(--ios-separator);
             border-radius: 3px;
-            margin: 8px auto 6px auto;
+            margin: 8px auto 4px auto;
         }
         .ios-sheet-header {
             padding: 10px 16px;
@@ -476,14 +520,11 @@
             align-items: center;
             justify-content: space-between;
         }
-        .ios-sheet-title { font-size: 1.05rem; font-weight: 700; }
         .ios-sheet-content {
             flex: 1;
             overflow-y: auto;
-            padding: 12px 16px;
+            padding: 10px 16px;
         }
-
-        /* List Items inside Sheet */
         .ios-sheet-list { list-style: none; }
         .ios-sheet-item {
             padding: 12px 6px;
@@ -496,9 +537,8 @@
             align-items: center;
             justify-content: space-between;
         }
-        .ios-sheet-item:active { background: var(--ios-segment-bg); }
 
-        /* Pagination Bar */
+        /* Pagination Buttons */
         .ios-pagination {
             display: flex;
             align-items: center;
@@ -512,17 +552,16 @@
             color: var(--ios-blue);
             font-weight: 600;
             font-size: 0.82rem;
-            padding: 6px 16px;
+            padding: 7px 16px;
             border-radius: var(--ios-radius-pill);
             cursor: pointer;
         }
         .ios-btn-pill:active:not(:disabled) { background: var(--ios-segment-bg); }
         .ios-btn-pill:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* Toast Alert */
         .ios-toast {
             position: fixed;
-            top: calc(var(--ios-nav-height) + var(--ios-safe-top) + 12px);
+            top: calc(var(--ios-nav-height) + var(--ios-safe-top) + 10px);
             left: 50%;
             transform: translateX(-50%) translateY(-30px);
             background: rgba(0, 0, 0, 0.82);
@@ -538,11 +577,7 @@
             transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
             z-index: 300;
         }
-        .ios-toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
+        .ios-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -554,50 +589,50 @@
             <div class="ios-nav-left">
                 <div>
                     <h1 class="ios-nav-title">Daily GK</h1>
-                    <div class="ios-nav-subtitle" id="currentTopicSubtitle">All Topics</div>
+                    <div class="ios-nav-subtitle" id="navSubtitle">All Topics</div>
                 </div>
             </div>
 
             <div class="ios-nav-actions">
-                <!-- Theme Toggle -->
-                <button id="themeToggle" class="ios-icon-btn" title="Toggle Dark/Light Mode">
+                <button id="themeToggleBtn" class="ios-icon-btn" title="Toggle Dark/Light Mode">
                     <svg class="sf-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                 </button>
-                <!-- Category Sheet Modal Trigger -->
                 <button onclick="openCategorySheet()" class="ios-icon-btn" title="Filter Topics">
                     <svg class="sf-icon" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="8" y2="18"/></svg>
                 </button>
             </div>
         </header>
 
-        <!-- 2. SCROLLABLE MAIN VIEW -->
+        <!-- 2. SCROLLABLE WORKSPACE -->
         <main class="ios-content-view" id="mainScroll">
             <div class="ios-container">
 
-                <!-- Segmented Control Bar (Quiz / Study / Exam) -->
+                <!-- Segmented Control Bar -->
                 <div class="ios-segmented-control">
                     <button class="ios-segment-tab active" onclick="switchMode('quiz')" id="tabQuiz">Quiz</button>
                     <button class="ios-segment-tab" onclick="switchMode('study')" id="tabStudy">Study</button>
                     <button class="ios-segment-tab" onclick="switchMode('exam')" id="tabExam">Exam</button>
+                    <button class="ios-segment-tab" onclick="switchMode('flashcard')" id="tabCards">Cards</button>
                 </div>
 
-                <!-- Search Input Deck -->
+                <!-- Search Deck -->
                 <div class="ios-search-deck">
                     <svg class="sf-icon sf-icon-sm ios-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" id="searchInput" class="ios-search-input" placeholder="Search questions...">
+                    <input type="text" id="searchInput" class="ios-search-input" placeholder="Search questions across topics...">
+                    <button id="searchClearBtn" class="ios-search-clear" onclick="clearSearch()">&times;</button>
                 </div>
 
-                <!-- Quick Category Carousel -->
+                <!-- Quick Carousel Pills -->
                 <div class="ios-chips-carousel" id="chipsCarousel"></div>
 
-                <!-- Exam Timer Active Bar -->
-                <div id="examTimerCard" class="ios-card" style="display:none; text-align:center; border-color:var(--ios-blue);">
-                    <div style="font-size:0.75rem; color:var(--ios-text-secondary); text-transform:uppercase; font-weight:700;">Time Remaining</div>
+                <!-- Exam Timer HUD Card -->
+                <div id="examTimerHUD" class="ios-card" style="display:none; text-align:center; border-color:var(--ios-blue);">
+                    <div style="font-size:0.75rem; color:var(--ios-text-secondary); text-transform:uppercase; font-weight:700;">Exam Time Left</div>
                     <div id="examTimerDisplay" style="font-size:1.6rem; font-weight:800; font-family:var(--ios-mono); color:var(--ios-blue); margin:4px 0;">30:00</div>
-                    <button onclick="submitExam()" class="ios-btn-pill" style="background:var(--ios-blue); color:#fff; border:none; margin-top:4px;">Submit Exam</button>
+                    <button onclick="finishExam()" class="ios-btn-pill" style="background:var(--ios-blue); color:#fff; border:none;">Submit Exam</button>
                 </div>
 
-                <!-- Question Stream -->
+                <!-- Question Deck Stream -->
                 <div id="questionList"></div>
 
                 <!-- Pagination -->
@@ -606,7 +641,7 @@
             </div>
         </main>
 
-        <!-- 3. APPLE iOS TAB BAR (BOTTOM) -->
+        <!-- 3. BOTTOM TAB BAR -->
         <nav class="ios-tab-bar">
             <button class="ios-tab-item active" onclick="switchBottomTab('practice')" id="bTabPractice">
                 <svg class="sf-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -622,12 +657,12 @@
             </button>
         </nav>
 
-        <!-- 4. iOS CUPERTINO BOTTOM SHEET MODAL -->
+        <!-- 4. TOPIC PICKER BOTTOM SHEET -->
         <div class="ios-sheet-overlay" id="sheetOverlay" onclick="closeCategorySheet()"></div>
         <div class="ios-bottom-sheet" id="categorySheet">
             <div class="ios-sheet-handle"></div>
             <div class="ios-sheet-header">
-                <span class="ios-sheet-title">Topics &amp; Syllabus</span>
+                <span style="font-size:1.05rem; font-weight:700;">Topics &amp; Syllabus</span>
                 <button onclick="closeCategorySheet()" class="ios-icon-btn" style="font-weight:600; font-size:0.9rem;">Done</button>
             </div>
             <div class="ios-sheet-content">
@@ -635,11 +670,21 @@
             </div>
         </div>
 
+        <!-- 5. EXAM RESULT MODAL SHEET -->
+        <div class="ios-bottom-sheet" id="examResultSheet">
+            <div class="ios-sheet-handle"></div>
+            <div class="ios-sheet-header">
+                <span style="font-size:1.05rem; font-weight:700;">Exam Summary</span>
+                <button onclick="closeExamResultSheet()" class="ios-icon-btn" style="font-weight:600; font-size:0.9rem;">Done</button>
+            </div>
+            <div class="ios-sheet-content" id="examResultBody" style="text-align:center; padding:20px;"></div>
+        </div>
+
         <!-- iOS Toast -->
         <div id="iosToast" class="ios-toast"></div>
     </div>
 
-    <!-- MAIN JAVASCRIPT ENGINE -->
+    <!-- MAIN JAVASCRIPT ENGINE (FULLY DEBUGGED & REFINED) -->
     <script>
         "use strict";
 
@@ -651,25 +696,27 @@
             isBookmarkView: false,
             
             selectedCat: null,
-            selectedTopic: null,
             searchQuery: '',
             mode: 'quiz',
             page: 1,
             perPage: 10,
             
-            // Exam Mode
+            // Exam State
             examTimer: null,
             examSeconds: 30 * 60,
-            userAnswers: {}
+            userAnswers: {},
+            
+            // Flashcard State
+            flashcardIndex: 0
         };
 
-        // Fallback Data
+        // Fallback Data in case server is unreachable
         const fallbackData = [
             {
                 id: 1,
                 cat: "General Science",
-                topic: "Space",
-                q: "Which planet in our solar system is known as the 'Red Planet'?",
+                topic: "Physics",
+                q: "Which planet in our solar system is famously known as the 'Red Planet'?",
                 opts: ["Venus", "Mars", "Jupiter", "Saturn"],
                 ans: 1,
                 desc: "Mars is called the Red Planet because iron minerals in the Martian soil oxidize (rust)."
@@ -702,38 +749,56 @@
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        // Web Audio iOS Haptic Click Sound
-        function playHapticTick() {
+        // Web Audio Synthesizer for Apple-like Haptic Ticks
+        function playHaptic(type) {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                osc.frequency.setValueAtTime(800, ctx.currentTime);
-                gain.gain.setValueAtTime(0.04, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.04);
+
+                if (type === 'tick') {
+                    osc.frequency.setValueAtTime(800, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.04);
+                } else if (type === 'correct') {
+                    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                    osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08); // A5
+                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.2);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
+                    osc.frequency.setValueAtTime(164.81, ctx.currentTime + 0.08); // E3
+                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.2);
+                }
             } catch(e) {}
         }
 
-        // Theme Switcher
+        // Theme Toggle
         function initTheme() {
             let dark = localStorage.getItem('gk_ios_dark') === 'true';
             applyTheme(dark);
-            document.getElementById('themeToggle').onclick = () => {
+            document.getElementById('themeToggleBtn').onclick = () => {
                 dark = !dark;
                 localStorage.setItem('gk_ios_dark', dark);
                 applyTheme(dark);
-                playHapticTick();
+                playHaptic('tick');
             };
         }
         function applyTheme(dark) {
             document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         }
 
-        // Load Server Data
+        // Server Data Fetching Pipeline (Debugged)
         function loadServerData() {
             fetch('data/main.json?t=' + Date.now())
                 .then(r => r.json())
@@ -766,6 +831,7 @@
                 });
         }
 
+        // Text Parser (Edge-case proof)
         function parseAndStore(text, cat, topic) {
             const lines = text.replace(/\r\n/g, '\n').split('\n');
             for (let i = 0; i < lines.length; i += 2) {
@@ -776,7 +842,7 @@
                 const parts = line2.split('|');
                 if (parts[parts.length - 1] === '') parts.pop();
 
-                let ans, desc = null, opts;
+                let ans = 0, desc = null, opts = [];
                 const last = parts[parts.length - 1];
                 if (!isNaN(last) && last !== '') {
                     ans = parseInt(last, 10);
@@ -787,18 +853,20 @@
                     opts = parts.slice(0, -2);
                 }
 
-                app.data.push({
-                    id: app.data.length + 1,
-                    cat: cat,
-                    topic: topic,
-                    q: line1.replace(/\*\*/g, ''),
-                    opts: opts,
-                    ans: ans,
-                    desc: desc
-                });
+                if (opts.length > 0) {
+                    app.data.push({
+                        id: app.data.length + 1,
+                        cat: cat,
+                        topic: topic,
+                        q: line1.replace(/\*\*/g, ''),
+                        opts: opts,
+                        ans: ans,
+                        desc: desc
+                    });
 
-                if (!app.tree[cat]) app.tree[cat] = {};
-                app.tree[cat][topic] = (app.tree[cat][topic] || 0) + 1;
+                    if (!app.tree[cat]) app.tree[cat] = {};
+                    app.tree[cat][topic] = (app.tree[cat][topic] || 0) + 1;
+                }
             }
         }
 
@@ -808,7 +876,6 @@
             applyFilter();
         }
 
-        // Quick Filter Carousel
         function buildChipsCarousel() {
             const container = document.getElementById('chipsCarousel');
             container.innerHTML = `<button class="ios-filter-pill ${!app.selectedCat ? 'active' : ''}" onclick="selectCategory(null)">All</button>`;
@@ -823,19 +890,18 @@
         }
 
         function selectCategory(cat) {
-            playHapticTick();
+            playHaptic('tick');
             app.selectedCat = cat;
-            app.selectedTopic = null;
             app.isBookmarkView = false;
             app.page = 1;
-            document.getElementById('currentTopicSubtitle').textContent = cat || "All Topics";
+            document.getElementById('navSubtitle').textContent = cat || "All Topics";
             buildChipsCarousel();
             applyFilter();
         }
 
         // Bottom Sheet Category Picker
         window.openCategorySheet = function() {
-            playHapticTick();
+            playHaptic('tick');
             document.getElementById('sheetOverlay').classList.add('show');
             document.getElementById('categorySheet').classList.add('show');
         };
@@ -850,7 +916,7 @@
             list.innerHTML = `
                 <li class="ios-sheet-item" onclick="selectCategory(null); closeCategorySheet();">
                     <strong>All Questions</strong>
-                    <span>&rsaquo;</span>
+                    <span style="color:var(--ios-text-secondary);">&rsaquo;</span>
                 </li>`;
 
             for (let cat in app.tree) {
@@ -868,14 +934,15 @@
             }
         }
 
-        // Mode Switcher
+        // Mode Switching
         window.switchMode = function(mode) {
-            playHapticTick();
+            playHaptic('tick');
             app.mode = mode;
             document.querySelectorAll('.ios-segment-tab').forEach(t => t.classList.remove('active'));
             if (mode === 'quiz') document.getElementById('tabQuiz').classList.add('active');
             if (mode === 'study') document.getElementById('tabStudy').classList.add('active');
             if (mode === 'exam') document.getElementById('tabExam').classList.add('active');
+            if (mode === 'flashcard') document.getElementById('tabCards').classList.add('active');
 
             if (mode === 'exam') startExam();
             else stopExam();
@@ -884,7 +951,7 @@
         };
 
         function startExam() {
-            document.getElementById('examTimerCard').style.display = 'block';
+            document.getElementById('examTimerHUD').style.display = 'block';
             app.userAnswers = {};
             app.examSeconds = 30 * 60;
             clearInterval(app.examTimer);
@@ -893,29 +960,61 @@
                 const m = Math.floor(app.examSeconds / 60).toString().padStart(2, '0');
                 const s = (app.examSeconds % 60).toString().padStart(2, '0');
                 document.getElementById('examTimerDisplay').textContent = `${m}:${s}`;
-                if (app.examSeconds <= 0) submitExam();
+                if (app.examSeconds <= 0) finishExam();
             }, 1000);
         }
 
         function stopExam() {
-            document.getElementById('examTimerCard').style.display = 'none';
+            document.getElementById('examTimerHUD').style.display = 'none';
             clearInterval(app.examTimer);
         }
 
-        window.submitExam = function() {
+        window.finishExam = function() {
             stopExam();
-            let score = 0;
+            let correct = 0, wrong = 0, skipped = 0;
             const items = app.filtered;
+
             items.forEach(q => {
-                if (app.userAnswers[q.id] === q.ans) score++;
+                const userAns = app.userAnswers[q.id];
+                if (userAns === undefined) skipped++;
+                else if (userAns === q.ans) correct++;
+                else wrong++;
             });
-            showToast(`Exam Finished! Score: ${score} / ${items.length}`);
-            switchMode('study');
+
+            const accuracy = items.length > 0 ? Math.round((correct / items.length) * 100) : 0;
+            const resBody = document.getElementById('examResultBody');
+            resBody.innerHTML = `
+                <div style="font-size:2.4rem; font-weight:800; color:var(--ios-blue); font-family:var(--ios-mono); margin-bottom:4px;">${accuracy}%</div>
+                <div style="font-size:0.88rem; color:var(--ios-text-secondary); margin-bottom:16px;">Accuracy Score</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:20px;">
+                    <div style="background:var(--ios-green-bg); padding:10px; border-radius:10px; color:var(--ios-green); font-weight:700;">
+                        <div>${correct}</div>
+                        <div style="font-size:0.7rem; text-transform:uppercase;">Correct</div>
+                    </div>
+                    <div style="background:var(--ios-red-bg); padding:10px; border-radius:10px; color:var(--ios-red); font-weight:700;">
+                        <div>${wrong}</div>
+                        <div style="font-size:0.7rem; text-transform:uppercase;">Wrong</div>
+                    </div>
+                    <div style="background:var(--ios-card-secondary); padding:10px; border-radius:10px; color:var(--ios-text-secondary); font-weight:700;">
+                        <div>${skipped}</div>
+                        <div style="font-size:0.7rem; text-transform:uppercase;">Skipped</div>
+                    </div>
+                </div>
+                <button onclick="closeExamResultSheet(); switchMode('study');" class="ios-btn-pill" style="background:var(--ios-blue); color:#fff; border:none; width:100%; padding:10px;">Review Explanations</button>
+            `;
+
+            document.getElementById('sheetOverlay').classList.add('show');
+            document.getElementById('examResultSheet').classList.add('show');
+        };
+
+        window.closeExamResultSheet = function() {
+            document.getElementById('sheetOverlay').classList.remove('show');
+            document.getElementById('examResultSheet').classList.remove('show');
         };
 
         // Bottom Tab Switcher
         window.switchBottomTab = function(tab) {
-            playHapticTick();
+            playHaptic('tick');
             document.querySelectorAll('.ios-tab-item').forEach(b => b.classList.remove('active'));
             if (tab === 'practice') {
                 document.getElementById('bTabPractice').classList.add('active');
@@ -932,7 +1031,7 @@
         function applyFilter() {
             if (app.isBookmarkView) {
                 app.filtered = app.data.filter(q => app.bookmarks.includes(q.id));
-                document.getElementById('currentTopicSubtitle').textContent = "Saved Bookmarks";
+                document.getElementById('navSubtitle').textContent = "Saved Bookmarks";
             } else {
                 app.filtered = app.data.filter(q => {
                     if (app.selectedCat && q.cat !== app.selectedCat) return false;
@@ -947,6 +1046,13 @@
             const container = document.getElementById('questionList');
             container.innerHTML = '';
 
+            // Flashcard Mode Render
+            if (app.mode === 'flashcard') {
+                render3DFlashcard(container);
+                document.getElementById('paginationBox').innerHTML = '';
+                return;
+            }
+
             const totalPages = Math.ceil(app.filtered.length / app.perPage) || 1;
             if (app.page > totalPages) app.page = totalPages;
 
@@ -956,7 +1062,7 @@
             if (currentItems.length === 0) {
                 container.innerHTML = `
                     <div class="ios-card" style="text-align:center; padding:35px; color:var(--ios-text-secondary);">
-                        No questions found.
+                        No questions found matching your criteria.
                     </div>`;
                 renderPagination(0);
                 return;
@@ -970,6 +1076,52 @@
             renderPagination(totalPages);
         }
 
+        // 3D Animated Flashcard Engine
+        function render3DFlashcard(container) {
+            if (app.filtered.length === 0) {
+                container.innerHTML = '<div class="ios-card" style="text-align:center; padding:30px;">No cards available.</div>';
+                return;
+            }
+
+            if (app.flashcardIndex >= app.filtered.length) app.flashcardIndex = 0;
+            const q = app.filtered[app.flashcardIndex];
+
+            const wrap = document.createElement('div');
+            wrap.className = 'flashcard-3d-wrap';
+
+            wrap.innerHTML = `
+                <div class="flashcard-inner" id="cardInner">
+                    <div class="flashcard-face">
+                        <div style="font-size:0.75rem; color:var(--ios-blue); font-weight:700; text-transform:uppercase; margin-bottom:8px;">${q.cat} &bull; Card ${app.flashcardIndex + 1} of ${app.filtered.length}</div>
+                        <div style="font-size:1.1rem; font-weight:700; line-height:1.45; margin-bottom:16px;">${q.q}</div>
+                        <div style="font-size:0.8rem; color:var(--ios-text-tertiary);">Tap to flip card</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div style="font-size:1.15rem; font-weight:700; color:var(--ios-green); margin-bottom:10px;">${q.opts[q.ans]}</div>
+                        ${q.desc ? `<div style="font-size:0.86rem; color:var(--ios-text-secondary); line-height:1.4; margin-bottom:16px;">${q.desc}</div>` : ''}
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="event.stopPropagation(); nextFlashcard(false);" class="ios-btn-pill">Repeat</button>
+                            <button onclick="event.stopPropagation(); nextFlashcard(true);" class="ios-btn-pill" style="background:var(--ios-blue); color:#fff; border:none;">Got It</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            wrap.onclick = () => {
+                playHaptic('tick');
+                document.getElementById('cardInner').classList.toggle('flipped');
+            };
+
+            window.nextFlashcard = function(isLearned) {
+                playHaptic('tick');
+                app.flashcardIndex = (app.flashcardIndex + 1) % app.filtered.length;
+                render();
+            };
+
+            container.appendChild(wrap);
+        }
+
+        // Create Grouped Question Card
         function createIOSCard(q, index) {
             const card = document.createElement('div');
             card.className = 'ios-card';
@@ -1003,22 +1155,28 @@
                 <div class="ios-options-stack">${optionsHtml}</div>
                 <div class="ios-explanation-box" style="${app.mode === 'study' ? 'display:block;' : 'display:none;'}">
                     <strong>Correct:</strong> [${letters[q.ans]}] ${q.opts[q.ans]}
-                    ${q.desc ? `<div style="margin-top:3px;">${q.desc}</div>` : ''}
+                    ${q.desc ? `<div style="margin-top:4px;">${q.desc}</div>` : ''}
                 </div>
             `;
 
             const rows = card.querySelectorAll('.ios-option-row');
             rows.forEach((row, optIdx) => {
                 row.onclick = () => {
-                    playHapticTick();
                     app.userAnswers[q.id] = optIdx;
 
                     if (app.mode === 'quiz') {
                         rows.forEach(r => r.disabled = true);
                         rows[q.ans].classList.add('correct');
-                        if (optIdx !== q.ans) row.classList.add('wrong');
+                        
+                        if (optIdx === q.ans) {
+                            playHaptic('correct');
+                        } else {
+                            row.classList.add('wrong');
+                            playHaptic('wrong');
+                        }
                         card.querySelector('.ios-explanation-box').style.display = 'block';
                     } else if (app.mode === 'exam') {
+                        playHaptic('tick');
                         rows.forEach(r => r.classList.remove('exam-selected'));
                         row.classList.add('exam-selected');
                     }
@@ -1036,7 +1194,7 @@
         }
 
         window.toggleBookmark = function(qid) {
-            playHapticTick();
+            playHaptic('tick');
             const idx = app.bookmarks.indexOf(qid);
             if (idx === -1) {
                 app.bookmarks.push(qid);
@@ -1058,7 +1216,7 @@
             prev.className = 'ios-btn-pill';
             prev.textContent = 'Previous';
             prev.disabled = app.page === 1;
-            prev.onclick = () => { playHapticTick(); app.page--; render(); document.getElementById('mainScroll').scrollTo(0,0); };
+            prev.onclick = () => { playHaptic('tick'); app.page--; render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
             const info = document.createElement('span');
             info.style.cssText = 'font-size:0.8rem; font-weight:600; color:var(--ios-text-secondary);';
@@ -1068,7 +1226,7 @@
             next.className = 'ios-btn-pill';
             next.textContent = 'Next';
             next.disabled = app.page === total;
-            next.onclick = () => { playHapticTick(); app.page++; render(); document.getElementById('mainScroll').scrollTo(0,0); };
+            next.onclick = () => { playHaptic('tick'); app.page++; render(); document.getElementById('mainScroll').scrollTo(0,0); };
 
             box.appendChild(prev);
             box.appendChild(info);
@@ -1076,16 +1234,27 @@
         }
 
         function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
             let timeout;
-            document.getElementById('searchInput').onkeyup = (e) => {
+
+            searchInput.onkeyup = (e) => {
                 clearTimeout(timeout);
+                clearBtn.style.display = searchInput.value ? 'block' : 'none';
                 timeout = setTimeout(() => {
-                    app.searchQuery = e.target.value.toLowerCase().trim();
+                    app.searchQuery = searchInput.value.toLowerCase().trim();
                     app.page = 1;
                     applyFilter();
                 }, 200);
             };
+
+            window.clearSearch = function() {
+                searchInput.value = '';
+                clearBtn.style.display = 'none';
+                app.searchQuery = '';
+                applyFilter();
+            };
         }
     </script>
 </body>
-  </html>
+</html>
