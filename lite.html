@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="bn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily GK Lite - সাধারণ জ্ঞান</title>
+    <style type="text/css">
+        /* Opera Mini 4.x Compatible Pure CSS2 */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            line-height: 1.4;
+            background-color: #f7f9fa;
+            color: #222222;
+            margin: 0;
+            padding: 4px;
+        }
+        .header {
+            background-color: #005a9c;
+            color: #ffffff;
+            padding: 8px;
+            text-align: center;
+            border-bottom: 2px solid #003e6b;
+        }
+        .header h1 {
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+        .header small {
+            font-size: 11px;
+            color: #d1e4ff;
+        }
+        .nav-bar {
+            background-color: #e6edf5;
+            padding: 6px;
+            margin: 5px 0;
+            border: 1px solid #c0d1e3;
+            text-align: center;
+            font-size: 12px;
+        }
+        .nav-bar a {
+            color: #005a9c;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 2px 5px;
+        }
+        .category-box {
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            padding: 6px;
+            margin-bottom: 6px;
+        }
+        .q-card {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+        .q-meta {
+            font-size: 11px;
+            color: #666666;
+            border-bottom: 1px dashed #dddddd;
+            padding-bottom: 3px;
+            margin-bottom: 5px;
+        }
+        .q-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #111111;
+            margin-bottom: 6px;
+        }
+        .opt-list {
+            margin: 0 0 6px 0;
+            padding-left: 18px;
+        }
+        .opt-list li {
+            margin-bottom: 3px;
+            color: #333333;
+        }
+        .btn-ans {
+            display: inline-block;
+            background-color: #e9ecef;
+            border: 1px solid #999999;
+            color: #003366;
+            padding: 3px 8px;
+            font-size: 11px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .ans-box {
+            display: none;
+            background-color: #eafaf1;
+            border: 1px solid #a3e4d7;
+            padding: 6px;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #145a32;
+        }
+        .ans-box.show {
+            display: block;
+        }
+        .pagination {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            padding: 6px;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        .pagination a {
+            display: inline-block;
+            background-color: #005a9c;
+            color: #ffffff;
+            padding: 3px 8px;
+            text-decoration: none;
+            margin: 0 3px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #777777;
+            margin-top: 12px;
+            padding: 6px;
+            border-top: 1px solid #dddddd;
+        }
+        .footer a {
+            color: #005a9c;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <div class="header">
+        <h1>Daily GK (Lite)</h1>
+        <small>Opera Mini &amp; 2G Optimized Edition</small>
+    </div>
+
+    <!-- Mode Selector Bar -->
+    <div class="nav-bar">
+        <strong>মোড:</strong>
+        <a href="lite.html?mode=quiz" id="modeQuizLink">[কুইজ]</a> | 
+        <a href="lite.html?mode=study" id="modeStudyLink">[স্টাডি/উত্তরসহ]</a>
+    </div>
+
+    <!-- Category Filter Form -->
+    <div class="category-box">
+        <form method="get" action="lite.html">
+            <input type="hidden" name="mode" id="formModeInput" value="quiz" />
+            <label for="catSelect"><b>বিষয়:</b></label>
+            <select name="cat" id="catSelect" style="font-size: 11px;">
+                <option value="">সকল বিষয় (All)</option>
+                <option value="General Science">General Science</option>
+                <option value="World Geography">World Geography</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Bangladesh Affairs">Bangladesh Affairs</option>
+                <option value="International Affairs">International Affairs</option>
+            </select>
+            <input type="submit" value="ফিল্টার" style="font-size: 11px; padding: 1px 4px;" />
+        </form>
+    </div>
+
+    <!-- Questions Stream -->
+    <div id="qStream">
+        <!-- জাভাস্ক্রিপ্ট অথবা ডিফল্ট এইচটিএমএল দিয়ে প্রশ্ন লোড হবে -->
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination" id="pagDiv"></div>
+
+    <!-- Footer & Switch Back Link -->
+    <div class="footer">
+        <div>&copy; 2026 Daily GK MCQ Lite</div>
+        <div style="margin-top: 4px;">
+            <a href="index.html?force_full=1">ফুল ভার্সনে যান (Android/PC)</a>
+        </div>
+    </div>
+
+    <!-- Pure ES3 JavaScript (Works on Opera Mini 4.2 / 4.4 Engine) -->
+    <script type="text/javascript">
+        // Data Bank (Self-contained for single roundtrip)
+        var gkQuestions = [
+            {
+                id: 1,
+                cat: "General Science",
+                topic: "Physics & Space",
+                q: "Which planet in our solar system is known as the 'Red Planet'?",
+                opts: ["Venus", "Mars", "Jupiter", "Saturn"],
+                ans: 1,
+                desc: "Mars appears red due to iron oxide (rust) on its surface."
+            },
+            {
+                id: 2,
+                cat: "World Geography",
+                topic: "Rivers & Lakes",
+                q: "What is the longest river in the world?",
+                opts: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"],
+                ans: 1,
+                desc: "The Nile River in Africa is approximately 6,650 km long."
+            },
+            {
+                id: 3,
+                cat: "Information Technology",
+                topic: "Computer Science",
+                q: "What does 'HTTP' stand for in web browsing protocols?",
+                opts: ["HyperText Transfer Protocol", "High Transfer Tech Protocol", "Hyperlink Text Test Process", "Hyper Transfer Point"],
+                ans: 0,
+                desc: "HTTP is the foundation of data communication for the World Wide Web."
+            },
+            {
+                id: 4,
+                cat: "Bangladesh Affairs",
+                topic: "History",
+                q: "মুজিবনগর সরকার কোন তারিখে শপথ গ্রহণ করেছিল?",
+                opts: ["১০ এপ্রিল ১৯৭১", "১৭ এপ্রিল ১৯৭১", "২৬ মার্চ ১৯৭১", "১৬ ডিসেম্বর ১৯৭১"],
+                ans: 1,
+                desc: "১৭ এপ্রিল ১৯৭১ তারিখে মেহেরপুরের বৈদ্যনাথতলায় (মুজিবনগর) শপথ গ্রহণ অনুষ্ঠিত হয়।"
+            },
+            {
+                id: 5,
+                cat: "International Affairs",
+                topic: "Headquarters",
+                q: "জাতিসংঘের (UN) সদর দপ্তর কোথায় অবস্থিত?",
+                opts: ["জেনেভা", "লন্ডন", "নিউইয়র্ক", "প্যারিস"],
+                ans: 2,
+                desc: "জাতিসংঘের প্রধান সদর দপ্তর যুক্তরাষ্ট্রের নিউইয়র্ক শহরে অবস্থিত।"
+            }
+        ];
+
+        // URL Query Parser (Pure ES3)
+        function getQueryParam(param) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (decodeURIComponent(pair[0]) == param) {
+                    return decodeURIComponent(pair[1] || "");
+                }
+            }
+            return null;
+        }
+
+        var currentMode = getQueryParam("mode") || "quiz";
+        var currentCat = getQueryParam("cat") || "";
+        var currentPage = parseInt(getQueryParam("page") || "1", 10);
+        if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
+        var perPage = 3; // ছোট স্ক্রিনের জন্য ৩টি করে প্রশ্ন
+
+        // UI Setup
+        document.getElementById("formModeInput").value = currentMode;
+        var catSelect = document.getElementById("catSelect");
+        for (var i = 0; i < catSelect.options.length; i++) {
+            if (catSelect.options[i].value === currentCat) {
+                catSelect.selectedIndex = i;
+                break;
+            }
+        }
+
+        // Toggle Answer Function
+        function showAnswer(boxId) {
+            var box = document.getElementById(boxId);
+            if (box) {
+                box.className = (box.className.indexOf("show") === -1) ? "ans-box show" : "ans-box";
+            }
+        }
+
+        // Filter Data
+        var filtered = [];
+        for (var i = 0; i < gkQuestions.length; i++) {
+            var item = gkQuestions[i];
+            if (!currentCat || item.cat === currentCat) {
+                filtered.push(item);
+            }
+        }
+
+        // Render Questions
+        var container = document.getElementById("qStream");
+        var totalPages = Math.ceil(filtered.length / perPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        var start = (currentPage - 1) * perPage;
+        var pageItems = filtered.slice(start, start + perPage);
+
+        var letters = ["A", "B", "C", "D"];
+        var html = "";
+
+        if (pageItems.length === 0) {
+            html = '<div class="q-card" style="text-align:center;">কোনো প্রশ্ন পাওয়া যায়নি।</div>';
+        } else {
+            for (var i = 0; i < pageItems.length; i++) {
+                var qObj = pageItems[i];
+                var qIndex = start + i + 1;
+                var boxId = "ans_" + qObj.id;
+
+                html += '<div class="q-card">';
+                html += '<div class="q-meta">' + qObj.cat + ' &bull; #' + qIndex + '</div>';
+                html += '<div class="q-title">' + qIndex + '. ' + qObj.q + '</div>';
+                
+                // Options
+                html += '<ol class="opt-list" type="A">';
+                for (var j = 0; j < qObj.opts.length; j++) {
+                    html += '<li>' + qObj.opts[j] + '</li>';
+                }
+                html += '</ol>';
+
+                // Quiz Mode vs Study Mode
+                if (currentMode === "study") {
+                    html += '<div class="ans-box show"><b>সঠিক উত্তর:</b> [' + letters[qObj.ans] + '] ' + qObj.opts[qObj.ans];
+                    if (qObj.desc) html += '<br/><b>ব্যাখ্যা:</b> ' + qObj.desc;
+                    html += '</div>';
+                } else {
+                    html += '<a href="javascript:void(0);" onclick="showAnswer(\'' + boxId + '\');" class="btn-ans">উত্তর দেখুন</a>';
+                    html += '<div id="' + boxId + '" class="ans-box"><b>সঠিক উত্তর:</b> [' + letters[qObj.ans] + '] ' + qObj.opts[qObj.ans];
+                    if (qObj.desc) html += '<br/><b>ব্যাখ্যা:</b> ' + qObj.desc;
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            }
+        }
+        container.innerHTML = html;
+
+        // Render Pagination (Pure Links for Opera Mini)
+        var pagHtml = 'পৃষ্ঠা: ' + currentPage + ' / ' + totalPages + '<br/>';
+        var baseQuery = 'lite.html?mode=' + encodeURIComponent(currentMode) + '&cat=' + encodeURIComponent(currentCat);
+
+        if (currentPage > 1) {
+            pagHtml += '<a href="' + baseQuery + '&page=' + (currentPage - 1) + '">&laquo; পূর্ববর্তী</a> ';
+        }
+        if (currentPage < totalPages) {
+            pagHtml += '<a href="' + baseQuery + '&page=' + (currentPage + 1) + '">পরবর্তী &raquo;</a>';
+        }
+        document.getElementById("pagDiv").innerHTML = pagHtml;
+    </script>
+</body>
+</html>
