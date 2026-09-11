@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily GK MCQ Pro | Desktop Exam Workspace</title>
+    <meta name="description" content="Professional General Knowledge Practice & Exam Workspace for Competitive Exam Aspirants.">
+    
+    <!-- Legacy Opera Mini & J2ME Auto-Redirect Script -->
+    <script type="text/javascript">
+    (function() {
+        var ua = navigator.userAgent || navigator.vendor || window.opera || '';
+        var isLegacy = /Opera Mini|Opera Mobi|J2ME|MIDP|NetFront|UCWEB|Series60|SymbianOS|NokiaBrowser|MAUI/i.test(ua);
+        var search = window.location.search || '';
+        if (isLegacy && search.indexOf('force_full=1') === -1) {
+            window.location.replace('lite.html' + search);
+        }
+    })();
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           MODERN DESKTOP DESIGN SYSTEM (INTER & JETBRAINS MONO)
+           ============================================================ */
+        :root {
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            /* Light Palette */
+            --bg-canvas: #f4f6fa;
+            --bg-surface: #ffffff;
+            --bg-surface-elevated: #ffffff;
+            --bg-subtle: #edf2f7;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-subtle: #94a3b8;
+
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-subtle: #eff6ff;
+            --primary-border: #bfdbfe;
+
+            --success: #16a34a;
+            --success-bg: #f0fdf4;
+            --success-border: #bbf7d0;
+
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+
+            --sidebar-width: 290px;
+            --right-panel-width: 320px;
+            --header-height: 64px;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+        }
+
+        [data-theme="dark"] {
+            --bg-canvas: #090d16;
+            --bg-surface: #111827;
+            --bg-surface-elevated: #1f2937;
+            --bg-subtle: #1e293b;
+            --border-color: #334155;
+            --border-hover: #475569;
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --primary-subtle: #172554;
+            --primary-border: #1e3a8a;
+
+            --success: #22c55e;
+            --success-bg: #052e16;
+            --success-border: #14532d;
+
+            --danger: #ef4444;
+            --danger-bg: #450a0a;
+            --danger-border: #7f1d1d;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg-canvas); color: var(--text-main); font-family: var(--font-sans); }
+
+        /* Icon standard */
+        .icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+
+        /* Master Grid Layout */
+        .app-container {
+            display: grid;
+            grid-template-rows: var(--header-height) 1fr;
+            grid-template-columns: var(--sidebar-width) 1fr var(--right-panel-width);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* 1. TOP NAVBAR */
+        .desktop-header {
+            grid-column: 1 / -1;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 50;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-badge {
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            letter-spacing: -0.5px;
+        }
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+        .brand-version {
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+        }
+
+        .header-center-search {
+            flex: 1;
+            max-width: 480px;
+            margin: 0 24px;
+            position: relative;
+        }
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-input-wrapper .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--text-subtle);
+        }
+        .header-search-input {
+            width: 100%;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            padding: 8px 44px 8px 36px;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.2s;
+        }
+        .header-search-input:focus {
+            background: var(--bg-surface);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-subtle);
+        }
+        .kbd-badge {
+            position: absolute;
+            right: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 2. LEFT SIDEBAR (TOPIC TREE) */
+        .desktop-sidebar {
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .sidebar-title-bar {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sidebar-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 10px;
+        }
+        .topic-nav-tree { list-style: none; }
+        .nav-item-parent {
+            font-size: 0.86rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-main);
+            transition: background 0.15s;
+            margin-bottom: 2px;
+        }
+        .nav-item-parent:hover { background: var(--bg-subtle); }
+        .nav-item-parent.active { background: var(--primary-subtle); color: var(--primary); font-weight: 700; }
+        .nav-item-badge { font-size: 0.75rem; background: var(--bg-subtle); padding: 2px 6px; border-radius: 10px; color: var(--text-muted); }
+
+        .nav-sub-tree { list-style: none; padding-left: 14px; margin: 4px 0 6px 0; }
+        .nav-sub-item {
+            font-size: 0.82rem;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            transition: all 0.15s;
+        }
+        .nav-sub-item:hover { color: var(--text-main); background: var(--bg-subtle); }
+        .nav-sub-item.active { background: var(--primary); color: #ffffff; font-weight: 600; }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 3. MAIN WORKSPACE */
+        .desktop-main-content {
+            background: var(--bg-canvas);
+            overflow-y: auto;
+            padding: 20px 24px;
+            scroll-behavior: smooth;
+        }
+        .content-wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Controls Deck Bar */
+        .controls-deck {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+        .mode-button-group {
+            display: inline-flex;
+            background: var(--bg-subtle);
+            padding: 3px;
+            border-radius: var(--radius-md);
+        }
+        .mode-tab-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 16px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-tab-btn.active {
+            background: var(--bg-surface);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-controls-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .desktop-select {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            outline: none;
+            cursor: pointer;
+        }
+        .btn-toggle-icon {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+        .btn-toggle-icon:hover { border-color: var(--border-hover); background: var(--bg-surface); }
+        .btn-toggle-icon.active { background: var(--primary-subtle); color: var(--primary); border-color: var(--primary-border); }
+
+        /* Questions Container (Supports 1-Column and 2-Column Grid) */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .questions-container.grid-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* Question Card */
+        .q-card-pro {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+            position: relative;
+        }
+        .q-card-pro:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+        .q-card-pro.focused {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-subtle);
+        }
+
+        .q-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .q-tag-chip {
+            font-size: 0.74rem;
+            font-weight: 600;
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+        }
+        .q-action-tools {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-subtle);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: color 0.15s, background 0.15s;
+        }
+        .tool-btn:hover { color: var(--primary); background: var(--bg-subtle); }
+        .tool-btn.saved { color: var(--primary); }
+
+        .q-body-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: var(--text-main);
+            margin-bottom: 14px;
+        }
+
+        /* MCQ Options Grid */
+        .options-deck-pro {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        .opt-pro-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            text-align: left;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.15s;
+        }
+        .opt-pro-btn:hover:not(:disabled) {
+            background: var(--bg-subtle);
+            border-color: var(--border-hover);
+        }
+        .opt-kbd-bubble {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Option States */
+        .opt-pro-btn.correct {
+            background: var(--success-bg) !important;
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+            font-weight: 600;
+        }
+        .opt-pro-btn.correct .opt-kbd-bubble {
+            background: var(--success);
+            color: #ffffff;
+            border-color: var(--success);
+        }
+        .opt-pro-btn.wrong {
+            background: var(--danger-bg) !important;
+            border-color: var(--danger) !important;
+            color: var(--danger) !important;
+        }
+        .opt-pro-btn.wrong .opt-kbd-bubble {
+            background: var(--danger);
+            color: #ffffff;
+            border-color: var(--danger);
+        }
+        .opt-pro-btn.exam-selected {
+            background: var(--primary-subtle) !important;
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+        .opt-pro-btn.exam-selected .opt-kbd-bubble {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .explanation-card-pro {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: var(--bg-subtle);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            color: var(--text-main);
+        }
+
+        /* 4. RIGHT SIDEBAR (LIVE EXAM & STATS PANEL) */
+        .desktop-right-panel {
+            background: var(--bg-surface);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .panel-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Stats Cards */
+        .stat-grid-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .stat-box {
+            background: var(--bg-subtle);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .stat-val { font-size: 1.3rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary); }
+        .stat-lbl { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+
+        /* OMR Question Jump Grid */
+        .omr-title { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+        .omr-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+        .omr-bubble {
+            aspect-ratio: 1;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .omr-bubble:hover { border-color: var(--primary); color: var(--primary); }
+        .omr-bubble.answered { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+        .omr-bubble.correct { background: var(--success); color: #ffffff; border-color: var(--success); }
+        .omr-bubble.wrong { background: var(--danger); color: #ffffff; border-color: var(--danger); }
+
+        /* Keyboard Cheat Sheet Card */
+        .shortcut-cheat-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            font-size: 0.76rem;
+        }
+        .shortcut-row { display: flex; justify-content: space-between; padding: 3px 0; color: var(--text-muted); }
+        .shortcut-row kbd { font-family: var(--font-mono); background: var(--bg-surface); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--border-color); color: var(--text-main); }
+
+        /* Pagination Bar */
+        .desktop-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0 24px 0;
+        }
+        .btn-pro {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+        .btn-pro:hover:not(:disabled) { border-color: var(--border-hover); background: var(--bg-subtle); }
+        .btn-pro-primary { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+        .btn-pro-primary:hover { background: var(--primary-hover); }
+        .btn-pro:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Generic Toast */
+        .desktop-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: var(--text-main);
+            color: var(--bg-surface);
+            padding: 9px 20px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+        .desktop-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 1. DESKTOP TOP HEADER -->
+        <header class="desktop-header">
+            <div class="header-brand">
+                <span class="brand-badge">GK</span>
+                <span class="brand-title">Daily GK MCQ</span>
+                <span class="brand-version">Desktop Pro 2026</span>
+            </div>
+
+            <div class="header-center-search">
+                <div class="search-input-wrapper">
+                    <svg class="icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="globalSearchInput" class="header-search-input" placeholder="Search questions across all topics...">
+                    <span class="kbd-badge">Ctrl + K</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button id="themeToggleBtn" class="btn-toggle-icon" title="Toggle Dark/Light Mode (D)">
+                    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <span>Theme</span>
+                </button>
+                <button onclick="window.print()" class="btn-toggle-icon" title="Print Question Sheet">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    <span>Print</span>
+                </button>
+                <button id="savedFilterBtn" class="btn-toggle-icon" title="Bookmarks">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    <span id="savedCountBadge">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 2. LEFT SIDEBAR: TOPIC EXPLORER -->
+        <aside class="desktop-sidebar">
+            <div class="sidebar-title-bar">
+                <span class="sidebar-title">Categories &amp; Topics</span>
+                <button onclick="resetTopicFilter()" class="btn-pro" style="padding: 2px 8px; font-size: 0.72rem;">Show All</button>
+            </div>
+            <div class="sidebar-scroll">
+                <ul id="desktopTopicTree" class="topic-nav-tree">
+                    <li style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.84rem;">Loading syllabus...</li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+                    Database: <strong id="totalQCountBadge">0</strong> Questions Loaded
+                </div>
+            </div>
+        </aside>
+
+        <!-- 3. MAIN WORKSPACE -->
+        <main class="desktop-main-content" id="mainScrollArea">
+            <div class="content-wrap">
+                
+                <!-- Controls & Layout Toggle Bar -->
+                <div class="controls-deck">
+                    <div class="mode-button-group">
+                        <button class="mode-tab-btn active" onclick="switchAppMode('quiz')" id="tabQuiz">Quiz Mode</button>
+                        <button class="mode-tab-btn" onclick="switchAppMode('study')" id="tabStudy">Study Mode</button>
+                        <button class="mode-tab-btn" onclick="switchAppMode('exam')" id="tabExam">Timed Exam</button>
+                    </div>
+
+                    <div class="filter-controls-group">
+                        <!-- Grid / List Switcher -->
+                        <button id="gridToggleBtn" class="btn-toggle-icon" onclick="toggleGridView()" title="Toggle 2-Column Grid Layout">
+                            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            <span>2-Col</span>
+                        </button>
+
+                        <!-- Shuffle -->
+                        <button id="shuffleBtn" class="btn-toggle-icon" onclick="toggleShuffle()" title="Shuffle Questions">
+                            <svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                            <span>Shuffle</span>
+                        </button>
+
+                        <!-- Per Page -->
+                        <select id="desktopPerPageSelect" class="desktop-select" onchange="changePerPage(this.value)">
+                            <option value="10">10 / Page</option>
+                            <option value="20" selected>20 / Page</option>
+                            <option value="50">50 / Page</option>
+                            <option value="100">100 / Page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Questions Stream Deck -->
+                <section id="desktopQuestionsList" class="questions-container"></section>
+
+                <!-- Desktop Pagination -->
+                <div class="desktop-pagination" id="paginationControlsBar"></div>
+            </div>
+        </main>
+
+        <!-- 4. RIGHT SIDEBAR: EXAM TRACKER & LIVE OMR -->
+        <aside class="desktop-right-panel">
+            <div class="panel-header">
+                <span>Performance &amp; OMR</span>
+                <span id="examTimerDisplay" style="font-family: var(--font-mono); color: var(--primary); font-weight: 800;">00:00</span>
+            </div>
+            <div class="panel-content">
+                <!-- Stats Overview -->
+                <div class="stat-grid-2x2">
+                    <div class="stat-box">
+                        <div class="stat-val" id="statAttempted">0</div>
+                        <div class="stat-lbl">Attempted</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val" id="statAccuracy">0%</div>
+                        <div class="stat-lbl">Accuracy</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val" id="statCorrect" style="color:var(--success);">0</div>
+                        <div class="stat-lbl">Correct</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val" id="statWrong" style="color:var(--danger);">0</div>
+                        <div class="stat-lbl">Wrong</div>
+                    </div>
+                </div>
+
+                <!-- OMR Jump Grid -->
+                <div>
+                    <div class="omr-title">Question Navigator (OMR)</div>
+                    <div class="omr-grid" id="omrGridContainer"></div>
+                </div>
+
+                <!-- Desktop Keyboard Cheat Sheet -->
+                <div class="shortcut-cheat-card">
+                    <div style="font-weight:700; margin-bottom: 6px; color:var(--text-main);">Pro Keyboard Shortcuts</div>
+                    <div class="shortcut-row"><span>Answer Option A-D</span> <kbd>A</kbd> <kbd>B</kbd> <kbd>C</kbd> <kbd>D</kbd></div>
+                    <div class="shortcut-row"><span>Next / Prev Question</span> <kbd>J</kbd> / <kbd>K</kbd> or <kbd>&darr;</kbd> <kbd>&uarr;</kbd></div>
+                    <div class="shortcut-row"><span>Toggle Explanation</span> <kbd>Space</kbd></div>
+                    <div class="shortcut-row"><span>Global Search</span> <kbd>Ctrl + K</kbd></div>
+                    <div class="shortcut-row"><span>Next / Prev Page</span> <kbd>&larr;</kbd> / <kbd>&rarr;</kbd></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Toast Component -->
+    <div id="desktopToast" class="desktop-toast"></div>
+
+    <!-- MAIN DESKTOP ENGINE -->
+    <script>
+        "use strict";
+
+        const app = {
+            data: [],
+            filtered: [],
+            tree: {},
+            bookmarks: JSON.parse(localStorage.getItem('gk_desktop_bookmarks')) || [],
+            
+            selectedCat: null,
+            selectedTopic: null,
+            searchQuery: '',
+            mode: 'quiz',
+            page: 1,
+            perPage: 20,
+            shuffle: false,
+            isGrid: false,
+            
+            // Exam & Performance Tracker
+            examActive: false,
+            examTimer: null,
+            userAnswers: {},
+            focusedQIndex: 0,
+            stats: { attempted: 0, correct: 0, wrong: 0 }
+        };
+
+        // Fallback Dataset
+        const fallbackDataset = [
+            {
+                id: 1,
+                cat: "General Science",
+                topic: "Physics & Space",
+                q: "Which planet in our solar system is famously known as the 'Red Planet'?",
+                opts: ["Venus", "Mars", "Jupiter", "Saturn"],
+                ans: 1,
+                desc: "Mars is called the Red Planet because iron minerals in the Martian soil oxidize (rust), giving it a reddish appearance."
+            },
+            {
+                id: 2,
+                cat: "World Geography",
+                topic: "Rivers & Lakes",
+                q: "What is considered the longest river in the world?",
+                opts: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"],
+                ans: 1,
+                desc: "The Nile River in Africa is approximately 6,650 kilometers long, traditionally recognized as the world's longest river."
+            },
+            {
+                id: 3,
+                cat: "Information Technology",
+                topic: "Computer Science",
+                q: "What does 'HTTP' stand for in web browsing protocols?",
+                opts: ["HyperText Transfer Protocol", "High Transfer Tech Protocol", "Hyperlink Text Test Process", "Hyper Transfer Terminal Point"],
+                ans: 0,
+                desc: "HTTP stands for HyperText Transfer Protocol, the foundation of data communication for the World Wide Web."
+            }
+        ];
+
+        window.onload = function() {
+            initDesktopEngine();
+        };
+
+        function initDesktopEngine() {
+            initTheme();
+            setupKeyboardShortcuts();
+            setupSearchAndControls();
+            loadServerData();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('desktopToast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        // Theme Toggle
+        function initTheme() {
+            let dark = localStorage.getItem('gk_theme') === 'dark';
+            applyTheme(dark);
+            document.getElementById('themeToggleBtn').onclick = () => {
+                dark = !dark;
+                localStorage.setItem('gk_theme', dark ? 'dark' : 'light');
+                applyTheme(dark);
+            };
+        }
+        function applyTheme(dark) {
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        }
+
+        // Keyboard Navigation Engine
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                // Focus search on Ctrl+K or /
+                if ((e.ctrlKey && e.key === 'k') || (e.key === '/' && document.activeElement.tagName !== 'INPUT')) {
+                    e.preventDefault();
+                    document.getElementById('globalSearchInput').focus();
+                    return;
+                }
+
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') {
+                    return;
+                }
+
+                // Question jumping with J / K or Down / Up
+                if (e.key === 'j' || e.key === 'ArrowDown') {
+                    focusNextQuestion(1);
+                } else if (e.key === 'k' || e.key === 'ArrowUp') {
+                    focusNextQuestion(-1);
+                }
+
+                // Page Navigation with Left / Right arrows
+                if (e.key === 'ArrowRight') {
+                    changePage(1);
+                } else if (e.key === 'ArrowLeft') {
+                    changePage(-1);
+                }
+
+                // Option selection with A, B, C, D or 1, 2, 3, 4
+                const key = e.key.toUpperCase();
+                const optionMap = { 'A': 0, '1': 0, 'B': 1, '2': 1, 'C': 2, '3': 2, 'D': 3, '4': 3 };
+                if (optionMap[key] !== undefined) {
+                    selectFocusedOption(optionMap[key]);
+                }
+
+                // Reveal explanation with Spacebar
+                if (e.key === ' ') {
+                    e.preventDefault();
+                    toggleFocusedExplanation();
+                }
+            });
+        }
+
+        function focusNextQuestion(direction) {
+            const cards = document.querySelectorAll('.q-card-pro');
+            if (cards.length === 0) return;
+
+            cards.forEach(c => c.classList.remove('focused'));
+            app.focusedQIndex = Math.max(0, Math.min(cards.length - 1, app.focusedQIndex + direction));
+            
+            const currentCard = cards[app.focusedQIndex];
+            if (currentCard) {
+                currentCard.classList.add('focused');
+                currentCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function selectFocusedOption(optIndex) {
+            const currentCard = document.querySelectorAll('.q-card-pro')[app.focusedQIndex];
+            if (!currentCard) return;
+            const btn = currentCard.querySelectorAll('.opt-pro-btn')[optIndex];
+            if (btn && !btn.disabled) btn.click();
+        }
+
+        function toggleFocusedExplanation() {
+            const currentCard = document.querySelectorAll('.q-card-pro')[app.focusedQIndex];
+            if (!currentCard) return;
+            const exp = currentCard.querySelector('.explanation-card-pro');
+            if (exp) exp.style.display = (exp.style.display === 'none') ? 'block' : 'none';
+        }
+
+        // Server Data Fetching & Topic Tree Parser
+        function loadServerData() {
+            fetch('data/main.json?t=' + Date.now())
+                .then(r => r.json())
+                .then(categories => {
+                    let fetchPromises = [];
+                    categories.forEach(cat => {
+                        app.tree[cat.title] = {};
+                        fetchPromises.push(
+                            fetch(cat.path + '?t=' + Date.now())
+                                .then(r => r.json())
+                                .then(topics => {
+                                    return Promise.all(topics.map(t => {
+                                        return fetch(t.path + '?t=' + Date.now())
+                                            .then(r => r.text())
+                                            .then(txt => parseAndIndex(txt, cat.title, t.title));
+                                    }));
+                                })
+                        );
+                    });
+                    return Promise.all(fetchPromises);
+                })
+                .then(() => {
+                    finishLoading();
+                })
+                .catch(() => {
+                    // Fallback to sample data
+                    fallbackDataset.forEach(d => {
+                        app.data.push(d);
+                        if (!app.tree[d.cat]) app.tree[d.cat] = {};
+                        app.tree[d.cat][d.topic] = (app.tree[d.cat][d.topic] || 0) + 1;
+                    });
+                    finishLoading();
+                });
+        }
+
+        function parseAndIndex(text, cat, topic) {
+            const lines = text.replace(/\r\n/g, '\n').split('\n');
+            for (let i = 0; i < lines.length; i += 2) {
+                const line1 = (lines[i] || '').trim();
+                const line2 = (lines[i+1] || '').trim();
+                if (!line1 || !line2) continue;
+
+                const parts = line2.split('|');
+                if (parts[parts.length - 1] === '') parts.pop();
+
+                let ans, desc = null, opts;
+                const last = parts[parts.length - 1];
+                if (!isNaN(last) && last !== '') {
+                    ans = parseInt(last, 10);
+                    opts = parts.slice(0, -1);
+                } else {
+                    ans = parseInt(parts[parts.length - 2], 10);
+                    desc = last;
+                    opts = parts.slice(0, -2);
+                }
+
+                app.data.push({
+                    id: app.data.length + 1,
+                    cat: cat,
+                    topic: topic,
+                    q: line1.replace(/\*\*/g, ''),
+                    opts: opts,
+                    ans: ans,
+                    desc: desc
+                });
+
+                if (!app.tree[cat]) app.tree[cat] = {};
+                app.tree[cat][topic] = (app.tree[cat][topic] || 0) + 1;
+            }
+        }
+
+        function finishLoading() {
+            document.getElementById('totalQCountBadge').textContent = app.data.length;
+            buildTopicSidebar();
+            applyFilters();
+            updateBookmarkBadge();
+        }
+
+        // Build Topic Navigation Tree
+        function buildTopicSidebar() {
+            const treeContainer = document.getElementById('desktopTopicTree');
+            treeContainer.innerHTML = '';
+
+            for (let cat in app.tree) {
+                const topics = app.tree[cat];
+                const totalCount = Object.values(topics).reduce((a, b) => a + b, 0);
+
+                const li = document.createElement('li');
+                const isCatActive = app.selectedCat === cat;
+
+                li.innerHTML = `
+                    <div class="nav-item-parent ${isCatActive ? 'active' : ''}">
+                        <span>${cat}</span>
+                        <span class="nav-item-badge">${totalCount}</span>
+                    </div>
+                `;
+
+                const subUl = document.createElement('ul');
+                subUl.className = 'nav-sub-tree';
+                subUl.style.display = isCatActive ? 'block' : 'none';
+
+                for (let top in topics) {
+                    const subLi = document.createElement('li');
+                    const isTopActive = isCatActive && app.selectedTopic === top;
+                    subLi.className = `nav-sub-item ${isTopActive ? 'active' : ''}`;
+                    subLi.innerHTML = `<span>${top}</span> <span>${topics[top]}</span>`;
+                    subLi.onclick = (e) => {
+                        e.stopPropagation();
+                        setCategoryFilter(cat, top);
+                    };
+                    subUl.appendChild(subLi);
+                }
+
+                li.querySelector('.nav-item-parent').onclick = () => {
+                    const currentDisplay = subUl.style.display;
+                    subUl.style.display = (currentDisplay === 'none') ? 'block' : 'none';
+                    setCategoryFilter(cat, null);
+                };
+
+                li.appendChild(subUl);
+                treeContainer.appendChild(li);
+            }
+        }
+
+        function setCategoryFilter(cat, topic) {
+            app.selectedCat = cat;
+            app.selectedTopic = topic;
+            app.page = 1;
+            buildTopicSidebar();
+            applyFilters();
+        }
+
+        window.resetTopicFilter = function() {
+            app.selectedCat = null;
+            app.selectedTopic = null;
+            app.searchQuery = '';
+            document.getElementById('globalSearchInput').value = '';
+            app.page = 1;
+            buildTopicSidebar();
+            applyFilters();
+        };
+
+        // Filter, Search and Render Engine
+        function applyFilters() {
+            app.filtered = app.data.filter(q => {
+                if (app.selectedCat && q.cat !== app.selectedCat) return false;
+                if (app.selectedTopic && q.topic !== app.selectedTopic) return false;
+                if (app.searchQuery && q.q.toLowerCase().indexOf(app.searchQuery) === -1) return false;
+                return true;
+            });
+
+            if (app.shuffle) {
+                app.filtered.sort(() => 0.5 - Math.random());
+            }
+
+            renderWorkspace();
+        }
+
+        function renderWorkspace() {
+            const container = document.getElementById('desktopQuestionsList');
+            container.innerHTML = '';
+            container.className = app.isGrid ? 'questions-container grid-view' : 'questions-container';
+
+            const totalPages = Math.ceil(app.filtered.length / app.perPage) || 1;
+            if (app.page > totalPages) app.page = totalPages;
+
+            const start = (app.page - 1) * app.perPage;
+            const currentSlice = app.filtered.slice(start, start + app.perPage);
+
+            if (currentSlice.length === 0) {
+                container.innerHTML = `
+                    <div style="background:var(--bg-surface); padding:40px; text-align:center; border-radius:var(--radius-lg); border:1px solid var(--border-color); color:var(--text-muted);">
+                        No questions found matching your criteria. Press 'Show All' to reset.
+                    </div>`;
+                renderPagination(totalPages);
+                renderOMRGrid(0);
+                return;
+            }
+
+            currentSlice.forEach((q, idx) => {
+                const card = createProQuestionCard(q, start + idx + 1);
+                container.appendChild(card);
+            });
+
+            renderPagination(totalPages);
+            renderOMRGrid(currentSlice.length);
+            updateLiveStats();
+
+            // Set focus on first card
+            app.focusedQIndex = 0;
+            focusNextQuestion(0);
+        }
+
+        // Card Template Generator
+        function createProQuestionCard(q, index) {
+            const card = document.createElement('article');
+            card.className = 'q-card-pro';
+            card.setAttribute('data-qid', q.id);
+
+            const isSaved = app.bookmarks.includes(q.id);
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+
+            let optionsHtml = '';
+            q.opts.forEach((opt, idx) => {
+                optionsHtml += `
+                    <button class="opt-pro-btn" data-optidx="${idx}">
+                        <span class="opt-kbd-bubble">${letters[idx]}</span>
+                        <span>${opt}</span>
+                    </button>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="q-top-row">
+                    <span class="q-tag-chip">${q.cat} &bull; ${q.topic}</span>
+                    <div class="q-action-tools">
+                        <button class="tool-btn" onclick="speakText('${q.q.replace(/'/g, "\\'")}')" title="Listen (Read Aloud)">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                        </button>
+                        <button class="tool-btn ${isSaved ? 'saved' : ''}" onclick="toggleBookmark(${q.id})" title="Bookmark Question">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="q-body-title">${index}. ${q.q}</div>
+                <div class="options-deck-pro">${optionsHtml}</div>
+                <div class="explanation-card-pro" style="${app.mode === 'study' ? 'display:block;' : 'display:none;'}">
+                    <strong>Correct Answer:</strong> [${letters[q.ans]}] ${q.opts[q.ans]}
+                    ${q.desc ? `<div style="margin-top:4px;"><strong>Explanation:</strong> ${q.desc}</div>` : ''}
+                </div>
+            `;
+
+            // Attach Option Listeners
+            const optionBtns = card.querySelectorAll('.opt-pro-btn');
+            optionBtns.forEach((btn, optIdx) => {
+                btn.onclick = () => handleOptionClick(q, optIdx, card, optionBtns);
+            });
+
+            return card;
+        }
+
+        function handleOptionClick(q, optIdx, card, optionBtns) {
+            app.userAnswers[q.id] = optIdx;
+
+            if (app.mode === 'quiz') {
+                optionBtns.forEach(b => b.disabled = true);
+                optionBtns[q.ans].classList.add('correct');
+                
+                if (optIdx === q.ans) {
+                    app.stats.correct++;
+                } else {
+                    optionBtns[optIdx].classList.add('wrong');
+                    app.stats.wrong++;
+                }
+                app.stats.attempted++;
+
+                // Show Explanation
+                card.querySelector('.explanation-card-pro').style.display = 'block';
+            } else if (app.mode === 'exam') {
+                optionBtns.forEach(b => b.classList.remove('exam-selected'));
+                optionBtns[optIdx].classList.add('exam-selected');
+                app.stats.attempted = Object.keys(app.userAnswers).length;
+            }
+
+            updateLiveStats();
+            updateOMRBubbles();
+        }
+
+        function speakText(text) {
+            if (!window.speechSynthesis) {
+                showToast('Speech synthesis is not supported on this browser.');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Bookmark Handler
+        window.toggleBookmark = function(qid) {
+            const index = app.bookmarks.indexOf(qid);
+            if (index === -1) {
+                app.bookmarks.push(qid);
+                showToast('Question saved to bookmarks.');
+            } else {
+                app.bookmarks.splice(index, 1);
+                showToast('Question removed from bookmarks.');
+            }
+            localStorage.setItem('gk_desktop_bookmarks', JSON.stringify(app.bookmarks));
+            updateBookmarkBadge();
+            applyFilters();
+        };
+
+        function updateBookmarkBadge() {
+            document.getElementById('savedCountBadge').textContent = app.bookmarks.length;
+        }
+
+        // Layout & View Switchers
+        window.toggleGridView = function() {
+            app.isGrid = !app.isGrid;
+            document.getElementById('gridToggleBtn').classList.toggle('active', app.isGrid);
+            renderWorkspace();
+        };
+
+        window.toggleShuffle = function() {
+            app.shuffle = !app.shuffle;
+            document.getElementById('shuffleBtn').classList.toggle('active', app.shuffle);
+            applyFilters();
+            showToast(app.shuffle ? 'Question order randomized.' : 'Standard order restored.');
+        };
+
+        window.switchAppMode = function(newMode) {
+            app.mode = newMode;
+            document.querySelectorAll('.mode-tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (newMode === 'quiz') document.getElementById('tabQuiz').classList.add('active');
+            if (newMode === 'study') document.getElementById('tabStudy').classList.add('active');
+            if (newMode === 'exam') document.getElementById('tabExam').classList.add('active');
+
+            if (newMode === 'exam') startExamTimer();
+            else stopExamTimer();
+
+            renderWorkspace();
+        };
+
+        function startExamTimer() {
+            let timeLeft = 30 * 60; // 30 mins
+            const timerEl = document.getElementById('examTimerDisplay');
+            clearInterval(app.examTimer);
+            app.examTimer = setInterval(() => {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                timerEl.textContent = `${m}:${s}`;
+                if (timeLeft <= 0) {
+                    clearInterval(app.examTimer);
+                    showToast('Time is up! Exam auto-submitted.');
+                }
+            }, 1000);
+        }
+
+        function stopExamTimer() {
+            clearInterval(app.examTimer);
+            document.getElementById('examTimerDisplay').textContent = '00:00';
+        }
+
+        // Live Stats & OMR Panel
+        function updateLiveStats() {
+            document.getElementById('statAttempted').textContent = app.stats.attempted;
+            document.getElementById('statCorrect').textContent = app.stats.correct;
+            document.getElementById('statWrong').textContent = app.stats.wrong;
+            
+            const accuracy = app.stats.attempted > 0 
+                ? Math.round((app.stats.correct / app.stats.attempted) * 100) 
+                : 0;
+            document.getElementById('statAccuracy').textContent = `${accuracy}%`;
+        }
+
+        function renderOMRGrid(count) {
+            const omr = document.getElementById('omrGridContainer');
+            omr.innerHTML = '';
+            for (let i = 1; i <= count; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'omr-bubble';
+                bubble.textContent = i;
+                bubble.onclick = () => {
+                    app.focusedQIndex = i - 1;
+                    focusNextQuestion(0);
+                };
+                omr.appendChild(bubble);
+            }
+        }
+
+        function updateOMRBubbles() {
+            const bubbles = document.querySelectorAll('.omr-bubble');
+            const cards = document.querySelectorAll('.q-card-pro');
+            
+            cards.forEach((c, idx) => {
+                const qid = parseInt(c.getAttribute('data-qid'), 10);
+                if (app.userAnswers[qid] !== undefined && bubbles[idx]) {
+                    bubbles[idx].classList.add('answered');
+                }
+            });
+        }
+
+        // Pagination Controls
+        function renderPagination(total) {
+            const box = document.getElementById('paginationControlsBar');
+            box.innerHTML = '';
+            if (total <= 1) return;
+
+            const prev = document.createElement('button');
+            prev.className = 'btn-pro';
+            prev.innerHTML = '&larr; Previous';
+            prev.disabled = app.page === 1;
+            prev.onclick = () => changePage(-1);
+
+            const info = document.createElement('span');
+            info.style.cssText = "font-size: 0.88rem; font-weight: 600; color: var(--text-muted);";
+            info.textContent = `Page ${app.page} of ${total}`;
+
+            const next = document.createElement('button');
+            next.className = 'btn-pro';
+            next.innerHTML = 'Next &rarr;';
+            next.disabled = app.page === total;
+            next.onclick = () => changePage(1);
+
+            box.appendChild(prev);
+            box.appendChild(info);
+            box.appendChild(next);
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(app.filtered.length / app.perPage) || 1;
+            const target = app.page + direction;
+            if (target >= 1 && target <= totalPages) {
+                app.page = target;
+                renderWorkspace();
+                document.getElementById('mainScrollArea').scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        window.changePerPage = function(val) {
+            app.perPage = parseInt(val, 10);
+            app.page = 1;
+            renderWorkspace();
+        };
+
+        // Search & Controls Setup
+        function setupSearchAndControls() {
+            let searchTimeout;
+            document.getElementById('globalSearchInput').onkeyup = function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    app.searchQuery = e.target.value.toLowerCase().trim();
+                    app.page = 1;
+                    applyFilters();
+                }, 200);
+            };
+
+            document.getElementById('savedFilterBtn').onclick = () => {
+                if (app.bookmarks.length === 0) {
+                    showToast('No bookmarked questions yet.');
+                    return;
+                }
+                app.filtered = app.data.filter(q => app.bookmarks.includes(q.id));
+                app.page = 1;
+                renderWorkspace();
+                showToast('Showing Bookmarked Questions.');
+            };
+        }
+    </script>
+</body>
+                  </html>
