@@ -1157,6 +1157,21 @@
     <!-- TOAST NOTIFICATION -->
     <div id="mdToast" class="md-toast"></div>
 
+    <!-- Opera Mini / Legacy Browser Detection & Auto Redirect -->
+<script type="text/javascript">
+(function() {
+    var ua = navigator.userAgent || navigator.vendor || window.opera || '';
+    // জাভা, সিম্বিয়ান, অপেরা মিনি ও পুরনো ব্রাউজার ডিটেকশন
+    var isLegacy = /Opera Mini|Opera Mobi|J2ME|MIDP|NetFront|UCWEB|Series60|SymbianOS|NokiaBrowser|MAUI/i.test(ua);
+    var search = window.location.search || '';
+    
+    // যদি ব্রাউজার ওল্ড হয় এবং ইউজার জোর করে ডেক্সটপ মোডে না থাকে
+    if (isLegacy && search.indexOf('force_full=1') === -1) {
+        window.location.replace('lite.html' + search);
+    }
+})();
+        </script>
+    
     <!-- JAVASCRIPT ENGINE -->
     <script>
         "use strict";
