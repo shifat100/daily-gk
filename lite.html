@@ -6,7 +6,7 @@
     <title>Daily GK MCQ - Lite Edition</title>
     <style type="text/css">
         /* =========================================================
-           Opera Mini 4.x / 2G Pure ASCII CSS2 Layout (Zero Emoji)
+           Opera Mini 4.x Compatible Pure ASCII CSS2 Layout
            ========================================================= */
         * {
             box-sizing: border-box;
@@ -44,7 +44,7 @@
             display: block;
         }
 
-        /* Container */
+        /* Main Container */
         .wrapper {
             padding: 6px;
             max-width: 600px;
@@ -72,7 +72,7 @@
             color: #ffffff;
         }
 
-        /* Filter Panel */
+        /* Filter Box */
         .filter-box {
             background-color: #ffffff;
             border: 1px solid #b0c4de;
@@ -137,7 +137,7 @@
             margin-bottom: 6px;
         }
 
-        /* Options Table */
+        /* Options */
         .opt-table {
             width: 100%;
             border-collapse: collapse;
@@ -157,7 +157,7 @@
             color: #333333;
         }
 
-        /* Answer & Explanation Box */
+        /* Answers and Explanations */
         .ans-btn {
             display: inline-block;
             background-color: #eef3f8;
@@ -193,7 +193,15 @@
             margin-top: 3px;
         }
 
-        /* Pagination Panel */
+        /* Status & Pagination */
+        .status-card {
+            background-color: #ffffff;
+            border: 1px solid #c2d1e0;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #555555;
+        }
         .pag-panel {
             background-color: #ffffff;
             border: 1px solid #b0c4de;
@@ -231,14 +239,14 @@
 </head>
 <body>
 
-    <!-- 1. Top Header -->
+    <!-- 1. Header -->
     <div class="header-bar">
         <h1>Daily GK MCQ</h1>
         <span class="tagline">Lite Edition - Fast &amp; 2G Compatible</span>
     </div>
 
     <div class="wrapper">
-        <!-- 2. Mode Switcher -->
+        <!-- 2. Mode Tabs -->
         <div class="nav-tabs">
             <a href="lite.html?mode=quiz" class="tab-link" id="linkQuiz">[ Quiz Mode ]</a>
             <a href="lite.html?mode=study" class="tab-link" id="linkStudy">[ Study Mode ]</a>
@@ -253,11 +261,6 @@
                         <td style="width:75%;">
                             <select name="cat" id="catSelector" class="select-input">
                                 <option value="">-- All Categories --</option>
-                                <option value="General Science">General Science</option>
-                                <option value="World Geography">World Geography</option>
-                                <option value="History & Civilization">History &amp; Civilization</option>
-                                <option value="Information Technology">Information Technology</option>
-                                <option value="International Affairs">International Affairs</option>
                             </select>
                         </td>
                         <td style="width:25%;">
@@ -268,15 +271,15 @@
             </form>
         </div>
 
-        <!-- 4. Questions Stream -->
+        <!-- 4. Questions Stream Output -->
         <div id="qOutput">
-            <!-- Questions rendered via pure ES3 script -->
+            <div class="status-card">Loading questions from server...</div>
         </div>
 
-        <!-- 5. Pagination Bar -->
-        <div class="pag-panel" id="paginationBar"></div>
+        <!-- 5. Pagination Box -->
+        <div class="pag-panel" id="paginationBar" style="display:none;"></div>
 
-        <!-- 6. Bottom Links -->
+        <!-- 6. Footer & Switcher -->
         <div class="footer-panel">
             <div>(c) 2026 Daily GK MCQ - Lite Edition</div>
             <div style="margin-top: 5px;">
@@ -285,72 +288,40 @@
         </div>
     </div>
 
-    <!-- Pure ES3 JavaScript (Zero Emojis, Bulletproof on Opera Mini 4.x) -->
+    <!-- Pure ES3 JavaScript Engine (Server Fetching) -->
     <script type="text/javascript">
-        // Standard ASCII English Dataset
-        var gkDataset = [
+        var appState = {
+            data: [],
+            categories: [],
+            mode: "quiz",
+            cat: "",
+            page: 1,
+            perPage: 5
+        };
+
+        // Fallback Backup Data (Used ONLY if data/main.json cannot be reached)
+        var fallbackBackup = [
             {
                 id: 1,
                 cat: "General Science",
-                topic: "Physics & Space",
-                q: "Which planet in our solar system is famously known as the 'Red Planet'?",
+                topic: "Physics",
+                q: "Which planet is known as the 'Red Planet'?",
                 opts: ["Venus", "Mars", "Jupiter", "Saturn"],
                 ans: 1,
-                desc: "Mars appears red due to large amounts of iron oxide (rust) on its surface."
+                desc: "Mars appears red due to iron oxide minerals on its surface."
             },
             {
                 id: 2,
                 cat: "World Geography",
-                topic: "Rivers & Lakes",
-                q: "What is considered the longest river in the world?",
+                topic: "Rivers",
+                q: "What is the longest river in the world?",
                 opts: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"],
                 ans: 1,
-                desc: "The Nile River in Africa spans approximately 6,650 kilometers (4,132 miles)."
-            },
-            {
-                id: 3,
-                cat: "Information Technology",
-                topic: "Internet Protocols",
-                q: "What does 'HTTP' stand for in web browsing protocols?",
-                opts: [
-                    "HyperText Transfer Protocol",
-                    "High Transfer Tech Protocol",
-                    "Hyperlink Text Terminal Process",
-                    "Hyper Transfer Tool Protocol"
-                ],
-                ans: 0,
-                desc: "HTTP is the foundation protocol used for data communication on the World Wide Web."
-            },
-            {
-                id: 4,
-                cat: "History & Civilization",
-                topic: "World History",
-                q: "In which year did the Second World War officially end?",
-                opts: ["1942", "1945", "1948", "1950"],
-                ans: 1,
-                desc: "World War II ended in September 1945 following the surrender of Axis forces."
-            },
-            {
-                id: 5,
-                cat: "International Affairs",
-                topic: "Organizations",
-                q: "Where is the official headquarters of the United Nations (UN) located?",
-                opts: ["Geneva, Switzerland", "London, UK", "New York City, USA", "Paris, France"],
-                ans: 2,
-                desc: "The headquarters of the United Nations is situated in New York City, USA."
-            },
-            {
-                id: 6,
-                cat: "General Science",
-                topic: "Chemistry",
-                q: "What is the chemical symbol for Gold?",
-                opts: ["Ag", "Au", "Fe", "Pb"],
-                ans: 1,
-                desc: "Au is derived from the Latin word 'Aurum', meaning shining dawn or gold."
+                desc: "The Nile River is traditionally considered the longest river."
             }
         ];
 
-        // Safe Query Parser
+        // Safe URL Query Parser
         function getParam(key) {
             var query = window.location.search.substring(1);
             var pairs = query.split("&");
@@ -363,30 +334,47 @@
             return null;
         }
 
-        var activeMode = getParam("mode") || "quiz";
-        var activeCat = getParam("cat") || "";
-        var activePage = parseInt(getParam("page") || "1", 10);
-        if (isNaN(activePage) || activePage < 1) activePage = 1;
-        var itemsPerPage = 3;
+        // ES3 Cross-Browser AJAX Handler
+        function ajaxGet(url, onSuccess, onError, isText) {
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                try { xhr = new ActiveXObject("Msxml2.XMLHTTP"); } catch(e) {
+                    try { xhr = new ActiveXObject("Microsoft.XMLHTTP"); } catch(e2) {}
+                }
+            }
+            if (!xhr) {
+                if (onError) onError();
+                return;
+            }
 
-        // Tab state updates
-        document.getElementById("formModeField").value = activeMode;
-        if (activeMode === "study") {
-            document.getElementById("linkStudy").className = "tab-link active";
-        } else {
-            document.getElementById("linkQuiz").className = "tab-link active";
-        }
+            var timestamp = new Date().getTime();
+            var fullUrl = url + (url.indexOf("?") === -1 ? "?t=" : "&t=") + timestamp;
 
-        // Category dropdown sync
-        var sel = document.getElementById("catSelector");
-        for (var i = 0; i < sel.options.length; i++) {
-            if (sel.options[i].value === activeCat) {
-                sel.selectedIndex = i;
-                break;
+            xhr.open("GET", fullUrl, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200 || xhr.status === 0) {
+                        try {
+                            var res = isText ? xhr.responseText : (window.JSON && JSON.parse ? JSON.parse(xhr.responseText) : eval("(" + xhr.responseText + ")"));
+                            onSuccess(res);
+                        } catch (e) {
+                            if (onError) onError(e);
+                        }
+                    } else {
+                        if (onError) onError();
+                    }
+                }
+            };
+            try {
+                xhr.send(null);
+            } catch (err) {
+                if (onError) onError(err);
             }
         }
 
-        // Show/Hide Answer Toggle
+        // Answer Toggle Handler
         function toggleAnswer(targetId) {
             var el = document.getElementById(targetId);
             if (el) {
@@ -398,87 +386,212 @@
             }
         }
 
-        // Data Filtering
-        var filteredList = [];
-        for (var i = 0; i < gkDataset.length; i++) {
-            var item = gkDataset[i];
-            if (!activeCat || item.cat === activeCat) {
-                filteredList.push(item);
-            }
-        }
+        // 1. Initialize State
+        appState.mode = getParam("mode") || "quiz";
+        appState.cat = getParam("cat") || "";
+        appState.page = parseInt(getParam("page") || "1", 10);
+        if (isNaN(appState.page) || appState.page < 1) appState.page = 1;
 
-        // Pagination Calculations
-        var totalPages = Math.ceil(filteredList.length / itemsPerPage) || 1;
-        if (activePage > totalPages) activePage = totalPages;
-
-        var startIdx = (activePage - 1) * itemsPerPage;
-        var currentItems = filteredList.slice(startIdx, startIdx + itemsPerPage);
-
-        // Render Questions
-        var container = document.getElementById("qOutput");
-        var letters = ["A", "B", "C", "D", "E"];
-        var out = "";
-
-        if (currentItems.length === 0) {
-            out = '<div class="card" style="text-align:center; padding:12px;">No questions found in this category.</div>';
+        document.getElementById("formModeField").value = appState.mode;
+        if (appState.mode === "study") {
+            document.getElementById("linkStudy").className = "tab-link active";
         } else {
-            for (var i = 0; i < currentItems.length; i++) {
-                var q = currentItems[i];
-                var qNo = startIdx + i + 1;
-                var ansId = "ans_box_" + q.id;
+            document.getElementById("linkQuiz").className = "tab-link active";
+        }
 
-                out += '<div class="card">';
-                
-                // Meta info
-                out += '<table class="card-meta"><tr>';
-                out += '<td><span class="badge-cat">' + q.cat + '</span></td>';
-                out += '<td class="badge-id">Question #' + qNo + '</td>';
-                out += '</tr></table>';
+        // 2. Start Loading Data from Server
+        loadDataFromServer();
 
-                // Question Title
-                out += '<div class="q-text">' + qNo + '. ' + q.q + '</div>';
+        function loadDataFromServer() {
+            ajaxGet("data/main.json", function(categories) {
+                appState.categories = categories;
+                populateCategoryDropdown(categories);
 
-                // Options
-                out += '<table class="opt-table">';
-                for (var j = 0; j < q.opts.length; j++) {
-                    out += '<tr>';
-                    out += '<td class="opt-prefix">(' + letters[j] + ')</td>';
-                    out += '<td class="opt-val">' + q.opts[j] + '</td>';
-                    out += '</tr>';
+                var topicTasks = [];
+                var pendingCats = categories.length;
+
+                for (var i = 0; i < categories.length; i++) {
+                    (function(cat) {
+                        ajaxGet(cat.path, function(topics) {
+                            for (var j = 0; j < topics.length; j++) {
+                                topicTasks.push({
+                                    url: topics[j].path,
+                                    cat: cat.title,
+                                    topic: topics[j].title
+                                });
+                            }
+                            pendingCats--;
+                            if (pendingCats === 0) {
+                                processTopicFiles(topicTasks, 0);
+                            }
+                        }, function() {
+                            pendingCats--;
+                            if (pendingCats === 0) {
+                                processTopicFiles(topicTasks, 0);
+                            }
+                        });
+                    })(categories[i]);
                 }
-                out += '</table>';
+            }, function() {
+                // If main.json fails (e.g. offline testing), use fallback
+                appState.data = fallbackBackup;
+                renderQuestions();
+            });
+        }
 
-                // Answer Area
-                if (activeMode === "study") {
-                    out += '<div class="ans-panel open">';
-                    out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
-                    if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
-                    out += '</div>';
-                } else {
-                    out += '<a href="javascript:void(0);" onclick="toggleAnswer(\'' + ansId + '\');" class="ans-btn">[+] View Answer</a>';
-                    out += '<div id="' + ansId + '" class="ans-panel">';
-                    out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
-                    if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
-                    out += '</div>';
+        function populateCategoryDropdown(cats) {
+            var sel = document.getElementById("catSelector");
+            for (var i = 0; i < cats.length; i++) {
+                var opt = document.createElement("option");
+                opt.value = cats[i].title;
+                opt.text = cats[i].title;
+                if (cats[i].title === appState.cat) {
+                    opt.selected = true;
                 }
-
-                out += '</div>';
+                sel.appendChild(opt);
             }
         }
-        container.innerHTML = out;
 
-        // Render Pagination
-        var pagBox = document.getElementById("paginationBar");
-        var baseLink = "lite.html?mode=" + encodeURIComponent(activeMode) + "&cat=" + encodeURIComponent(activeCat);
-        var pagHtml = '<div style="margin-bottom:4px; font-weight:bold;">Page ' + activePage + ' of ' + totalPages + '</div>';
+        // Load Topic Text Files Sequentially
+        function processTopicFiles(tasks, index) {
+            if (index >= tasks.length) {
+                if (appState.data.length === 0) {
+                    appState.data = fallbackBackup;
+                }
+                renderQuestions();
+                return;
+            }
 
-        if (activePage > 1) {
-            pagHtml += '<a href="' + baseLink + '&page=' + (activePage - 1) + '" class="pag-btn">&lt;&lt; Prev</a> ';
+            var task = tasks[index];
+            ajaxGet(task.url, function(text) {
+                parseTextQuestions(text, task.cat, task.topic);
+                processTopicFiles(tasks, index + 1);
+            }, function() {
+                processTopicFiles(tasks, index + 1);
+            }, true);
         }
-        if (activePage < totalPages) {
-            pagHtml += '<a href="' + baseLink + '&page=' + (activePage + 1) + '" class="pag-btn">Next &gt;&gt;</a>';
+
+        // Parse Text File (Matching the main app format: Line 1 = Title, Line 2 = Opts|Ans|Desc)
+        function parseTextQuestions(text, cat, topic) {
+            var lines = text.replace(/\r\n/g, "\n").split("\n");
+            for (var i = 0; i < lines.length; i += 2) {
+                var line1 = (lines[i] || "").replace(/^\s+|\s+$/g, "");
+                var line2 = (lines[i + 1] || "").replace(/^\s+|\s+$/g, "");
+                if (!line1 || !line2) continue;
+
+                var parts = line2.split("|");
+                if (parts[parts.length - 1] === "") parts.pop();
+
+                var ans = 0;
+                var desc = null;
+                var opts = [];
+                var last = parts[parts.length - 1];
+
+                if (!isNaN(last) && last !== "") {
+                    ans = parseInt(last, 10);
+                    opts = parts.slice(0, -1);
+                } else {
+                    ans = parseInt(parts[parts.length - 2], 10);
+                    desc = last;
+                    opts = parts.slice(0, -2);
+                }
+
+                appState.data.push({
+                    id: appState.data.length + 1,
+                    cat: cat,
+                    topic: topic,
+                    q: line1.replace(/\*\*/g, ""),
+                    opts: opts,
+                    ans: ans,
+                    desc: desc
+                });
+            }
         }
-        pagBox.innerHTML = pagHtml;
+
+        // 3. Filter and Render onto Screen
+        function renderQuestions() {
+            var filtered = [];
+            for (var i = 0; i < appState.data.length; i++) {
+                var item = appState.data[i];
+                if (!appState.cat || item.cat === appState.cat) {
+                    filtered.push(item);
+                }
+            }
+
+            var totalPages = Math.ceil(filtered.length / appState.perPage) || 1;
+            if (appState.page > totalPages) appState.page = totalPages;
+
+            var startIdx = (appState.page - 1) * appState.perPage;
+            var currentItems = filtered.slice(startIdx, startIdx + appState.perPage);
+
+            var container = document.getElementById("qOutput");
+            var letters = ["A", "B", "C", "D", "E"];
+            var out = "";
+
+            if (currentItems.length === 0) {
+                out = '<div class="status-card">No questions found matching your selection.</div>';
+                document.getElementById("paginationBar").style.display = "none";
+            } else {
+                for (var i = 0; i < currentItems.length; i++) {
+                    var q = currentItems[i];
+                    var qNo = startIdx + i + 1;
+                    var ansId = "ans_box_" + q.id;
+
+                    out += '<div class="card">';
+                    
+                    // Category & Index Meta
+                    out += '<table class="card-meta"><tr>';
+                    out += '<td><span class="badge-cat">' + q.cat + '</span></td>';
+                    out += '<td class="badge-id">Question #' + qNo + '</td>';
+                    out += '</tr></table>';
+
+                    // Title
+                    out += '<div class="q-text">' + qNo + '. ' + q.q + '</div>';
+
+                    // Options
+                    out += '<table class="opt-table">';
+                    for (var j = 0; j < q.opts.length; j++) {
+                        out += '<tr>';
+                        out += '<td class="opt-prefix">(' + letters[j] + ')</td>';
+                        out += '<td class="opt-val">' + q.opts[j] + '</td>';
+                        out += '</tr>';
+                    }
+                    out += '</table>';
+
+                    // Answer & Explanation
+                    if (appState.mode === "study") {
+                        out += '<div class="ans-panel open">';
+                        out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                        if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
+                        out += '</div>';
+                    } else {
+                        out += '<a href="javascript:void(0);" onclick="toggleAnswer(\'' + ansId + '\');" class="ans-btn">[+] View Answer</a>';
+                        out += '<div id="' + ansId + '" class="ans-panel">';
+                        out += '<div class="ans-correct">[OK] Correct Answer: (' + letters[q.ans] + ') ' + q.opts[q.ans] + '</div>';
+                        if (q.desc) out += '<div class="ans-desc">Note: ' + q.desc + '</div>';
+                        out += '</div>';
+                    }
+
+                    out += '</div>';
+                }
+
+                // Render Pagination
+                var pagContainer = document.getElementById("paginationBar");
+                var baseLink = "lite.html?mode=" + encodeURIComponent(appState.mode) + "&cat=" + encodeURIComponent(appState.cat);
+                var pagHtml = '<div style="margin-bottom:4px; font-weight:bold;">Page ' + appState.page + ' of ' + totalPages + ' (' + filtered.length + ' Total Questions)</div>';
+
+                if (appState.page > 1) {
+                    pagHtml += '<a href="' + baseLink + '&page=' + (appState.page - 1) + '" class="pag-btn">&lt;&lt; Prev</a> ';
+                }
+                if (appState.page < totalPages) {
+                    pagHtml += '<a href="' + baseLink + '&page=' + (appState.page + 1) + '" class="pag-btn">Next &gt;&gt;</a>';
+                }
+                pagContainer.innerHTML = pagHtml;
+                pagContainer.style.display = "block";
+            }
+
+            container.innerHTML = out;
+        }
     </script>
 </body>
 </html>
