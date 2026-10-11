@@ -8,6 +8,10 @@
     "path": "data/2025/set.json"
   },
   {
+    "title": "AI",
+    "path": "data/books/ai.json"
+  },
+  {
     "title": "বই থেকে",
     "path": "data/books/set.json"
   }
