@@ -1300,7 +1300,7 @@
             }
             window.speechSynthesis.cancel(); 
             let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US'; 
+            //utterance.lang = 'en-US'; 
             utterance.rate = 0.95;     
             window.speechSynthesis.speak(utterance);
         }
