@@ -1,0 +1,679 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily GK - Package Explorer</title>
+  <style type="text/css">
+    /* ============================================================
+       NOSTALGIA UI (CLASSIC WINDOWS 98 / 2000 SYSTEM THEME)
+       NO EMOJIS - PURE RETRO BEVELS & NATIVE BROWSER COMPATIBILITY
+       ============================================================ */
+    * {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 8px;
+      background-color: #008080; /* Classic Win95/98 Teal Desktop */
+      font-family: "Tahoma", "MS Sans Serif", "Verdana", "Arial", sans-serif;
+      font-size: 11px;
+      color: #000000;
+    }
+
+    /* MAIN EXPLORER WINDOW CONTAINER */
+    .win-window {
+      background-color: #d4d0c8;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+      box-shadow: 2px 2px 0px #000000;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* WINDOW TITLEBAR */
+    .win-titlebar {
+      height: 22px;
+      background: #000080;
+      background: -webkit-linear-gradient(left, #000080, #1084d0);
+      background: -moz-linear-gradient(left, #000080, #1084d0);
+      background: -o-linear-gradient(left, #000080, #1084d0);
+      background: linear-gradient(to right, #000080, #1084d0);
+      padding: 2px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ffffff;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .win-titlebar-text {
+      padding-left: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .win-titlebar-controls {
+      display: flex;
+      gap: 2px;
+    }
+
+    .win-btn-sys {
+      width: 16px;
+      height: 14px;
+      line-height: 10px;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 0;
+      text-align: center;
+      background-color: #d4d0c8;
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+      border-right: 1px solid #404040;
+      border-bottom: 1px solid #404040;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    .win-btn-sys:active {
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding-top: 1px;
+    }
+
+    /* MENUBAR */
+    .win-menubar {
+      display: flex;
+      background: #d4d0c8;
+      border-bottom: 1px solid #808080;
+      padding: 2px 6px;
+      gap: 12px;
+    }
+
+    .win-menu-item {
+      cursor: pointer;
+      padding: 1px 4px;
+    }
+
+    .win-menu-item:hover {
+      background-color: #000080;
+      color: #ffffff;
+    }
+
+    /* TOOLBAR / ADDRESS BAR */
+    .win-toolbar {
+      background: #d4d0c8;
+      padding: 4px 6px;
+      border-bottom: 1px solid #808080;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .win-label {
+      font-weight: normal;
+      color: #404040;
+    }
+
+    .win-input {
+      background-color: #ffffff;
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding: 3px 5px;
+      font-family: inherit;
+      font-size: 11px;
+      color: #000000;
+      outline: none;
+    }
+
+    .win-btn {
+      background-color: #d4d0c8;
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+      border-right: 1px solid #404040;
+      border-bottom: 1px solid #404040;
+      font-family: inherit;
+      font-size: 11px;
+      padding: 3px 10px;
+      color: #000000;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .win-btn:active {
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding: 4px 9px 2px 11px;
+    }
+
+    /* EXPLORER WORKSPACE (SPLIT PANE LOOK) */
+    .win-workspace {
+      background: #ffffff;
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-right: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      margin: 4px;
+      padding: 6px;
+      min-height: 380px;
+      max-height: 520px;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+
+    /* TREE VIEW STRUCTURE */
+    .tree-node {
+      list-style-type: none;
+      margin: 0;
+      padding: 0 0 0 16px;
+    }
+
+    .tree-root {
+      padding-left: 4px;
+    }
+
+    .tree-row {
+      display: flex;
+      align-items: center;
+      padding: 2px 0;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+
+    .tree-toggle {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      line-height: 10px;
+      text-align: center;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: bold;
+      border: 1px solid #808080;
+      background: #ffffff;
+      color: #000000;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    .tree-toggle:hover {
+      border-color: #000000;
+    }
+
+    .tree-icon-dir {
+      font-weight: bold;
+      color: #806000;
+      margin-right: 5px;
+    }
+
+    .tree-icon-file {
+      font-weight: bold;
+      color: #000080;
+      margin-right: 5px;
+    }
+
+    .tree-dir-name {
+      font-weight: bold;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    .tree-dir-name:hover {
+      text-decoration: underline;
+    }
+
+    .tree-file-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .tree-file-link {
+      color: #000080;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .tree-file-info {
+      color: #555555;
+      font-size: 10px;
+    }
+
+    .badge-tag {
+      background: #e0e0e0;
+      border: 1px solid #999999;
+      padding: 0 4px;
+      font-size: 10px;
+      color: #333333;
+    }
+
+    .tree-hidden {
+      display: none;
+    }
+
+    /* STATUS BAR */
+    .win-statusbar {
+      background-color: #d4d0c8;
+      border-top: 1px solid #808080;
+      padding: 2px 4px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .win-status-pane {
+      background: #d4d0c8;
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding: 2px 6px;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pane-flex {
+      flex: 1;
+    }
+
+    /* LEGACY/TEXT FALLBACK NOTICE */
+    .win-notice {
+      padding: 8px;
+      background: #ffffcc;
+      border: 1px solid #999900;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- RETRO WINDOW ROOT -->
+  <div class="win-window">
+    
+    <!-- 1. TITLEBAR -->
+    <div class="win-titlebar">
+      <div class="win-titlebar-text">Daily GK - Package Explorer [./packs.json]</div>
+      <div class="win-titlebar-controls">
+        <button class="win-btn-sys" onclick="alert('Daily GK Offline Package Store')">?</button>
+        <button class="win-btn-sys" onclick="window.location.reload()">_</button>
+        <button class="win-btn-sys" onclick="window.location.href='index.html'">X</button>
+      </div>
+    </div>
+
+    <!-- 2. MENUBAR -->
+    <div class="win-menubar">
+      <span class="win-menu-item" onclick="expandAll(true)">[Expand All]</span>
+      <span class="win-menu-item" onclick="expandAll(false)">[Collapse All]</span>
+      <span class="win-menu-item" onclick="loadPacksTree()">[Refresh]</span>
+      <span class="win-menu-item" onclick="window.location.href='index.html'">[Launch Viewer]</span>
+    </div>
+
+    <!-- 3. ADDRESS & FILTER BAR -->
+    <div class="win-toolbar">
+      <span class="win-label">Address:</span>
+      <input type="text" id="addressInput" class="win-input" style="width: 170px;" value="./packs.json" readonly="readonly" />
+
+      <span class="win-label" style="margin-left: 8px;">Filter:</span>
+      <input type="text" id="filterInput" class="win-input" style="width: 140px;" onkeyup="applyFilter(this.value)" placeholder="Search packages..." />
+
+      <button class="win-btn" onclick="applyFilter(document.getElementById('filterInput').value)">Find</button>
+      <button class="win-btn" onclick="document.getElementById('filterInput').value=''; applyFilter('');">Clear</button>
+    </div>
+
+    <!-- 4. WORKSPACE / TREE VIEW -->
+    <div class="win-workspace" id="treeViewport">
+      <div id="treeLoadingStatus" style="padding: 10px; color: #666666;">
+        Reading package directory from ./packs.json ...
+      </div>
+      <ul id="packageTreeRoot" class="tree-node tree-root"></ul>
+    </div>
+
+    <!-- 5. STATUS BAR -->
+    <div class="win-statusbar">
+      <div class="win-status-pane pane-flex" id="sb-status">Ready.</div>
+      <div class="win-status-pane" id="sb-objects">0 Object(s)</div>
+      <div class="win-status-pane" id="sb-questions">0 Questions</div>
+      <div class="win-status-pane" id="sb-size">0.00 MB</div>
+    </div>
+
+  </div>
+
+  <!-- COMPATIBLE ES3/ES5 JAVASCRIPT ENGINE (IE6 TO MODERN) -->
+  <script type="text/javascript">
+    // Fallback data if offline or packs.json is blocked by strict local file protocol
+    var FALLBACK_DATA = [
+      {
+        "id": "master",
+        "name": "Master Question Bank (All Questions)",
+        "category": "All",
+        "file": "data/master.pak",
+        "questions": 7052,
+        "size_kb": 24240.48,
+        "updated_at": "2026-10-21"
+      },
+      {
+        "id": "2026",
+        "name": "সাধারণ জ্ঞান",
+        "category": "সাধারণ জ্ঞান",
+        "file": "data/2026/2026.pak",
+        "questions": 2472,
+        "size_kb": 8452.92,
+        "updated_at": "2026-10-21"
+      },
+      {
+        "id": "2025",
+        "name": "সাধারণ জ্ঞান",
+        "category": "সাধারণ জ্ঞান",
+        "file": "data/2025/2025.pak",
+        "questions": 3421,
+        "size_kb": 11331.31,
+        "updated_at": "2026-10-21"
+      },
+      {
+        "id": "ai",
+        "name": "AI",
+        "category": "AI",
+        "file": "data/ai/ai.pak",
+        "questions": 1057,
+        "size_kb": 4136.0,
+        "updated_at": "2026-10-21"
+      },
+      {
+        "id": "books",
+        "name": "বই থেকে",
+        "category": "বই থেকে",
+        "file": "data/books/books.pak",
+        "questions": 102,
+        "size_kb": 320.3,
+        "updated_at": "2026-10-21"
+      }
+    ];
+
+    var rawPackages = [];
+    var treeData = null;
+
+    // Cross-browser AJAX function (Works from IE6 to modern browsers)
+    function createXHR() {
+      if (window.XMLHttpRequest) {
+        return new XMLHttpRequest();
+      }
+      try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e1) {}
+      try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch (e2) {}
+      try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e3) {}
+      return null;
+    }
+
+    function loadPacksTree() {
+      var statusEl = document.getElementById("treeLoadingStatus");
+      statusEl.style.display = "block";
+      statusEl.innerHTML = "Querying ./packs.json ...";
+
+      var xhr = createXHR();
+      if (!xhr) {
+        useFallbackData();
+        return;
+      }
+
+      xhr.open("GET", "./packs.json?t=" + new Date().getTime(), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 0) {
+            try {
+              if (window.JSON && window.JSON.parse) {
+                rawPackages = JSON.parse(xhr.responseText);
+              } else {
+                rawPackages = eval("(" + xhr.responseText + ")");
+              }
+              initTree(rawPackages);
+            } catch (err) {
+              useFallbackData();
+            }
+          } else {
+            useFallbackData();
+          }
+        }
+      };
+
+      try {
+        xhr.send(null);
+      } catch (ex) {
+        useFallbackData();
+      }
+    }
+
+    function useFallbackData() {
+      rawPackages = FALLBACK_DATA;
+      initTree(rawPackages);
+      var sb = document.getElementById("sb-status");
+      sb.innerHTML = "Loaded from embedded repository cache.";
+    }
+
+    // Build directory tree from file paths
+    function buildHierarchy(list) {
+      var root = { name: "root", type: "dir", children: {}, path: "" };
+
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var cleanPath = item.file.replace(/\\/g, "/");
+        var parts = cleanPath.split("/");
+        var current = root;
+
+        for (var p = 0; p < parts.length; p++) {
+          var part = parts[p];
+          if (!part) continue;
+
+          if (p === parts.length - 1) {
+            // Leaf node (File)
+            current.children[part] = {
+              name: part,
+              type: "file",
+              data: item,
+              fullPath: cleanPath
+            };
+          } else {
+            // Folder node
+            if (!current.children[part]) {
+              current.children[part] = {
+                name: part,
+                type: "dir",
+                children: {},
+                path: parts.slice(0, p + 1).join("/")
+              };
+            }
+            current = current.children[part];
+          }
+        }
+      }
+      return root;
+    }
+
+    function initTree(list) {
+      document.getElementById("treeLoadingStatus").style.display = "none";
+      treeData = buildHierarchy(list);
+      renderTree(treeData);
+      updateStatusMetrics(list);
+    }
+
+    function formatBytes(kb) {
+      if (kb >= 1024) {
+        return (kb / 1024).toFixed(2) + " MB";
+      }
+      return kb.toFixed(1) + " KB";
+    }
+
+    var nodeSequence = 0;
+
+    // Render tree nodes recursively
+    function renderTreeBranch(node, container, filterText) {
+      var keys = [];
+      for (var k in node.children) {
+        if (node.children.hasOwnProperty(k)) {
+          keys.push(k);
+        }
+      }
+      keys.sort();
+
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var item = node.children[key];
+
+        if (item.type === "dir") {
+          nodeSequence++;
+          var subUlId = "sub-ul-" + nodeSequence;
+          var btnId = "btn-tog-" + nodeSequence;
+
+          var liDir = document.createElement("li");
+          var rowDir = document.createElement("div");
+          rowDir.className = "tree-row";
+
+          rowDir.innerHTML =
+            '<span id="' + btnId + '" class="tree-toggle" onclick="toggleDir(\'' + subUlId + '\', \'' + btnId + '\')">[-]</span>' +
+            '<span class="tree-icon-dir">[DIR]</span>' +
+            '<span class="tree-dir-name" onclick="toggleDir(\'' + subUlId + '\', \'' + btnId + '\')">' + item.name + '/</span>';
+
+          liDir.appendChild(rowDir);
+
+          var childUl = document.createElement("ul");
+          childUl.className = "tree-node";
+          childUl.id = subUlId;
+
+          renderTreeBranch(item, childUl, filterText);
+
+          liDir.appendChild(childUl);
+          container.appendChild(liDir);
+
+        } else if (item.type === "file") {
+          var d = item.data;
+          var displayName = d.name || item.name;
+
+          if (filterText) {
+            var searchStr = (item.name + " " + displayName + " " + d.category).toLowerCase();
+            if (searchStr.indexOf(filterText.toLowerCase()) === -1) {
+              continue;
+            }
+          }
+
+          var liFile = document.createElement("li");
+          var rowFile = document.createElement("div");
+          rowFile.className = "tree-row";
+
+          var html =
+            '<span style="display:inline-block; width:19px;"></span>' +
+            '<span class="tree-icon-file">[PAK]</span>' +
+            '<div class="tree-file-item">' +
+              '<a class="tree-file-link" href="' + d.file + '" download>' + item.name + '</a> ' +
+              '<span class="tree-file-info">(' + displayName + ' | ' + d.questions + ' Qs | ' + formatBytes(d.size_kb) + ')</span> ' +
+              '<span class="badge-tag">' + d.category + '</span> ' +
+              '<a class="win-btn" href="' + d.file + '" download style="padding:1px 6px;">Download</a>' +
+            '</div>';
+
+          rowFile.innerHTML = html;
+          liFile.appendChild(rowFile);
+          container.appendChild(liFile);
+        }
+      }
+    }
+
+    function renderTree(rootNode, filterText) {
+      var rootUl = document.getElementById("packageTreeRoot");
+      rootUl.innerHTML = "";
+
+      nodeSequence = 0;
+      var topRow = document.createElement("div");
+      topRow.className = "tree-row";
+      topRow.innerHTML =
+        '<span id="btn-root-tog" class="tree-toggle" onclick="toggleDir(\'root-children\', \'btn-root-tog\')">[-]</span>' +
+        '<span class="tree-icon-dir">[DIR]</span>' +
+        '<span class="tree-dir-name" onclick="toggleDir(\'root-children\', \'btn-root-tog\')">repository_root/</span>';
+
+      rootUl.appendChild(topRow);
+
+      var rootChildren = document.createElement("ul");
+      rootChildren.className = "tree-node";
+      rootChildren.id = "root-children";
+
+      renderTreeBranch(rootNode, rootChildren, filterText);
+      rootUl.appendChild(rootChildren);
+    }
+
+    function toggleDir(targetId, btnId) {
+      var el = document.getElementById(targetId);
+      var btn = document.getElementById(btnId);
+      if (!el) return;
+
+      if (el.className.indexOf("tree-hidden") === -1) {
+        el.className += " tree-hidden";
+        if (btn) btn.innerHTML = "[+]";
+      } else {
+        el.className = el.className.replace(/\btree-hidden\b/g, "").replace(/^\s+|\s+$/g, "");
+        if (btn) btn.innerHTML = "[-]";
+      }
+    }
+
+    function expandAll(expand) {
+      var uls = document.getElementById("packageTreeRoot").getElementsByTagName("ul");
+      for (var i = 0; i < uls.length; i++) {
+        if (expand) {
+          uls[i].className = uls[i].className.replace(/\btree-hidden\b/g, "").replace(/^\s+|\s+$/g, "");
+        } else {
+          if (uls[i].className.indexOf("tree-hidden") === -1) {
+            uls[i].className += " tree-hidden";
+          }
+        }
+      }
+
+      var btns = document.getElementById("packageTreeRoot").getElementsByTagName("span");
+      for (var b = 0; b < btns.length; b++) {
+        if (btns[b].className === "tree-toggle") {
+          btns[b].innerHTML = expand ? "[-]" : "[+]";
+        }
+      }
+    }
+
+    function applyFilter(text) {
+      renderTree(treeData, text);
+    }
+
+    function updateStatusMetrics(list) {
+      var totalQs = 0;
+      var totalKb = 0;
+
+      for (var i = 0; i < list.length; i++) {
+        totalQs += (list[i].questions || 0);
+        totalKb += (list[i].size_kb || 0);
+      }
+
+      document.getElementById("sb-status").innerHTML = "Ready.";
+      document.getElementById("sb-objects").innerHTML = list.length + " Object(s)";
+      document.getElementById("sb-questions").innerHTML = totalQs + " Questions";
+      document.getElementById("sb-size").innerHTML = (totalKb / 1024).toFixed(2) + " MB";
+    }
+
+    // Initialize on load
+    window.onload = function() {
+      loadPacksTree();
+    };
+  </script>
+</body>
+</html>
