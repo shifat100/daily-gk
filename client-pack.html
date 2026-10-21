@@ -7,8 +7,9 @@
   <title>Daily GK - Package Explorer</title>
   <style type="text/css">
     /* ============================================================
-       CLEAN NOSTALGIA UI (WINDOWS CLASSIC - CLEAN & STRUCTURED)
-       NO EMOJIS - STRICT ALIGNMENT - NO TEXT OVERFLOW
+       NOSTALGIA UI (WIN 98/2000 SYSTEM THEME)
+       SUPPORTS: TREE VIEW & SOLID VIEW | STRICTLY NO EMOJIS
+       COMPATIBLE WITH OLD (IE6+, OPERA MINI) AND MODERN BROWSERS
        ============================================================ */
     * {
       box-sizing: border-box;
@@ -34,7 +35,7 @@
       border-right: 2px solid #404040;
       border-bottom: 2px solid #404040;
       box-shadow: 2px 2px 0px #000000;
-      max-width: 850px;
+      max-width: 860px;
       margin: 0 auto;
       width: 100%;
     }
@@ -122,18 +123,27 @@
       font-weight: bold;
     }
 
-    /* COMPACT CONTROLS TOOLBAR */
+    /* TOOLBAR WITH VIEW TOGGLES */
     .win-toolbar {
       background: #d4d0c8;
-      padding: 5px 6px;
+      padding: 4px 6px;
       border-bottom: 1px solid #808080;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .win-search-box {
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 4px;
       flex: 1;
+      min-width: 180px;
+    }
+
+    .toolbar-right {
       display: flex;
       align-items: center;
       gap: 4px;
@@ -146,7 +156,7 @@
       border-left: 1px solid #808080;
       border-right: 1px solid #ffffff;
       border-bottom: 1px solid #ffffff;
-      padding: 4px 6px;
+      padding: 3px 5px;
       font-family: inherit;
       font-size: 11px;
       color: #000000;
@@ -177,6 +187,15 @@
       border-bottom: 1px solid #ffffff;
     }
 
+    .win-btn.pressed {
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      background-color: #e2dfd8;
+      font-weight: bold;
+    }
+
     /* WORKSPACE */
     .win-workspace {
       background: #ffffff;
@@ -188,15 +207,17 @@
       min-height: 280px;
       max-height: 580px;
       overflow-y: auto;
-      overflow-x: hidden;
+      overflow-x: auto;
     }
 
-    /* FOLDER GROUP BLOCK */
-    .folder-group {
-      border-bottom: 1px solid #e8e8e8;
+    /* ============================================================
+       1. SOLID VIEW STYLES (CLEAN GROUPED CARDS)
+       ============================================================ */
+    .solid-folder-group {
+      border-bottom: 1px solid #e0e0e0;
     }
 
-    .folder-header {
+    .solid-folder-header {
       background: #f0f0ea;
       border-bottom: 1px solid #d4d0c8;
       padding: 5px 8px;
@@ -206,17 +227,16 @@
       font-weight: bold;
       color: #222222;
       cursor: pointer;
-      user-select: none;
     }
 
-    .folder-header:hover {
+    .solid-folder-header:hover {
       background: #e6e6dc;
     }
 
-    .folder-toggle {
+    .toggle-box {
       width: 14px;
       height: 14px;
-      line-height: 11px;
+      line-height: 10px;
       text-align: center;
       font-family: "Courier New", monospace;
       font-size: 10px;
@@ -225,27 +245,19 @@
       background: #ffffff;
       color: #000000;
       display: inline-block;
+      flex-shrink: 0;
     }
 
-    .folder-items-container {
-      padding: 0;
-    }
-
-    .folder-items-container.collapsed {
-      display: none;
-    }
-
-    /* CLEAN FILE ITEM ROW */
-    .file-row {
+    .solid-file-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 7px 10px 7px 24px;
-      border-bottom: 1px solid #f4f4f4;
+      padding: 6px 10px 6px 24px;
+      border-bottom: 1px solid #f2f2f2;
       gap: 8px;
     }
 
-    .file-row:hover {
+    .solid-file-row:hover {
       background-color: #f7f9fa;
     }
 
@@ -270,7 +282,6 @@
       font-size: 9px;
       font-weight: bold;
       padding: 0 4px;
-      border-radius: 2px;
       border: 1px solid #a0a0a0;
       background: #e6e6e6;
       color: #000080;
@@ -306,7 +317,60 @@
       font-weight: bold;
       color: #000000;
       padding: 3px 10px;
-      background-color: #d4d0c8;
+    }
+
+    /* ============================================================
+       2. TREE VIEW STYLES (CLASSIC EXPLORER HIERARCHY - CLEANED)
+       ============================================================ */
+    .tree-branch {
+      list-style-type: none;
+      margin: 0;
+      padding-left: 16px;
+    }
+
+    .tree-branch.root-level {
+      padding-left: 4px;
+    }
+
+    .tree-node-row {
+      display: flex;
+      align-items: center;
+      padding: 3px 0;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+
+    .tree-node-row:hover {
+      background-color: #f0f4f8;
+    }
+
+    .tree-guide {
+      font-family: "Courier New", monospace;
+      color: #888888;
+      margin-right: 4px;
+    }
+
+    .tree-dir-name {
+      font-weight: bold;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    .tree-dir-name:hover {
+      text-decoration: underline;
+    }
+
+    .tree-file-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 8px;
+      padding-right: 6px;
+    }
+
+    .tree-collapsed {
+      display: none;
     }
 
     /* STATUS BAR */
@@ -339,21 +403,23 @@
     @media (max-width: 480px) {
       body { padding: 0; }
       .win-window { border: none; box-shadow: none; }
-      .file-row { padding-left: 14px; }
+      .solid-file-row { padding-left: 14px; }
       .win-statusbar { flex-wrap: wrap; }
+      .win-toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar-left, .toolbar-right { width: 100%; justify-content: space-between; }
     }
   </style>
 </head>
 <body>
 
-  <!-- RETRO WINDOW -->
+  <!-- RETRO WINDOW ROOT -->
   <div class="win-window">
     
     <!-- 1. TITLEBAR -->
     <div class="win-titlebar">
       <div class="win-titlebar-text" id="winTitleText">Daily GK - Package Explorer</div>
       <div class="win-titlebar-controls">
-        <button class="win-btn-sys" onclick="alert('Daily GK Universal Package Store')">?</button>
+        <button class="win-btn-sys" onclick="alert('Daily GK Universal Package Explorer')">?</button>
         <button class="win-btn-sys" onclick="window.location.reload()">_</button>
         <button class="win-btn-sys" onclick="window.location.href='index.html'">X</button>
       </div>
@@ -365,26 +431,31 @@
         Question Packs (.pak)
       </button>
       <button class="win-tab-btn" id="tabBtnClients" onclick="switchTab('clients')">
-        Client Apps (.apk, .exe, .jar)
+        Client Apps (.apk, .bat, .jar)
       </button>
     </div>
 
-    <!-- 3. COMPACT SEARCH TOOLBAR -->
+    <!-- 3. TOOLBAR WITH VIEW TOGGLES -->
     <div class="win-toolbar">
-      <div class="win-search-box">
-        <span style="color:#333; font-weight:bold;">Search:</span>
-        <input type="text" id="filterInput" class="win-input" onkeyup="applyFilter(this.value)" placeholder="Filter by name or year..." />
+      <div class="toolbar-left">
+        <span style="font-weight:bold; color:#333;">Find:</span>
+        <input type="text" id="filterInput" class="win-input" onkeyup="applyFilter(this.value)" placeholder="Search packages..." />
         <button class="win-btn" onclick="clearFilter()">Clear</button>
       </div>
-      <a class="win-btn" href="index.html">[Open App]</a>
+      <div class="toolbar-right">
+        <span style="color:#555;">View:</span>
+        <button class="win-btn" id="btnViewTree" onclick="switchView('tree')">[Tree View]</button>
+        <button class="win-btn pressed" id="btnViewSolid" onclick="switchView('solid')">[Solid View]</button>
+        <a class="win-btn" href="index.html">[App]</a>
+      </div>
     </div>
 
-    <!-- 4. WORKSPACE / FOLDER & FILE LIST -->
+    <!-- 4. WORKSPACE CONTAINER -->
     <div class="win-workspace" id="workspaceContainer">
       <div id="loadingStatus" style="padding: 16px; color: #666666; text-align: center;">
-        Reading package directory...
+        Loading data...
       </div>
-      <div id="fileDirectoryView"></div>
+      <div id="workspaceContent"></div>
     </div>
 
     <!-- 5. STATUS BAR -->
@@ -414,7 +485,8 @@
       { "id": "mre", "name": "MediaTek MRE VXP Application", "category": "Feature Phone", "file": "Daily-GK.vbm", "size_kb": 780.0 }
     ];
 
-    var activeTab = "packs";
+    var activeTab = "packs";   // 'packs' or 'clients'
+    var currentView = "solid"; // 'solid' or 'tree'
     var packsData = null;
     var clientsData = null;
 
@@ -434,19 +506,26 @@
       if (tabName === "packs") {
         document.getElementById("winTitleText").innerHTML = "Daily GK - Package Explorer [packs.json]";
         if (!packsData) fetchData("packs", "./packs.json", FALLBACK_PACKS);
-        else renderDataset(packsData);
+        else renderCurrentView();
       } else {
         document.getElementById("winTitleText").innerHTML = "Daily GK - Client Apps [clients.json]";
         if (!clientsData) fetchData("clients", "./clients.json", FALLBACK_CLIENTS);
-        else renderDataset(clientsData);
+        else renderCurrentView();
       }
+    }
+
+    function switchView(viewName) {
+      currentView = viewName;
+      document.getElementById("btnViewTree").className = "win-btn" + (viewName === "tree" ? " pressed" : "");
+      document.getElementById("btnViewSolid").className = "win-btn" + (viewName === "solid" ? " pressed" : "");
+      renderCurrentView();
     }
 
     function fetchData(type, url, fallback) {
       document.getElementById("loadingStatus").style.display = "block";
       var xhr = createXHR();
       if (!xhr) {
-        onDataReady(type, fallback);
+        onDataLoaded(type, fallback);
         return;
       }
       xhr.open("GET", url + "?t=" + new Date().getTime(), true);
@@ -455,22 +534,22 @@
           if (xhr.status === 200 || xhr.status === 0) {
             try {
               var parsed = window.JSON && window.JSON.parse ? JSON.parse(xhr.responseText) : eval("(" + xhr.responseText + ")");
-              onDataReady(type, parsed);
+              onDataLoaded(type, parsed);
             } catch (err) {
-              onDataReady(type, fallback);
+              onDataLoaded(type, fallback);
             }
           } else {
-            onDataReady(type, fallback);
+            onDataLoaded(type, fallback);
           }
         }
       };
-      try { xhr.send(null); } catch (e) { onDataReady(type, fallback); }
+      try { xhr.send(null); } catch (e) { onDataLoaded(type, fallback); }
     }
 
-    function onDataReady(type, data) {
+    function onDataLoaded(type, data) {
       if (type === "packs") packsData = data;
       else clientsData = data;
-      renderDataset(data);
+      renderCurrentView();
     }
 
     function formatKB(kb) {
@@ -479,88 +558,87 @@
       return Math.round(kb) + " KB";
     }
 
-    // Organizes files into clean folders
-    function groupFiles(list, filterText) {
+    function getActiveDataset() {
+      return (activeTab === "packs") ? (packsData || FALLBACK_PACKS) : (clientsData || FALLBACK_CLIENTS);
+    }
+
+    function renderCurrentView() {
+      document.getElementById("loadingStatus").style.display = "none";
+      var data = getActiveDataset();
+      var filterText = (document.getElementById("filterInput").value || "").toLowerCase().trim();
+
+      if (currentView === "solid") {
+        renderSolidView(data, filterText);
+      } else {
+        renderTreeView(data, filterText);
+      }
+    }
+
+    /* ============================================================
+       1. SOLID VIEW RENDERER (Clean Grouped Cards)
+       ============================================================ */
+    function renderSolidView(list, filter) {
+      var container = document.getElementById("workspaceContent");
+      container.innerHTML = "";
+
+      // Group files
       var groups = {};
-      var filter = (filterText || "").toLowerCase().trim();
+      var count = 0;
 
       for (var i = 0; i < list.length; i++) {
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
         if (filter) {
-          var matchText = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
-          if (matchText.indexOf(filter) === -1) continue;
+          var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
+          if (matchStr.indexOf(filter) === -1) continue;
         }
 
+        count++;
         var parts = filePath.split("/");
-        var folderName = "General";
+        var fld = (parts.length > 1) ? parts[parts.length - 2] : "root";
         var fileName = parts[parts.length - 1];
 
-        if (parts.length > 1) {
-          // Removes redundant 'data/' from the display folder title
-          var folderParts = parts.slice(0, parts.length - 1);
-          if (folderParts[0].toLowerCase() === "data" && folderParts.length > 1) {
-            folderName = folderParts.slice(1).join("/");
-          } else {
-            folderName = folderParts.join("/");
-          }
-        }
-
-        if (!groups[folderName]) groups[folderName] = [];
-        groups[folderName].push({ data: item, fileName: fileName, fullPath: filePath });
-      }
-      return groups;
-    }
-
-    function renderDataset(list, filterText) {
-      document.getElementById("loadingStatus").style.display = "none";
-      var container = document.getElementById("fileDirectoryView");
-      container.innerHTML = "";
-
-      var groups = groupFiles(list, filterText);
-      var folderKeys = [];
-      for (var k in groups) {
-        if (groups.hasOwnProperty(k)) folderKeys.push(k);
+        if (!groups[fld]) groups[fld] = [];
+        groups[fld].push({ data: item, fileName: fileName, fullPath: filePath });
       }
 
-      if (folderKeys.length === 0) {
+      var keys = [];
+      for (var k in groups) { if (groups.hasOwnProperty(k)) keys.push(k); }
+      keys.sort();
+
+      if (keys.length === 0) {
         container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No files matching your search.</div>';
         updateStatusBar([], activeTab);
         return;
       }
 
-      folderKeys.sort();
-      var folderIdx = 0;
-
-      for (var i = 0; i < folderKeys.length; i++) {
-        var fName = folderKeys[i];
-        var items = groups[fName];
-        folderIdx++;
+      var folderSeq = 0;
+      for (var idx = 0; idx < keys.length; idx++) {
+        var fldName = keys[idx];
+        var items = groups[fldName];
+        folderSeq++;
 
         var groupDiv = document.createElement("div");
-        groupDiv.className = "folder-group";
+        groupDiv.className = "solid-folder-group";
 
-        var containerId = "fld-items-" + folderIdx;
-        var toggleId = "fld-tog-" + folderIdx;
+        var cId = "solid-grp-" + folderSeq;
+        var tId = "solid-tog-" + folderSeq;
 
-        // Folder Header
         var header = document.createElement("div");
-        header.className = "folder-header";
-        header.onclick = (function(cId, tId) {
-          return function() { toggleFolder(cId, tId); };
-        })(containerId, toggleId);
+        header.className = "solid-folder-header";
+        header.onclick = (function(boxId, togId) {
+          return function() { toggleBlock(boxId, togId); };
+        })(cId, tId);
 
         header.innerHTML =
-          '<span id="' + toggleId + '" class="folder-toggle">[-]</span> ' +
-          '<span>[DIR] ' + fName + '/ (' + items.length + ' item' + (items.length > 1 ? 's' : '') + ')</span>';
+          '<span id="' + tId + '" class="toggle-box">[-]</span> ' +
+          '<span>[DIR] ' + fldName + '/ (' + items.length + ' item' + (items.length > 1 ? 's' : '') + ')</span>';
 
         groupDiv.appendChild(header);
 
-        // Files container
-        var itemsDiv = document.createElement("div");
-        itemsDiv.className = "folder-items-container";
-        itemsDiv.id = containerId;
+        var listDiv = document.createElement("div");
+        listDiv.id = cId;
 
         for (var j = 0; j < items.length; j++) {
           var fileObj = items[j];
@@ -568,7 +646,7 @@
           var badgeText = (activeTab === "packs") ? "PAK" : "APP";
 
           var row = document.createElement("div");
-          row.className = "file-row";
+          row.className = "solid-file-row";
 
           var metaText = (d.category ? d.category : "General") + " &bull; " +
                          (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
@@ -586,38 +664,192 @@
               '<a class="win-btn btn-download" href="' + d.file + '" download>Download</a>' +
             '</div>';
 
-          itemsDiv.appendChild(row);
+          listDiv.appendChild(row);
         }
 
-        groupDiv.appendChild(itemsDiv);
+        groupDiv.appendChild(listDiv);
         container.appendChild(groupDiv);
       }
 
       updateStatusBar(list, activeTab);
     }
 
-    function toggleFolder(containerId, toggleId) {
-      var el = document.getElementById(containerId);
+    /* ============================================================
+       2. TREE VIEW RENDERER (Classic Explorer Hierarchy - Aligned)
+       ============================================================ */
+    function buildTreeStructure(list, filter) {
+      var root = { name: (activeTab === "packs" ? "data/" : "root/"), type: "dir", children: {} };
+
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var filePath = (item.file || "").replace(/\\/g, "/");
+
+        if (filter) {
+          var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
+          if (matchStr.indexOf(filter) === -1) continue;
+        }
+
+        // Normalize path: ignore root 'data/' in hierarchical sub-nesting
+        var cleanPath = filePath;
+        if (activeTab === "packs" && cleanPath.indexOf("data/") === 0) {
+          cleanPath = cleanPath.substring(5);
+        }
+
+        var parts = cleanPath.split("/");
+        var current = root;
+
+        for (var p = 0; p < parts.length; p++) {
+          var part = parts[p];
+          if (!part) continue;
+
+          if (p === parts.length - 1) {
+            current.children[part] = { name: part, type: "file", data: item, fullPath: filePath };
+          } else {
+            if (!current.children[part]) {
+              current.children[part] = { name: part, type: "dir", children: {} };
+            }
+            current = current.children[part];
+          }
+        }
+      }
+      return root;
+    }
+
+    var treeNodeCounter = 0;
+
+    function renderTreeNodes(node, container) {
+      var keys = [];
+      for (var k in node.children) {
+        if (node.children.hasOwnProperty(k)) keys.push(k);
+      }
+      keys.sort();
+
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var item = node.children[key];
+
+        if (item.type === "dir") {
+          treeNodeCounter++;
+          var subUlId = "tree-ul-" + treeNodeCounter;
+          var togId = "tree-tog-" + treeNodeCounter;
+
+          var liDir = document.createElement("li");
+
+          var rowDir = document.createElement("div");
+          rowDir.className = "tree-node-row";
+          rowDir.innerHTML =
+            '<span class="tree-guide">|--</span> ' +
+            '<span id="' + togId + '" class="toggle-box" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">[-]</span> ' +
+            '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
+            '<span class="tree-dir-name" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">' + item.name + '/</span>';
+
+          liDir.appendChild(rowDir);
+
+          var childUl = document.createElement("ul");
+          childUl.className = "tree-branch";
+          childUl.id = subUlId;
+
+          renderTreeNodes(item, childUl);
+
+          liDir.appendChild(childUl);
+          container.appendChild(liDir);
+
+        } else if (item.type === "file") {
+          var d = item.data;
+          var badgeText = (activeTab === "packs") ? "PAK" : "APP";
+
+          var liFile = document.createElement("li");
+
+          var rowFile = document.createElement("div");
+          rowFile.className = "solid-file-row";
+          rowFile.style.border = "none";
+          rowFile.style.paddingLeft = "8px";
+
+          var metaText = (d.category ? d.category : "General") + " &bull; " +
+                         (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
+                         formatKB(d.size_kb);
+
+          rowFile.innerHTML =
+            '<div class="file-left">' +
+              '<div class="file-title-line">' +
+                '<span class="tree-guide">|--</span> ' +
+                '<span class="type-badge">' + badgeText + '</span> ' +
+                '<a class="file-name-link" href="' + d.file + '" download>' + item.name + '</a>' +
+              '</div>' +
+              '<div class="file-meta-line" style="padding-left: 20px;">' + metaText + '</div>' +
+            '</div>' +
+            '<div class="file-right">' +
+              '<a class="win-btn btn-download" href="' + d.file + '" download>Download</a>' +
+            '</div>';
+
+          liFile.appendChild(rowFile);
+          container.appendChild(liFile);
+        }
+      }
+    }
+
+    function renderTreeView(list, filter) {
+      var container = document.getElementById("workspaceContent");
+      container.innerHTML = "";
+
+      var rootTree = buildTreeStructure(list, filter);
+
+      var rootUl = document.createElement("ul");
+      rootUl.className = "tree-branch root-level";
+
+      treeNodeCounter = 0;
+      var rootTogId = "tree-root-tog";
+      var rootSubId = "tree-root-sub";
+
+      var rootHeader = document.createElement("div");
+      rootHeader.className = "tree-node-row";
+      rootHeader.innerHTML =
+        '<span id="' + rootTogId + '" class="toggle-box" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">[-]</span> ' +
+        '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
+        '<span class="tree-dir-name" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">' + rootTree.name + '</span>';
+
+      rootUl.appendChild(rootHeader);
+
+      var subUl = document.createElement("ul");
+      subUl.className = "tree-branch";
+      subUl.id = rootSubId;
+
+      renderTreeNodes(rootTree, subUl);
+
+      if (subUl.children.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No files matching your search.</div>';
+        updateStatusBar([], activeTab);
+        return;
+      }
+
+      rootUl.appendChild(subUl);
+      container.appendChild(rootUl);
+
+      updateStatusBar(list, activeTab);
+    }
+
+    function toggleBlock(contentId, toggleId) {
+      var el = document.getElementById(contentId);
       var tog = document.getElementById(toggleId);
       if (!el) return;
 
-      if (el.className.indexOf("collapsed") === -1) {
-        el.className += " collapsed";
-        if (tog) tog.innerHTML = "[+]";
-      } else {
-        el.className = el.className.replace(/\bcollapsed\b/g, "").replace(/^\s+|\s+$/g, "");
+      var isHidden = (el.className.indexOf("tree-collapsed") !== -1);
+      if (isHidden) {
+        el.className = el.className.replace(/\btree-collapsed\b/g, "").replace(/^\s+|\s+$/g, "");
         if (tog) tog.innerHTML = "[-]";
+      } else {
+        el.className += " tree-collapsed";
+        if (tog) tog.innerHTML = "[+]";
       }
     }
 
     function applyFilter(text) {
-      var current = (activeTab === "packs") ? packsData : clientsData;
-      if (current) renderDataset(current, text);
+      renderCurrentView();
     }
 
     function clearFilter() {
       document.getElementById("filterInput").value = "";
-      applyFilter("");
+      renderCurrentView();
     }
 
     function updateStatusBar(list, tabType) {
