@@ -1,0 +1,58 @@
+name: Generate PAKs & Catalog
+
+on:
+  workflow_dispatch: # Allows one-click manual build
+  push:
+    paths:
+      - 'data/**'
+      - 'builder.py'
+      - 'build_all_packs.py'
+
+jobs:
+  generate-paks:
+    runs-on: windows-latest # Windows is required for high-quality GDI Bengali font rasterization
+    permissions:
+      contents: write # Needed to commit generated .pak files back to the repo
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pillow
+
+      - name: Download Kalpurush Bengali Font (Optional fallback)
+        shell: bash
+        run: |
+          if [ ! -f "Kalpurush.ttf" ]; then
+            curl -sL "https://raw.githubusercontent.com/shifat100/daily-gk/main/Kalpurush.ttf" -o "Kalpurush.ttf" || true
+          fi
+
+      - name: Run Automated PAK Generation
+        run: python build_all_packs.py
+
+      - name: Commit and Push PAKs & packs.json
+        shell: bash
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/**/*.pak data/master.pak packs.json
+          
+          # Only commit if changes exist
+          if git status --porcelain | grep -E '\.pak|packs\.json'; then
+            git commit -m "Auto-generate PAK files and update packs.json [skip ci]"
+            git push origin HEAD:${{ github.ref }}
+            echo "Successfully updated and pushed PAK packages."
+          else
+            echo "No package changes detected."
+          fi
