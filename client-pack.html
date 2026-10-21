@@ -3,29 +3,30 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
-  <title>Daily GK - File & Package Explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily GK - Package Explorer</title>
   <style type="text/css">
     /* ============================================================
-       NOSTALGIA UI (CLASSIC WIN 98/2000 THEME)
-       ADAPTED FOR BOTH 4K DESKTOP AND 240px TINY FEATURE PHONES
+       CLEAN NOSTALGIA UI (WINDOWS CLASSIC - CLEAN & STRUCTURED)
+       NO EMOJIS - STRICT ALIGNMENT - NO TEXT OVERFLOW
        ============================================================ */
     * {
       box-sizing: border-box;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 4px;
-      background-color: #008080; /* Classic Teal Desktop */
+      background-color: #008080; /* Classic Teal */
       font-family: "Tahoma", "MS Sans Serif", "Verdana", "Arial", sans-serif;
       font-size: 11px;
       color: #000000;
+      padding: 6px;
     }
 
-    /* MAIN WINDOW FRAME */
+    /* MAIN CONTAINER WINDOW */
     .win-window {
       background-color: #d4d0c8;
       border-top: 2px solid #ffffff;
@@ -33,7 +34,7 @@
       border-right: 2px solid #404040;
       border-bottom: 2px solid #404040;
       box-shadow: 2px 2px 0px #000000;
-      max-width: 920px;
+      max-width: 850px;
       margin: 0 auto;
       width: 100%;
     }
@@ -54,7 +55,7 @@
     }
 
     .win-titlebar-text {
-      padding-left: 4px;
+      padding-left: 3px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -74,8 +75,6 @@
       font-family: "Courier New", monospace;
       font-size: 10px;
       font-weight: bold;
-      padding: 0;
-      text-align: center;
       background-color: #d4d0c8;
       border-top: 1px solid #ffffff;
       border-left: 1px solid #ffffff;
@@ -83,6 +82,7 @@
       border-bottom: 1px solid #404040;
       color: #000000;
       cursor: pointer;
+      text-align: center;
     }
 
     .win-btn-sys:active {
@@ -92,50 +92,65 @@
       border-bottom: 1px solid #ffffff;
     }
 
-    /* MENUBAR */
-    .win-menubar {
+    /* TABS */
+    .win-tab-strip {
       display: flex;
-      flex-wrap: wrap;
       background: #d4d0c8;
+      padding: 5px 6px 0 6px;
       border-bottom: 1px solid #808080;
-      padding: 2px 4px;
-      gap: 8px;
+      gap: 3px;
     }
 
-    .win-menu-item {
+    .win-tab-btn {
+      background-color: #d4d0c8;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: none;
+      padding: 4px 12px;
+      font-family: inherit;
+      font-size: 11px;
+      color: #000000;
       cursor: pointer;
-      padding: 1px 4px;
+      margin-bottom: -1px;
       white-space: nowrap;
     }
 
-    .win-menu-item:hover {
-      background-color: #000080;
-      color: #ffffff;
+    .win-tab-btn.active {
+      background-color: #ffffff;
+      border-bottom: 1px solid #ffffff;
+      font-weight: bold;
     }
 
-    /* ADDRESS & TOOLBAR */
+    /* COMPACT CONTROLS TOOLBAR */
     .win-toolbar {
       background: #d4d0c8;
-      padding: 4px 6px;
+      padding: 5px 6px;
       border-bottom: 1px solid #808080;
       display: flex;
       align-items: center;
+      gap: 6px;
+    }
+
+    .win-search-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
       gap: 4px;
-      flex-wrap: wrap;
     }
 
     .win-input {
+      width: 100%;
       background-color: #ffffff;
       border-top: 1px solid #808080;
       border-left: 1px solid #808080;
       border-right: 1px solid #ffffff;
       border-bottom: 1px solid #ffffff;
-      padding: 3px 5px;
+      padding: 4px 6px;
       font-family: inherit;
       font-size: 11px;
       color: #000000;
       outline: none;
-      min-width: 80px;
     }
 
     .win-btn {
@@ -150,9 +165,9 @@
       color: #000000;
       cursor: pointer;
       text-decoration: none;
-      display: inline-block;
-      vertical-align: middle;
       white-space: nowrap;
+      display: inline-block;
+      text-align: center;
     }
 
     .win-btn:active {
@@ -160,37 +175,6 @@
       border-left: 1px solid #404040;
       border-right: 1px solid #ffffff;
       border-bottom: 1px solid #ffffff;
-    }
-
-    /* WINDOWS 98 TAB CONTROL */
-    .win-tab-strip {
-      display: flex;
-      background: #d4d0c8;
-      padding: 4px 6px 0 6px;
-      border-bottom: 1px solid #808080;
-      gap: 3px;
-      overflow-x: auto;
-    }
-
-    .win-tab-btn {
-      background-color: #d4d0c8;
-      border-top: 2px solid #ffffff;
-      border-left: 2px solid #ffffff;
-      border-right: 2px solid #404040;
-      border-bottom: none;
-      padding: 4px 10px;
-      font-family: inherit;
-      font-size: 11px;
-      color: #000000;
-      cursor: pointer;
-      white-space: nowrap;
-      margin-bottom: -1px;
-    }
-
-    .win-tab-btn.active {
-      background-color: #ffffff;
-      border-bottom: 1px solid #ffffff;
-      font-weight: bold;
     }
 
     /* WORKSPACE */
@@ -201,37 +185,38 @@
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
       margin: 4px;
-      padding: 6px;
-      min-height: 260px;
-      max-height: 520px;
+      min-height: 280px;
+      max-height: 580px;
       overflow-y: auto;
-      overflow-x: auto;
+      overflow-x: hidden;
     }
 
-    /* TREE VIEW */
-    .tree-node {
-      list-style-type: none;
-      margin: 0;
-      padding: 0 0 0 14px;
+    /* FOLDER GROUP BLOCK */
+    .folder-group {
+      border-bottom: 1px solid #e8e8e8;
     }
 
-    .tree-root {
-      padding-left: 2px;
-    }
-
-    .tree-row {
+    .folder-header {
+      background: #f0f0ea;
+      border-bottom: 1px solid #d4d0c8;
+      padding: 5px 8px;
       display: flex;
-      align-items: flex-start;
-      padding: 2px 0;
-      line-height: 18px;
-      flex-wrap: wrap; /* Wraps gracefully on 240px screens */
+      align-items: center;
+      gap: 6px;
+      font-weight: bold;
+      color: #222222;
+      cursor: pointer;
+      user-select: none;
     }
 
-    .tree-toggle {
-      display: inline-block;
+    .folder-header:hover {
+      background: #e6e6dc;
+    }
+
+    .folder-toggle {
       width: 14px;
       height: 14px;
-      line-height: 10px;
+      line-height: 11px;
       text-align: center;
       font-family: "Courier New", monospace;
       font-size: 10px;
@@ -239,63 +224,89 @@
       border: 1px solid #808080;
       background: #ffffff;
       color: #000000;
-      margin-right: 5px;
-      cursor: pointer;
-      flex-shrink: 0;
+      display: inline-block;
     }
 
-    .tree-icon-dir {
-      font-weight: bold;
-      color: #806000;
-      margin-right: 5px;
-      flex-shrink: 0;
+    .folder-items-container {
+      padding: 0;
     }
 
-    .tree-icon-file {
-      font-weight: bold;
-      color: #000080;
-      margin-right: 5px;
-      flex-shrink: 0;
+    .folder-items-container.collapsed {
+      display: none;
     }
 
-    .tree-dir-name {
-      font-weight: bold;
-      color: #000000;
-      cursor: pointer;
-    }
-
-    .tree-file-wrap {
+    /* CLEAN FILE ITEM ROW */
+    .file-row {
       display: flex;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px 7px 24px;
+      border-bottom: 1px solid #f4f4f4;
+      gap: 8px;
+    }
+
+    .file-row:hover {
+      background-color: #f7f9fa;
+    }
+
+    .file-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .file-title-line {
+      display: flex;
       align-items: center;
       gap: 6px;
-      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .tree-file-link {
-      color: #000080;
-      text-decoration: underline;
+    .type-badge {
+      font-size: 9px;
       font-weight: bold;
-      word-break: break-all;
-    }
-
-    .tree-file-info {
-      color: #555555;
-      font-size: 10px;
-      word-break: break-word;
-    }
-
-    .badge-tag {
-      background: #e0e0e0;
-      border: 1px solid #999999;
       padding: 0 4px;
-      font-size: 10px;
-      color: #333333;
+      border-radius: 2px;
+      border: 1px solid #a0a0a0;
+      background: #e6e6e6;
+      color: #000080;
+      flex-shrink: 0;
+    }
+
+    .file-name-link {
+      color: #000080;
+      font-weight: bold;
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .tree-hidden {
-      display: none;
+    .file-name-link:hover {
+      text-decoration: underline;
+    }
+
+    .file-meta-line {
+      color: #555555;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-right {
+      flex-shrink: 0;
+    }
+
+    .btn-download {
+      font-weight: bold;
+      color: #000000;
+      padding: 3px 10px;
+      background-color: #d4d0c8;
     }
 
     /* STATUS BAR */
@@ -304,8 +315,7 @@
       border-top: 1px solid #808080;
       padding: 2px 4px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
+      gap: 4px;
     }
 
     .win-status-pane {
@@ -314,24 +324,23 @@
       border-left: 1px solid #808080;
       border-right: 1px solid #ffffff;
       border-bottom: 1px solid #ffffff;
-      padding: 2px 4px;
+      padding: 2px 6px;
       font-size: 10px;
       white-space: nowrap;
     }
 
     .pane-flex {
       flex: 1;
-      min-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* TINY SCREEN ADAPTATIONS (< 360px & QVGA 240px) */
-    @media (max-width: 360px) {
+    /* MOBILE ADJUSTMENTS */
+    @media (max-width: 480px) {
       body { padding: 0; }
       .win-window { border: none; box-shadow: none; }
-      .win-toolbar { flex-direction: column; align-items: stretch; }
-      .win-toolbar input { width: 100% !important; margin-bottom: 2px; }
-      .tree-node { padding-left: 8px; }
-      .win-statusbar { flex-direction: column; }
+      .file-row { padding-left: 14px; }
+      .win-statusbar { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -342,417 +351,276 @@
     
     <!-- 1. TITLEBAR -->
     <div class="win-titlebar">
-      <div class="win-titlebar-text" id="winTitleText">Daily GK - Package Explorer [./packs.json]</div>
+      <div class="win-titlebar-text" id="winTitleText">Daily GK - Package Explorer</div>
       <div class="win-titlebar-controls">
-        <button class="win-btn-sys" onclick="alert('Daily GK Universal Package & Client Manager')">?</button>
+        <button class="win-btn-sys" onclick="alert('Daily GK Universal Package Store')">?</button>
         <button class="win-btn-sys" onclick="window.location.reload()">_</button>
         <button class="win-btn-sys" onclick="window.location.href='index.html'">X</button>
       </div>
     </div>
 
-    <!-- 2. MENUBAR -->
-    <div class="win-menubar">
-      <span class="win-menu-item" onclick="expandCurrentTab(true)">[Expand All]</span>
-      <span class="win-menu-item" onclick="expandCurrentTab(false)">[Collapse All]</span>
-      <span class="win-menu-item" onclick="refreshCurrentTab()">[Refresh]</span>
-      <span class="win-menu-item" onclick="window.location.href='index.html'">[Open App]</span>
-    </div>
-
-    <!-- 3. TABS (PACKAGES & CLIENT APPS) -->
+    <!-- 2. TABS -->
     <div class="win-tab-strip">
-      <button class="win-tab-btn active" id="tabBtnPacks" onclick="switchActiveTab('packs')">
-        Question Packs (packs.json)
+      <button class="win-tab-btn active" id="tabBtnPacks" onclick="switchTab('packs')">
+        Question Packs (.pak)
       </button>
-      <button class="win-tab-btn" id="tabBtnClients" onclick="switchActiveTab('clients')">
-        Client Apps (clients.json)
+      <button class="win-tab-btn" id="tabBtnClients" onclick="switchTab('clients')">
+        Client Apps (.apk, .exe, .jar)
       </button>
     </div>
 
-    <!-- 4. TOOLBAR / SEARCH FILTER -->
+    <!-- 3. COMPACT SEARCH TOOLBAR -->
     <div class="win-toolbar">
-      <span style="color:#404040;">Address:</span>
-      <input type="text" id="addressInput" class="win-input" style="width: 140px;" value="./packs.json" readonly="readonly" />
-
-      <span style="color:#404040; margin-left: 4px;">Search:</span>
-      <input type="text" id="filterInput" class="win-input" style="width: 120px;" onkeyup="applyFilter(this.value)" placeholder="Filter..." />
-
-      <button class="win-btn" onclick="applyFilter(document.getElementById('filterInput').value)">Find</button>
-      <button class="win-btn" onclick="document.getElementById('filterInput').value=''; applyFilter('');">Clear</button>
-    </div>
-
-    <!-- 5. WORKSPACE TREE VIEWER -->
-    <div class="win-workspace" id="treeViewport">
-      <div id="treeLoadingStatus" style="padding: 10px; color: #666666;">
-        Querying directory data...
+      <div class="win-search-box">
+        <span style="color:#333; font-weight:bold;">Search:</span>
+        <input type="text" id="filterInput" class="win-input" onkeyup="applyFilter(this.value)" placeholder="Filter by name or year..." />
+        <button class="win-btn" onclick="clearFilter()">Clear</button>
       </div>
-      <ul id="packageTreeRoot" class="tree-node tree-root"></ul>
+      <a class="win-btn" href="index.html">[Open App]</a>
     </div>
 
-    <!-- 6. STATUS BAR -->
+    <!-- 4. WORKSPACE / FOLDER & FILE LIST -->
+    <div class="win-workspace" id="workspaceContainer">
+      <div id="loadingStatus" style="padding: 16px; color: #666666; text-align: center;">
+        Reading package directory...
+      </div>
+      <div id="fileDirectoryView"></div>
+    </div>
+
+    <!-- 5. STATUS BAR -->
     <div class="win-statusbar">
       <div class="win-status-pane pane-flex" id="sb-status">Ready.</div>
-      <div class="win-status-pane" id="sb-objects">0 Object(s)</div>
+      <div class="win-status-pane" id="sb-objects">0 Files</div>
       <div class="win-status-pane" id="sb-extra">0 Questions</div>
       <div class="win-status-pane" id="sb-size">0.00 MB</div>
     </div>
 
   </div>
 
-  <!-- COMPATIBLE ES3/ES5 JAVASCRIPT ENGINE -->
   <script type="text/javascript">
-    // Fallback data for Question Packs (packs.json)
     var FALLBACK_PACKS = [
-      {
-        "id": "master",
-        "name": "Master Question Bank (All Questions)",
-        "category": "All",
-        "file": "data/master.pak",
-        "questions": 7052,
-        "size_kb": 24240.48,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "2026",
-        "name": "সাধারণ জ্ঞান",
-        "category": "সাধারণ জ্ঞান",
-        "file": "data/2026/2026.pak",
-        "questions": 2472,
-        "size_kb": 8452.92,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "2025",
-        "name": "সাধারণ জ্ঞান",
-        "category": "সাধারণ জ্ঞান",
-        "file": "data/2025/2025.pak",
-        "questions": 3421,
-        "size_kb": 11331.31,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "ai",
-        "name": "AI",
-        "category": "AI",
-        "file": "data/ai/ai.pak",
-        "questions": 1057,
-        "size_kb": 4136.0,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "books",
-        "name": "বই থেকে",
-        "category": "বই থেকে",
-        "file": "data/books/books.pak",
-        "questions": 102,
-        "size_kb": 320.3,
-        "updated_at": "2026-10-21"
-      }
+      { "id": "master", "name": "Master Question Bank (All Questions)", "category": "All", "file": "data/master.pak", "questions": 7052, "size_kb": 24240.48 },
+      { "id": "2026", "name": "সাধারণ জ্ঞান (2026)", "category": "সাধারণ জ্ঞান", "file": "data/2026/2026.pak", "questions": 2472, "size_kb": 8452.92 },
+      { "id": "2025", "name": "সাধারণ জ্ঞান (2025)", "category": "সাধারণ জ্ঞান", "file": "data/2025/2025.pak", "questions": 3421, "size_kb": 11331.31 },
+      { "id": "ai", "name": "AI (Artificial Intelligence)", "category": "AI", "file": "data/ai/ai.pak", "questions": 1057, "size_kb": 4136.0 },
+      { "id": "books", "name": "বই থেকে (Books Collection)", "category": "বই থেকে", "file": "data/books/books.pak", "questions": 102, "size_kb": 320.3 }
     ];
 
-    // Fallback data for Client Applications (clients.json)
     var FALLBACK_CLIENTS = [
-      {
-        "id": "android",
-        "name": "Android Application APK",
-        "category": "Mobile",
-        "file": "app-release.apk",
-        "size_kb": 15420.5,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "windows",
-        "name": "Windows Desktop Launcher (.bat)",
-        "category": "Desktop",
-        "file": "Daily-GK.bat",
-        "size_kb": 14.2,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "linux",
-        "name": "Linux Shell Launcher (.sh)",
-        "category": "Desktop",
-        "file": "Daily-GK.sh",
-        "size_kb": 11.5,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "j2me",
-        "name": "Java Phone J2ME MIDlet (.jar)",
-        "category": "Feature Phone",
-        "file": "Daily-GK.jar",
-        "size_kb": 512.0,
-        "updated_at": "2026-10-21"
-      },
-      {
-        "id": "mre",
-        "name": "MediaTek MRE VXP Application (.vbm)",
-        "category": "Feature Phone",
-        "file": "Daily-GK.vbm",
-        "size_kb": 780.0,
-        "updated_at": "2026-10-21"
-      }
+      { "id": "android", "name": "Android Package", "category": "Mobile", "file": "app-release.apk", "size_kb": 15420.5 },
+      { "id": "windows", "name": "Windows Desktop Launcher", "category": "Desktop", "file": "Daily-GK.bat", "size_kb": 14.2 },
+      { "id": "linux", "name": "Linux Shell Launcher", "category": "Desktop", "file": "Daily-GK.sh", "size_kb": 11.5 },
+      { "id": "j2me", "name": "Java Feature Phone MIDlet", "category": "Feature Phone", "file": "Daily-GK.jar", "size_kb": 512.0 },
+      { "id": "mre", "name": "MediaTek MRE VXP Application", "category": "Feature Phone", "file": "Daily-GK.vbm", "size_kb": 780.0 }
     ];
 
-    var currentTab = "packs"; // 'packs' or 'clients'
-    var packsList = null;
-    var clientsList = null;
-    var activeTree = null;
-    var nodeSeq = 0;
+    var activeTab = "packs";
+    var packsData = null;
+    var clientsData = null;
 
-    // Cross-browser AJAX for IE6+ and modern browsers
     function createXHR() {
       if (window.XMLHttpRequest) return new XMLHttpRequest();
-      try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e1) {}
-      try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch (e2) {}
-      try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e3) {}
+      try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e) {}
+      try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) {}
       return null;
     }
 
-    function switchActiveTab(tabName) {
-      currentTab = tabName;
+    function switchTab(tabName) {
+      activeTab = tabName;
       document.getElementById("tabBtnPacks").className = "win-tab-btn" + (tabName === "packs" ? " active" : "");
       document.getElementById("tabBtnClients").className = "win-tab-btn" + (tabName === "clients" ? " active" : "");
-
-      var addrInput = document.getElementById("addressInput");
-      var titleText = document.getElementById("winTitleText");
+      document.getElementById("filterInput").value = "";
 
       if (tabName === "packs") {
-        addrInput.value = "./packs.json";
-        titleText.innerHTML = "Daily GK - Package Explorer [./packs.json]";
-        if (!packsList) fetchDataset("packs", "./packs.json", FALLBACK_PACKS);
-        else renderCurrentDataset(packsList, "packs");
+        document.getElementById("winTitleText").innerHTML = "Daily GK - Package Explorer [packs.json]";
+        if (!packsData) fetchData("packs", "./packs.json", FALLBACK_PACKS);
+        else renderDataset(packsData);
       } else {
-        addrInput.value = "./clients.json";
-        titleText.innerHTML = "Daily GK - Client App Explorer [./clients.json]";
-        if (!clientsList) fetchDataset("clients", "./clients.json", FALLBACK_CLIENTS);
-        else renderCurrentDataset(clientsList, "clients");
+        document.getElementById("winTitleText").innerHTML = "Daily GK - Client Apps [clients.json]";
+        if (!clientsData) fetchData("clients", "./clients.json", FALLBACK_CLIENTS);
+        else renderDataset(clientsData);
       }
     }
 
-    function fetchDataset(type, url, fallback) {
-      var statusEl = document.getElementById("treeLoadingStatus");
-      statusEl.style.display = "block";
-      statusEl.innerHTML = "Reading " + url + " ...";
-
+    function fetchData(type, url, fallback) {
+      document.getElementById("loadingStatus").style.display = "block";
       var xhr = createXHR();
       if (!xhr) {
-        assignFallback(type, fallback);
+        onDataReady(type, fallback);
         return;
       }
-
       xhr.open("GET", url + "?t=" + new Date().getTime(), true);
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
           if (xhr.status === 200 || xhr.status === 0) {
             try {
               var parsed = window.JSON && window.JSON.parse ? JSON.parse(xhr.responseText) : eval("(" + xhr.responseText + ")");
-              if (type === "packs") packsList = parsed;
-              else clientsList = parsed;
-              renderCurrentDataset(parsed, type);
+              onDataReady(type, parsed);
             } catch (err) {
-              assignFallback(type, fallback);
+              onDataReady(type, fallback);
             }
           } else {
-            assignFallback(type, fallback);
+            onDataReady(type, fallback);
           }
         }
       };
-
-      try { xhr.send(null); } catch (e) { assignFallback(type, fallback); }
+      try { xhr.send(null); } catch (e) { onDataReady(type, fallback); }
     }
 
-    function assignFallback(type, fallback) {
-      if (type === "packs") packsList = fallback;
-      else clientsList = fallback;
-      renderCurrentDataset(fallback, type);
-      document.getElementById("sb-status").innerHTML = "Loaded from embedded repository cache.";
-    }
-
-    // Convert file paths into expandable directory tree
-    function buildHierarchy(list, type) {
-      var root = { name: "root", type: "dir", children: {}, path: "" };
-
-      for (var i = 0; i < list.length; i++) {
-        var item = list[i];
-        var cleanPath = (item.file || "").replace(/\\/g, "/");
-        var parts = cleanPath.split("/");
-        var current = root;
-
-        for (var p = 0; p < parts.length; p++) {
-          var part = parts[p];
-          if (!part) continue;
-
-          if (p === parts.length - 1) {
-            current.children[part] = {
-              name: part,
-              type: "file",
-              fileType: type,
-              data: item,
-              fullPath: cleanPath
-            };
-          } else {
-            if (!current.children[part]) {
-              current.children[part] = {
-                name: part,
-                type: "dir",
-                children: {},
-                path: parts.slice(0, p + 1).join("/")
-              };
-            }
-            current = current.children[part];
-          }
-        }
-      }
-      return root;
+    function onDataReady(type, data) {
+      if (type === "packs") packsData = data;
+      else clientsData = data;
+      renderDataset(data);
     }
 
     function formatKB(kb) {
       if (!kb) return "0 KB";
       if (kb >= 1024) return (kb / 1024).toFixed(2) + " MB";
-      return kb.toFixed(1) + " KB";
+      return Math.round(kb) + " KB";
     }
 
-    function renderCurrentDataset(list, type) {
-      document.getElementById("treeLoadingStatus").style.display = "none";
-      activeTree = buildHierarchy(list, type);
-      renderTreeRoot(activeTree, "");
-      updateStatusBar(list, type);
-    }
+    // Organizes files into clean folders
+    function groupFiles(list, filterText) {
+      var groups = {};
+      var filter = (filterText || "").toLowerCase().trim();
 
-    function renderTreeBranch(node, container, filterText) {
-      var keys = [];
-      for (var k in node.children) {
-        if (node.children.hasOwnProperty(k)) keys.push(k);
-      }
-      keys.sort();
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var filePath = (item.file || "").replace(/\\/g, "/");
 
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var item = node.children[key];
+        if (filter) {
+          var matchText = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
+          if (matchText.indexOf(filter) === -1) continue;
+        }
 
-        if (item.type === "dir") {
-          nodeSeq++;
-          var subUlId = "sub-ul-" + nodeSeq;
-          var btnId = "btn-tog-" + nodeSeq;
+        var parts = filePath.split("/");
+        var folderName = "General";
+        var fileName = parts[parts.length - 1];
 
-          var liDir = document.createElement("li");
-          var rowDir = document.createElement("div");
-          rowDir.className = "tree-row";
-
-          rowDir.innerHTML =
-            '<span id="' + btnId + '" class="tree-toggle" onclick="toggleDir(\'' + subUlId + '\', \'' + btnId + '\')">[-]</span>' +
-            '<span class="tree-icon-dir">[DIR]</span>' +
-            '<span class="tree-dir-name" onclick="toggleDir(\'' + subUlId + '\', \'' + btnId + '\')">' + item.name + '/</span>';
-
-          liDir.appendChild(rowDir);
-
-          var childUl = document.createElement("ul");
-          childUl.className = "tree-node";
-          childUl.id = subUlId;
-
-          renderTreeBranch(item, childUl, filterText);
-
-          liDir.appendChild(childUl);
-          container.appendChild(liDir);
-
-        } else if (item.type === "file") {
-          var d = item.data;
-          var displayName = d.name || item.name;
-
-          if (filterText) {
-            var searchStr = (item.name + " " + displayName + " " + (d.category || "")).toLowerCase();
-            if (searchStr.indexOf(filterText.toLowerCase()) === -1) continue;
+        if (parts.length > 1) {
+          // Removes redundant 'data/' from the display folder title
+          var folderParts = parts.slice(0, parts.length - 1);
+          if (folderParts[0].toLowerCase() === "data" && folderParts.length > 1) {
+            folderName = folderParts.slice(1).join("/");
+          } else {
+            folderName = folderParts.join("/");
           }
+        }
 
-          var liFile = document.createElement("li");
-          var rowFile = document.createElement("div");
-          rowFile.className = "tree-row";
+        if (!groups[folderName]) groups[folderName] = [];
+        groups[folderName].push({ data: item, fileName: fileName, fullPath: filePath });
+      }
+      return groups;
+    }
 
-          var iconType = (item.fileType === "packs") ? "[PAK]" : "[APP]";
-          var extraInfo = d.questions ? (d.questions + " Qs | ") : "";
+    function renderDataset(list, filterText) {
+      document.getElementById("loadingStatus").style.display = "none";
+      var container = document.getElementById("fileDirectoryView");
+      container.innerHTML = "";
 
-          rowFile.innerHTML =
-            '<span style="display:inline-block; width:19px; flex-shrink:0;"></span>' +
-            '<span class="tree-icon-file">' + iconType + '</span>' +
-            '<div class="tree-file-wrap">' +
-              '<a class="tree-file-link" href="' + d.file + '" download>' + item.name + '</a> ' +
-              '<span class="tree-file-info">(' + displayName + ' | ' + extraInfo + formatKB(d.size_kb) + ')</span> ' +
-              '<span class="badge-tag">' + (d.category || "General") + '</span> ' +
-              '<a class="win-btn" href="' + d.file + '" download style="padding:1px 6px;">[Download]</a>' +
+      var groups = groupFiles(list, filterText);
+      var folderKeys = [];
+      for (var k in groups) {
+        if (groups.hasOwnProperty(k)) folderKeys.push(k);
+      }
+
+      if (folderKeys.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No files matching your search.</div>';
+        updateStatusBar([], activeTab);
+        return;
+      }
+
+      folderKeys.sort();
+      var folderIdx = 0;
+
+      for (var i = 0; i < folderKeys.length; i++) {
+        var fName = folderKeys[i];
+        var items = groups[fName];
+        folderIdx++;
+
+        var groupDiv = document.createElement("div");
+        groupDiv.className = "folder-group";
+
+        var containerId = "fld-items-" + folderIdx;
+        var toggleId = "fld-tog-" + folderIdx;
+
+        // Folder Header
+        var header = document.createElement("div");
+        header.className = "folder-header";
+        header.onclick = (function(cId, tId) {
+          return function() { toggleFolder(cId, tId); };
+        })(containerId, toggleId);
+
+        header.innerHTML =
+          '<span id="' + toggleId + '" class="folder-toggle">[-]</span> ' +
+          '<span>[DIR] ' + fName + '/ (' + items.length + ' item' + (items.length > 1 ? 's' : '') + ')</span>';
+
+        groupDiv.appendChild(header);
+
+        // Files container
+        var itemsDiv = document.createElement("div");
+        itemsDiv.className = "folder-items-container";
+        itemsDiv.id = containerId;
+
+        for (var j = 0; j < items.length; j++) {
+          var fileObj = items[j];
+          var d = fileObj.data;
+          var badgeText = (activeTab === "packs") ? "PAK" : "APP";
+
+          var row = document.createElement("div");
+          row.className = "file-row";
+
+          var metaText = (d.category ? d.category : "General") + " &bull; " +
+                         (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
+                         formatKB(d.size_kb);
+
+          row.innerHTML =
+            '<div class="file-left">' +
+              '<div class="file-title-line">' +
+                '<span class="type-badge">' + badgeText + '</span> ' +
+                '<a class="file-name-link" href="' + d.file + '" download>' + fileObj.fileName + '</a>' +
+              '</div>' +
+              '<div class="file-meta-line">' + metaText + '</div>' +
+            '</div>' +
+            '<div class="file-right">' +
+              '<a class="win-btn btn-download" href="' + d.file + '" download>Download</a>' +
             '</div>';
 
-          liFile.appendChild(rowFile);
-          container.appendChild(liFile);
+          itemsDiv.appendChild(row);
         }
+
+        groupDiv.appendChild(itemsDiv);
+        container.appendChild(groupDiv);
       }
+
+      updateStatusBar(list, activeTab);
     }
 
-    function renderTreeRoot(rootNode, filterText) {
-      var rootUl = document.getElementById("packageTreeRoot");
-      rootUl.innerHTML = "";
-
-      nodeSeq = 0;
-      var topRow = document.createElement("div");
-      topRow.className = "tree-row";
-      var rootLabel = (currentTab === "packs") ? "repository_root/data/" : "repository_root/";
-
-      topRow.innerHTML =
-        '<span id="btn-root-tog" class="tree-toggle" onclick="toggleDir(\'root-children\', \'btn-root-tog\')">[-]</span>' +
-        '<span class="tree-icon-dir">[DIR]</span>' +
-        '<span class="tree-dir-name" onclick="toggleDir(\'root-children\', \'btn-root-tog\')">' + rootLabel + '</span>';
-
-      rootUl.appendChild(topRow);
-
-      var rootChildren = document.createElement("ul");
-      rootChildren.className = "tree-node";
-      rootChildren.id = "root-children";
-
-      renderTreeBranch(rootNode, rootChildren, filterText);
-      rootUl.appendChild(rootChildren);
-    }
-
-    function toggleDir(targetId, btnId) {
-      var el = document.getElementById(targetId);
-      var btn = document.getElementById(btnId);
+    function toggleFolder(containerId, toggleId) {
+      var el = document.getElementById(containerId);
+      var tog = document.getElementById(toggleId);
       if (!el) return;
 
-      if (el.className.indexOf("tree-hidden") === -1) {
-        el.className += " tree-hidden";
-        if (btn) btn.innerHTML = "[+]";
+      if (el.className.indexOf("collapsed") === -1) {
+        el.className += " collapsed";
+        if (tog) tog.innerHTML = "[+]";
       } else {
-        el.className = el.className.replace(/\btree-hidden\b/g, "").replace(/^\s+|\s+$/g, "");
-        if (btn) btn.innerHTML = "[-]";
+        el.className = el.className.replace(/\bcollapsed\b/g, "").replace(/^\s+|\s+$/g, "");
+        if (tog) tog.innerHTML = "[-]";
       }
-    }
-
-    function expandCurrentTab(expand) {
-      var uls = document.getElementById("packageTreeRoot").getElementsByTagName("ul");
-      for (var i = 0; i < uls.length; i++) {
-        if (expand) {
-          uls[i].className = uls[i].className.replace(/\btree-hidden\b/g, "").replace(/^\s+|\s+$/g, "");
-        } else {
-          if (uls[i].className.indexOf("tree-hidden") === -1) uls[i].className += " tree-hidden";
-        }
-      }
-
-      var btns = document.getElementById("packageTreeRoot").getElementsByTagName("span");
-      for (var b = 0; b < btns.length; b++) {
-        if (btns[b].className === "tree-toggle") {
-          btns[b].innerHTML = expand ? "[-]" : "[+]";
-        }
-      }
-    }
-
-    function refreshCurrentTab() {
-      if (currentTab === "packs") fetchDataset("packs", "./packs.json", FALLBACK_PACKS);
-      else fetchDataset("clients", "./clients.json", FALLBACK_CLIENTS);
     }
 
     function applyFilter(text) {
-      if (activeTree) renderTreeRoot(activeTree, text);
+      var current = (activeTab === "packs") ? packsData : clientsData;
+      if (current) renderDataset(current, text);
     }
 
-    function updateStatusBar(list, type) {
+    function clearFilter() {
+      document.getElementById("filterInput").value = "";
+      applyFilter("");
+    }
+
+    function updateStatusBar(list, tabType) {
       var totalKb = 0;
       var totalQs = 0;
 
@@ -762,14 +630,13 @@
       }
 
       document.getElementById("sb-status").innerHTML = "Ready.";
-      document.getElementById("sb-objects").innerHTML = list.length + " Object(s)";
-      document.getElementById("sb-extra").innerHTML = (type === "packs") ? (totalQs + " Questions") : (list.length + " Platforms");
+      document.getElementById("sb-objects").innerHTML = list.length + " File(s)";
+      document.getElementById("sb-extra").innerHTML = (tabType === "packs") ? (totalQs.toLocaleString() + " Questions") : (list.length + " Platforms");
       document.getElementById("sb-size").innerHTML = (totalKb / 1024).toFixed(2) + " MB";
     }
 
     window.onload = function() {
-      // Start with Question Packs tab
-      switchActiveTab("packs");
+      switchTab("packs");
     };
   </script>
 </body>
