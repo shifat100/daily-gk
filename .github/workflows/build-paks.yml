@@ -5,8 +5,8 @@ on:
   push:
     paths:
       - 'data/**'
-      - 'builder.py'
       - 'build_all_packs.py'
+      - '.github/workflows/build-paks.yml'
 
 jobs:
   generate-paks:
@@ -24,14 +24,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          # Removed cache: 'pip' so it doesn't look for requirements.txt
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pillow
 
-      - name: Run Automated PAK Generation
+      - name: Run Self-Contained PAK Builder
         run: python build_all_packs.py
 
       - name: Commit and Push PAKs & packs.json
@@ -44,7 +43,7 @@ jobs:
           if git status --porcelain | grep -E '\.pak|packs\.json'; then
             git commit -m "Auto-generate PAK files and update packs.json [skip ci]"
             git push origin HEAD:${{ github.ref }}
-            echo "Successfully generated, committed and pushed PAK files."
+            echo "Successfully generated and pushed PAK files."
           else
             echo "No package changes detected."
           fi
