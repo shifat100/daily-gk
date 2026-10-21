@@ -23,7 +23,7 @@ Built with pure Vanilla HTML5, CSS3, and JavaScript, it runs completely client-s
 - 🌐 **J2ME Version:** [https://shifat100.github.io/daily-gk/lite.html](https://shifat100.github.io/daily-gk/lite.html)
 - 🌐 **IPHONE Version:** [https://shifat100.github.io/daily-gk/ios.html](https://shifat100.github.io/daily-gk/ios.html)
 - 🌐 **Desktop Version:** [https://shifat100.github.io/daily-gk/web.html](https://shifat100.github.io/daily-gk/web.html)
-- 
+- 📦 **Packs And Clients:** [https://shifat100.github.io/daily-gk/web.html](https://shifat100.github.io/daily-gk/client-pack.html)
 ---
 
 ## ✨ Key Features
