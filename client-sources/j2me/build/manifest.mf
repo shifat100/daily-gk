@@ -1,6 +1,0 @@
-MIDlet-1: Midlet-1,,Midlet
-MIDlet-Vendor: Vendor
-MIDlet-Version: 1.0
-MIDlet-Name: dailygk
-MicroEdition-Configuration: CLDC-1.0
-MicroEdition-Profile: MIDP-2.0
