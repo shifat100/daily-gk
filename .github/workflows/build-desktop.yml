@@ -1,11 +1,12 @@
 name: Build Desktop Apps (Win, Mac, Linux)
 
 on:
-  workflow_dispatch: # Allows you to trigger the build manually with a single click
+  workflow_dispatch:
   push:
     paths:
       - 'clients/compiled/html5/**'
       - 'src-tauri/**'
+      - '.github/workflows/**'
 
 jobs:
   build-desktop:
@@ -29,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Setup Rust Compiler
         uses: dtolnay/rust-toolchain@stable
@@ -52,16 +53,29 @@ jobs:
       - name: Install Project Dependencies
         run: npm install
 
-      # Uses your root icon-512.png to automatically generate Windows .ico and Mac .icns
+      # Verify that index.html is in the right place
+      - name: Verify HTML5 Directory
+        shell: bash
+        run: |
+          if [ ! -f "clients/compiled/html5/index.html" ]; then
+            echo "ERROR: clients/compiled/html5/index.html not found!"
+            ls -R clients/
+            exit 1
+          fi
+
+      # Force icon generation into src-tauri/icons
       - name: Generate App Icons
-        run: npx @tauri-apps/cli icon icon-512.png
+        shell: bash
+        run: |
+          mkdir -p src-tauri/icons
+          npx @tauri-apps/cli icon icon-512.png -o src-tauri/icons
 
       - name: Build Tauri Application
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Upload the created installers so you can download them directly
+      # Upload Installers
       - name: Upload Windows Installers (.exe & .msi)
         if: matrix.os_name == 'windows'
         uses: actions/upload-artifact@v4
