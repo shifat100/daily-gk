@@ -1,0 +1,7 @@
+; daily-gk.def : Declares the module parameters for the DLL.
+
+LIBRARY      "daily-gk"
+DESCRIPTION  'daily-gk Windows Dynamic Link Library'
+
+EXPORTS
+    vm_entry @1
