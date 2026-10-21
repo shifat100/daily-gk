@@ -1,12 +1,15 @@
 name: Build Desktop Apps (Win, Mac, Linux)
 
+# on:
+#   workflow_dispatch:
+#   push:
+#     paths:
+#       - 'clients/compiled/html5/**'
+#       - 'src-tauri/**'
+#       - '.github/workflows/**'
+
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'clients/compiled/html5/**'
-      - 'src-tauri/**'
-      - '.github/workflows/**'
 
 jobs:
   build-desktop:
