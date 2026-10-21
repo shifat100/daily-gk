@@ -2,1197 +2,2375 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily GK</title>
   <style>
     :root {
-      --bg: #0f131a;
-      --card: #181f2b;
-      --card-hover: #222b3b;
-      --hl: #2563eb;
-      --green: #16a34a;
-      --red: #dc2626;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --orange: #d97706;
-      --bar-bg: #0b0e14;
-      --border: #263142;
-      --hdr-h: 30px;
-      --sft-h: 32px;
-      --radius: 6px;
+      --font-ui: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Cascadia Code", "Consolas", "Courier New", monospace;
+
+      /* Light Theme (Industrial Default) */
+      --accent: #0067b8;
+      --accent-hover: #005da6;
+      --accent-active: #005293;
+      --accent-light: rgba(0, 103, 184, 0.10);
+
+      --bg-desktop: #f3f3f3;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f9f9f9;
+      
+      --border-soft: #e5e5e5;
+      --border-hard: #cccccc;
+
+      --text-main: #1f1f1f;
+      --text-muted: #5d5d5d;
+      --text-dim: #8a8a8a;
+
+      --status-correct: #107c41;
+      --status-wrong: #d13438;
+      --canvas-fg: #1f1f1f;
+
+      --card-radius: 4px;
+      --zoom: 1;
+    }
+
+    [data-theme="blue"] {
+      --bg-desktop: #0c1017;
+      --bg-surface: #161b22;
+      --bg-card: #21262d;
+      --bg-card-hover: #29313d;
+      --border-soft: #30363d;
+      --border-hard: #484f58;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --text-dim: #6e7681;
+      --canvas-fg: #f0f6fc;
+      --accent: #0078d4;
+      --accent-hover: #106ebe;
+      --accent-active: #005a9e;
+      --accent-light: rgba(0, 120, 212, 0.15);
+      --status-correct: #2ea043;
+      --status-wrong: #f85149;
+    }
+
+    [data-theme="red"] {
+      --accent: #c42b1c;
+      --accent-hover: #b02619;
+      --accent-active: #9c2116;
+      --accent-light: rgba(196, 43, 28, 0.12);
+    }
+
+    [data-theme="green"] {
+      --accent: #107c41;
+      --accent-hover: #0e6b37;
+      --accent-active: #0c5a2e;
+      --accent-light: rgba(16, 124, 65, 0.12);
+    }
+
+    [data-theme="gold"] {
+      --accent: #9d5d00;
+      --accent-hover: #864f00;
+      --accent-active: #6f4200;
+      --accent-light: rgba(157, 93, 0, 0.12);
+    }
+
+    [data-theme="oled"] {
+      --bg-desktop: #000000;
+      --bg-surface: #0a0a0c;
+      --bg-card: #141418;
+      --bg-card-hover: #202026;
+      --border-soft: #27272f;
+      --border-hard: #3c3c47;
+      --text-main: #ffffff;
+      --text-muted: #999999;
+      --text-dim: #555555;
+      --canvas-fg: #ffffff;
+      --accent: #8764b8;
+      --accent-hover: #744da9;
+      --accent-active: #62399a;
+      --accent-light: rgba(135, 100, 184, 0.15);
+      --status-correct: #2ea043;
+      --status-wrong: #f85149;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
       user-select: none;
       -webkit-user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      outline: none;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      background: #05070a;
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-ui);
+      background: var(--bg-desktop);
+      color: var(--text-main);
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Main Container Shell */
-    #app {
-      width: 100%;
-      height: 100%;
-      max-width: 440px;
-      background: var(--bg);
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      font-size: 13px;
     }
 
-    /* Top Navigation Header */
-    .header {
-      height: var(--hdr-h);
-      background: var(--hl);
-      color: #fff;
+    /* TOP APPLICATION BAR */
+    .app-header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .titlebar {
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 10px;
+      padding: 0 12px;
       font-size: 12px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .app-tag {
+      font-family: var(--font-mono);
       font-weight: 700;
-      flex-shrink: 0;
-      z-index: 20;
-    }
-    .header.red { background: var(--red); }
-    .header-title {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      flex: 1;
-    }
-    .header-badge {
-      font-size: 10px;
-      background: rgba(0, 0, 0, 0.28);
-      padding: 1px 6px;
-      border-radius: 10px;
-      margin-left: 6px;
+      background: var(--accent);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      margin-right: 8px;
     }
 
-    /* Content Viewport */
-    .viewport {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 8px 6px;
+    /* MENUS */
+    .menubar {
+      display: flex;
+      background: var(--bg-surface);
+      padding: 2px 6px;
+      gap: 2px;
+    }
+
+    .menu-item {
       position: relative;
-      -webkit-overflow-scrolling: touch;
     }
 
-    /* Bottom Softkey Bar */
-    .softbar {
-      height: var(--sft-h);
-      background: var(--bar-bg);
-      border-top: 1px solid var(--border);
+    .menu-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .menu-btn:hover, .menu-item.active .menu-btn {
+      background: var(--border-soft);
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-surface);
+      min-width: 240px;
+      border: 1px solid var(--border-hard);
+      border-radius: 4px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      z-index: 1000;
+      padding: 4px 0;
+    }
+
+    .menu-item.active .dropdown {
+      display: block;
+    }
+
+    .dropdown-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 6px;
-      flex-shrink: 0;
-      z-index: 30;
+      cursor: pointer;
+      font-family: inherit;
     }
-    .soft-btn {
-      flex: 1;
-      height: 100%;
+
+    .dropdown-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .dropdown-btn .keyhint {
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .dropdown-btn:hover .keyhint {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .dropdown-sep {
+      height: 1px;
+      background: var(--border-soft);
+      margin: 4px 0;
+    }
+
+    /* ON-DEMAND TOOLBAR */
+    .toolbar-ondemand {
+      height: 42px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-soft);
       display: flex;
       align-items: center;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 0 4px;
+      padding: 0 12px;
+      gap: 8px;
+      flex-shrink: 0;
     }
-    #softLeft { justify-content: flex-start; color: var(--hl); }
-    #softCenter { justify-content: center; color: var(--green); }
-    #softRight { justify-content: flex-end; color: var(--muted); }
 
-    /* Interactive Cards */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 10px;
-      margin-bottom: 6px;
+    .tb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hard);
+      color: var(--text-main);
+      padding: 5px 12px;
+      border-radius: 3px;
+      font-size: 12px;
       cursor: pointer;
+      font-family: inherit;
       transition: background 0.15s, border-color 0.15s;
     }
-    .card.focused {
-      background: var(--card-hover);
-      border-color: var(--hl);
+
+    .tb-btn:hover {
+      background: var(--border-soft);
     }
-    .card.selected {
-      background: var(--hl) !important;
-      border-color: var(--hl) !important;
+
+    .tb-btn.primary {
+      background: var(--accent);
+      border-color: var(--accent-hover);
       color: #fff;
     }
-    .card-title {
+
+    .tb-btn.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .tb-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .tb-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hard);
+      color: var(--text-main);
+      padding: 4px 8px;
+      border-radius: 3px;
       font-size: 12px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .tb-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--border-soft);
+      margin: 0 4px;
+    }
+
+    .icon-svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* WORKSPACE */
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* SIDEBAR (EXAM MATRIX) */
+    .sidebar {
+      width: 270px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: width 0.2s ease;
+    }
+
+    .sidebar.hidden {
+      width: 0;
+      overflow: hidden;
+      border-right: none;
+    }
+
+    .sidebar-head {
+      padding: 10px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
       font-weight: 700;
+      border-bottom: 1px solid var(--border-soft);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .card-sub {
-      font-size: 10.5px;
-      color: var(--muted);
-      margin-top: 3px;
-      line-height: 1.35;
+
+    .sidebar-search-box {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-soft);
     }
 
-    /* Action Buttons */
-    .action-btn {
-      display: block;
-      width: 100%;
-      background: var(--hl);
-      color: #fff;
-      font-weight: 700;
-      font-size: 12px;
-      text-align: center;
-      padding: 8px;
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      margin: 6px 0;
-    }
-    .action-btn:active { opacity: 0.85; }
-
-    /* Question & Option Cards */
-    .q-box {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 8px;
-      margin-bottom: 8px;
-      border: 1px solid var(--border);
+    .search-input-wrap {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-    }
-    .opt-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 6px 8px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      font-size: 11.5px;
+      background: var(--bg-desktop);
+      border: 1px solid var(--border-hard);
+      border-radius: 3px;
+      padding: 4px 8px;
       gap: 6px;
     }
-    .opt-card.focused { border-color: var(--hl); background: var(--card-hover); }
-    .opt-card.correct { background: var(--green) !important; border-color: var(--green) !important; }
-    .opt-card.wrong { background: var(--red) !important; border-color: var(--red) !important; }
-    
-    .opt-badge {
-      width: 18px;
-      height: 18px;
-      min-width: 18px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9.5px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
 
-    .opt-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    /* Key shortcut indicators on Desktop (placed neatly on the far right) */
-    .key-hint {
-      display: none;
-      font-size: 9px;
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--muted);
-      padding: 2px 5px;
-      border-radius: 3px;
-      margin-left: auto;
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-
-    /* Modal Layer */
-    .modal-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: var(--sft-h);
-      background: rgba(8, 11, 16, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      z-index: 50;
-    }
-    .modal-card {
-      width: 100%;
-      max-width: 250px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .modal-header {
-      background: var(--hl);
-      padding: 6px 8px;
-      font-size: 11.5px;
-      font-weight: 700;
-    }
-    .modal-header.red { background: var(--red); }
-    .modal-body {
-      padding: 8px;
-      font-size: 11px;
-    }
-    .modal-input {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--green);
-      padding: 6px 8px;
+    .search-input-wrap input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
       font-size: 12px;
-      font-family: inherit;
+      width: 100%;
+    }
+
+    .sidebar-filter-tabs {
+      display: flex;
+      padding: 6px 12px;
+      gap: 4px;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--bg-desktop);
+    }
+
+    .filter-tab {
+      flex: 1;
+      text-align: center;
+      padding: 4px 0;
+      font-size: 11px;
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .filter-tab.active {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-weight: 600;
+      border: 1px solid var(--border-soft);
+    }
+
+    .sidebar-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .q-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .q-badge {
+      height: 32px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .q-badge:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    .q-badge.current {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .q-badge.correct {
+      border-color: var(--status-correct);
+      background: rgba(16, 124, 65, 0.1);
+      color: var(--status-correct);
+    }
+
+    .q-badge.wrong {
+      border-color: var(--status-wrong);
+      background: rgba(209, 52, 56, 0.1);
+      color: var(--status-wrong);
+    }
+
+    /* CENTER STAGE & SCROLL ENGINE */
+    .stage {
+      flex: 1;
+      background: var(--bg-desktop);
+      overflow-x: auto;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+
+    .stage::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    .stage::-webkit-scrollbar-track {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-soft);
+    }
+    .stage::-webkit-scrollbar-thumb {
+      background: var(--border-hard);
       border-radius: 4px;
-      margin: 6px 0;
+    }
+    .stage::-webkit-scrollbar-thumb:hover {
+      background: var(--text-dim);
+    }
+
+    .stage-content-wrap {
+      min-width: 100%;
+      width: max-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .viewer-sheet {
+      width: 880px;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transform-origin: top center;
+      transition: width 0.15s ease;
+    }
+
+    .viewer-sheet.layout-dual {
+      width: 1300px;
+      max-width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: 16px;
+    }
+
+    .viewer-sheet.layout-focus {
+      width: 660px;
+      max-width: 100%;
+    }
+
+    /* QUESTION PAPER BLOCK */
+    .exam-q-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--card-radius);
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .exam-q-block.active-focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .exam-q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-soft);
+      padding-bottom: 8px;
+    }
+
+    .q-num-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .q-canvas-holder {
+      padding: 4px 0;
+    }
+
+    .opt-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt-card {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--border-soft);
+      border-radius: 3px;
+      padding: 8px 12px;
+      background: var(--bg-desktop);
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .opt-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hard);
+    }
+
+    .opt-card.correct-answer {
+      border-color: var(--status-correct) !important;
+      background: rgba(16, 124, 65, 0.12) !important;
+    }
+
+    .opt-card.wrong-answer {
+      border-color: var(--status-wrong) !important;
+      background: rgba(209, 52, 56, 0.12) !important;
+    }
+
+    .opt-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 3px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hard);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 11px;
+      flex-shrink: 0;
     }
 
     .pak-canvas {
       image-rendering: pixelated;
-      max-width: 100%;
+      image-rendering: crisp-edges;
       display: block;
-    }
-
-    /* ============================================================== */
-    /* Device Layout Profile: Compact Feature Phones (128x160 / KaiOS) */
-    /* ============================================================== */
-    body[data-device="feature-phone"] #app {
       max-width: 100%;
-      height: 100%;
-      border-radius: 0;
-    }
-    body[data-device="feature-phone"] {
-      --hdr-h: 22px;
-      --sft-h: 22px;
-      font-size: 10px;
-    }
-    body[data-device="feature-phone"] .header {
-      font-size: 10.5px;
-      padding: 0 4px;
-    }
-    body[data-device="feature-phone"] .soft-btn {
-      font-size: 9.5px;
-    }
-    body[data-device="feature-phone"] .card {
-      padding: 4px 6px;
-      margin-bottom: 4px;
-    }
-    body[data-device="feature-phone"] .card-title {
-      font-size: 10.5px;
-    }
-    body[data-device="feature-phone"] .card-sub {
-      font-size: 9px;
-    }
-    body[data-device="feature-phone"] .opt-card {
-      padding: 3px 4px;
-      margin-bottom: 3px;
-      font-size: 10px;
-    }
-    body[data-device="feature-phone"] .opt-badge {
-      width: 14px;
-      height: 14px;
-      min-width: 14px;
-      font-size: 8px;
-    }
-    body[data-device="feature-phone"] .action-btn {
-      padding: 5px;
-      font-size: 10px;
     }
 
-    /* ============================================================== */
-    /* Device Layout Profile: Touch Mobile (Smartphones / Tablets)     */
-    /* ============================================================== */
-    body[data-device="touch-mobile"] #app {
-      max-width: 480px;
-      height: 100%;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    /* FOCUS MODE NAVIGATION BAR ON CARD */
+    .focus-card-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      margin-top: 6px;
+      border-top: 1px solid var(--border-soft);
     }
-    body[data-device="touch-mobile"] {
-      --hdr-h: 40px;
-      --sft-h: 46px;
-      --radius: 8px;
-      font-size: 13px;
+
+    .sheet-scroll-loader {
+      text-align: center;
+      padding: 14px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      grid-column: 1 / -1;
+      border: 1px dashed var(--border-soft);
+      border-radius: 4px;
+      background: var(--bg-surface);
+      cursor: pointer;
     }
-    body[data-device="touch-mobile"] .header {
-      font-size: 14px;
-      padding: 0 12px;
+
+    .sheet-scroll-loader:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
-    body[data-device="touch-mobile"] .softbar {
-      padding: 0 12px;
-    }
-    body[data-device="touch-mobile"] .soft-btn {
-      font-size: 13px;
-      padding: 0 10px;
-    }
-    body[data-device="touch-mobile"] .card {
-      padding: 10px 12px;
-      margin-bottom: 8px;
-    }
-    body[data-device="touch-mobile"] .card-title {
-      font-size: 13.5px;
-    }
-    body[data-device="touch-mobile"] .card-sub {
-      font-size: 11.5px;
-    }
-    body[data-device="touch-mobile"] .opt-card {
+
+    .jump-header-banner {
+      width: 100%;
+      text-align: center;
       padding: 8px 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      grid-column: 1 / -1;
       margin-bottom: 8px;
-      font-size: 13px;
-      min-height: 44px;
-    }
-    body[data-device="touch-mobile"] .opt-badge {
-      width: 22px;
-      height: 22px;
-      min-width: 22px;
-      font-size: 11px;
-    }
-    body[data-device="touch-mobile"] .action-btn {
-      padding: 12px;
-      font-size: 13.5px;
-      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
     }
 
-    /* ============================================================== */
-    /* Device Layout Profile: Desktop                                  */
-    /* ============================================================== */
-    body[data-device="desktop"] #app {
-      height: 90vh;
-      max-height: 640px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+    .demand-init-box {
+      text-align: center;
+      margin-top: 70px;
+      max-width: 480px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
-    body[data-device="desktop"] .key-hint {
-      display: inline-block;
+
+    .demand-init-box h2 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .demand-init-box p {
+      color: var(--text-muted);
+      margin: 0 0 20px 0;
+      line-height: 1.5;
+    }
+
+    .dropzone-active {
+      border: 2px dashed var(--accent) !important;
+      background: var(--accent-light) !important;
+    }
+
+    /* STATUS BAR */
+    .statusbar {
+      height: 28px;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .sb-segment {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sb-clickable {
+      cursor: pointer;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .sb-clickable:hover {
+      background: var(--border-soft);
+      color: var(--text-main);
+    }
+
+    .sb-pill {
+      background: var(--bg-desktop);
+      border: 1px solid var(--border-soft);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .zoom-btn {
+      background: transparent;
+      border: 1px solid var(--border-hard);
+      color: var(--text-main);
+      border-radius: 3px;
+      width: 18px;
+      height: 18px;
+      line-height: 14px;
+      cursor: pointer;
+    }
+
+    .zoom-btn:hover {
+      background: var(--border-soft);
+    }
+
+    /* MODALS */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hard);
+      border-radius: 6px;
+      width: 480px;
+      max-width: 90vw;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      background: var(--bg-desktop);
+      padding: 10px 16px;
+      font-weight: 600;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .modal-body {
+      padding: 16px;
+      line-height: 1.5;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .modal-foot {
+      padding: 10px 16px;
+      background: var(--bg-desktop);
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .field-input {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hard);
+      padding: 6px 10px;
+      color: var(--text-main);
+      border-radius: 3px;
+      margin-top: 6px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .field-input:focus {
+      border-color: var(--accent);
+    }
+
+    .recent-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      margin-bottom: 6px;
+      background: var(--bg-card);
+    }
+
+    .recent-item:hover {
+      border-color: var(--border-hard);
+    }
+
+    .ondemand-hidden {
+      display: none !important;
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
 
-  <div id="app">
-    <!-- Top Header -->
-    <div class="header" id="headerBar">
-      <div class="header-title" id="headerTitle">Daily GK</div>
-      <div class="header-badge" id="headerBadge">Tutorial</div>
+  <!-- ==========================================
+       TOP APPLICATION BAR
+       ========================================== -->
+  <div class="app-header">
+    <div class="titlebar">
+      <div style="display:flex; align-items:center;">
+        <span class="app-tag">DGK</span>
+        <span>Daily GK</span>
+      </div>
+      <div>
+        <span id="titlebar-file-label" style="color:var(--text-dim)">No package active</span>
+      </div>
     </div>
 
-    <!-- Active Viewport -->
-    <div class="viewport" id="viewport"></div>
+    <div class="menubar">
+      <!-- File Menu -->
+      <div class="menu-item" id="m-file">
+        <button class="menu-btn" onclick="toggleMenu('m-file')">File</button>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="triggerFileInput()">
+            <span>Open PAK File...</span>
+            <span class="keyhint">Ctrl+O</span>
+          </button>
+          <button class="dropdown-btn" onclick="loadSampleDemoPack()">
+            <span>Load Demo</span>
+          </button>
+          <div class="dropdown-sep"></div>
+          <button class="dropdown-btn" onclick="openRecentModal()">
+            <span>Recent Files ...</span>
+          </button>
+          <button class="dropdown-btn" onclick="openDownloadLink()">
+            <span>Download More Packages...</span>
+          </button>
+          <div class="dropdown-sep"></div>
+          <button class="dropdown-btn" onclick="confirmExit()">
+            <span>Exit</span>
+            <span class="keyhint">Alt+F4</span>
+          </button>
+        </div>
+      </div>
 
-    <!-- Modal Layer -->
-    <div class="modal-overlay" id="modalLayer" style="display: none;"></div>
+      <!-- Theme Menu -->
+      <div class="menu-item" id="m-theme">
+        <button class="menu-btn" onclick="toggleMenu('m-theme')">Theme</button>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="setTheme('light')">Light Paper (Default)</button>
+          <button class="dropdown-btn" onclick="setTheme('blue')">Fluent Blue</button>
+          <button class="dropdown-btn" onclick="setTheme('red')">Ruby Red</button>
+          <button class="dropdown-btn" onclick="setTheme('green')">Emerald Green</button>
+          <button class="dropdown-btn" onclick="setTheme('gold')">Imperial Gold</button>
+          <button class="dropdown-btn" onclick="setTheme('oled')">AMOLED Dark</button>
+        </div>
+      </div>
 
-    <!-- Bottom Controls -->
-    <div class="softbar" id="softbar">
-      <div class="soft-btn" id="softLeft">Tutorial</div>
-      <div class="soft-btn" id="softCenter">Open .PAK</div>
-      <div class="soft-btn" id="softRight">Exit</div>
+      <!-- Layout Menu -->
+      <div class="menu-item" id="m-layout">
+        <button class="menu-btn" onclick="toggleMenu('m-layout')">Layout</button>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="setLayout('sheet')">
+            <span>Multi-Question Sheet (1 Column)</span>
+          </button>
+          <button class="dropdown-btn" onclick="setLayout('dual')">
+            <span>Dual-Column Exam Paper</span>
+          </button>
+          <button class="dropdown-btn" onclick="setLayout('focus')">
+            <span>Single Card (Focus Mode)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Options Menu -->
+      <div class="menu-item" id="m-options">
+        <button class="menu-btn" onclick="toggleMenu('m-options')">Options</button>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="toggleReadingMode()">
+            <span id="m-opt-mode-text">Switch Mode: Study</span>
+            <span class="keyhint">M</span>
+          </button>
+          <button class="dropdown-btn" onclick="showJumpDialog()">
+            <span>Jump to Question...</span>
+            <span class="keyhint">Ctrl+J</span>
+          </button>
+          <div class="dropdown-sep"></div>
+          <button class="dropdown-btn" onclick="resetQuizScore()">
+            <span>Reset Quiz Score</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Help Menu -->
+      <div class="menu-item" id="m-help">
+        <button class="menu-btn" onclick="toggleMenu('m-help')">Help</button>
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="openModal('modal-guide')">
+            <span>Technical Architecture</span>
+            <span class="keyhint">F1</span>
+          </button>
+          <button class="dropdown-btn" onclick="openModal('modal-keys')">
+            <span>Keyboard Shortcuts</span>
+          </button>
+          <div class="dropdown-sep"></div>
+          <button class="dropdown-btn" onclick="openModal('modal-about')">
+            <span>About</span>
+          </button>
+        </div>
+      </div>
     </div>
-
-    <!-- Hidden Native File Picker -->
-    <input type="file" id="pakFileInput" accept=".pak" style="display: none;">
   </div>
 
+  <input type="file" id="binary-file-input" accept=".pak" style="display:none;" onchange="handleFileSelected(event)">
+
+  <!-- ==========================================
+       ON-DEMAND COMMAND & NAVIGATION TOOLBAR
+       ========================================== -->
+  <div class="toolbar-ondemand" id="main-toolbar">
+    <!-- Initial Actions -->
+    <div id="demand-load-actions" style="display:flex; align-items:center; gap:8px;">
+      <button class="tb-btn primary" onclick="triggerFileInput()">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        <span>Open Pack</span>
+      </button>
+      <button class="tb-btn" onclick="loadSampleDemoPack()">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span>Load Demo</span>
+      </button>
+      <button class="tb-btn" onclick="openRecentModal()">
+        <span>Recent Files</span>
+      </button>
+    </div>
+
+    <!-- Active Navigation Actions -->
+    <div id="demand-nav-actions" class="ondemand-hidden" style="display:flex; align-items:center; gap:8px; width:100%;">
+      <button class="tb-btn" id="btn-prev-sheet" onclick="prevBatch()" title="Previous Question/Batch [PageUp or Left Arrow]">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span id="btn-prev-label">Prev</span>
+      </button>
+      <button class="tb-btn" id="btn-next-sheet" onclick="nextBatch()" title="Next Question/Batch [PageDown or Right Arrow]">
+        <span id="btn-next-label">Next</span>
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      
+      <div class="tb-sep"></div>
+
+      <!-- Batch Size Selector -->
+      <span style="font-size:12px; color:var(--text-muted);" id="label-batch-size">Batch Size:</span>
+      <select class="tb-select" id="select-batch-size" onchange="changeBatchSize(this.value)">
+        <option value="5">5 Questions</option>
+        <option value="10" selected>10 Questions</option>
+        <option value="25">25 Questions</option>
+        <option value="50">50 Questions</option>
+        <option value="9999">Show All</option>
+      </select>
+
+      <!-- Layout Selector -->
+      <select class="tb-select" id="select-layout-mode" onchange="setLayout(this.value)">
+        <option value="sheet" selected>Sheet (1 Col)</option>
+        <option value="dual">Exam Paper (2 Col)</option>
+        <option value="focus">Focus (1 Card)</option>
+      </select>
+
+      <div class="tb-sep"></div>
+
+      <button class="tb-btn primary" id="btn-mode-toggle" onclick="toggleReadingMode()" title="Toggle Quiz / Study Mode [M]">Mode: Quiz</button>
+      <button class="tb-btn" onclick="showJumpDialog()" title="Jump to Index [Ctrl+J]">Jump</button>
+      <button class="tb-btn" onclick="toggleSidebar()">Matrix</button>
+      <button class="tb-btn" onclick="triggerFileInput()" style="margin-left:auto;">Open Other</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       WORKSPACE (Sidebar & Multi-Question Stage)
+       ========================================== -->
+  <div class="workspace">
+    <!-- Left Bar / Exam Navigation Matrix -->
+    <div class="sidebar" id="sidebar-navigator">
+      <div class="sidebar-head">
+        <span>Exam Matrix</span>
+        <span id="sb-progress" style="color:var(--accent);">0 / 0</span>
+      </div>
+
+      <!-- Live Search Box -->
+      <div class="sidebar-search-box">
+        <div class="search-input-wrap">
+          <svg class="icon-svg" viewBox="0 0 24 24" style="color:var(--text-dim);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="sidebar-search-input" placeholder="Search questions..." onkeyup="handleSearchInput(this.value)">
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="sidebar-filter-tabs">
+        <div class="filter-tab active" id="tab-filter-all" onclick="setSidebarFilter('all')">All</div>
+        <div class="filter-tab" id="tab-filter-wrong" onclick="setSidebarFilter('wrong')">Wrong</div>
+        <div class="filter-tab" id="tab-filter-unanswered" onclick="setSidebarFilter('unanswered')">Empty</div>
+      </div>
+
+      <div class="sidebar-body">
+        <div class="q-grid" id="q-access-grid"></div>
+      </div>
+    </div>
+
+    <!-- Center Stage -->
+    <div class="stage" id="stage-viewport" onscroll="handleStageScroll()">
+      <div class="stage-content-wrap">
+        <!-- On Demand Prompt View (No Pack) -->
+        <div class="demand-init-box" id="view-empty-prompt">
+          <h2>No Package Loaded</h2>
+          <p>Open a .pak file from disk, drag and drop it here, or run the high-density demo exam sheet. </p>
+          <div style="display:flex; justify-content:center; gap:10px;">
+            <button class="tb-btn primary" onclick="triggerFileInput()">Open Pack (Ctrl+O)</button>
+            <button class="tb-btn" onclick="loadSampleDemoPack()">Load Demo</button>
+            <button class="tb-btn" onclick="openRecentModal()">Recent Files</button>
+          </div>
+        </div>
+
+        <!-- Multi-Question Sheet Container -->
+        <div class="viewer-sheet ondemand-hidden" id="view-active-sheet">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       BOTTOM BAR / STATUS BAR
+       ========================================== -->
+  <div class="statusbar">
+    <div class="sb-segment">
+      <div class="sb-item">
+        <span>File:</span>
+        <b id="status-filename" style="color:var(--text-main);">None</b>
+      </div>
+      <div class="sb-item">
+        <span>Size:</span>
+        <span id="status-filesize">0 KB</span>
+      </div>
+      <div class="sb-item">
+        <span class="sb-pill" id="status-mode-pill">QUIZ</span>
+      </div>
+      <div class="sb-item">
+        <span>Score:</span>
+        <b id="status-score" style="color:var(--status-correct);">0 / 0</b>
+      </div>
+    </div>
+
+    <div class="sb-segment">
+      <div class="sb-item sb-clickable" onclick="showJumpDialog()" title="Click to Jump">
+        <span>Displaying:</span>
+        <span id="status-q-idx">0 of 0</span>
+      </div>
+      <div class="sb-item">
+        <button class="zoom-btn" onclick="stepZoom(-0.1)" title="Zoom Out">-</button>
+        <span id="status-zoom" style="font-family:var(--font-mono); width:36px; text-align:center;">100%</span>
+        <button class="zoom-btn" onclick="stepZoom(0.1)" title="Zoom In">+</button>
+        <button class="zoom-btn" onclick="resetZoom()" title="Reset Zoom" style="width:auto; padding:0 4px;">1:1</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODALS & DIALOGS
+       ========================================== -->
+
+  <!-- PROGRESS BAR MODAL (Used for large batch / Show All to prevent hang) -->
+  <div class="modal-backdrop" id="modal-progress" style="z-index: 3000;">
+    <div class="modal" style="width: 380px;">
+      <div class="modal-head">
+        <span id="progress-modal-title">Loading Questions...</span>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 24px 16px;">
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 12px;" id="progress-modal-msg">Preparing question batch...</div>
+        <div style="background: var(--bg-desktop); border: 1px solid var(--border-soft); border-radius: 4px; height: 16px; overflow: hidden; position: relative;">
+          <div id="progress-modal-fill" style="background: var(--accent); height: 100%; width: 0%; transition: width 0.1s linear;"></div>
+        </div>
+        <div style="margin-top: 10px; font-size: 11px; color: var(--text-dim);" id="progress-modal-detail">0 / 0 items loaded (0%)</div>
+      </div>
+      <div class="modal-foot" style="justify-content: center;">
+        <button class="tb-btn" onclick="cancelProgressLoading()">Cancel Loading</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jump Dialog -->
+  <div class="modal-backdrop" id="modal-jump">
+    <div class="modal">
+      <div class="modal-head">
+        <span>Jump to Question</span>
+        <button class="zoom-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div>Enter question number (1 to <span id="jump-max-display">1</span>):</div>
+        <input type="number" id="input-jump-number" class="field-input" min="1" value="1">
+      </div>
+      <div class="modal-foot">
+        <button class="tb-btn" onclick="closeModals()">Cancel</button>
+        <button class="tb-btn primary" onclick="submitJump()">Go to Question</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scorecard Result -->
+  <div class="modal-backdrop" id="modal-scorecard">
+    <div class="modal">
+      <div class="modal-head">
+        <span>Exam Session Completed</span>
+        <button class="zoom-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <h3 style="margin: 0 0 8px 0; font-size:18px;">Final Exam Score</h3>
+        <div style="font-size:36px; font-weight:700; color:var(--accent); margin:12px 0;" id="scorecard-number">0 / 0</div>
+        <p style="color:var(--text-muted); margin:0;" id="scorecard-text">All items processed.</p>
+      </div>
+      <div class="modal-foot">
+        <button class="tb-btn" onclick="resetQuizScore(); closeModals();">Restart</button>
+        <button class="tb-btn primary" onclick="closeModals()">Review Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & Specs -->
+  <div class="modal-backdrop" id="modal-guide">
+    <div class="modal" style="width:520px;">
+      <div class="modal-head">
+        <span>Technical Architecture & Specs</span>
+        <button class="zoom-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size:12px;">
+        <p><b>Optimized Engine Features:</b></p>
+        <ul style="padding-left:18px; color:var(--text-muted); line-height: 1.8;">
+          <li><b>Smart Shortcut Matrix:</b> High-volume datasets (5,000+ items) jump instantly without blocking the JavaScript thread or leaking canvas context.</li>
+          <li><b>Dual Mode Single-Card:</b> Instant navigation with previous/next card controls and seamless wheel scroll loading.</li>
+          <li><b>Non-blocking Chunked Loader:</b> "Show All" and large batches render progressively with live progress bars, preventing browser freezing.</li>
+          <li><b>1-Bit Monochrome Rasterizer:</b> Renders binary fonts and masks with zero CPU layout overhead.</li>
+        </ul>
+      </div>
+      <div class="modal-foot">
+        <button class="tb-btn primary" onclick="closeModals()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shortcuts -->
+  <div class="modal-backdrop" id="modal-keys">
+    <div class="modal">
+      <div class="modal-head">
+        <span>Keyboard Shortcuts</span>
+        <button class="zoom-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size:12px;">
+        <table style="width:100%; border-collapse:collapse;">
+          <tr style="border-bottom:1px solid var(--border-soft);"><td style="padding:5px 0;"><b>PageUp / PageDown</b></td><td style="color:var(--text-muted)">Previous / Next batch of questions</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft);"><td style="padding:5px 0;"><b>Left Arrow / Right Arrow</b></td><td style="color:var(--text-muted)">Previous / Next question in Focus Mode</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft);"><td style="padding:5px 0;"><b>Ctrl + J</b></td><td style="color:var(--text-muted)">Jump to question ID</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft);"><td style="padding:5px 0;"><b>M</b></td><td style="color:var(--text-muted)">Toggle Quiz / Study mode</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft);"><td style="padding:5px 0;"><b>Ctrl + O</b></td><td style="color:var(--text-muted)">Open PAK file</td></tr>
+          <tr><td style="padding:5px 0;"><b>+, -</b></td><td style="color:var(--text-muted)">Adjust zoom level</td></tr>
+        </table>
+      </div>
+      <div class="modal-foot">
+        <button class="tb-btn primary" onclick="closeModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Files Modal -->
+  <div class="modal-backdrop" id="modal-recent">
+    <div class="modal" style="width:520px;">
+      <div class="modal-head">
+        <span>Recent Files</span>
+        <button class="zoom-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body" id="recent-list-container">
+        <span style="color:var(--text-muted);">Loading recent files...</span>
+      </div>
+      <div class="modal-foot" style="justify-content:space-between;">
+        <button class="tb-btn" onclick="clearAllRecentFiles()" style="color:var(--status-wrong);">Clear Recent Files</button>
+        <button class="tb-btn primary" onclick="closeModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Dialog -->
+  <div class="modal-backdrop" id="modal-about">
+    <div class="modal">
+      <div class="modal-head">
+        <span>About</span>
+        <button class="zoom-btn" onclick="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <span class="app-tag" style="font-size:14px; padding:4px 8px;">DGK</span>
+        <h3 style="margin:10px 0 4px 0;">Daily GK</h3>
+        <p style="color:var(--text-muted); font-size:12px; margin:0 0 14px 0;">Version: v1.2 (High-Capacity Engine)</p>
+        <p style="color:var(--text-muted); font-size:12px; margin:0 0 14px 0;">Developer: Shifat100</p>
+        <p style="color:var(--text-dim); font-size:12px;">High-density offline evaluation engine optimized for massive question banks.</p>
+      </div>
+      <div class="modal-foot">
+        <button class="tb-btn primary" onclick="closeModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT ENGINE
+       ========================================== -->
   <script>
-    const QUESTION_W = 224;
+    const QUESTION_W         = 224;
     const QUESTION_BYTES_ROW = 28;
-    const OPTION_W = 208;
-    const OPTION_BYTES_ROW = 26;
-    const TOTAL_TUTORIAL_SLIDES = 4;
+    const OPTION_W           = 208;
+    const OPTION_BYTES_ROW   = 26;
+    const ENTRY_SIZE         = 20;
+    const DOWNLOAD_URL       = "https://shifat100.github.io/daily-gk/";
 
-    const STATE = {
-      TUTORIAL: 0,
-      FILE_LIST: 1,
-      QUESTION: 2,
-      FEEDBACK: 3,
-      MENU: 4,
-      QUESTION_MENU: 5,
-      ABOUT: 6,
-      CONFIRM_EXIT: 7,
-      INPUT_DIALOG: 8,
-      SCORECARD: 9
-    };
+    const DB_NAME = "DailyGK_Storage";
+    const DB_VERSION = 1;
+    const STORE_NAME = "pak_packages";
 
-    const INPUT_TARGET = {
-      FILE_SEARCH: 0,
-      Q_SEARCH: 1,
-      JUMP_Q: 2
-    };
-
-    const app = {
-      state: STATE.TUTORIAL,
-      prevState: STATE.TUTORIAL,
-      readMode: "quiz",
-      pakList: [],
-      filteredIndices: [],
-      selectedFileIdx: 0,
-      searchFilter: "",
-
-      tutorialIdx: 0,
-      menuSelectedIdx: 0,
-      qmenuSelectedIdx: 0,
-
-      currentPak: null,
+    const runtime = {
+      buffer: null,
+      view: null,
+      fileName: "",
+      fileSize: 0,
       totalQuestions: 0,
       indexOffset: 0,
       searchOffset: 0,
       payloadBase: 0,
-
-      currentQId: 0,
-      curEntry: null,
-      selectedOpt: 0,
-      userChoice: -1,
+      batchStart: 0,          // First loaded question index
+      renderedCount: 0,       // Number of questions currently rendered
+      focusIdx: 0,            // Current active question in Focus Mode
+      batchSize: 10,
+      layoutMode: "sheet",
+      readingMode: "QUIZ",
       score: 0,
-
-      inputTarget: INPUT_TARGET.FILE_SEARCH,
-      inputBuffer: ""
+      userAnswers: {},
+      entries: [],
+      searchIndex: {},
+      zoom: 1.0,
+      currentFilter: "all",
+      isAppending: false,
+      cancelLoading: false
     };
 
-    const elViewport = document.getElementById("viewport");
-    const elModal = document.getElementById("modalLayer");
-    const elHeaderBar = document.getElementById("headerBar");
-    const elHeaderTitle = document.getElementById("headerTitle");
-    const elHeaderBadge = document.getElementById("headerBadge");
-    const elSoftLeft = document.getElementById("softLeft");
-    const elSoftCenter = document.getElementById("softCenter");
-    const elSoftRight = document.getElementById("softRight");
-    const elFileInput = document.getElementById("pakFileInput");
+    /* -------------------------------------------------------------------------
+       INDEXEDDB STORAGE ENGINE
+       ------------------------------------------------------------------------- */
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: "name" });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
 
-    function updateDeviceProfile() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-
-      let profile = "desktop";
-      if (w <= 240 || h <= 320) {
-        profile = "feature-phone";
-      } else if (isTouch && w <= 768) {
-        profile = "touch-mobile";
+    async function storePakInIndexedDB(name, size, arrayBuffer) {
+      try {
+        const db = await openDatabase();
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+        store.put({
+          name: name,
+          size: size,
+          date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
+          buffer: arrayBuffer
+        });
+      } catch (err) {
+        console.warn("Save error:", err);
       }
-      document.body.dataset.device = profile;
-    }
-    window.addEventListener("resize", updateDeviceProfile);
-    updateDeviceProfile();
-
-    function setSoftkeys(left, center, right) {
-      elSoftLeft.textContent = left || "";
-      elSoftCenter.textContent = center || "";
-      elSoftRight.textContent = right || "";
     }
 
-    function setHeader(title, badge = "", isRed = false) {
-      elHeaderTitle.textContent = title;
-      elHeaderBadge.textContent = badge;
-      elHeaderBadge.style.display = badge ? "inline-block" : "none";
-      elHeaderBar.className = isRed ? "header red" : "header";
+    async function getPakFromIndexedDB(name) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.get(name);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
     }
 
-    /* DGK1 Package Parser */
-    function openPakBuffer(buffer, filename) {
-      const dv = new DataView(buffer);
-      if (buffer.byteLength < 16) return false;
+    async function getAllRecentFromIndexedDB() {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.getAll();
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
 
-      const magic = String.fromCharCode(dv.getUint8(0), dv.getUint8(1), dv.getUint8(2), dv.getUint8(3));
-      if (magic !== "DGK1") {
-        alert("Invalid file: Header magic 'DGK1' missing.");
-        return false;
+    async function deleteFromIndexedDB(name) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.delete(name);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function clearAllIndexedDB() {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+       INITIALIZATION
+       ------------------------------------------------------------------------- */
+    function loadPersistedSettings() {
+      const savedTheme = localStorage.getItem("dgk_theme") || "light";
+      setTheme(savedTheme, false);
+
+      const savedZoom = localStorage.getItem("dgk_zoom");
+      if (savedZoom) {
+        runtime.zoom = parseFloat(savedZoom) || 1.0;
+        applyZoom();
       }
 
-      app.currentPak = buffer;
-      app.totalQuestions = dv.getUint32(4, true);
-      app.indexOffset = dv.getUint32(8, true);
-      app.searchOffset = dv.getUint32(12, true);
-      app.payloadBase = dv.getUint32(16, true);
-
-      if (app.totalQuestions === 0) return false;
-
-      app.score = 0;
-      app.selectedOpt = 0;
-      app.userChoice = -1;
-      app.state = STATE.QUESTION;
-      loadQuestion(0);
-      render();
-      return true;
+      const savedLayout = localStorage.getItem("dgk_layout");
+      if (savedLayout) {
+        setLayout(savedLayout, false);
+      }
     }
 
-    function loadQuestion(qId) {
-      if (!app.currentPak || qId >= app.totalQuestions) return false;
-      const dv = new DataView(app.currentPak);
-      const entryPos = app.indexOffset + (qId * 20);
+    function triggerFileInput() {
+      document.getElementById('binary-file-input').click();
+    }
 
-      app.curEntry = {
-        payload_offset: dv.getUint32(entryPos, true),
-        q_h: dv.getUint16(entryPos + 4, true),
-        opt_h: [
-          dv.getUint16(entryPos + 6, true),
-          dv.getUint16(entryPos + 8, true),
-          dv.getUint16(entryPos + 10, true),
-          dv.getUint16(entryPos + 12, true)
-        ],
-        correct_answer: dv.getUint8(entryPos + 14)
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      readPakFile(file);
+    }
+
+    function readPakFile(file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const buffer = evt.target.result;
+        storePakInIndexedDB(file.name, file.size, buffer);
+        loadPakFromBuffer(buffer, file.name);
       };
-
-      let offset = app.payloadBase + app.curEntry.payload_offset;
-      const qBytes = app.curEntry.q_h * QUESTION_BYTES_ROW;
-      app.curEntry.qMask = new Uint8Array(app.currentPak, offset, qBytes);
-      offset += qBytes;
-
-      app.curEntry.optMasks = [];
-      for (let i = 0; i < 4; i++) {
-        const oBytes = app.curEntry.opt_h[i] * OPTION_BYTES_ROW;
-        app.curEntry.optMasks.push(new Uint8Array(app.currentPak, offset, oBytes));
-        offset += oBytes;
-      }
-
-      app.currentQId = qId;
-      return true;
+      reader.readAsArrayBuffer(file);
+      closeModals();
     }
 
-    function renderMaskToCanvas(mask, width, height, bytesPerRow, color = "#FFFFFF") {
-      const c = document.createElement("canvas");
-      c.width = width;
-      c.height = height;
-      c.className = "pak-canvas";
-      const cx = c.getContext("2d");
-      const imgData = cx.createImageData(width, height);
-      const d = imgData.data;
+    /* DRAG & DROP */
+    window.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      document.body.classList.add("dropzone-active");
+    });
+    window.addEventListener("dragleave", (e) => {
+      if (!e.relatedTarget) document.body.classList.remove("dropzone-active");
+    });
+    window.addEventListener("drop", (e) => {
+      e.preventDefault();
+      document.body.classList.remove("dropzone-active");
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        readPakFile(e.dataTransfer.files[0]);
+      }
+    });
 
-      const rC = parseInt(color.slice(1, 3), 16) || 255;
-      const gC = parseInt(color.slice(3, 5), 16) || 255;
-      const bC = parseInt(color.slice(5, 7), 16) || 255;
+    /* -------------------------------------------------------------------------
+       BINARY LOADER & PARSER
+       ------------------------------------------------------------------------- */
+    function loadPakFromBuffer(arrayBuffer, name) {
+      const view = new DataView(arrayBuffer);
+      const magic = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2), view.getUint8(3));
+
+      if (magic !== "DGK1") {
+        alert("Invalid file: Header magic 'DGK1' not found.");
+        return;
+      }
+
+      runtime.buffer = arrayBuffer;
+      runtime.view = view;
+      runtime.fileName = name;
+      runtime.fileSize = arrayBuffer.byteLength;
+
+      runtime.totalQuestions = view.getUint32(4, true);
+      runtime.indexOffset    = view.getUint32(8, true);
+      runtime.searchOffset   = view.getUint32(12, true);
+      runtime.payloadBase    = view.getUint32(16, true);
+
+      runtime.batchStart = 0;
+      runtime.renderedCount = 0;
+      runtime.focusIdx = 0;
+      runtime.score = 0;
+      runtime.userAnswers = {};
+      runtime.entries = [];
+      runtime.searchIndex = {};
+
+      for (let i = 0; i < runtime.totalQuestions; i++) {
+        const pos = runtime.indexOffset + (i * ENTRY_SIZE);
+        runtime.entries.push({
+          payloadOffset: view.getUint32(pos, true),
+          q_h: view.getUint16(pos + 4, true),
+          opt_h: [
+            view.getUint16(pos + 6, true),
+            view.getUint16(pos + 8, true),
+            view.getUint16(pos + 10, true),
+            view.getUint16(pos + 12, true)
+          ],
+          correct: view.getUint8(pos + 14)
+        });
+      }
+
+      // Read Search Index
+      if (runtime.searchOffset > 0 && runtime.searchOffset < runtime.fileSize) {
+        let sPos = runtime.searchOffset;
+        const decoder = new TextDecoder("utf-8");
+        for (let i = 0; i < runtime.totalQuestions; i++) {
+          if (sPos + 4 > runtime.fileSize) break;
+          const qId = view.getUint16(sPos, true);
+          const tLen = view.getUint16(sPos + 2, true);
+          if (sPos + 4 + tLen > runtime.fileSize) break;
+          const textBytes = new Uint8Array(arrayBuffer, sPos + 4, tLen);
+          runtime.searchIndex[qId] = decoder.decode(textBytes);
+          sPos += 4 + tLen;
+        }
+      }
+
+      updateOnDemandVisibility(true);
+      updateUIStatus();
+      buildNavigatorGrid();
+      renderActiveView();
+    }
+
+    function updateOnDemandVisibility(hasActivePack) {
+      const loadActions = document.getElementById('demand-load-actions');
+      const navActions  = document.getElementById('demand-nav-actions');
+      const emptyPrompt = document.getElementById('view-empty-prompt');
+      const activeSheet = document.getElementById('view-active-sheet');
+
+      if (hasActivePack) {
+        loadActions.classList.add('ondemand-hidden');
+        navActions.classList.remove('ondemand-hidden');
+        emptyPrompt.classList.add('ondemand-hidden');
+        activeSheet.classList.remove('ondemand-hidden');
+      } else {
+        loadActions.classList.remove('ondemand-hidden');
+        navActions.classList.add('ondemand-hidden');
+        emptyPrompt.classList.remove('ondemand-hidden');
+        activeSheet.classList.add('ondemand-hidden');
+      }
+    }
+
+    /* 1-BIT RASTER ENGINE */
+    function blitMaskToCanvas(canvas, width, height, bytesPerRow, byteData) {
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      const img = ctx.createImageData(width, height);
+      const data = img.data;
+
+      const computed = getComputedStyle(document.body);
+      const hexColor = computed.getPropertyValue('--canvas-fg').trim() || "#1f1f1f";
+      const rgb = parseHex(hexColor);
 
       for (let r = 0; r < height; r++) {
         for (let b = 0; b < bytesPerRow; b++) {
-          const val = mask[r * bytesPerRow + b];
-          if (!val) continue;
+          const byteVal = byteData[r * bytesPerRow + b];
+          if (byteVal === 0) continue;
+
           for (let bit = 0; bit < 8; bit++) {
-            if (val & (0x80 >> bit)) {
+            if (byteVal & (0x80 >> bit)) {
               const sx = (b * 8) + bit;
               if (sx < width) {
                 const idx = (r * width + sx) * 4;
-                d[idx] = rC;
-                d[idx + 1] = gC;
-                d[idx + 2] = bC;
-                d[idx + 3] = 255;
+                data[idx]     = rgb.r;
+                data[idx + 1] = rgb.g;
+                data[idx + 2] = rgb.b;
+                data[idx + 3] = 255;
               }
             }
           }
         }
       }
-      cx.putImageData(imgData, 0, 0);
-      return c;
+      ctx.putImageData(img, 0, 0);
     }
 
-    function applyFilter() {
-      app.filteredIndices = [];
-      for (let i = 0; i < app.pakList.length; i++) {
-        if (!app.searchFilter || app.pakList[i].filename.toLowerCase().includes(app.searchFilter.toLowerCase())) {
-          app.filteredIndices.push(i);
-        }
-      }
-      if (app.selectedFileIdx >= app.filteredIndices.length) {
-        app.selectedFileIdx = 0;
-      }
+    function parseHex(h) {
+      let c = h.replace('#', '');
+      if (c.length === 3) c = c.split('').map(x => x + x).join('');
+      const n = parseInt(c, 16);
+      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
     }
 
-    function render() {
-      elModal.style.display = "none";
-      elModal.innerHTML = "";
-      elViewport.innerHTML = "";
+    /* -------------------------------------------------------------------------
+       BUILD SINGLE QUESTION BLOCK
+       ------------------------------------------------------------------------- */
+    function createQuestionBlock(qIdx) {
+      const entry = runtime.entries[qIdx];
+      let offset = runtime.payloadBase + entry.payloadOffset;
 
-      switch (app.state) {
-        case STATE.TUTORIAL: renderTutorial(); break;
-        case STATE.FILE_LIST: renderFileList(); break;
-        case STATE.QUESTION:
-        case STATE.FEEDBACK: renderQuestion(); break;
-        case STATE.MENU: renderMenu(); break;
-        case STATE.QUESTION_MENU: renderQuestionMenu(); break;
-        case STATE.ABOUT: renderAbout(); break;
-        case STATE.CONFIRM_EXIT: renderConfirmExit(); break;
-        case STATE.INPUT_DIALOG: renderInputDialog(); break;
-        case STATE.SCORECARD: renderScorecard(); break;
-      }
-    }
+      const block = document.createElement('div');
+      block.className = 'exam-q-block';
+      block.id = `q-block-${qIdx}`;
 
-    function renderTutorial() {
-      setHeader("Tutorial", `${app.tutorialIdx + 1}/${TOTAL_TUTORIAL_SLIDES}`);
-      setSoftkeys(app.tutorialIdx > 0 ? "< Prev" : "Exit", "Next >", "Open PAK");
-
-      const dev = document.body.dataset.device;
-      let controlGuide = "Keys 1-4: Select Option. Arrows: Highlight. Enter: Confirm.";
-      if (dev === "touch-mobile") {
-        controlGuide = "Direct Touch: Tap cards, options, or bottom buttons directly.";
-      } else if (dev === "desktop") {
-        controlGuide = "Keyboard shortcuts (1-4, Arrows, Enter, Esc) or click cards.";
-      }
-
-      const slides = [
-        {
-          title: "1. Select .PAK Package",
-          desc: "Daily GK runs lightweight pre-rendered offline quiz packages (.PAK). Select your file to begin.",
-          btn: "Select .PAK File"
-        },
-        {
-          title: "2. Adaptive Controls",
-          desc: controlGuide,
-          btn: null
-        },
-        {
-          title: "3. Quiz & Study Modes",
-          desc: "Quiz mode tracks answers and scores. Study mode immediately displays the correct choice.",
-          btn: null
-        },
-        {
-          title: "4. Fast & Offline",
-          desc: "Zero internet load after opening. Packages render crisply without requiring external fonts.",
-          btn: "Open File Now"
-        }
-      ];
-
-      const s = slides[app.tutorialIdx];
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.cursor = "default";
-      card.innerHTML = `
-        <div class="card-title" style="color:var(--hl)">${s.title}</div>
-        <div class="card-sub">${s.desc}</div>
+      const header = document.createElement('div');
+      header.className = 'exam-q-header';
+      header.innerHTML = `
+        <span class="q-num-label">Question ${qIdx + 1} of ${runtime.totalQuestions}</span>
+        <span style="font-size:11px; color:var(--text-dim);">${entry.q_h}px</span>
       `;
+      block.appendChild(header);
 
-      if (s.btn) {
-        const btn = document.createElement("button");
-        btn.className = "action-btn";
-        btn.textContent = s.btn;
-        btn.onclick = () => elFileInput.click();
-        card.appendChild(btn);
+      const qHolder = document.createElement('div');
+      qHolder.className = 'q-canvas-holder';
+      const qCanvas = document.createElement('canvas');
+      qCanvas.className = 'pak-canvas';
+
+      const qBytes = entry.q_h * QUESTION_BYTES_ROW;
+      const qData = new Uint8Array(runtime.buffer, offset, qBytes);
+      blitMaskToCanvas(qCanvas, QUESTION_W, entry.q_h, QUESTION_BYTES_ROW, qData);
+      offset += qBytes;
+
+      qHolder.appendChild(qCanvas);
+      block.appendChild(qHolder);
+
+      const optList = document.createElement('div');
+      optList.className = 'opt-list';
+
+      for (let i = 0; i < 4; i++) {
+        const optCard = document.createElement('div');
+        optCard.className = 'opt-card';
+        optCard.id = `opt-card-${qIdx}-${i}`;
+        optCard.onclick = () => handleMultiOptionSelect(qIdx, i);
+
+        const optIdxSpan = document.createElement('div');
+        optIdxSpan.className = 'opt-index';
+        optIdxSpan.textContent = (i + 1);
+        optCard.appendChild(optIdxSpan);
+
+        const optCanvas = document.createElement('canvas');
+        optCanvas.className = 'pak-canvas';
+        const optLen = entry.opt_h[i] * OPTION_BYTES_ROW;
+        const optData = new Uint8Array(runtime.buffer, offset, optLen);
+        blitMaskToCanvas(optCanvas, OPTION_W, entry.opt_h[i], OPTION_BYTES_ROW, optData);
+        offset += optLen;
+
+        optCard.appendChild(optCanvas);
+        optList.appendChild(optCard);
       }
 
-      elViewport.appendChild(card);
+      block.appendChild(optList);
+
+      // Add Focus Mode Navigation Footer directly on the card
+      if (runtime.layoutMode === 'focus') {
+        const focusNav = document.createElement('div');
+        focusNav.className = 'focus-card-nav';
+        focusNav.innerHTML = `
+          <button class="tb-btn" onclick="goToPrevFocusCard()" ${qIdx === 0 ? 'disabled' : ''}>
+            <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <span>Previous</span>
+          </button>
+          <span style="font-size:12px; font-weight:600; color:var(--text-muted);">${qIdx + 1} / ${runtime.totalQuestions}</span>
+          <button class="tb-btn primary" onclick="goToNextFocusCard()" ${qIdx >= runtime.totalQuestions - 1 ? 'disabled' : ''}>
+            <span>Next</span>
+            <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        `;
+        block.appendChild(focusNav);
+      }
+
+      return block;
     }
 
-    function renderFileList() {
-      setHeader("Daily GK", `${app.filteredIndices.length} PAK`);
-      setSoftkeys("Menu", "Play", "Exit");
+    /* -------------------------------------------------------------------------
+       VIEW RENDERER & PROGRESSIVE / ASYNC ENGINE
+       ------------------------------------------------------------------------- */
+    function renderActiveView(startAt = 0) {
+      if (!runtime.entries || runtime.entries.length === 0) return;
+      
+      const sheet = document.getElementById('view-active-sheet');
+      sheet.innerHTML = "";
+      runtime.batchStart = startAt;
+      runtime.renderedCount = 0;
 
-      if (app.filteredIndices.length === 0) {
-        app.state = STATE.TUTORIAL;
-        renderTutorial();
+      // Handle Focus Mode: render single card
+      if (runtime.layoutMode === 'focus') {
+        runtime.focusIdx = startAt;
+        const block = createQuestionBlock(startAt);
+        sheet.appendChild(block);
+        refreshQuestionColors(startAt);
+        updateNavigationIndicators();
+        updateCurrentBadgeHighlight(startAt);
         return;
       }
 
-      app.filteredIndices.forEach((fIdx, i) => {
-        const file = app.pakList[fIdx];
-        const card = document.createElement("div");
-        card.className = `card ${i === app.selectedFileIdx ? "selected" : ""}`;
-        card.innerHTML = `
-          <div class="card-title">
-            <span>[${i < 9 ? i + 1 : 0}] ${file.filename}</span>
-            <span class="key-hint">Press ${i < 9 ? i + 1 : 0}</span>
-          </div>
-          <div class="card-sub">Size: ${(file.filesize / 1024).toFixed(1)} KB</div>
+      // Handle Sheet / Dual Modes
+      if (runtime.batchStart > 0) {
+        const topBanner = document.createElement('div');
+        topBanner.className = 'jump-header-banner';
+        topBanner.innerHTML = `
+          <span>Viewing from Question <b>${runtime.batchStart + 1}</b></span>
+          <button class="tb-btn" onclick="loadPreviousBatchRange()">↑ Load Earlier Questions</button>
         `;
-        card.onclick = () => {
-          app.selectedFileIdx = i;
-          openPakBuffer(file.data, file.filename);
-        };
-        elViewport.appendChild(card);
-      });
-    }
+        sheet.appendChild(topBanner);
+      }
 
-    /* Fixed Question & Options View */
-    function renderQuestion() {
-      const mode = app.readMode === "study" ? "Study" : "Quiz";
-      setHeader(`Q ${app.currentQId + 1}/${app.totalQuestions}`, mode);
-
-      if (app.readMode === "study") {
-        setSoftkeys("Menu", "Next >", "Packs");
+      if (runtime.batchSize >= 9999) {
+        // Show All without freezing
+        renderBatchWithProgress(runtime.batchStart, runtime.totalQuestions);
       } else {
-        setSoftkeys("Menu", app.state === STATE.FEEDBACK ? "Next Q" : "Ans", "Packs");
+        appendNextBatch();
+      }
+    }
+
+    function appendNextBatch() {
+      if (!runtime.entries || runtime.entries.length === 0) return;
+      if (runtime.isAppending) return;
+
+      const currentTotalLoaded = runtime.batchStart + runtime.renderedCount;
+      if (currentTotalLoaded >= runtime.totalQuestions) return;
+
+      runtime.isAppending = true;
+      const container = document.getElementById('view-active-sheet');
+
+      const oldLoader = document.getElementById('sheet-loader-note');
+      if (oldLoader) oldLoader.remove();
+
+      const batchToLoad = Math.min(runtime.batchSize, runtime.totalQuestions - currentTotalLoaded);
+      const startIdx = currentTotalLoaded;
+      const endIdx = startIdx + batchToLoad;
+
+      const fragment = document.createDocumentFragment();
+      for (let qIdx = startIdx; qIdx < endIdx; qIdx++) {
+        const block = createQuestionBlock(qIdx);
+        fragment.appendChild(block);
+      }
+      container.appendChild(fragment);
+
+      for (let qIdx = startIdx; qIdx < endIdx; qIdx++) {
+        refreshQuestionColors(qIdx);
       }
 
-      // Question Canvas Box
-      const qBox = document.createElement("div");
-      qBox.className = "q-box";
-      if (app.curEntry.qMask) {
-        const qCanvas = renderMaskToCanvas(app.curEntry.qMask, QUESTION_W, app.curEntry.q_h, QUESTION_BYTES_ROW, "#FFFFFF");
-        qBox.appendChild(qCanvas);
+      runtime.renderedCount += batchToLoad;
+
+      // Append bottom indicator
+      const loaderNote = document.createElement('div');
+      loaderNote.id = 'sheet-loader-note';
+      loaderNote.className = 'sheet-scroll-loader';
+      if ((runtime.batchStart + runtime.renderedCount) < runtime.totalQuestions) {
+        loaderNote.textContent = `Displaying up to Question ${runtime.batchStart + runtime.renderedCount} of ${runtime.totalQuestions} — Scroll down or click to load more`;
+        loaderNote.onclick = appendNextBatch;
+      } else {
+        loaderNote.textContent = `All ${runtime.totalQuestions} questions displayed`;
+        loaderNote.style.cursor = "default";
       }
-      elViewport.appendChild(qBox);
+      container.appendChild(loaderNote);
 
-      // Options List
-      const letters = ["A", "B", "C", "D"];
-      for (let i = 0; i < 4; i++) {
-        const opt = document.createElement("div");
-        let cls = "opt-card";
+      updateNavigationIndicators();
+      runtime.isAppending = false;
+    }
 
-        if (app.readMode === "study") {
-          if (i === app.curEntry.correct_answer) cls += " correct";
-          else if (i === app.selectedOpt) cls += " focused";
+    /* ASYNC NON-BLOCKING CHUNK LOADER WITH LIVE PROGRESS BAR */
+    function renderBatchWithProgress(startIdx, targetTotal) {
+      runtime.cancelLoading = false;
+      const progressModal = document.getElementById('modal-progress');
+      const progressFill  = document.getElementById('modal-progress-fill') || document.getElementById('progress-modal-fill');
+      const progressMsg   = document.getElementById('progress-modal-msg');
+      const progressDetail= document.getElementById('progress-modal-detail');
+
+      progressModal.classList.add('open');
+
+      const container = document.getElementById('view-active-sheet');
+      let curr = startIdx;
+      const totalToLoad = targetTotal - startIdx;
+      const chunkSize = 20; // 20 questions per frame ensures 60fps UI
+
+      function processChunk() {
+        if (runtime.cancelLoading || curr >= targetTotal) {
+          progressModal.classList.remove('open');
+          updateNavigationIndicators();
+          return;
+        }
+
+        const chunkEnd = Math.min(curr + chunkSize, targetTotal);
+        const fragment = document.createDocumentFragment();
+
+        for (let qIdx = curr; qIdx < chunkEnd; qIdx++) {
+          const block = createQuestionBlock(qIdx);
+          fragment.appendChild(block);
+        }
+        container.appendChild(fragment);
+
+        for (let qIdx = curr; qIdx < chunkEnd; qIdx++) {
+          refreshQuestionColors(qIdx);
+        }
+
+        runtime.renderedCount += (chunkEnd - curr);
+        curr = chunkEnd;
+
+        // Update progress bar
+        const processed = curr - startIdx;
+        const pct = Math.round((processed / totalToLoad) * 100);
+        progressFill.style.width = pct + '%';
+        progressMsg.textContent = `Rendering Question ${curr} of ${targetTotal}...`;
+        progressDetail.textContent = `${processed} of ${totalToLoad} loaded (${pct}%)`;
+
+        requestAnimationFrame(processChunk);
+      }
+
+      requestAnimationFrame(processChunk);
+    }
+
+    function cancelProgressLoading() {
+      runtime.cancelLoading = true;
+      document.getElementById('modal-progress').classList.remove('open');
+      updateNavigationIndicators();
+    }
+
+    function loadPreviousBatchRange() {
+      const newStart = Math.max(0, runtime.batchStart - runtime.batchSize);
+      renderActiveView(newStart);
+    }
+
+    /* SCROLL LISTENER FOR SEAMLESS LOADING */
+    function handleStageScroll() {
+      if (!runtime.entries || runtime.entries.length === 0) return;
+      const stage = document.getElementById('stage-viewport');
+
+      // Focus Mode Scroll: Scroll down past the card to trigger next card
+      if (runtime.layoutMode === 'focus') {
+        if (stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 30) {
+          if (!runtime.isAppending && runtime.focusIdx < runtime.totalQuestions - 1) {
+            runtime.isAppending = true;
+            goToNextFocusCard();
+            setTimeout(() => { runtime.isAppending = false; }, 300);
+          }
+        }
+        return;
+      }
+
+      // Sheet & Dual Mode Scroll
+      if ((runtime.batchStart + runtime.renderedCount) >= runtime.totalQuestions) return;
+      if (stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 200) {
+        appendNextBatch();
+      }
+    }
+
+    function updateNavigationIndicators() {
+      const start = runtime.batchStart + 1;
+      const end = (runtime.layoutMode === 'focus') ? (runtime.focusIdx + 1) : Math.min(runtime.totalQuestions, runtime.batchStart + runtime.renderedCount);
+      document.getElementById('status-q-idx').textContent = (runtime.layoutMode === 'focus') ? `${end} of ${runtime.totalQuestions}` : `${start} - ${end} of ${runtime.totalQuestions}`;
+      document.getElementById('sb-progress').textContent = `${Object.keys(runtime.userAnswers).length} / ${runtime.totalQuestions}`;
+      
+      const activeIdx = (runtime.layoutMode === 'focus') ? runtime.focusIdx : runtime.batchStart;
+      updateCurrentBadgeHighlight(activeIdx);
+    }
+
+    function updateCurrentBadgeHighlight(activeIdx) {
+      document.querySelectorAll('.q-badge').forEach((b, i) => {
+        if (runtime.layoutMode === 'focus') {
+          b.classList.toggle('current', i === activeIdx);
         } else {
-          if (app.state === STATE.QUESTION) {
-            if (i === app.selectedOpt) cls += " focused";
-          } else if (app.state === STATE.FEEDBACK) {
-            if (i === app.curEntry.correct_answer) cls += " correct";
-            else if (i === app.userChoice) cls += " wrong";
-          }
+          b.classList.toggle('current', i >= runtime.batchStart && i < runtime.batchStart + runtime.renderedCount);
         }
-        opt.className = cls;
-
-        // 1. Badge on left
-        const badge = document.createElement("div");
-        badge.className = "opt-badge";
-        badge.textContent = letters[i];
-        opt.appendChild(badge);
-
-        // 2. Canvas in the center
-        const content = document.createElement("div");
-        content.className = "opt-content";
-        if (app.curEntry.optMasks[i]) {
-          const optCanvas = renderMaskToCanvas(app.curEntry.optMasks[i], OPTION_W, app.curEntry.opt_h[i], OPTION_BYTES_ROW, "#FFFFFF");
-          content.appendChild(optCanvas);
-        }
-        opt.appendChild(content);
-
-        // 3. Key Hint on the far right
-        const keyHint = document.createElement("span");
-        keyHint.className = "key-hint";
-        keyHint.textContent = `Key ${i + 1}`;
-        opt.appendChild(keyHint);
-
-        opt.onclick = () => {
-          app.selectedOpt = i;
-          app.userChoice = i;
-          if (app.readMode !== "study") {
-            if (app.userChoice === app.curEntry.correct_answer) app.score++;
-            app.state = STATE.FEEDBACK;
-          }
-          render();
-        };
-
-        elViewport.appendChild(opt);
-      }
-    }
-
-    function renderMenu() {
-      setHeader("Options Menu");
-      setSoftkeys("Select", "", "Back");
-
-      const items = [
-        "1. Open .PAK File",
-        "2. Help & Tutorial",
-        "3. Search Files",
-        "4. About Daily GK",
-        "5. Exit App"
-      ];
-
-      items.forEach((title, idx) => {
-        const card = document.createElement("div");
-        card.className = `card ${idx === app.menuSelectedIdx ? "selected" : ""}`;
-        card.innerHTML = `<div class="card-title">${title}</div>`;
-        card.onclick = () => {
-          app.menuSelectedIdx = idx;
-          execMenuItem(idx);
-        };
-        elViewport.appendChild(card);
       });
     }
 
-    function execMenuItem(idx) {
-      switch (idx) {
-        case 0: elFileInput.click(); break;
-        case 1: app.tutorialIdx = 0; app.state = STATE.TUTORIAL; render(); break;
-        case 2: openInput(INPUT_TARGET.FILE_SEARCH); break;
-        case 3: app.state = STATE.ABOUT; render(); break;
-        case 4: app.prevState = STATE.MENU; app.state = STATE.CONFIRM_EXIT; render(); break;
+    /* FOCUS MODE CARDS NAVIGATION */
+    function goToNextFocusCard() {
+      if (runtime.focusIdx < runtime.totalQuestions - 1) {
+        runtime.focusIdx++;
+        renderActiveView(runtime.focusIdx);
+        const stage = document.getElementById('stage-viewport');
+        stage.scrollTop = 0;
       }
     }
 
-    function renderQuestionMenu() {
-      setHeader("Reading Menu");
-      setSoftkeys("Select", "", "Back");
+    function goToPrevFocusCard() {
+      if (runtime.focusIdx > 0) {
+        runtime.focusIdx--;
+        renderActiveView(runtime.focusIdx);
+        const stage = document.getElementById('stage-viewport');
+        stage.scrollTop = 0;
+      }
+    }
 
-      const items = [
-        "1. Search Question",
-        "2. Jump To Question",
-        `3. Mode: [${app.readMode === "study" ? "Study -> Quiz" : "Quiz -> Study"}]`,
-        "4. Return to File List"
-      ];
+    /* OPTION SELECTION & COLORS */
+    function refreshQuestionColors(qIdx) {
+      const entry = runtime.entries[qIdx];
+      const answered = runtime.userAnswers[qIdx];
 
-      items.forEach((title, idx) => {
-        const card = document.createElement("div");
-        card.className = `card ${idx === app.qmenuSelectedIdx ? "selected" : ""}`;
-        card.innerHTML = `<div class="card-title">${title}</div>`;
-        card.onclick = () => {
-          app.qmenuSelectedIdx = idx;
-          execQMenuItem(idx);
-        };
-        elViewport.appendChild(card);
+      for (let i = 0; i < 4; i++) {
+        const card = document.getElementById(`opt-card-${qIdx}-${i}`);
+        if (!card) continue;
+        card.className = 'opt-card';
+
+        if (runtime.readingMode === "STUDY") {
+          if (i === entry.correct) card.classList.add('correct-answer');
+        } else {
+          if (answered !== undefined) {
+            if (i === entry.correct) card.classList.add('correct-answer');
+            else if (i === answered) card.classList.add('wrong-answer');
+          }
+        }
+      }
+    }
+
+    function handleMultiOptionSelect(qIdx, optIdx) {
+      if (runtime.readingMode === "STUDY") return;
+      const entry = runtime.entries[qIdx];
+
+      if (runtime.userAnswers[qIdx] === undefined) {
+        runtime.userAnswers[qIdx] = optIdx;
+        const isRight = (optIdx === entry.correct);
+        if (isRight) runtime.score++;
+
+        refreshQuestionColors(qIdx);
+        updateScoreStatus();
+
+        const badge = document.querySelector(`.q-badge[data-idx="${qIdx}"]`);
+        if (badge) {
+          badge.classList.remove('correct', 'wrong');
+          badge.classList.add(isRight ? 'correct' : 'wrong');
+        }
+
+        applySidebarFilter();
+
+        if (Object.keys(runtime.userAnswers).length === runtime.totalQuestions) {
+          setTimeout(showScorecard, 500);
+        }
+      }
+    }
+
+    /* BATCH / NAVIGATION BUTTONS */
+    function prevBatch() {
+      if (runtime.layoutMode === 'focus') {
+        goToPrevFocusCard();
+      } else {
+        const stage = document.getElementById('stage-viewport');
+        if (stage.scrollTop <= 10 && runtime.batchStart > 0) {
+          loadPreviousBatchRange();
+        } else {
+          stage.scrollTop = Math.max(0, stage.scrollTop - stage.clientHeight * 0.85);
+        }
+      }
+    }
+
+    function nextBatch() {
+      if (runtime.layoutMode === 'focus') {
+        goToNextFocusCard();
+      } else {
+        const stage = document.getElementById('stage-viewport');
+        if (runtime.batchStart + runtime.renderedCount < runtime.totalQuestions) {
+          appendNextBatch();
+        }
+        stage.scrollTop = stage.scrollTop + stage.clientHeight * 0.85;
+      }
+    }
+
+    function changeBatchSize(val) {
+      runtime.batchSize = parseInt(val);
+      renderActiveView(runtime.batchStart);
+    }
+
+    /* LAYOUT SWITCHER */
+    function setLayout(mode, persist = true) {
+      runtime.layoutMode = mode;
+      const sheet = document.getElementById('view-active-sheet');
+      sheet.className = 'viewer-sheet';
+      if (mode === 'dual') sheet.classList.add('layout-dual');
+      else if (mode === 'focus') sheet.classList.add('layout-focus');
+
+      document.getElementById('select-layout-mode').value = mode;
+      if (persist) localStorage.setItem("dgk_layout", mode);
+
+      // In focus mode, batch selector is hidden/adapted
+      const batchSelect = document.getElementById('select-batch-size');
+      const batchLabel  = document.getElementById('label-batch-size');
+      if (mode === 'focus') {
+        batchSelect.style.display = 'none';
+        batchLabel.style.display = 'none';
+        document.getElementById('btn-prev-label').textContent = 'Prev Card';
+        document.getElementById('btn-next-label').textContent = 'Next Card';
+      } else {
+        batchSelect.style.display = '';
+        batchLabel.style.display = '';
+        document.getElementById('btn-prev-label').textContent = 'Prev';
+        document.getElementById('btn-next-label').textContent = 'Next';
+      }
+
+      renderActiveView(runtime.layoutMode === 'focus' ? runtime.focusIdx : runtime.batchStart);
+      applyZoom();
+      closeModals();
+    }
+
+    /* READING MODE */
+    function toggleReadingMode() {
+      runtime.readingMode = (runtime.readingMode === "QUIZ") ? "STUDY" : "QUIZ";
+      const btn = document.getElementById('btn-mode-toggle');
+      const optMenuText = document.getElementById('m-opt-mode-text');
+      const pill = document.getElementById('status-mode-pill');
+
+      if (runtime.readingMode === "STUDY") {
+        btn.textContent = "Mode: Study";
+        optMenuText.textContent = "Switch Mode: Quiz";
+        pill.textContent = "STUDY";
+        pill.style.color = "var(--status-correct)";
+      } else {
+        btn.textContent = "Mode: Quiz";
+        optMenuText.textContent = "Switch Mode: Study";
+        pill.textContent = "QUIZ";
+        pill.style.color = "var(--accent)";
+      }
+
+      for (let i = runtime.batchStart; i < runtime.batchStart + runtime.renderedCount; i++) {
+        refreshQuestionColors(i);
+      }
+      closeModals();
+    }
+
+    function resetQuizScore() {
+      runtime.score = 0;
+      runtime.userAnswers = {};
+      updateScoreStatus();
+      document.querySelectorAll('.q-badge').forEach(b => b.classList.remove('correct', 'wrong'));
+      for (let i = runtime.batchStart; i < runtime.batchStart + runtime.renderedCount; i++) {
+        refreshQuestionColors(i);
+      }
+      applySidebarFilter();
+    }
+
+    function updateScoreStatus() {
+      document.getElementById('status-score').textContent = `${runtime.score} / ${runtime.totalQuestions}`;
+      document.getElementById('sb-progress').textContent = `${Object.keys(runtime.userAnswers).length} / ${runtime.totalQuestions}`;
+    }
+
+    /* -------------------------------------------------------------------------
+       SIDEBAR MATRIX (OPTIMIZED FOR 5,000+ QUESTIONS & INSTANT JUMP)
+       ------------------------------------------------------------------------- */
+    function buildNavigatorGrid() {
+      const container = document.getElementById('q-access-grid');
+      container.innerHTML = "";
+
+      // Fast document fragment rendering
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < runtime.totalQuestions; i++) {
+        const badge = document.createElement('div');
+        badge.className = 'q-badge';
+        badge.dataset.idx = i;
+        badge.textContent = (i + 1);
+        frag.appendChild(badge);
+      }
+      container.appendChild(frag);
+
+      // Event delegation avoids thousands of individual listeners
+      container.onclick = function(e) {
+        const badge = e.target.closest('.q-badge');
+        if (badge) {
+          const idx = parseInt(badge.dataset.idx, 10);
+          jumpToQuestionIndex(idx);
+        }
+      };
+
+      applySidebarFilter();
+    }
+
+    /* SMART SHORTCUT JUMP METHOD (INSTANT, NO HANGING) */
+    function jumpToQuestionIndex(targetIdx) {
+      if (runtime.layoutMode === 'focus') {
+        runtime.focusIdx = targetIdx;
+        renderActiveView(targetIdx);
+        return;
+      }
+
+      // Check if question is already rendered in active sheet
+      const existing = document.getElementById(`q-block-${targetIdx}`);
+      if (existing) {
+        existing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        existing.classList.add('active-focus');
+        setTimeout(() => existing.classList.remove('active-focus'), 1200);
+        return;
+      }
+
+      // Smart Window Jump: Jump directly to requested batch without loading 5000 canvases
+      renderActiveView(targetIdx);
+
+      setTimeout(() => {
+        const targetBlock = document.getElementById(`q-block-${targetIdx}`);
+        if (targetBlock) {
+          targetBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetBlock.classList.add('active-focus');
+          setTimeout(() => targetBlock.classList.remove('active-focus'), 1200);
+        }
+      }, 60);
+    }
+
+    function setSidebarFilter(filterName) {
+      runtime.currentFilter = filterName;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-filter-' + filterName).classList.add('active');
+      applySidebarFilter();
+    }
+
+    function applySidebarFilter() {
+      const query = (document.getElementById('sidebar-search-input').value || '').trim().toLowerCase();
+      document.querySelectorAll('.q-badge').forEach((badge) => {
+        const idx = parseInt(badge.dataset.idx, 10);
+        let visible = true;
+        const entry = runtime.entries[idx];
+        const ans = runtime.userAnswers[idx];
+
+        if (runtime.currentFilter === 'wrong') {
+          visible = (ans !== undefined && ans !== entry.correct);
+        } else if (runtime.currentFilter === 'unanswered') {
+          visible = (ans === undefined);
+        }
+
+        if (visible && query) {
+          const numMatch = (idx + 1).toString().includes(query);
+          const textMatch = runtime.searchIndex[idx] && runtime.searchIndex[idx].toLowerCase().includes(query);
+          visible = (numMatch || textMatch);
+        }
+
+        badge.style.display = visible ? 'flex' : 'none';
       });
     }
 
-    function execQMenuItem(idx) {
-      switch (idx) {
-        case 0: openInput(INPUT_TARGET.Q_SEARCH); break;
-        case 1: openInput(INPUT_TARGET.JUMP_Q); break;
-        case 2:
-          app.readMode = app.readMode === "quiz" ? "study" : "quiz";
-          app.state = STATE.QUESTION;
-          render();
-          break;
-        case 3:
-          app.state = app.pakList.length ? STATE.FILE_LIST : STATE.TUTORIAL;
-          render();
-          break;
+    function handleSearchInput(val) {
+      applySidebarFilter();
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar-navigator').classList.toggle('hidden');
+    }
+
+    /* STATUS & ZOOM */
+    function updateUIStatus() {
+      document.getElementById('titlebar-file-label').textContent = runtime.fileName;
+      document.getElementById('status-filename').textContent = runtime.fileName;
+      document.getElementById('status-filesize').textContent = Math.round(runtime.fileSize / 1024) + ' KB';
+      document.getElementById('jump-max-display').textContent = runtime.totalQuestions;
+      updateScoreStatus();
+    }
+
+    function stepZoom(delta) {
+      runtime.zoom = Math.min(Math.max(0.6, runtime.zoom + delta), 2.2);
+      applyZoom();
+    }
+
+    function resetZoom() {
+      runtime.zoom = 1.0;
+      applyZoom();
+    }
+
+    function applyZoom() {
+      const sheet = document.getElementById('view-active-sheet');
+      if (!sheet) return;
+
+      let baseWidth = 880;
+      if (runtime.layoutMode === 'dual') baseWidth = 1300;
+      else if (runtime.layoutMode === 'focus') baseWidth = 660;
+
+      sheet.style.zoom = runtime.zoom;
+      sheet.style.width = `${Math.round(baseWidth * runtime.zoom)}px`;
+
+      document.getElementById('status-zoom').textContent = Math.round(runtime.zoom * 100) + '%';
+      localStorage.setItem("dgk_zoom", runtime.zoom);
+    }
+
+    /* -------------------------------------------------------------------------
+       DEMO GENERATOR
+       ------------------------------------------------------------------------- */
+    function synthesizeTextMask(text, width, height, bytesPerRow) {
+      const c = document.createElement('canvas');
+      c.width = width;
+      c.height = height;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText(text, 6, Math.floor((height - 14) / 2));
+
+      const imgData = ctx.getImageData(0, 0, width, height).data;
+      const buffer = new Uint8Array(height * bytesPerRow);
+
+      for (let r = 0; r < height; r++) {
+        for (let x = 0; x < width; x++) {
+          const pixelBrightness = imgData[(r * width + x) * 4];
+          if (pixelBrightness > 120) {
+            const byteIdx = r * bytesPerRow + (x >> 3);
+            const bitIdx = 7 - (x & 7);
+            buffer[byteIdx] |= (1 << bitIdx);
+          }
+        }
       }
+      return buffer;
     }
 
-    function renderAbout() {
-      setHeader("About");
-      setSoftkeys("", "", "Back");
+    function loadSampleDemoPack() {
+      const demoData = [
+        { q: "What is the capital city of France?", opts: ["London", "Paris", "Berlin", "Rome"], ans: 1 },
+        { q: "Which element has chemical symbol 'O'?", opts: ["Gold", "Silver", "Oxygen", "Iron"], ans: 2 },
+        { q: "How many planets are in Solar System?", opts: ["Seven", "Eight", "Nine", "Ten"], ans: 1 },
+        { q: "Which ocean is the largest on Earth?", opts: ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic"], ans: 0 },
+        { q: "What is the speed of light in vacuum?", opts: ["300,000 km/s", "150,000 km/s", "10,000 km/s", "Sound speed"], ans: 0 },
+        { q: "Who painted the Mona Lisa masterpiece?", opts: ["Michelangelo", "Leonardo da Vinci", "Raphael", "Picasso"], ans: 1 },
+        { q: "Which gas do plants absorb from atmosphere?", opts: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], ans: 1 },
+        { q: "What is the largest mammal alive today?", opts: ["African Elephant", "Blue Whale", "Giraffe", "Hippopotamus"], ans: 1 },
+        { q: "In what year did the Apollo 11 moon landing occur?", opts: ["1965", "1969", "1972", "1975"], ans: 1 },
+        { q: "Which is the smallest prime number?", opts: ["Zero", "One", "Two", "Three"], ans: 2 }
+      ];
 
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.cursor = "default";
-      card.innerHTML = `
-        <div class="card-title" style="color:var(--hl)">Daily GK Engine</div>
-        <div class="card-sub" style="margin-top:6px; line-height:1.45;">
-          Version 4.1 Universal<br>
-          Supports touchscreens, KaiOS, and compact feature phones.
-        </div>
-      `;
-      elViewport.appendChild(card);
+      const count = demoData.length;
+      const qH = 34;
+      const optH = 24;
+      const qBytes = qH * QUESTION_BYTES_ROW;
+      const optBytes = optH * OPTION_BYTES_ROW;
+      const singlePayload = qBytes + (4 * optBytes);
+
+      const headerSize = 20;
+      const indexSize = count * ENTRY_SIZE;
+      const payloadBase = headerSize + indexSize;
+
+      const encoder = new TextEncoder();
+      let searchBufLen = 0;
+      const encodedSearchTexts = demoData.map(d => {
+        const encoded = encoder.encode(d.q);
+        searchBufLen += 4 + encoded.length;
+        return encoded;
+      });
+
+      const searchOffset = payloadBase + (count * singlePayload);
+      const totalSize = searchOffset + searchBufLen;
+
+      const buffer = new ArrayBuffer(totalSize);
+      const view = new DataView(buffer);
+      const u8 = new Uint8Array(buffer);
+
+      u8[0] = 68; u8[1] = 71; u8[2] = 75; u8[3] = 49;
+      view.setUint32(4, count, true);
+      view.setUint32(8, headerSize, true);
+      view.setUint32(12, searchOffset, true);
+      view.setUint32(16, payloadBase, true);
+
+      for (let i = 0; i < count; i++) {
+        const payloadOffset = i * singlePayload;
+        const entryPos = headerSize + (i * ENTRY_SIZE);
+
+        view.setUint32(entryPos, payloadOffset, true);
+        view.setUint16(entryPos + 4, qH, true);
+        view.setUint16(entryPos + 6, optH, true);
+        view.setUint16(entryPos + 8, optH, true);
+        view.setUint16(entryPos + 10, optH, true);
+        view.setUint16(entryPos + 12, optH, true);
+        view.setUint8(entryPos + 14, demoData[i].ans);
+
+        const qMask = synthesizeTextMask(demoData[i].q, QUESTION_W, qH, QUESTION_BYTES_ROW);
+        u8.set(qMask, payloadBase + payloadOffset);
+
+        let currentOptOffset = payloadBase + payloadOffset + qBytes;
+        for (let o = 0; o < 4; o++) {
+          const optMask = synthesizeTextMask(demoData[i].opts[o], OPTION_W, optH, OPTION_BYTES_ROW);
+          u8.set(optMask, currentOptOffset);
+          currentOptOffset += optBytes;
+        }
+      }
+
+      let sPos = searchOffset;
+      for (let i = 0; i < count; i++) {
+        const bytes = encodedSearchTexts[i];
+        view.setUint16(sPos, i, true);
+        view.setUint16(sPos + 2, bytes.length, true);
+        u8.set(bytes, sPos + 4);
+        sPos += 4 + bytes.length;
+      }
+
+      const sampleName = "Sample_Standard_Exam_10Q.pak";
+      storePakInIndexedDB(sampleName, totalSize, buffer);
+      loadPakFromBuffer(buffer, sampleName);
+      closeModals();
     }
 
-    function renderConfirmExit() {
-      elModal.style.display = "flex";
-      setSoftkeys("Exit", "", "Cancel");
+    /* -------------------------------------------------------------------------
+       THEMES & MODALS
+       ------------------------------------------------------------------------- */
+    function setTheme(t, persist = true) {
+      document.body.setAttribute('data-theme', t);
+      if (persist) localStorage.setItem("dgk_theme", t);
+      if (runtime.buffer) {
+        renderActiveView(runtime.batchStart);
+      }
+      closeModals();
+    }
 
-      elModal.innerHTML = `
-        <div class="modal-card">
-          <div class="modal-header red">Exit Application?</div>
-          <div class="modal-body">
-            Are you sure you want to close Daily GK?
-            <div style="display:flex; gap:6px; margin-top:10px;">
-              <button id="mExit" class="card" style="flex:1; background:var(--red); text-align:center;">Exit</button>
-              <button id="mCancel" class="card" style="flex:1; background:var(--hl); text-align:center;">Cancel</button>
+    function toggleMenu(id) {
+      const el = document.getElementById(id);
+      const was = el.classList.contains('active');
+      closeAllMenus();
+      if (!was) el.classList.add('active');
+    }
+
+    function closeAllMenus() {
+      document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    }
+
+    window.onclick = function(e) {
+      if (!e.target.closest('.menu-item')) closeAllMenus();
+    };
+
+    function openModal(id) {
+      closeAllMenus();
+      document.getElementById(id).classList.add('open');
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+      closeAllMenus();
+    }
+
+    async function openRecentModal() {
+      openModal('modal-recent');
+      const container = document.getElementById('recent-list-container');
+      container.innerHTML = `<span style="color:var(--text-muted)">Querying database...</span>`;
+
+      try {
+        const list = await getAllRecentFromIndexedDB();
+        if (!list || list.length === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:18px; color:var(--text-muted);">No packages stored.</div>`;
+          return;
+        }
+
+        container.innerHTML = list.map(item => `
+          <div class="recent-item">
+            <div>
+              <div style="font-weight:600;">${item.name}</div>
+              <div style="font-size:11px; color:var(--text-dim);">${Math.round(item.size / 1024)} KB — Saved: ${item.date}</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="tb-btn primary" onclick="loadRecentItem('${item.name}')">Open</button>
+              <button class="tb-btn" onclick="removeRecentItem('${item.name}')" style="color:var(--status-wrong);">&times;</button>
             </div>
           </div>
-        </div>
-      `;
-
-      document.getElementById("mExit").onclick = () => window.close();
-      document.getElementById("mCancel").onclick = () => {
-        app.state = app.prevState;
-        render();
-      };
-    }
-
-    function openInput(target) {
-      app.inputTarget = target;
-      app.inputBuffer = "";
-      app.prevState = app.state;
-      app.state = STATE.INPUT_DIALOG;
-      render();
-    }
-
-    function renderInputDialog() {
-      elModal.style.display = "flex";
-      setSoftkeys("Done", "Clear", "Cancel");
-
-      let prompt = "Enter search keyword:";
-      if (app.inputTarget === INPUT_TARGET.JUMP_Q) prompt = `Enter Question (1 - ${app.totalQuestions}):`;
-
-      elModal.innerHTML = `
-        <div class="modal-card">
-          <div class="modal-header">Input Dialog</div>
-          <div class="modal-body">
-            <div style="font-size:11px; color:var(--muted);">${prompt}</div>
-            <input type="text" id="dlgInput" class="modal-input" autofocus value="${app.inputBuffer}">
-          </div>
-        </div>
-      `;
-
-      const input = document.getElementById("dlgInput");
-      input.focus();
-      input.oninput = (e) => app.inputBuffer = e.target.value;
-      input.onkeydown = (e) => {
-        if (e.key === "Enter") submitInput();
-        if (e.key === "Escape") { app.state = app.prevState; render(); }
-      };
-    }
-
-    function submitInput() {
-      if (app.inputTarget === INPUT_TARGET.FILE_SEARCH) {
-        app.searchFilter = app.inputBuffer;
-        applyFilter();
-        app.state = STATE.FILE_LIST;
-      } else if (app.inputTarget === INPUT_TARGET.JUMP_Q) {
-        const target = parseInt(app.inputBuffer, 10);
-        if (target >= 1 && target <= app.totalQuestions) {
-          app.selectedOpt = 0;
-          app.userChoice = -1;
-          loadQuestion(target - 1);
-        }
-        app.state = STATE.QUESTION;
-      } else if (app.inputTarget === INPUT_TARGET.Q_SEARCH) {
-        if (app.currentPak && app.searchOffset > 0) {
-          const dv = new DataView(app.currentPak);
-          let sPos = app.searchOffset;
-          for (let i = 0; i < app.totalQuestions; i++) {
-            const qId = dv.getUint16(sPos, true);
-            const tLen = dv.getUint16(sPos + 2, true);
-            sPos += 4;
-            let sText = "";
-            for (let c = 0; c < tLen; c++) sText += String.fromCharCode(dv.getUint8(sPos + c));
-            sPos += tLen;
-
-            if (sText.toLowerCase().includes(app.inputBuffer.toLowerCase())) {
-              loadQuestion(qId);
-              break;
-            }
-          }
-        }
-        app.state = STATE.QUESTION;
+        `).join('');
+      } catch (err) {
+        container.innerHTML = `<span style="color:var(--status-wrong)">Failed to read database: ${err.message}</span>`;
       }
-      render();
     }
 
-    function renderScorecard() {
-      setHeader("Completed");
-      setSoftkeys("Again", "", "Packs");
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.textAlign = "center";
-      card.style.padding = "16px 8px";
-      card.innerHTML = `
-        <div style="font-size:14px; font-weight:700; color:var(--green); margin-bottom:8px;">Quiz Completed!</div>
-        <div style="font-size:12px; margin-bottom:12px;">Final Score: <b>${app.score}</b> / ${app.totalQuestions}</div>
-      `;
-      elViewport.appendChild(card);
-    }
-
-    function handleAction(action) {
-      if (app.state === STATE.CONFIRM_EXIT) {
-        if (action === "OK" || action === "SOFT_LEFT") window.close();
-        if (action === "BACK" || action === "SOFT_RIGHT") {
-          app.state = app.prevState;
-          render();
+    async function loadRecentItem(name) {
+      try {
+        const record = await getPakFromIndexedDB(name);
+        if (record && record.buffer) {
+          loadPakFromBuffer(record.buffer, record.name);
+          closeModals();
+        } else {
+          alert("File data not found.");
         }
+      } catch (e) {
+        alert("Error loading Data: " + e.message);
+      }
+    }
+
+    async function removeRecentItem(name) {
+      await deleteFromIndexedDB(name);
+      openRecentModal();
+    }
+
+    async function clearAllRecentFiles() {
+      if (confirm("Are you sure you want to clear all stored recent files?")) {
+        await clearAllIndexedDB();
+        openRecentModal();
+      }
+    }
+
+    function openDownloadLink() {
+      window.open(DOWNLOAD_URL, "_blank");
+      closeModals();
+    }
+
+    function showJumpDialog() {
+      if (!runtime.totalQuestions) return;
+      document.getElementById('input-jump-number').max = runtime.totalQuestions;
+      document.getElementById('input-jump-number').value = (runtime.layoutMode === 'focus') ? runtime.focusIdx + 1 : runtime.batchStart + 1;
+      openModal('modal-jump');
+    }
+
+    function submitJump() {
+      const val = parseInt(document.getElementById('input-jump-number').value);
+      if (!isNaN(val) && val >= 1 && val <= runtime.totalQuestions) {
+        jumpToQuestionIndex(val - 1);
+        closeModals();
+      }
+    }
+
+    function showScorecard() {
+      document.getElementById('scorecard-number').textContent = `${runtime.score} / ${runtime.totalQuestions}`;
+      const pct = (runtime.score / runtime.totalQuestions) * 100;
+      let text = "Full test evaluation complete.";
+      if (pct === 100) text = "Flawless score: 100% correct across all items.";
+      else if (pct >= 60) text = "Passing score achieved.";
+      else text = "Practice recommended via Study Mode.";
+      document.getElementById('scorecard-text').textContent = text;
+      openModal('modal-scorecard');
+    }
+
+    function confirmExit() {
+      if (confirm("Close Daily GK?")) {
+        window.close();
+      }
+    }
+
+    /* KEYBOARD SHORTCUTS */
+    window.addEventListener('keydown', function(e) {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") {
+        if (e.key === "Enter" && e.target.id === "input-jump-number") submitJump();
         return;
       }
 
-      if (app.state === STATE.INPUT_DIALOG) {
-        if (action === "OK" || action === "SOFT_LEFT") submitInput();
-        if (action === "SOFT_CENTER") { app.inputBuffer = ""; render(); }
-        if (action === "BACK" || action === "SOFT_RIGHT") { app.state = app.prevState; render(); }
-        return;
-      }
-
-      if (action === "BACK" || action === "SOFT_RIGHT") {
-        if (app.state === STATE.TUTORIAL) {
-          elFileInput.click();
-        } else if (app.state === STATE.FILE_LIST) {
-          app.prevState = app.state;
-          app.state = STATE.CONFIRM_EXIT;
-        } else if (app.state === STATE.MENU || app.state === STATE.ABOUT) {
-          app.state = app.pakList.length ? STATE.FILE_LIST : STATE.TUTORIAL;
-        } else if (app.state === STATE.QUESTION_MENU) {
-          app.state = STATE.QUESTION;
-        } else if (app.state === STATE.QUESTION || app.state === STATE.FEEDBACK || app.state === STATE.SCORECARD) {
-          app.state = app.pakList.length ? STATE.FILE_LIST : STATE.TUTORIAL;
-        }
-        render();
-        return;
-      }
-
-      if (action === "SOFT_LEFT") {
-        if (app.state === STATE.TUTORIAL) {
-          if (app.tutorialIdx > 0) {
-            app.tutorialIdx--;
-            render();
-          } else {
-            app.prevState = STATE.TUTORIAL;
-            app.state = STATE.CONFIRM_EXIT;
-            render();
-          }
-        } else if (app.state === STATE.FILE_LIST) {
-          app.menuSelectedIdx = 0;
-          app.state = STATE.MENU;
-          render();
-        } else if (app.state === STATE.QUESTION || app.state === STATE.FEEDBACK) {
-          app.qmenuSelectedIdx = 0;
-          app.state = STATE.QUESTION_MENU;
-          render();
-        } else if (app.state === STATE.SCORECARD) {
-          app.score = 0;
-          app.selectedOpt = 0;
-          app.userChoice = -1;
-          app.state = STATE.QUESTION;
-          loadQuestion(0);
-          render();
-        }
-        return;
-      }
-
-      if (action === "OK" || action === "SOFT_CENTER") {
-        if (app.state === STATE.TUTORIAL) {
-          if (app.tutorialIdx < TOTAL_TUTORIAL_SLIDES - 1) {
-            app.tutorialIdx++;
-            render();
-          } else {
-            elFileInput.click();
-          }
-        } else if (app.state === STATE.FILE_LIST) {
-          if (app.filteredIndices.length) {
-            const actual = app.filteredIndices[app.selectedFileIdx];
-            openPakBuffer(app.pakList[actual].data, app.pakList[actual].filename);
-          }
-        } else if (app.state === STATE.MENU) {
-          execMenuItem(app.menuSelectedIdx);
-        } else if (app.state === STATE.QUESTION_MENU) {
-          execQMenuItem(app.qmenuSelectedIdx);
-        } else if (app.state === STATE.QUESTION) {
-          if (app.readMode === "study") {
-            if (app.currentQId + 1 < app.totalQuestions) loadQuestion(app.currentQId + 1);
-            else app.state = STATE.SCORECARD;
-          } else {
-            app.userChoice = app.selectedOpt;
-            if (app.userChoice === app.curEntry.correct_answer) app.score++;
-            app.state = STATE.FEEDBACK;
-          }
-          render();
-        } else if (app.state === STATE.FEEDBACK) {
-          if (app.currentQId + 1 < app.totalQuestions) {
-            app.selectedOpt = 0;
-            app.userChoice = -1;
-            app.state = STATE.QUESTION;
-            loadQuestion(app.currentQId + 1);
-          } else {
-            app.state = STATE.SCORECARD;
-          }
-          render();
-        }
-        return;
-      }
-
-      if (action === "UP") {
-        if (app.state === STATE.FILE_LIST && app.selectedFileIdx > 0) app.selectedFileIdx--;
-        else if (app.state === STATE.MENU && app.menuSelectedIdx > 0) app.menuSelectedIdx--;
-        else if (app.state === STATE.QUESTION_MENU && app.qmenuSelectedIdx > 0) app.qmenuSelectedIdx--;
-        else if (app.state === STATE.QUESTION && app.selectedOpt > 0) app.selectedOpt--;
-        render();
-      } else if (action === "DOWN") {
-        if (app.state === STATE.FILE_LIST && app.selectedFileIdx < app.filteredIndices.length - 1) app.selectedFileIdx++;
-        else if (app.state === STATE.MENU && app.menuSelectedIdx < 4) app.menuSelectedIdx++;
-        else if (app.state === STATE.QUESTION_MENU && app.qmenuSelectedIdx < 3) app.qmenuSelectedIdx++;
-        else if (app.state === STATE.QUESTION && app.selectedOpt < 3) app.selectedOpt++;
-        render();
-      } else if (action === "LEFT") {
-        if (app.state === STATE.QUESTION && app.readMode === "study" && app.currentQId > 0) {
-          loadQuestion(app.currentQId - 1);
-          render();
-        }
-      } else if (action === "RIGHT") {
-        if (app.state === STATE.QUESTION && app.readMode === "study" && app.currentQId + 1 < app.totalQuestions) {
-          loadQuestion(app.currentQId + 1);
-          render();
-        }
-      }
-
-      if (/^[1-4]$/.test(action)) {
-        if (app.state === STATE.QUESTION) {
-          app.selectedOpt = parseInt(action, 10) - 1;
-          handleAction("OK");
-        }
-      }
-    }
-
-    elSoftLeft.onclick = () => handleAction("SOFT_LEFT");
-    elSoftCenter.onclick = () => handleAction("SOFT_CENTER");
-    elSoftRight.onclick = () => handleAction("SOFT_RIGHT");
-
-    window.addEventListener("keydown", (e) => {
-      if (app.state === STATE.INPUT_DIALOG) return;
-
-      switch (e.key) {
-        case "ArrowUp": handleAction("UP"); e.preventDefault(); break;
-        case "ArrowDown": handleAction("DOWN"); e.preventDefault(); break;
-        case "ArrowLeft": handleAction("LEFT"); e.preventDefault(); break;
-        case "ArrowRight": handleAction("RIGHT"); e.preventDefault(); break;
-        case "Enter":
-        case "5":
-          handleAction("OK");
-          e.preventDefault();
-          break;
-        case "F1":
-        case "[":
-        case "SoftLeft":
-          handleAction("SOFT_LEFT");
-          e.preventDefault();
-          break;
-        case "F2":
-        case "]":
-        case "Escape":
-        case "Backspace":
-        case "SoftRight":
-          handleAction("SOFT_RIGHT");
-          e.preventDefault();
-          break;
-        default:
-          if (/^[1-4]$/.test(e.key)) handleAction(e.key);
-          break;
+      if (e.key === "PageDown" || (e.shiftKey && e.key === " ")) {
+        e.preventDefault();
+        nextBatch();
+      } else if (e.key === "PageUp") {
+        e.preventDefault();
+        prevBatch();
+      } else if (runtime.layoutMode === 'focus' && e.key === "ArrowRight") {
+        e.preventDefault();
+        goToNextFocusCard();
+      } else if (runtime.layoutMode === 'focus' && e.key === "ArrowLeft") {
+        e.preventDefault();
+        goToPrevFocusCard();
+      } else if (e.ctrlKey && e.key.toLowerCase() === 'o') {
+        e.preventDefault();
+        triggerFileInput();
+      } else if (e.ctrlKey && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+        showJumpDialog();
+      } else if (e.key.toLowerCase() === 'm') {
+        toggleReadingMode();
+      } else if (e.key === "+" || e.key === "=") {
+        stepZoom(0.1);
+      } else if (e.key === "-") {
+        stepZoom(-0.1);
+      } else if (e.key === "F1") {
+        e.preventDefault();
+        openModal('modal-guide');
+      } else if (e.key === "Escape") {
+        closeModals();
       }
     });
 
-    function loadFileBuffer(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        app.pakList.push({ filename: file.name, filesize: file.size, data: e.target.result });
-        applyFilter();
-        app.state = STATE.FILE_LIST;
-        render();
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    elFileInput.onchange = (e) => {
-      if (e.target.files.length) loadFileBuffer(e.target.files[0]);
-    };
-
-    window.ondragover = (e) => e.preventDefault();
-    window.ondrop = (e) => {
-      e.preventDefault();
-      if (e.dataTransfer.files.length) loadFileBuffer(e.dataTransfer.files[0]);
-    };
-
-    render();
+    loadPersistedSettings();
+    updateOnDemandVisibility(false);
   </script>
 </body>
 </html>
