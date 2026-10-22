@@ -41,7 +41,7 @@ jobs:
           git add data/ packs.json
           
           if git status --porcelain | grep -E '\.pak|packs\.json'; then
-            git commit -m "Auto-generate PAK files and update packs.json [skip ci]"
+            git commit -m "Generate PAK files and update packs.json"
             git push origin HEAD:${{ github.ref }}
             echo "Successfully generated and pushed PAK files."
           else
