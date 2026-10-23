@@ -2,12 +2,11 @@
 
 Because the file is unsigned, standard installation will block it. Bypass it using the configuration change:
 
-0. Rename Correct **manifest_v2.json** file to `manifest.json`
 1. Open **Firefox 48**.
 2. Type `about:config` into the address bar and press **Enter**. Click the button to accept the risk warning.
 3. Type `xpinstall.signatures.required` into the search box at the top.
 4. **Double-click** the setting in the list to change its value from `true` to `false`.
-5. Drag your `daily-gk.xpi` file from your desktop and **drop it directly onto the open Firefox window**.
+5. Drag your `daily-gk-mani2.xpi` file from your desktop and **drop it directly onto the open Firefox window**.
 
 
 ### Firefox Manifest Version Support Timeline
@@ -25,7 +24,7 @@ Because the file is unsigned, standard installation will block it. Bypass it usi
 * **Firefox 101 to 108:** Contained experimental, hidden preview support for Manifest V3 (disabled by default or required toggling developer flags).
 * **Firefox 109:** Released as the milestone version where **Manifest V3** became fully stable, production-ready, and enabled by default for all users.
 
-###  Local Installation & Testing in Firefox 109
+###  Local Installation in Firefox 109 And Upper
 
 Because Firefox 109 is a modern production version, it strictly blocks the permanent installation of unsigned local `.xpi` files. You can test your extension locally using one of the following two routes:
 
@@ -35,7 +34,7 @@ This method lets you load your extension instantly on a standard production vers
 1. Open **Firefox 109**.
 2. Type `about:debugging#/runtime/this-firefox` into the address bar and press **Enter**.
 3. Click the **Load Temporary Add-on…** button.
-4. Navigate to your project folder and select your **`manifest.json`** file (or select your built `.xpi` file).
+4. Navigate to your project folder and select your **`manifest.json`** file (or select the built `.xpi` file).
 
 *Note: The extension will remain active until you close or restart Firefox.*
 
@@ -46,4 +45,4 @@ If you want the unsigned extension to stay installed permanently when the browse
 2. Type `about:config` into the address bar and press **Enter**. Click the button to accept the risk warning.
 3. Type `xpinstall.signatures.required` into the search box at the top.
 4. **Double-click** the setting in the list to change its value from `true` to `false`.
-5. Drag your newly created `daily-gk.xpi` file from your desktop and **drop it directly onto the open Firefox window** to install it permanently.
+5. Drag your newly created `daily-gk-mani3.xpi` file from your desktop and **drop it directly onto the open Firefox window** to install it permanently.
