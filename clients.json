@@ -168,6 +168,13 @@
         "size_kb": 3.7
     },
     {
+        "id": "nex",
+        "name": "extensions",
+        "category": "Opera",
+        "file": "clients/compiled/extensions/opera/extensions.nex",
+        "size_kb": 19
+    },
+    {
         "id": "md",
         "name": "readme",
         "category": "Opera",
