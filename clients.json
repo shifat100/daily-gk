@@ -116,7 +116,7 @@
         "name": "readme",
         "category": "Extensions",
         "file": "clients/sources/extensions/readme.md",
-        "size_kb": 0.3
+        "size_kb": 0.2
     },
     {
         "id": "c",
@@ -148,9 +148,9 @@
     },
     {
         "id": "crx",
-        "name": "extensions",
-        "category": "Extensions",
-        "file": "clients/compiled/extensions/extensions.crx",
+        "name": "Daily-GK",
+        "category": "Chrome",
+        "file": "clients/compiled/extensions/chrome/Daily-GK.crx",
         "size_kb": 19
     },
     {
