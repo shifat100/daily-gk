@@ -1,29 +1,25 @@
-### Install in Firefox 48
+### Local Install in Firefox 48-108
 
-Because the file is unsigned, standard installation will block it. Bypass it using the configuration change:
+Because the file is unsigned, standard installation will block it. You can test it temporarily using the built-in debugging dashboard, or bypass the verification system completely for a permanent local installation.
+
+#### Option A: Temporary Load (Best for Quick Testing)
+This method lets you load your extension instantly without changing any security flags. The extension will stay active until you close or restart the browser.
+
+1. Open **Firefox 48**.
+2. Type `about:debugging` into the address bar and press **Enter**.
+3. Look at the top of the page and click the **Load Temporary Add-on** button.
+4. Navigate to your project folder and select your **`manifest.json`** file (or choose your `Daily-GK-M2.xpi` archive file).
+
+#### Option B: Permanent Load (Bypass Signature Checks)
+If you want the extension to remain permanently installed even after you close and restart Firefox 48, use this configuration bypass:
 
 1. Open **Firefox 48**.
 2. Type `about:config` into the address bar and press **Enter**. Click the button to accept the risk warning.
 3. Type `xpinstall.signatures.required` into the search box at the top.
 4. **Double-click** the setting in the list to change its value from `true` to `false`.
-5. Drag your `daily-gk-mani2.xpi` file from your desktop and **drop it directly onto the open Firefox window**.
+5. Drag your `Daily-GK-M2.xpi` file from your desktop and **drop it directly onto the open Firefox window**.
 
-
-### Firefox Manifest Version Support Timeline
-
-| Manifest Version | Supported Firefox Versions | Status Details |
-| :--- | :--- | :--- |
-| **Manifest V2** | **Firefox 48 to Present** | **Fully Active (Deprecated).** Firefox is gradually deprecating V2, but it remains active for enterprise and legacy compatibility. |
-| **Manifest V3** | **Firefox 109 to Present** | **Current Standard.** Full, stable production support was officially enabled in **Firefox 109**. |
-
-***
-
-### Key Transition Details
-
-* **Firefox 48:** The very first version to natively support modern WebExtensions using the **Manifest V2** standard.
-* **Firefox 101 to 108:** Contained experimental, hidden preview support for Manifest V3 (disabled by default or required toggling developer flags).
-* **Firefox 109:** Released as the milestone version where **Manifest V3** became fully stable, production-ready, and enabled by default for all users.
-
+---
 ###  Local Installation in Firefox 109 And Upper
 
 Because Firefox 109 is a modern production version, it strictly blocks the permanent installation of unsigned local `.xpi` files. You can test your extension locally using one of the following two routes:
@@ -45,4 +41,21 @@ If you want the unsigned extension to stay installed permanently when the browse
 2. Type `about:config` into the address bar and press **Enter**. Click the button to accept the risk warning.
 3. Type `xpinstall.signatures.required` into the search box at the top.
 4. **Double-click** the setting in the list to change its value from `true` to `false`.
-5. Drag your newly created `daily-gk-mani3.xpi` file from your desktop and **drop it directly onto the open Firefox window** to install it permanently.
+5. Drag your newly created `Daily-GK-M3.xpi` file from your desktop and **drop it directly onto the open Firefox window** to install it permanently.
+---
+### Firefox Manifest Version Support Timeline
+
+| Manifest Version | Supported Firefox Versions | Status Details |
+| :--- | :--- | :--- |
+| **Manifest V2** | **Firefox 48 to Present** | **Fully Active (Deprecated).** Firefox is gradually deprecating V2, but it remains active for enterprise and legacy compatibility. |
+| **Manifest V3** | **Firefox 109 to Present** | **Current Standard.** Full, stable production support was officially enabled in **Firefox 109**. |
+
+***
+
+### Key Transition Details
+
+* **Firefox 48:** The very first version to natively support modern WebExtensions using the **Manifest V2** standard.
+* **Firefox 101 to 108:** Contained experimental, hidden preview support for Manifest V3 (disabled by default or required toggling developer flags).
+* **Firefox 109:** Released as the milestone version where **Manifest V3** became fully stable, production-ready, and enabled by default for all users.
+
+
