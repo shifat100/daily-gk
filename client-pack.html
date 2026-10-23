@@ -234,12 +234,12 @@
     }
 
     .toggle-box {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       line-height: 10px;
       text-align: center;
       font-family: "Courier New", monospace;
-      font-size: 10px;
+      font-size: 8px;
       font-weight: bold;
       border: 1px solid #808080;
       background: #ffffff;
@@ -740,7 +740,7 @@
           rowDir.innerHTML =
             '<span class="tree-guide">|--</span> ' +
             '<span id="' + togId + '" class="toggle-box" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">[-]</span> ' +
-            '<!--span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span--> ' +
+            '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
             '<span class="tree-dir-name" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">' + item.name + '/</span>';
 
           liDir.appendChild(rowDir);
@@ -805,7 +805,7 @@
       rootHeader.className = "tree-node-row";
       rootHeader.innerHTML =
         '<span id="' + rootTogId + '" class="toggle-box" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">[-]</span> ' +
-        '<span style="font-weight:bold; color:#806000; margin-right:4px;"><!--[DIR]--></span> ' +
+        '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
         '<span class="tree-dir-name" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">' + rootTree.name + '</span>';
 
       rootUl.appendChild(rootHeader);
