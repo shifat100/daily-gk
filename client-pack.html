@@ -805,7 +805,7 @@
       rootHeader.className = "tree-node-row";
       rootHeader.innerHTML =
         '<span id="' + rootTogId + '" class="toggle-box" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">[-]</span> ' +
-        '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
+        '<span style="font-weight:bold; color:#806000; margin-right:4px;"><!--[DIR]--></span> ' +
         '<span class="tree-dir-name" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">' + rootTree.name + '</span>';
 
       rootUl.appendChild(rootHeader);
