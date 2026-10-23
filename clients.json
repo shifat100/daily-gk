@@ -1,0 +1,51 @@
+[
+    {
+        "id": "j2me",
+        "name": "Java Feature Phone MIDlet",
+        "category": "Feature Phone",
+        "file": "clients/compiled/j2me/Daily-GK.jar",
+        "size_kb": 35.5
+    },
+    {
+        "id": "mre",
+        "name": "MediaTek MRE VXP Application",
+        "category": "Feature Phone",
+        "file": "clients/compiled/mre/Daily-GK.vxp",
+        "size_kb": 132
+    },
+    {
+        "id": "linux",
+        "name": "Linux Shell Launcher",
+        "category": "Desktop",
+        "file": "clients/live/linux/Daily-GK.sh",
+        "size_kb": 0.59999999999999998
+    },
+    {
+        "id": "windows",
+        "name": "Windows Desktop Launcher",
+        "category": "Desktop",
+        "file": "clients/live/windows/Daily-GK.bat",
+        "size_kb": 0.59999999999999998
+    },
+    {
+        "id": "mre",
+        "name": "MediaTek MRE VXP Application",
+        "category": "Feature Phone",
+        "file": "clients/live/mre/Daily-GK.vbm",
+        "size_kb": 0.29999999999999999
+    },
+    {
+        "id": "j2me",
+        "name": "Java Feature Phone MIDlet",
+        "category": "Feature Phone",
+        "file": "clients/live/j2me/Daily-GK.jar",
+        "size_kb": 35.200000000000003
+    },
+    {
+        "id": "android",
+        "name": "Android Package",
+        "category": "Mobile",
+        "file": "clients/live/android/Daily-GK.apk",
+        "size_kb": 173
+    }
+]
