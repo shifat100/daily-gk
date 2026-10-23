@@ -126,6 +126,13 @@
         "size_kb": 35.5
     },
     {
+        "id": "crx",
+        "name": "extensions",
+        "category": "Extensions",
+        "file": "clients/compiled/extensions/extensions.crx",
+        "size_kb": 19
+    },
+    {
         "id": "md",
         "name": "readme",
         "category": "Extensions",
