@@ -140,6 +140,13 @@
         "size_kb": 17.4
     },
     {
+        "id": "xpi",
+        "name": "Daily-GK-M3",
+        "category": "Firefox",
+        "file": "clients/compiled/extensions/firefox/Daily-GK-M3.xpi",
+        "size_kb": 17.5
+    },
+    {
         "id": "md",
         "name": "readme",
         "category": "Firefox",
