@@ -163,6 +163,13 @@
     {
         "id": "md",
         "name": "readme",
+        "category": "Chrome",
+        "file": "clients/compiled/extensions/chrome/readme.md",
+        "size_kb": 1.7
+    },
+    {
+        "id": "md",
+        "name": "readme",
         "category": "Extensions",
         "file": "clients/compiled/extensions/readme.md",
         "size_kb": 0
