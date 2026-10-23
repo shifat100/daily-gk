@@ -133,6 +133,13 @@
         "size_kb": 35.5
     },
     {
+        "id": "md",
+        "name": "readme",
+        "category": "Firefox",
+        "file": "clients/compiled/extensions/firefox/readme.md",
+        "size_kb": 0.6
+    },
+    {
         "id": "crx",
         "name": "extensions",
         "category": "Extensions",
