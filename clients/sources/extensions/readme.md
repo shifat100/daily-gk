@@ -1,4 +1,3 @@
 - **manifest_v1.json** (For legacy WebKit browsers)
 - **manifest_v2.json** (For Firefox 48+, Pale Moon, and older versions of Chrome)
 - **manifest_v3.json** (For modern Chrome, Opera, Edge, and modern versions of Firefox)
-
