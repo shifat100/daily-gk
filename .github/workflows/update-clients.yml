@@ -24,7 +24,7 @@ jobs:
           php-version: '8.2'
 
       - name: Run Scan Script
-        run: php generate.php
+        run: php generate-client-json.php
 
       - name: Commit and Push clients.json
         run: |
@@ -33,7 +33,7 @@ jobs:
           
           if git status --porcelain | grep clients.json; then
             git add clients.json
-            git commit -m "chore: update clients.json"
+            git commit -m "chore: auto-update clients.json [skip ci]"
             git push
           else
             echo "No changes in clients.json"
