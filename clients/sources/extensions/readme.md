@@ -1,3 +1,4 @@
-manifest_v1.json (লেগ্যাসি ওয়েবকিটের জন্য)
-manifest_v2.json (Firefox 48+, Pale Moon, পুরনো Chrome-এর জন্য)
-manifest_v3.json (আধুনিক Chrome, Opera, Edge, আধুনিক Firefox-এর জন্য)
+- **manifest_v1.json** (For legacy WebKit browsers)
+- **manifest_v2.json** (For Firefox 48+, Pale Moon, and older versions of Chrome)
+- **manifest_v3.json** (For modern Chrome, Opera, Edge, and modern versions of Firefox)
+
