@@ -49,6 +49,69 @@
         "size_kb": 42.6
     },
     {
+        "id": "js",
+        "name": "popup",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/popup.js",
+        "size_kb": 30.6
+    },
+    {
+        "id": "json",
+        "name": "manifest.v3",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v3.json",
+        "size_kb": 0.6
+    },
+    {
+        "id": "json",
+        "name": "manifest.v2",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v2.json",
+        "size_kb": 0.6
+    },
+    {
+        "id": "html",
+        "name": "popup",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/popup.html",
+        "size_kb": 18.2
+    },
+    {
+        "id": "png",
+        "name": "icon16",
+        "category": "Icons",
+        "file": "clients/sources/extensions/icons/icon16.png",
+        "size_kb": 0.4
+    },
+    {
+        "id": "png",
+        "name": "icon128",
+        "category": "Icons",
+        "file": "clients/sources/extensions/icons/icon128.png",
+        "size_kb": 3.5
+    },
+    {
+        "id": "png",
+        "name": "icon48",
+        "category": "Icons",
+        "file": "clients/sources/extensions/icons/icon48.png",
+        "size_kb": 1.3
+    },
+    {
+        "id": "json",
+        "name": "manifest.v1",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v1.json",
+        "size_kb": 0.3
+    },
+    {
+        "id": "md",
+        "name": "readme",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/readme.md",
+        "size_kb": 0.3
+    },
+    {
         "id": "c",
         "name": "daily-gk",
         "category": "Mre",
