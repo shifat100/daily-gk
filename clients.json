@@ -144,7 +144,7 @@
         "name": "readme",
         "category": "Firefox",
         "file": "clients/compiled/extensions/firefox/readme.md",
-        "size_kb": 0.6
+        "size_kb": 1.5
     },
     {
         "id": "crx",
