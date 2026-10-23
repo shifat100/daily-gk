@@ -63,6 +63,13 @@
         "size_kb": 0.6
     },
     {
+        "id": "pem",
+        "name": "extensions",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/extensions.pem",
+        "size_kb": 1.7
+    },
+    {
         "id": "json",
         "name": "manifest.v2",
         "category": "Extensions",
