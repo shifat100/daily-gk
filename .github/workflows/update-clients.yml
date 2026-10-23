@@ -1,0 +1,40 @@
+name: Auto-generate clients.json
+
+on:
+  push:
+    paths:
+      - 'clients/**'
+      - 'generate.php'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Run Scan Script
+        run: php generate.php
+
+      - name: Commit and Push clients.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if git status --porcelain | grep clients.json; then
+            git add clients.json
+            git commit -m "chore: update clients.json"
+            git push
+          else
+            echo "No changes in clients.json"
+          fi
