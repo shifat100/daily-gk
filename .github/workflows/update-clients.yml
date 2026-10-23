@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'clients/**'
-      - 'generate.php'
+      - 'generate-client-json.php'
   workflow_dispatch:
 
 permissions:
