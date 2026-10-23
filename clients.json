@@ -170,6 +170,13 @@
     {
         "id": "md",
         "name": "readme",
+        "category": "Opera",
+        "file": "clients/compiled/extensions/opera/readme.md",
+        "size_kb": 1
+    },
+    {
+        "id": "md",
+        "name": "readme",
         "category": "Extensions",
         "file": "clients/compiled/extensions/readme.md",
         "size_kb": 0
