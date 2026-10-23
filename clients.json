@@ -14,6 +14,13 @@
         "size_kb": 0.6
     },
     {
+        "id": "html",
+        "name": "index",
+        "category": "Cloudphone",
+        "file": "clients/live/cloudphone/index.html",
+        "size_kb": 29.5
+    },
+    {
         "id": "windows",
         "name": "Windows Desktop Launcher",
         "category": "Desktop",
@@ -29,10 +36,24 @@
     },
     {
         "id": "mre",
-        "name": "MediaTek MRE VXP Application",
+        "name": "MediaTek MRE Application",
         "category": "Feature Phone",
         "file": "clients/live/mre/Daily-GK.vbm",
         "size_kb": 0.3
+    },
+    {
+        "id": "java",
+        "name": "Midlet",
+        "category": "J2me",
+        "file": "clients/sources/j2me/Midlet.java",
+        "size_kb": 42.6
+    },
+    {
+        "id": "c",
+        "name": "daily-gk",
+        "category": "Mre",
+        "file": "clients/sources/mre/daily-gk.c",
+        "size_kb": 41.5
     },
     {
         "id": "j2me",
@@ -43,9 +64,30 @@
     },
     {
         "id": "mre",
-        "name": "MediaTek MRE VXP Application",
+        "name": "MediaTek MRE Application",
         "category": "Feature Phone",
         "file": "clients/compiled/mre/Daily-GK.vxp",
         "size_kb": 132
+    },
+    {
+        "id": "html",
+        "name": "index",
+        "category": "Html5",
+        "file": "clients/compiled/html5/index.html",
+        "size_kb": 80.1
+    },
+    {
+        "id": "ttf",
+        "name": "Kalpurush",
+        "category": "Python",
+        "file": "clients/scripts/python/Kalpurush.ttf",
+        "size_kb": 307.2
+    },
+    {
+        "id": "py",
+        "name": "builder",
+        "category": "Python",
+        "file": "clients/scripts/python/builder.py",
+        "size_kb": 25.2
     }
 ]
