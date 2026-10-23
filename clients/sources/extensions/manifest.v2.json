@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Daily GK",
+  "version": "1.0",
+  "description": "Daily GK Universal Package Engine",
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Daily GK",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "applications": {
+    "gecko": {
+      "id": "daily-gk@shifat100.app",
+      "strict_min_version": "48.0"
+    }
+  }
+}
