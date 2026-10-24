@@ -140,13 +140,6 @@
         "size_kb": 35.5
     },
     {
-        "id": "md",
-        "name": "readme",
-        "category": "Adobe-flash",
-        "file": "clients/compiled/adobe-flash/readme.md",
-        "size_kb": 0
-    },
-    {
         "id": "swf",
         "name": "Daily-GK",
         "category": "Adobe-flash",
