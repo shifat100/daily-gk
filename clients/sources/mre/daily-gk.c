@@ -665,9 +665,9 @@ static void draw_screen(void) {
             draw_softbar("Menu", "Next >", "Pack List");
         } else {
             if (g_app.state == STATE_FEEDBACK) {
-                draw_softbar("Menu", "Next Q", "Pack List");
+                draw_softbar("Menu", "Next", "Packs");
             } else {
-                draw_softbar("Menu", "Ans", "Back");
+                draw_softbar("Menu", "OK", "Back");
             }
         }
     }
@@ -716,7 +716,7 @@ static void draw_screen(void) {
 
         vm_graphic_fill_rect(g_app.buffer, 10, 45, 220, 220, COLOR_CARD, COLOR_CARD);
         draw_system_text(20, 60, "Daily GK Universal MRE", COLOR_HL);
-        draw_system_text(20, 80, "Version: 3.0 Touch & Keypad", COLOR_MUTED);
+        draw_system_text(20, 80, "Version: 1.0 Touch & Keypad", COLOR_MUTED);
         draw_system_text(20, 110, "Developer: Shifat100", COLOR_GREEN);
         draw_system_text(20, 130, "Platform: MediaTek S30+", COLOR_TEXT);
         draw_system_text(20, 155, "Modes: Study & Quiz Supported", COLOR_ORANGE);
