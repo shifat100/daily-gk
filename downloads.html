@@ -1,0 +1,1391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily GK - Package Explorer</title>
+  <style type="text/css">
+    /* ============================================================
+       NOSTALGIA UI (WIN 98/2000 SYSTEM THEME)
+       SUPPORTS: TREE VIEW & SOLID VIEW | STRICTLY NO EMOJIS
+       COMPATIBLE WITH OLD (IE6+, OPERA MINI) AND MODERN BROWSERS
+       ============================================================ */
+    * {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #008080; /* Classic Teal */
+      font-family: "Tahoma", "MS Sans Serif", "Verdana", "Arial", sans-serif;
+      font-size: 11px;
+      color: #000000;
+      padding: 6px;
+    }
+
+    /* MAIN CONTAINER WINDOW */
+    .win-window {
+      background-color: #d4d0c8;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+      box-shadow: 2px 2px 0px #000000;
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* TITLEBAR */
+    .win-titlebar {
+      height: 22px;
+      background: #000080;
+      background: -webkit-linear-gradient(left, #000080, #1084d0);
+      background: -moz-linear-gradient(left, #000080, #1084d0);
+      background: linear-gradient(to right, #000080, #1084d0);
+      padding: 2px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .win-titlebar-text {
+      padding-left: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 11px;
+    }
+
+    .win-titlebar-controls {
+      display: flex;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .win-btn-sys {
+      width: 16px;
+      height: 14px;
+      line-height: 10px;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: bold;
+      background-color: #d4d0c8;
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+      border-right: 1px solid #404040;
+      border-bottom: 1px solid #404040;
+      color: #000000;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .win-btn-sys:active {
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+    }
+
+    /* TABS */
+    .win-tab-strip {
+      display: flex;
+      background: #d4d0c8;
+      padding: 5px 6px 0 6px;
+      border-bottom: 1px solid #808080;
+      gap: 3px;
+    }
+
+    .win-tab-btn {
+      background-color: #d4d0c8;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: none;
+      padding: 4px 12px;
+      font-family: inherit;
+      font-size: 11px;
+      color: #000000;
+      cursor: pointer;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    .win-tab-btn.active {
+      background-color: #ffffff;
+      border-bottom: 1px solid #ffffff;
+      font-weight: bold;
+    }
+
+    /* TOOLBAR WITH VIEW TOGGLES */
+    .win-toolbar {
+      background: #d4d0c8;
+      padding: 4px 6px;
+      border-bottom: 1px solid #808080;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .win-input {
+      width: 100%;
+      background-color: #ffffff;
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding: 3px 5px;
+      font-family: inherit;
+      font-size: 11px;
+      color: #000000;
+      outline: none;
+    }
+
+    .win-btn {
+      background-color: #d4d0c8;
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+      border-right: 1px solid #404040;
+      border-bottom: 1px solid #404040;
+      font-family: inherit;
+      font-size: 11px;
+      padding: 3px 8px;
+      color: #000000;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .win-btn:active {
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+    }
+
+    .win-btn.pressed {
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      background-color: #e2dfd8;
+      font-weight: bold;
+    }
+
+    .win-btn-primary {
+      font-weight: bold;
+      border-width: 2px;
+      padding: 4px 14px;
+    }
+
+    /* WORKSPACE */
+    .win-workspace {
+      background: #ffffff;
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-right: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      margin: 4px;
+      min-height: 280px;
+      max-height: 580px;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+
+    /* ============================================================
+       SOLID VIEW STYLES
+       ============================================================ */
+    .solid-folder-group {
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .solid-folder-header {
+      background: #f0f0ea;
+      border-bottom: 1px solid #d4d0c8;
+      padding: 5px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: bold;
+      color: #222222;
+      cursor: pointer;
+    }
+
+    .solid-folder-header:hover {
+      background: #e6e6dc;
+    }
+
+    .folder-title-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toggle-box {
+      width: 16px;
+      height: 14px;
+      line-height: 1;
+      text-align: center;
+      font-family: "Courier New", monospace;
+      font-size: 8px;
+      font-weight: bold;
+      border: 1px solid #808080;
+      background: #ffffff;
+      color: #000000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+    
+    .solid-file-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px 6px 24px;
+      border-bottom: 1px solid #f2f2f2;
+      gap: 8px;
+    }
+
+    .solid-file-row:hover {
+      background-color: #f7f9fa;
+    }
+
+    .file-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .file-title-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .type-badge {
+      font-size: 9px;
+      font-weight: bold;
+      padding: 0 4px;
+      border: 1px solid #a0a0a0;
+      background: #e6e6e6;
+      color: #000080;
+      flex-shrink: 0;
+    }
+
+    .readme-badge {
+      font-size: 9px;
+      font-weight: bold;
+      padding: 1px 4px;
+      border: 1px solid #808000;
+      background: #ffffcc;
+      color: #665500;
+      cursor: pointer;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .readme-badge:hover {
+      background: #ffffee;
+      text-decoration: underline;
+    }
+
+    .file-name-link {
+      color: #000080;
+      font-weight: bold;
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .file-name-link:hover {
+      text-decoration: underline;
+    }
+
+    .file-meta-line {
+      color: #555555;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-right {
+      flex-shrink: 0;
+    }
+
+    .btn-download {
+      font-weight: bold;
+      color: #000000;
+      padding: 3px 10px;
+    }
+
+    /* ============================================================
+       TREE VIEW STYLES
+       ============================================================ */
+    .tree-branch {
+      list-style-type: none;
+      margin: 0;
+      padding-left: 16px;
+    }
+
+    .tree-branch.root-level {
+      padding-left: 4px;
+    }
+
+    .tree-node-row {
+      display: flex;
+      align-items: center;
+      padding: 3px 0;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+
+    .tree-node-row:hover {
+      background-color: #f0f4f8;
+    }
+
+    .tree-guide {
+      font-family: "Courier New", monospace;
+      color: #888888;
+      margin-right: 4px;
+    }
+
+    .tree-dir-name {
+      font-weight: bold;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    .tree-dir-name:hover {
+      text-decoration: underline;
+    }
+
+    .tree-collapsed {
+      display: none;
+    }
+
+    /* STATUS BAR */
+    .win-statusbar {
+      background-color: #d4d0c8;
+      border-top: 1px solid #808080;
+      padding: 2px 4px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .win-status-pane {
+      background: #d4d0c8;
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding: 2px 6px;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .pane-flex {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ============================================================
+       README MODAL & MARKDOWN VIEWER STYLES
+       ============================================================ */
+    .win-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.45);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .win-modal-box {
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 4px 4px 0px #000000;
+    }
+
+    .win-modal-body {
+      padding: 6px;
+    }
+
+    .win-notice-strip {
+      background: #ffffcc;
+      border: 1px solid #808000;
+      padding: 4px 6px;
+      margin-bottom: 6px;
+      color: #333300;
+      font-size: 10px;
+      line-height: 14px;
+    }
+
+    .win-markdown-reader {
+      background: #ffffff;
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-right: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      padding: 10px 12px;
+      max-height: 320px;
+      min-height: 160px;
+      overflow-y: auto;
+      overflow-x: auto;
+      color: #000000;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .win-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    /* MARKDOWN TAGS STYLES */
+    .win-markdown-reader h1, .win-markdown-reader h2, .win-markdown-reader h3, .win-markdown-reader h4 {
+      color: #000080;
+      margin: 8px 0 4px 0;
+      border-bottom: 1px solid #d4d0c8;
+      padding-bottom: 2px;
+    }
+    .win-markdown-reader h1 { font-size: 14px; }
+    .win-markdown-reader h2 { font-size: 13px; }
+    .win-markdown-reader h3 { font-size: 12px; }
+    .win-markdown-reader h4 { font-size: 11px; }
+
+    .win-markdown-reader p {
+      margin-bottom: 6px;
+    }
+
+    .win-markdown-reader ul, .win-markdown-reader ol {
+      margin: 4px 0 8px 18px;
+    }
+
+    .win-markdown-reader li {
+      margin-bottom: 2px;
+    }
+
+    .win-markdown-reader blockquote {
+      border-left: 3px solid #808080;
+      background: #f4f4f0;
+      padding: 4px 8px;
+      margin: 6px 0;
+      color: #444444;
+      font-style: italic;
+    }
+
+    .win-markdown-reader hr {
+      border: 0;
+      height: 2px;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      margin: 8px 0;
+    }
+
+    .win-markdown-reader code {
+      background: #eaeaea;
+      font-family: "Courier New", monospace;
+      padding: 0 3px;
+      border: 1px solid #d0d0d0;
+      font-size: 10px;
+    }
+
+    .win-markdown-reader pre {
+      background: #f7f7f7;
+      border: 1px solid #808080;
+      padding: 6px;
+      overflow-x: auto;
+      margin: 6px 0;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+    }
+
+    .win-markdown-reader a {
+      color: #000080;
+    }
+
+    /* MOBILE ADJUSTMENTS */
+    @media (max-width: 480px) {
+      body { padding: 0; }
+      .win-window { border: none; box-shadow: none; }
+      .solid-file-row { padding-left: 14px; }
+      .win-statusbar { flex-wrap: wrap; }
+      .win-toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar-left, .toolbar-right { width: 100%; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- RETRO WINDOW ROOT -->
+  <div class="win-window">
+    
+    <!-- 1. TITLEBAR -->
+    <div class="win-titlebar">
+      <div class="win-titlebar-text" id="winTitleText">Daily GK - Package Explorer</div>
+      <div class="win-titlebar-controls">
+        <button class="win-btn-sys" onclick="alert('Daily GK Universal Package Explorer\nWith Integrated Readme Markdown Reader.')">?</button>
+        <button class="win-btn-sys" onclick="window.location.reload()">_</button>
+        <button class="win-btn-sys" onclick="window.location.href='index.html'">X</button>
+      </div>
+    </div>
+
+    <!-- 2. TABS -->
+    <div class="win-tab-strip">
+      <button class="win-tab-btn active" id="tabBtnPacks" onclick="switchTab('packs')">
+        Question Packs (.pak)
+      </button>
+      <button class="win-tab-btn" id="tabBtnClients" onclick="switchTab('clients')">
+        Client Apps (.apk, .bat, .jar)
+      </button>
+    </div>
+
+    <!-- 3. TOOLBAR WITH VIEW TOGGLES -->
+    <div class="win-toolbar">
+      <div class="toolbar-left">
+        <span style="font-weight:bold; color:#333;">Find:</span>
+        <input type="text" id="filterInput" class="win-input" onkeyup="applyFilter(this.value)" placeholder="Search packages..." />
+        <button class="win-btn" onclick="clearFilter()">Clear</button>
+      </div>
+      <div class="toolbar-right">
+        <span style="color:#555;">View:</span>
+        <button class="win-btn" id="btnViewTree" onclick="switchView('tree')">[Tree View]</button>
+        <button class="win-btn pressed" id="btnViewSolid" onclick="switchView('solid')">[Solid View]</button>
+        <a class="win-btn" href="index.html">[App]</a>
+      </div>
+    </div>
+
+    <!-- 4. WORKSPACE CONTAINER -->
+    <div class="win-workspace" id="workspaceContainer">
+      <div id="loadingStatus" style="padding: 16px; color: #666666; text-align: center;">
+        Loading data...
+      </div>
+      <div id="workspaceContent"></div>
+    </div>
+
+    <!-- 5. STATUS BAR -->
+    <div class="win-statusbar">
+      <div class="win-status-pane pane-flex" id="sb-status">Ready.</div>
+      <div class="win-status-pane" id="sb-objects">0 Files</div>
+      <div class="win-status-pane" id="sb-extra">0 Questions</div>
+      <div class="win-status-pane" id="sb-size">0.00 MB</div>
+    </div>
+
+  </div>
+
+  <!-- 6. WINDOWS 98 README MODAL VIEWER -->
+  <div id="readmeModal" class="win-modal-backdrop" style="display: none;">
+    <div class="win-window win-modal-box">
+      <div class="win-titlebar">
+        <div class="win-titlebar-text" id="readmeModalTitle">README.md - Readme Notice</div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn-sys" onclick="closeReadmeModal()">X</button>
+        </div>
+      </div>
+      <div class="win-modal-body">
+        <div class="win-notice-strip" id="readmeModalNotice">
+          <strong>Notice:</strong> Please review this package documentation carefully before downloading.
+        </div>
+        <div class="win-markdown-reader" id="readmeModalContent">
+          Loading README content...
+        </div>
+        <div class="win-modal-footer">
+          <button class="win-btn win-btn-primary" id="btnReadmeUnderstand" onclick="onReadmeUnderstand()">Understand</button>
+          <button class="win-btn" onclick="closeReadmeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    /* Fallback data with demonstration README files */
+    var FALLBACK_PACKS = [
+      { "id": "master", "name": "Master Question Bank (All Questions)", "category": "All", "file": "data/master.pak", "questions": 7052, "size_kb": 24240.48 },
+      { "id": "2026-readme", "name": "2026 Instructions", "category": "সাধারণ জ্ঞান", "file": "data/2026/README.md", "size_kb": 1.2 },
+      { "id": "2026", "name": "সাধারণ জ্ঞান (2026)", "category": "সাধারণ জ্ঞান", "file": "data/2026/2026.pak", "questions": 2472, "size_kb": 8452.92 },
+      { "id": "2025", "name": "সাধারণ জ্ঞান (2025)", "category": "সাধারণ জ্ঞান", "file": "data/2025/2025.pak", "questions": 3421, "size_kb": 11331.31 },
+      { "id": "ai-readme", "name": "AI Pack Documentation", "category": "AI", "file": "data/ai/README.md", "size_kb": 1.0 },
+      { "id": "ai", "name": "AI (Artificial Intelligence)", "category": "AI", "file": "data/ai/ai.pak", "questions": 1057, "size_kb": 4136.0 },
+      { "id": "books", "name": "বই থেকে (Books Collection)", "category": "বই থেকে", "file": "data/books/books.pak", "questions": 102, "size_kb": 320.3 }
+    ];
+
+    var FALLBACK_CLIENTS = [
+      { "id": "clients-readme", "name": "Clients Manual", "category": "Desktop", "file": "README.md", "size_kb": 1.5 },
+      { "id": "android", "name": "Android Package", "category": "Mobile", "file": "app-release.apk", "size_kb": 15420.5 },
+      { "id": "windows", "name": "Windows Desktop Launcher", "category": "Desktop", "file": "Daily-GK.bat", "size_kb": 14.2 },
+      { "id": "linux", "name": "Linux Shell Launcher", "category": "Desktop", "file": "Daily-GK.sh", "size_kb": 11.5 },
+      { "id": "j2me", "name": "Java Feature Phone MIDlet", "category": "Feature Phone", "file": "Daily-GK.jar", "size_kb": 512.0 },
+      { "id": "mre", "name": "MediaTek MRE VXP Application", "category": "Feature Phone", "file": "Daily-GK.vbm", "size_kb": 780.0 }
+    ];
+
+    /* In-memory mock text if running under file:// or offline */
+    var FALLBACK_MARKDOWN_CACHE = {
+      "data/2026/readme.md": "# সাধারণ জ্ঞান (2026) - Readme\n\nঅনুগ্রহ করে ডাউনলোডের পূর্বে গুরুত্বপূর্ণ নির্দেশনাবলী পড়ুন:\n\n* **প্যাকেজ সংস্করণ**: 2026.1v\n* **প্রশ্ন সংখ্যা**: ২,৪৭২ টি\n* **ব্যবহারবিধি**: প্যাকেজটি ডাউনলোড শেষে Daily-GK অ্যাপের `Data Import` মেন্যুতে গিয়ে ফাইলটি লোড করুন।\n\n> **সতর্কতা:** এই ডাটাবেজ ফাইলটি শুধুমাত্র Daily GK ক্লায়েন্টের সাথে সংগতিপূর্ণ।\n\nডাউনলোড নিশ্চিত করতে নিচের **Understand** বাটনে চাপ দিন।",
+      "data/ai/readme.md": "# AI Question Bank Readme\n\nWelcome to the Artificial Intelligence specialized pack.\n\n### Specifications:\n1. Covers Machine Learning, LLMs, Deep Learning, and Ethics.\n2. Contains **1,057** verified multiple-choice questions.\n\n```text\nFile Type: PAK format\nChecksum: Validated\nCompatibility: Android, Windows, J2ME\n```\n\nClick **Understand** below to proceed with the download.",
+      "readme.md": "# Daily GK Client Applications\n\nInstallation instructions for multi-platform client apps:\n\n* **Android**: Install the `app-release.apk` directly (allow unknown sources if prompted).\n* **Windows**: Run `Daily-GK.bat` directly from Command Prompt or double click.\n* **Feature Phones**: Install `Daily-GK.jar` on Nokia S40/Symbian or `Daily-GK.vbm` on MediaTek devices.\n\nClick **Understand** to confirm and download your client."
+    };
+
+    var activeTab = "packs";
+    var currentView = "solid";
+    var packsData = null;
+    var clientsData = null;
+
+    // Cache of fetched markdown content
+    var markdownContentCache = {};
+
+    // Tracks download requested through the modal
+    var pendingDownloadFile = null;
+
+    function createXHR() {
+      if (window.XMLHttpRequest) return new XMLHttpRequest();
+      try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e) {}
+      try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) {}
+      return null;
+    }
+
+    /* Helper: Is this file a README.md file? */
+    function isReadmeFile(filePath) {
+      if (!filePath) return false;
+      var clean = filePath.replace(/\\/g, "/").toLowerCase();
+      var parts = clean.split("/");
+      var fileName = parts[parts.length - 1];
+      return (fileName === "readme.md");
+    }
+
+    /* Helper: Get Directory of a file */
+    function getFileDirectory(filePath) {
+      if (!filePath) return "root";
+      var clean = filePath.replace(/\\/g, "/");
+      var parts = clean.split("/");
+      if (parts.length <= 1) return "root";
+      // Directory is everything before the file name
+      return parts.slice(0, parts.length - 1).join("/");
+    }
+
+    /* Helper: Index readmes by directory */
+    function buildReadmeIndex(dataset) {
+      var map = {};
+      if (!dataset) return map;
+      for (var i = 0; i < dataset.length; i++) {
+        var it = dataset[i];
+        if (isReadmeFile(it.file)) {
+          var dir = getFileDirectory(it.file);
+          map[dir] = it;
+        }
+      }
+      return map;
+    }
+
+    function switchTab(tabName) {
+      activeTab = tabName;
+      document.getElementById("tabBtnPacks").className = "win-tab-btn" + (tabName === "packs" ? " active" : "");
+      document.getElementById("tabBtnClients").className = "win-tab-btn" + (tabName === "clients" ? " active" : "");
+      document.getElementById("filterInput").value = "";
+
+      if (tabName === "packs") {
+        document.getElementById("winTitleText").innerHTML = "Daily GK - Package Explorer [packs.json]";
+        if (!packsData) fetchData("packs", "./packs.json", FALLBACK_PACKS);
+        else renderCurrentView();
+      } else {
+        document.getElementById("winTitleText").innerHTML = "Daily GK - Client Apps [clients.json]";
+        if (!clientsData) fetchData("clients", "./clients.json", FALLBACK_CLIENTS);
+        else renderCurrentView();
+      }
+    }
+
+    function switchView(viewName) {
+      currentView = viewName;
+      document.getElementById("btnViewTree").className = "win-btn" + (viewName === "tree" ? " pressed" : "");
+      document.getElementById("btnViewSolid").className = "win-btn" + (viewName === "solid" ? " pressed" : "");
+      renderCurrentView();
+    }
+
+    function fetchData(type, url, fallback) {
+      document.getElementById("loadingStatus").style.display = "block";
+      var xhr = createXHR();
+      if (!xhr) {
+        onDataLoaded(type, fallback);
+        return;
+      }
+      xhr.open("GET", url + "?t=" + new Date().getTime(), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 0) {
+            try {
+              var parsed = window.JSON && window.JSON.parse ? JSON.parse(xhr.responseText) : eval("(" + xhr.responseText + ")");
+              onDataLoaded(type, parsed);
+            } catch (err) {
+              onDataLoaded(type, fallback);
+            }
+          } else {
+            onDataLoaded(type, fallback);
+          }
+        }
+      };
+      try { xhr.send(null); } catch (e) { onDataLoaded(type, fallback); }
+    }
+
+    function onDataLoaded(type, data) {
+      if (type === "packs") packsData = data;
+      else clientsData = data;
+      renderCurrentView();
+    }
+
+    function formatKB(kb) {
+      if (!kb) return "0 KB";
+      if (kb >= 1024) return (kb / 1024).toFixed(2) + " MB";
+      return Math.round(kb) + " KB";
+    }
+
+    function getActiveDataset() {
+      return (activeTab === "packs") ? (packsData || FALLBACK_PACKS) : (clientsData || FALLBACK_CLIENTS);
+    }
+
+    function renderCurrentView() {
+      document.getElementById("loadingStatus").style.display = "none";
+      var data = getActiveDataset();
+      var filterText = (document.getElementById("filterInput").value || "").toLowerCase().trim();
+
+      if (currentView === "solid") {
+        renderSolidView(data, filterText);
+      } else {
+        renderTreeView(data, filterText);
+      }
+    }
+
+    /* ============================================================
+       1. SOLID VIEW RENDERER (Filters out README.md)
+       ============================================================ */
+    function renderSolidView(list, filter) {
+      var container = document.getElementById("workspaceContent");
+      container.innerHTML = "";
+
+      var readmeIndex = buildReadmeIndex(list);
+      var groups = {};
+      var visibleList = [];
+
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var filePath = (item.file || "").replace(/\\/g, "/");
+
+        // FEATURE: If it's a README.md, DO NOT show it in file list
+        if (isReadmeFile(filePath)) {
+          continue;
+        }
+
+        if (filter) {
+          var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
+          if (matchStr.indexOf(filter) === -1) continue;
+        }
+
+        visibleList.push(item);
+
+        var parts = filePath.split("/");
+        var fld = (parts.length > 1) ? parts[parts.length - 2] : "root";
+        var fileName = parts[parts.length - 1];
+
+        if (!groups[fld]) groups[fld] = { dirKey: getFileDirectory(filePath), items: [] };
+        groups[fld].items.push({ data: item, fileName: fileName, fullPath: filePath });
+      }
+
+      var keys = [];
+      for (var k in groups) { if (groups.hasOwnProperty(k)) keys.push(k); }
+      keys.sort();
+
+      if (keys.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No files matching your search.</div>';
+        updateStatusBar(visibleList, activeTab);
+        return;
+      }
+
+      var folderSeq = 0;
+      for (var idx = 0; idx < keys.length; idx++) {
+        var fldName = keys[idx];
+        var groupObj = groups[fldName];
+        var items = groupObj.items;
+        var dirKey = groupObj.dirKey;
+        var hasReadme = !!readmeIndex[dirKey];
+        var readmeItem = readmeIndex[dirKey];
+
+        folderSeq++;
+
+        var groupDiv = document.createElement("div");
+        groupDiv.className = "solid-folder-group";
+
+        var cId = "solid-grp-" + folderSeq;
+        var tId = "solid-tog-" + folderSeq;
+
+        var header = document.createElement("div");
+        header.className = "solid-folder-header";
+        
+        var readmeBadgeHtml = "";
+        if (hasReadme) {
+          readmeBadgeHtml = '<span class="readme-badge" title="Read folder documentation" onclick="event.stopPropagation(); openReadmeModal(\'' + escapeJsString(readmeItem.file) + '\', null, null);">[README.md]</span>';
+        }
+
+        header.innerHTML =
+          '<div class="folder-title-left" onclick="toggleBlock(\'' + cId + '\', \'' + tId + '\')">' +
+            '<span id="' + tId + '" class="toggle-box">[-]</span> ' +
+            '<span>[DIR] ' + fldName + '/ (' + items.length + ' item' + (items.length > 1 ? 's' : '') + ')</span>' +
+          '</div>' +
+          '<div>' + readmeBadgeHtml + '</div>';
+
+        groupDiv.appendChild(header);
+
+        var listDiv = document.createElement("div");
+        listDiv.id = cId;
+
+        for (var j = 0; j < items.length; j++) {
+          var fileObj = items[j];
+          var d = fileObj.data;
+          var badgeText = (activeTab === "packs") ? "PAK" : "APP";
+
+          var row = document.createElement("div");
+          row.className = "solid-file-row";
+
+          var metaText = (d.category ? d.category : "General") + " &bull; " +
+                         (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
+                         formatKB(d.size_kb);
+
+          // Escaped click triggers to intercept download
+          var clickJs = 'handleFileDownloadClick(\'' + escapeJsString(d.file) + '\', \'' + escapeJsString(fileObj.fileName) + '\')';
+
+          row.innerHTML =
+            '<div class="file-left">' +
+              '<div class="file-title-line">' +
+                '<span class="type-badge">' + badgeText + '</span> ' +
+                '<a class="file-name-link" href="javascript:void(0)" onclick="' + clickJs + '">' + fileObj.fileName + '</a>' +
+              '</div>' +
+              '<div class="file-meta-line">' + metaText + '</div>' +
+            '</div>' +
+            '<div class="file-right">' +
+              '<button type="button" class="win-btn btn-download" onclick="' + clickJs + '">Download</button>' +
+            '</div>';
+
+          listDiv.appendChild(row);
+        }
+
+        groupDiv.appendChild(listDiv);
+        container.appendChild(groupDiv);
+      }
+
+      updateStatusBar(visibleList, activeTab);
+    }
+
+    /* ============================================================
+       2. TREE VIEW RENDERER (Filters out README.md)
+       ============================================================ */
+    function buildTreeStructure(list, filter) {
+      var root = { name: (activeTab === "packs" ? "data/" : "root/"), type: "dir", children: {}, dirPath: (activeTab === "packs" ? "data" : "root") };
+
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var filePath = (item.file || "").replace(/\\/g, "/");
+
+        // FEATURE: Exclude README.md from tree file items
+        if (isReadmeFile(filePath)) continue;
+
+        if (filter) {
+          var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
+          if (matchStr.indexOf(filter) === -1) continue;
+        }
+
+        var cleanPath = filePath;
+        if (activeTab === "packs" && cleanPath.indexOf("data/") === 0) {
+          cleanPath = cleanPath.substring(5);
+        }
+
+        var parts = cleanPath.split("/");
+        var current = root;
+
+        for (var p = 0; p < parts.length; p++) {
+          var part = parts[p];
+          if (!part) continue;
+
+          if (p === parts.length - 1) {
+            current.children[part] = { name: part, type: "file", data: item, fullPath: filePath };
+          } else {
+            if (!current.children[part]) {
+              var currPath = (current.dirPath ? current.dirPath + "/" : "") + part;
+              current.children[part] = { name: part, type: "dir", children: {}, dirPath: currPath };
+            }
+            current = current.children[part];
+          }
+        }
+      }
+      return root;
+    }
+
+    var treeNodeCounter = 0;
+
+    function renderTreeNodes(node, container, readmeIndex) {
+      var keys = [];
+      for (var k in node.children) {
+        if (node.children.hasOwnProperty(k)) keys.push(k);
+      }
+      keys.sort();
+
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var item = node.children[key];
+
+        if (item.type === "dir") {
+          treeNodeCounter++;
+          var subUlId = "tree-ul-" + treeNodeCounter;
+          var togId = "tree-tog-" + treeNodeCounter;
+
+          // Check if this directory has an associated README
+          var dirKey = item.dirPath;
+          var readmeItem = readmeIndex[dirKey];
+          var badgeHtml = "";
+          if (readmeItem) {
+            badgeHtml = ' <span class="readme-badge" onclick="openReadmeModal(\'' + escapeJsString(readmeItem.file) + '\', null, null)">[README.md]</span>';
+          }
+
+          var liDir = document.createElement("li");
+
+          var rowDir = document.createElement("div");
+          rowDir.className = "tree-node-row";
+          rowDir.innerHTML =
+            '<span class="tree-guide">|--</span> ' +
+            '<span id="' + togId + '" class="toggle-box" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">[-]</span> ' +
+            '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
+            '<span class="tree-dir-name" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">' + item.name + '/</span>' +
+            badgeHtml;
+
+          liDir.appendChild(rowDir);
+
+          var childUl = document.createElement("ul");
+          childUl.className = "tree-branch";
+          childUl.id = subUlId;
+
+          renderTreeNodes(item, childUl, readmeIndex);
+
+          liDir.appendChild(childUl);
+          container.appendChild(liDir);
+
+        } else if (item.type === "file") {
+          var d = item.data;
+          var badgeText = (activeTab === "packs") ? "PAK" : "APP";
+
+          var liFile = document.createElement("li");
+
+          var rowFile = document.createElement("div");
+          rowFile.className = "solid-file-row";
+          rowFile.style.border = "none";
+          rowFile.style.paddingLeft = "8px";
+
+          var metaText = (d.category ? d.category : "General") + " &bull; " +
+                         (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
+                         formatKB(d.size_kb);
+
+          var clickJs = 'handleFileDownloadClick(\'' + escapeJsString(d.file) + '\', \'' + escapeJsString(item.name) + '\')';
+
+          rowFile.innerHTML =
+            '<div class="file-left">' +
+              '<div class="file-title-line">' +
+                '<span class="tree-guide">|--</span> ' +
+                '<span class="type-badge">' + badgeText + '</span> ' +
+                '<a class="file-name-link" href="javascript:void(0)" onclick="' + clickJs + '">' + item.name + '</a>' +
+              '</div>' +
+              '<div class="file-meta-line" style="padding-left: 20px;">' + metaText + '</div>' +
+            '</div>' +
+            '<div class="file-right">' +
+              '<button type="button" class="win-btn btn-download" onclick="' + clickJs + '">Download</button>' +
+            '</div>';
+
+          liFile.appendChild(rowFile);
+          container.appendChild(liFile);
+        }
+      }
+    }
+
+    function renderTreeView(list, filter) {
+      var container = document.getElementById("workspaceContent");
+      container.innerHTML = "";
+
+      var readmeIndex = buildReadmeIndex(list);
+      var rootTree = buildTreeStructure(list, filter);
+
+      var rootUl = document.createElement("ul");
+      rootUl.className = "tree-branch root-level";
+
+      treeNodeCounter = 0;
+      var rootTogId = "tree-root-tog";
+      var rootSubId = "tree-root-sub";
+
+      var rootHeader = document.createElement("div");
+      rootHeader.className = "tree-node-row";
+      rootHeader.innerHTML =
+        '<span id="' + rootTogId + '" class="toggle-box" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">[-]</span> ' +
+        '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
+        '<span class="tree-dir-name" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">' + rootTree.name + '</span>';
+
+      rootUl.appendChild(rootHeader);
+
+      var subUl = document.createElement("ul");
+      subUl.className = "tree-branch";
+      subUl.id = rootSubId;
+
+      renderTreeNodes(rootTree, subUl, readmeIndex);
+
+      if (subUl.children.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No files matching your search.</div>';
+        updateStatusBar([], activeTab);
+        return;
+      }
+
+      rootUl.appendChild(subUl);
+      container.appendChild(rootUl);
+
+      // Collect visible items for status bar
+      var visibleItems = [];
+      for (var i = 0; i < list.length; i++) {
+        if (!isReadmeFile(list[i].file)) visibleItems.push(list[i]);
+      }
+      updateStatusBar(visibleItems, activeTab);
+    }
+
+    /* ============================================================
+       3. DOWNLOAD INTERCEPTOR & README WORKFLOW
+       ============================================================ */
+    function handleFileDownloadClick(fileUrl, fileName) {
+      var data = getActiveDataset();
+      var readmeIndex = buildReadmeIndex(data);
+      var dirKey = getFileDirectory(fileUrl);
+      var readmeItem = readmeIndex[dirKey];
+
+      if (readmeItem) {
+        // Intercept: Open markdown reader modal first
+        openReadmeModal(readmeItem.file, fileUrl, fileName);
+      } else {
+        // Direct download
+        executeBrowserDownload(fileUrl, fileName);
+      }
+    }
+
+    function openReadmeModal(readmeFilePath, targetDownloadUrl, targetDownloadName) {
+      pendingDownloadFile = targetDownloadUrl ? { url: targetDownloadUrl, name: targetDownloadName } : null;
+
+      var modal = document.getElementById("readmeModal");
+      var title = document.getElementById("readmeModalTitle");
+      var content = document.getElementById("readmeModalContent");
+      var notice = document.getElementById("readmeModalNotice");
+      var btnUnderstand = document.getElementById("btnReadmeUnderstand");
+
+      title.innerHTML = "README.md - " + (targetDownloadName ? "Read Before Downloading (" + targetDownloadName + ")" : "Documentation Viewer");
+      
+      if (targetDownloadName) {
+        notice.innerHTML = "<strong>Notice:</strong> Please read this documentation before downloading <strong>" + escapeHtml(targetDownloadName) + "</strong>. Click <strong>Understand</strong> below to proceed.";
+        btnUnderstand.innerHTML = "Understand &amp; Download";
+      } else {
+        notice.innerHTML = "<strong>Documentation:</strong> Viewing folder instructions.";
+        btnUnderstand.innerHTML = "Understand";
+      }
+
+      content.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">Loading README content...</div>';
+      modal.style.display = "flex";
+
+      // Fetch or use cached
+      loadReadmeText(readmeFilePath, function(rawMarkdown) {
+        content.innerHTML = parseMarkdownToHtml(rawMarkdown);
+      });
+    }
+
+    function loadReadmeText(filePath, callback) {
+      var normalized = (filePath || "").replace(/\\/g, "/").toLowerCase();
+
+      // Check cache first
+      if (markdownContentCache[normalized]) {
+        callback(markdownContentCache[normalized]);
+        return;
+      }
+
+      var xhr = createXHR();
+      if (!xhr) {
+        var fallbackText = FALLBACK_MARKDOWN_CACHE[normalized] || ("# README\n\nNo active connection available for `" + filePath + "`.");
+        markdownContentCache[normalized] = fallbackText;
+        callback(fallbackText);
+        return;
+      }
+
+      xhr.open("GET", filePath + "?t=" + new Date().getTime(), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 0) {
+            var text = xhr.responseText;
+            // Check if returned valid content or fallback
+            if (!text || text.indexOf("<!DOCTYPE") !== -1 || text.indexOf("<html") !== -1) {
+              text = FALLBACK_MARKDOWN_CACHE[normalized] || ("# README\n\nFile: `" + filePath + "`\n\nPlease ensure you review all safety notes before downloading.");
+            }
+            markdownContentCache[normalized] = text;
+            callback(text);
+          } else {
+            var fallback = FALLBACK_MARKDOWN_CACHE[normalized] || ("# README.md\n\nDocumentation for folder `" + filePath + "`\n\nPlease proceed responsibly.");
+            markdownContentCache[normalized] = fallback;
+            callback(fallback);
+          }
+        }
+      };
+      try {
+        xhr.send(null);
+      } catch (e) {
+        var fb = FALLBACK_MARKDOWN_CACHE[normalized] || "# README\n\nDirect network fetch not permitted in local sandbox.";
+        callback(fb);
+      }
+    }
+
+    function onReadmeUnderstand() {
+      var fileToGet = pendingDownloadFile;
+      closeReadmeModal();
+
+      if (fileToGet && fileToGet.url) {
+        executeBrowserDownload(fileToGet.url, fileToGet.name);
+      }
+    }
+
+    function closeReadmeModal() {
+      document.getElementById("readmeModal").style.display = "none";
+      pendingDownloadFile = null;
+    }
+
+    function executeBrowserDownload(url, filename) {
+      var a = document.createElement("a");
+      a.href = url;
+      if (filename) a.download = filename;
+      else a.download = "";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    /* ============================================================
+       4. LIGHTWEIGHT MARKDOWN-TO-HTML PARSER (WORKS IN ANY BROWSER)
+       ============================================================ */
+    function escapeHtml(str) {
+      return (str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeJsString(str) {
+      return (str || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "\\\"");
+    }
+
+    function parseMarkdownToHtml(md) {
+      if (!md) return "<p><em>Readme file is empty.</em></p>";
+
+      var lines = md.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+      var html = [];
+      var inList = false;
+      var listType = "";
+      var inCode = false;
+      var codeBuffer = [];
+
+      for (var i = 0; i < lines.length; i++) {
+        var rawLine = lines[i];
+
+        // Code block toggle (```)
+        if (rawLine.match(/^```/)) {
+          if (inCode) {
+            html.push('<pre><code>' + codeBuffer.join("\n") + '</code></pre>');
+            codeBuffer = [];
+            inCode = false;
+          } else {
+            if (inList) { html.push('</' + listType + '>'); inList = false; }
+            inCode = true;
+          }
+          continue;
+        }
+
+        if (inCode) {
+          codeBuffer.push(escapeHtml(rawLine));
+          continue;
+        }
+
+        // Horizontal line (--- or ***)
+        if (rawLine.match(/^(?:---|\*\*\*|___)\s*$/)) {
+          if (inList) { html.push('</' + listType + '>'); inList = false; }
+          html.push('<hr />');
+          continue;
+        }
+
+        // Headings (#, ##, ###)
+        var hMatch = rawLine.match(/^(#{1,6})\s+(.*)$/);
+        if (hMatch) {
+          if (inList) { html.push('</' + listType + '>'); inList = false; }
+          var level = hMatch[1].length;
+          var hTag = "h" + (level > 4 ? 4 : level);
+          html.push('<' + hTag + '>' + parseInlineMarkdown(escapeHtml(hMatch[2])) + '</' + hTag + '>');
+          continue;
+        }
+
+        // Blockquotes (> )
+        var bqMatch = rawLine.match(/^>\s?(.*)$/);
+        if (bqMatch) {
+          if (inList) { html.push('</' + listType + '>'); inList = false; }
+          html.push('<blockquote>' + parseInlineMarkdown(escapeHtml(bqMatch[1])) + '</blockquote>');
+          continue;
+        }
+
+        // Unordered lists (* or -)
+        var ulMatch = rawLine.match(/^[\*\-]\s+(.*)$/);
+        if (ulMatch) {
+          if (!inList || listType !== "ul") {
+            if (inList) html.push('</' + listType + '>');
+            html.push('<ul>');
+            inList = true;
+            listType = "ul";
+          }
+          html.push('<li>' + parseInlineMarkdown(escapeHtml(ulMatch[1])) + '</li>');
+          continue;
+        }
+
+        // Ordered lists (1. )
+        var olMatch = rawLine.match(/^\d+\.\s+(.*)$/);
+        if (olMatch) {
+          if (!inList || listType !== "ol") {
+            if (inList) html.push('</' + listType + '>');
+            html.push('<ol>');
+            inList = true;
+            listType = "ol";
+          }
+          html.push('<li>' + parseInlineMarkdown(escapeHtml(olMatch[1])) + '</li>');
+          continue;
+        }
+
+        // If regular line, close open lists
+        if (inList) {
+          html.push('</' + listType + '>');
+          inList = false;
+        }
+
+        // Empty lines
+        if (rawLine.trim() === "") {
+          continue;
+        }
+
+        // Paragraph
+        html.push('<p>' + parseInlineMarkdown(escapeHtml(rawLine)) + '</p>');
+      }
+
+      if (inCode) {
+        html.push('<pre><code>' + codeBuffer.join("\n") + '</code></pre>');
+      }
+      if (inList) {
+        html.push('</' + listType + '>');
+      }
+
+      return html.join("\n");
+    }
+
+    function parseInlineMarkdown(str) {
+      if (!str) return "";
+      // Inline code
+      str = str.replace(/`([^`]+)`/g, '<code>$1</code>');
+      // Bold
+      str = str.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      str = str.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      // Italic
+      str = str.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      str = str.replace(/_([^_]+)_/g, '<em>$1</em>');
+      // Strikethrough
+      str = str.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+      // Links
+      str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+      return str;
+    }
+
+    /* ============================================================
+       5. GENERAL CONTROLS
+       ============================================================ */
+    function toggleBlock(contentId, toggleId) {
+      var el = document.getElementById(contentId);
+      var tog = document.getElementById(toggleId);
+      if (!el) return;
+
+      var isHidden = (el.className.indexOf("tree-collapsed") !== -1);
+      if (isHidden) {
+        el.className = el.className.replace(/\btree-collapsed\b/g, "").replace(/^\s+|\s+$/g, "");
+        if (tog) tog.innerHTML = "[-]";
+      } else {
+        el.className += " tree-collapsed";
+        if (tog) tog.innerHTML = "[+]";
+      }
+    }
+
+    function applyFilter(text) {
+      renderCurrentView();
+    }
+
+    function clearFilter() {
+      document.getElementById("filterInput").value = "";
+      renderCurrentView();
+    }
+
+    function updateStatusBar(list, tabType) {
+      var totalKb = 0;
+      var totalQs = 0;
+
+      for (var i = 0; i < list.length; i++) {
+        totalKb += (list[i].size_kb || 0);
+        if (list[i].questions) totalQs += list[i].questions;
+      }
+
+      document.getElementById("sb-status").innerHTML = "Ready.";
+      document.getElementById("sb-objects").innerHTML = list.length + " File(s)";
+      document.getElementById("sb-extra").innerHTML = (tabType === "packs") ? (totalQs.toLocaleString() + " Questions") : (list.length + " Platforms");
+      document.getElementById("sb-size").innerHTML = (totalKb / 1024).toFixed(2) + " MB";
+    }
+
+    window.onload = function() {
+      switchTab("packs");
+    };
+  </script>
+</body>
+</html>
