@@ -49,6 +49,13 @@
         "size_kb": 42.6
     },
     {
+        "id": "as",
+        "name": "Daily-Gk",
+        "category": "Adobe-flash",
+        "file": "clients/sources/adobe-flash/Daily-Gk.as",
+        "size_kb": 54
+    },
+    {
         "id": "js",
         "name": "popup",
         "category": "Extensions",
@@ -131,6 +138,13 @@
         "category": "Feature Phone",
         "file": "clients/compiled/j2me/Daily-GK.jar",
         "size_kb": 35.5
+    },
+    {
+        "id": "md",
+        "name": "readme",
+        "category": "Adobe-flash",
+        "file": "clients/compiled/adobe-flash/readme.md",
+        "size_kb": 0
     },
     {
         "id": "xpi",
