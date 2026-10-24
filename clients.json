@@ -50,9 +50,9 @@
     },
     {
         "id": "as",
-        "name": "Daily-Gk",
+        "name": "Daily-Gk-240x320",
         "category": "Adobe-flash",
-        "file": "clients/sources/adobe-flash/Daily-Gk.as",
+        "file": "clients/sources/adobe-flash/Daily-Gk-240x320.as",
         "size_kb": 54
     },
     {
