@@ -56,6 +56,13 @@
         "size_kb": 54
     },
     {
+        "id": "md",
+        "name": "readme",
+        "category": "Adobe-flash",
+        "file": "clients/sources/adobe-flash/readme.md",
+        "size_kb": 0
+    },
+    {
         "id": "js",
         "name": "popup",
         "category": "Extensions",
