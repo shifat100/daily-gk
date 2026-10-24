@@ -216,7 +216,9 @@
       overflow-x: auto;
     }
 
-    /* SOLID VIEW STYLES */
+    /* ============================================================
+       SOLID VIEW STYLES
+       ============================================================ */
     .solid-folder-group {
       border-bottom: 1px solid #e0e0e0;
     }
@@ -350,7 +352,9 @@
       padding: 3px 10px;
     }
 
-    /* TREE VIEW STYLES */
+    /* ============================================================
+       TREE VIEW STYLES
+       ============================================================ */
     .tree-branch {
       list-style-type: none;
       margin: 0;
@@ -419,7 +423,9 @@
       text-overflow: ellipsis;
     }
 
-    /* README MODAL & MARKDOWN VIEWER STYLES */
+    /* ============================================================
+       README MODAL & MARKDOWN VIEWER STYLES
+       ============================================================ */
     .win-modal-backdrop {
       position: fixed;
       top: 0;
@@ -634,12 +640,11 @@
   </div>
 
   <script type="text/javascript">
-    /* Fallback data with demonstration README and sample skipped icon entries */
+    /* Fallback data with demonstration README files */
     var FALLBACK_PACKS = [
       { "id": "master", "name": "Master Question Bank (All Questions)", "category": "All", "file": "data/master.pak", "questions": 7052, "size_kb": 24240.48 },
       { "id": "2026-readme", "name": "2026 Instructions", "category": "সাধারণ জ্ঞান", "file": "data/2026/README.md", "size_kb": 1.2 },
       { "id": "2026", "name": "সাধারণ জ্ঞান (2026)", "category": "সাধারণ জ্ঞান", "file": "data/2026/2026.pak", "questions": 2472, "size_kb": 8452.92 },
-      { "id": "2026-icon", "name": "Category Icon", "category": "Graphics", "file": "data/2026/icons/badge.png", "size_kb": 12.4 }, // Will be skipped
       { "id": "2025", "name": "সাধারণ জ্ঞান (2025)", "category": "সাধারণ জ্ঞান", "file": "data/2025/2025.pak", "questions": 3421, "size_kb": 11331.31 },
       { "id": "ai-readme", "name": "AI Pack Documentation", "category": "AI", "file": "data/ai/README.md", "size_kb": 1.0 },
       { "id": "ai", "name": "AI (Artificial Intelligence)", "category": "AI", "file": "data/ai/ai.pak", "questions": 1057, "size_kb": 4136.0 },
@@ -648,7 +653,6 @@
 
     var FALLBACK_CLIENTS = [
       { "id": "clients-readme", "name": "Clients Manual", "category": "Desktop", "file": "README.md", "size_kb": 1.5 },
-      { "id": "client-icon", "name": "App Favicon", "category": "Icons", "file": "icons/favicon.ico", "size_kb": 16.0 }, // Will be skipped
       { "id": "android", "name": "Android Package", "category": "Mobile", "file": "app-release.apk", "size_kb": 15420.5 },
       { "id": "windows", "name": "Windows Desktop Launcher", "category": "Desktop", "file": "Daily-GK.bat", "size_kb": 14.2 },
       { "id": "linux", "name": "Linux Shell Launcher", "category": "Desktop", "file": "Daily-GK.sh", "size_kb": 11.5 },
@@ -656,6 +660,7 @@
       { "id": "mre", "name": "MediaTek MRE VXP Application", "category": "Feature Phone", "file": "Daily-GK.vbm", "size_kb": 780.0 }
     ];
 
+    /* In-memory mock text if running under file:// or offline */
     var FALLBACK_MARKDOWN_CACHE = {
       "data/2026/readme.md": "# সাধারণ জ্ঞান (2026) - Readme\n\nঅনুগ্রহ করে ডাউনলোডের পূর্বে গুরুত্বপূর্ণ নির্দেশনাবলী পড়ুন:\n\n* **প্যাকেজ সংস্করণ**: 2026.1v\n* **প্রশ্ন সংখ্যা**: ২,৪৭২ টি\n* **ব্যবহারবিধি**: প্যাকেজটি ডাউনলোড শেষে Daily-GK অ্যাপের `Data Import` মেন্যুতে গিয়ে ফাইলটি লোড করুন।\n\n> **সতর্কতা:** এই ডাটাবেজ ফাইলটি শুধুমাত্র Daily GK ক্লায়েন্টের সাথে সংগতিপূর্ণ।\n\nডাউনলোড নিশ্চিত করতে নিচের **Understand** বাটনে চাপ দিন।",
       "data/ai/readme.md": "# AI Question Bank Readme\n\nWelcome to the Artificial Intelligence specialized pack.\n\n### Specifications:\n1. Covers Machine Learning, LLMs, Deep Learning, and Ethics.\n2. Contains **1,057** verified multiple-choice questions.\n\n```text\nFile Type: PAK format\nChecksum: Validated\nCompatibility: Android, Windows, J2ME\n```\n\nClick **Understand** below to proceed with the download.",
@@ -666,7 +671,11 @@
     var currentView = "solid";
     var packsData = null;
     var clientsData = null;
+
+    // Cache of fetched markdown content
     var markdownContentCache = {};
+
+    // Tracks download requested through the modal
     var pendingDownloadFile = null;
 
     function createXHR() {
@@ -674,20 +683,6 @@
       try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e) {}
       try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) {}
       return null;
-    }
-
-    /* Helper: Skip any file/folder inside an "icons" directory */
-    function isInIconsFolder(filePath) {
-      if (!filePath) return false;
-      var clean = filePath.replace(/\\/g, "/").toLowerCase();
-      var parts = clean.split("/");
-      // Check all folder names (everything before the last element)
-      for (var i = 0; i < parts.length - 1; i++) {
-        if (parts[i] === "icons") {
-          return true;
-        }
-      }
-      return false;
     }
 
     /* Helper: Is this file a README.md file? */
@@ -705,16 +700,16 @@
       var clean = filePath.replace(/\\/g, "/");
       var parts = clean.split("/");
       if (parts.length <= 1) return "root";
+      // Directory is everything before the file name
       return parts.slice(0, parts.length - 1).join("/");
     }
 
-    /* Helper: Index readmes by directory (ignoring icons folder) */
+    /* Helper: Index readmes by directory */
     function buildReadmeIndex(dataset) {
       var map = {};
       if (!dataset) return map;
       for (var i = 0; i < dataset.length; i++) {
         var it = dataset[i];
-        if (isInIconsFolder(it.file)) continue;
         if (isReadmeFile(it.file)) {
           var dir = getFileDirectory(it.file);
           map[dir] = it;
@@ -801,7 +796,7 @@
     }
 
     /* ============================================================
-       1. SOLID VIEW RENDERER (Filters out README.md & icons folder)
+       1. SOLID VIEW RENDERER (Filters out README.md)
        ============================================================ */
     function renderSolidView(list, filter) {
       var container = document.getElementById("workspaceContent");
@@ -815,12 +810,7 @@
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
-        // EXCLUDE icons folder
-        if (isInIconsFolder(filePath)) {
-          continue;
-        }
-
-        // EXCLUDE README.md from visible list
+        // FEATURE: If it's a README.md, DO NOT show it in file list
         if (isReadmeFile(filePath)) {
           continue;
         }
@@ -899,6 +889,7 @@
                          (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
                          formatKB(d.size_kb);
 
+          // Escaped click triggers to intercept download
           var clickJs = 'handleFileDownloadClick(\'' + escapeJsString(d.file) + '\', \'' + escapeJsString(fileObj.fileName) + '\')';
 
           row.innerHTML =
@@ -924,7 +915,7 @@
     }
 
     /* ============================================================
-       2. TREE VIEW RENDERER (Filters out README.md & icons folder)
+       2. TREE VIEW RENDERER (Filters out README.md)
        ============================================================ */
     function buildTreeStructure(list, filter) {
       var root = { name: (activeTab === "packs" ? "data/" : "root/"), type: "dir", children: {}, dirPath: (activeTab === "packs" ? "data" : "root") };
@@ -933,10 +924,7 @@
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
-        // EXCLUDE icons folder
-        if (isInIconsFolder(filePath)) continue;
-
-        // EXCLUDE README.md
+        // FEATURE: Exclude README.md from tree file items
         if (isReadmeFile(filePath)) continue;
 
         if (filter) {
@@ -988,6 +976,7 @@
           var subUlId = "tree-ul-" + treeNodeCounter;
           var togId = "tree-tog-" + treeNodeCounter;
 
+          // Check if this directory has an associated README
           var dirKey = item.dirPath;
           var readmeItem = readmeIndex[dirKey];
           var badgeHtml = "";
@@ -1094,9 +1083,7 @@
       // Collect visible items for status bar
       var visibleItems = [];
       for (var i = 0; i < list.length; i++) {
-        if (!isInIconsFolder(list[i].file) && !isReadmeFile(list[i].file)) {
-          visibleItems.push(list[i]);
-        }
+        if (!isReadmeFile(list[i].file)) visibleItems.push(list[i]);
       }
       updateStatusBar(visibleItems, activeTab);
     }
@@ -1111,8 +1098,10 @@
       var readmeItem = readmeIndex[dirKey];
 
       if (readmeItem) {
+        // Intercept: Open markdown reader modal first
         openReadmeModal(readmeItem.file, fileUrl, fileName);
       } else {
+        // Direct download
         executeBrowserDownload(fileUrl, fileName);
       }
     }
@@ -1139,6 +1128,7 @@
       content.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">Loading README content...</div>';
       modal.style.display = "flex";
 
+      // Fetch or use cached
       loadReadmeText(readmeFilePath, function(rawMarkdown) {
         content.innerHTML = parseMarkdownToHtml(rawMarkdown);
       });
@@ -1147,6 +1137,7 @@
     function loadReadmeText(filePath, callback) {
       var normalized = (filePath || "").replace(/\\/g, "/").toLowerCase();
 
+      // Check cache first
       if (markdownContentCache[normalized]) {
         callback(markdownContentCache[normalized]);
         return;
@@ -1165,6 +1156,7 @@
         if (xhr.readyState === 4) {
           if (xhr.status === 200 || xhr.status === 0) {
             var text = xhr.responseText;
+            // Check if returned valid content or fallback
             if (!text || text.indexOf("<!DOCTYPE") !== -1 || text.indexOf("<html") !== -1) {
               text = FALLBACK_MARKDOWN_CACHE[normalized] || ("# README\n\nFile: `" + filePath + "`\n\nPlease ensure you review all safety notes before downloading.");
             }
@@ -1210,7 +1202,7 @@
     }
 
     /* ============================================================
-       4. LIGHTWEIGHT MARKDOWN-TO-HTML PARSER
+       4. LIGHTWEIGHT MARKDOWN-TO-HTML PARSER (WORKS IN ANY BROWSER)
        ============================================================ */
     function escapeHtml(str) {
       return (str || "")
@@ -1238,6 +1230,7 @@
       for (var i = 0; i < lines.length; i++) {
         var rawLine = lines[i];
 
+        // Code block toggle (```)
         if (rawLine.match(/^```/)) {
           if (inCode) {
             html.push('<pre><code>' + codeBuffer.join("\n") + '</code></pre>');
@@ -1255,12 +1248,14 @@
           continue;
         }
 
+        // Horizontal line (--- or ***)
         if (rawLine.match(/^(?:---|\*\*\*|___)\s*$/)) {
           if (inList) { html.push('</' + listType + '>'); inList = false; }
           html.push('<hr />');
           continue;
         }
 
+        // Headings (#, ##, ###)
         var hMatch = rawLine.match(/^(#{1,6})\s+(.*)$/);
         if (hMatch) {
           if (inList) { html.push('</' + listType + '>'); inList = false; }
@@ -1270,6 +1265,7 @@
           continue;
         }
 
+        // Blockquotes (> )
         var bqMatch = rawLine.match(/^>\s?(.*)$/);
         if (bqMatch) {
           if (inList) { html.push('</' + listType + '>'); inList = false; }
@@ -1277,6 +1273,7 @@
           continue;
         }
 
+        // Unordered lists (* or -)
         var ulMatch = rawLine.match(/^[\*\-]\s+(.*)$/);
         if (ulMatch) {
           if (!inList || listType !== "ul") {
@@ -1289,6 +1286,7 @@
           continue;
         }
 
+        // Ordered lists (1. )
         var olMatch = rawLine.match(/^\d+\.\s+(.*)$/);
         if (olMatch) {
           if (!inList || listType !== "ol") {
@@ -1301,15 +1299,18 @@
           continue;
         }
 
+        // If regular line, close open lists
         if (inList) {
           html.push('</' + listType + '>');
           inList = false;
         }
 
+        // Empty lines
         if (rawLine.trim() === "") {
           continue;
         }
 
+        // Paragraph
         html.push('<p>' + parseInlineMarkdown(escapeHtml(rawLine)) + '</p>');
       }
 
@@ -1325,12 +1326,17 @@
 
     function parseInlineMarkdown(str) {
       if (!str) return "";
+      // Inline code
       str = str.replace(/`([^`]+)`/g, '<code>$1</code>');
+      // Bold
       str = str.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       str = str.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      // Italic
       str = str.replace(/\*([^*]+)\*/g, '<em>$1</em>');
       str = str.replace(/_([^_]+)_/g, '<em>$1</em>');
+      // Strikethrough
       str = str.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+      // Links
       str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
       return str;
     }
