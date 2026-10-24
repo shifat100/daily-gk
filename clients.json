@@ -50,13 +50,6 @@
     },
     {
         "id": "as",
-        "name": "Daily-Gk-240x320",
-        "category": "Adobe-flash",
-        "file": "clients/sources/adobe-flash/Daily-Gk-240x320.as",
-        "size_kb": 54
-    },
-    {
-        "id": "as",
         "name": "DailyGK-320x480",
         "category": "Adobe-flash",
         "file": "clients/sources/adobe-flash/DailyGK-320x480.as",
@@ -68,6 +61,13 @@
         "category": "Adobe-flash",
         "file": "clients/sources/adobe-flash/readme.md",
         "size_kb": 0
+    },
+    {
+        "id": "as",
+        "name": "DailyGk-240x320",
+        "category": "Adobe-flash",
+        "file": "clients/sources/adobe-flash/DailyGk-240x320.as",
+        "size_kb": 54
     },
     {
         "id": "js",
