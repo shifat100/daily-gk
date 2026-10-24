@@ -147,6 +147,13 @@
         "size_kb": 0
     },
     {
+        "id": "swf",
+        "name": "Daily-GK",
+        "category": "Adobe-flash",
+        "file": "clients/compiled/adobe-flash/Daily-GK.swf",
+        "size_kb": 9.6
+    },
+    {
         "id": "xpi",
         "name": "Daily-GK-M2",
         "category": "Firefox",
