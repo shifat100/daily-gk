@@ -155,9 +155,9 @@
     },
     {
         "id": "swf",
-        "name": "Daily-GK-240x320",
+        "name": "DailyGK-240x320",
         "category": "Adobe-flash",
-        "file": "clients/compiled/adobe-flash/Daily-GK-240x320.swf",
+        "file": "clients/compiled/adobe-flash/DailyGK-240x320.swf",
         "size_kb": 9.6
     },
     {
