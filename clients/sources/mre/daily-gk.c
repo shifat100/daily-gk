@@ -26,7 +26,7 @@
 #define MAX_Q_BITMAP_SIZE    4096   /* Up to 146 px height */
 #define MAX_OPT_BITMAP_SIZE  2048   /* Up to 78 px height */
 
-#define DOWNLOAD_URL         "http://shifat100.github.com/daily-gk/client-packdaily-gk"
+#define DOWNLOAD_URL         "http://shifat100.github.io/daily-gk/client-pack.html"
 
 /* Color Palette (RGB565) */
 #define COLOR_BG             VM_COLOR_888_TO_565(18, 22, 30)
@@ -549,7 +549,7 @@ static void draw_screen(void) {
         draw_system_text(24, 166, "- System Volume / LOST.DIR", COLOR_RED);
 
         draw_system_text(16, 195, "Get PAK files from:", COLOR_TEXT);
-        draw_system_text(16, 212, "shifat100.github.com/daily-gk/client-pack", COLOR_GREEN);
+        draw_system_text(16, 212, "shifat100.github.io/daily-gk/client-pack.html", COLOR_GREEN);
         draw_system_text(16, 229, "daily-gk", COLOR_GREEN);
 
         draw_softbar("Menu", "Rescan", "Exit");
@@ -558,7 +558,7 @@ static void draw_screen(void) {
         vm_graphic_fill_rect(g_app.buffer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, COLOR_MODAL_BG, COLOR_MODAL_BG);
         vm_graphic_fill_rect(g_app.buffer, 12, 28, 216, 256, COLOR_CARD, COLOR_CARD);
         vm_graphic_fill_rect(g_app.buffer, 12, 28, 216, 26, COLOR_HL, COLOR_HL);
-        draw_system_text(20, 34, "Options Menu", COLOR_TEXT);
+        draw_system_text(20, 34, "Options", COLOR_TEXT);
 
         cur_y = 62;
         for (i = 0; i < TOTAL_MENU_ITEMS; i++) {
@@ -662,7 +662,7 @@ static void draw_screen(void) {
         }
 
         if (g_app.read_mode == READING_MODE_STUDY) {
-            draw_softbar("Menu", "Next >", "Pack List");
+            draw_softbar("Menu", "Next >", "Packs");
         } else {
             if (g_app.state == STATE_FEEDBACK) {
                 draw_softbar("Menu", "Next", "Packs");
@@ -703,7 +703,7 @@ static void draw_screen(void) {
             draw_system_text(16, 48, "[4. Download More]", COLOR_HL);
             draw_system_text(16, 75, "Need more quiz questions?", COLOR_TEXT);
             draw_system_text(16, 95, "Download latest packages from:", COLOR_TEXT);
-            draw_system_text(16, 120, "shifat100.github.com/daily-gk/client-pack", COLOR_GREEN);
+            draw_system_text(16, 120, "shifat100.github.io/daily-gk/client-pack.html", COLOR_GREEN);
             draw_system_text(16, 140, "daily-gk", COLOR_GREEN);
             draw_system_text(16, 170, "Click [Download] to open web.", COLOR_HL);
         }
@@ -722,7 +722,7 @@ static void draw_screen(void) {
         draw_system_text(20, 155, "Modes: Study & Quiz Supported", COLOR_ORANGE);
         draw_system_text(20, 180, "Global Complex Text Engine", COLOR_ORANGE);
 
-        draw_softbar("", "", "[Back]");
+        draw_softbar("", "", "Back");
     }
     else if (g_app.state == STATE_SCORECARD) {
         vm_graphic_fill_rect(g_app.buffer, 10, 60, 220, 160, COLOR_CARD, COLOR_CARD);
@@ -731,7 +731,7 @@ static void draw_screen(void) {
         sprintf(text_buf, "Final Score: %d / %d", g_app.score, (int)g_app.total_questions);
         draw_system_text(50, 120, text_buf, COLOR_TEXT);
 
-        draw_softbar("Again", "", "Pack List");
+        draw_softbar("Again", "", "Packs");
     }
 
     vm_graphic_flush_layer(g_app.layer_hdl, 1);
