@@ -58,19 +58,19 @@ jobs:
             exit 1
           fi
 
-      # Force icon generation into src-tauri/icons
+      # Force icon generation into src-tauri/icons using icons/icon-512.png
       - name: Generate App Icons
         shell: bash
         run: |
           mkdir -p src-tauri/icons
-          npx @tauri-apps/cli icon icon-512.png -o src-tauri/icons
+          npx @tauri-apps/cli icon icons/icon-512.png -o src-tauri/icons
 
       - name: Build Tauri Application
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Copy built files to clients/compiled/<os_name>/
+      # Copy built packages to clients/compiled/<os_name>/
       - name: Copy Build Artifacts to clients/compiled
         shell: bash
         run: |
