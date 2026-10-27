@@ -1,13 +1,5 @@
 name: Build Desktop Apps (Win, Mac, Linux)
 
-# on:
-#   workflow_dispatch:
-#   push:
-#     paths:
-#       - 'clients/compiled/html5/**'
-#       - 'src-tauri/**'
-#       - '.github/workflows/**'
-
 on:
   workflow_dispatch:
 
@@ -78,28 +70,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Upload Installers
+      # Copy built files to clients/compiled/<os_name>/
+      - name: Copy Build Artifacts to clients/compiled
+        shell: bash
+        run: |
+          mkdir -p clients/compiled/${{ matrix.os_name }}
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            cp src-tauri/target/release/bundle/nsis/*.exe clients/compiled/windows/ 2>/dev/null || true
+            cp src-tauri/target/release/bundle/msi/*.msi clients/compiled/windows/ 2>/dev/null || true
+          elif [ "${{ matrix.os_name }}" = "macos" ]; then
+            cp src-tauri/target/release/bundle/dmg/*.dmg clients/compiled/macos/ 2>/dev/null || true
+          elif [ "${{ matrix.os_name }}" = "linux" ]; then
+            cp src-tauri/target/release/bundle/deb/*.deb clients/compiled/linux/ 2>/dev/null || true
+            cp src-tauri/target/release/bundle/appimage/*.AppImage clients/compiled/linux/ 2>/dev/null || true
+          fi
+
+      # Upload Installers from clients/compiled
       - name: Upload Windows Installers (.exe & .msi)
         if: matrix.os_name == 'windows'
         uses: actions/upload-artifact@v4
         with:
           name: Daily-GK-Windows-Installers
-          path: |
-            src-tauri/target/release/bundle/nsis/*.exe
-            src-tauri/target/release/bundle/msi/*.msi
+          path: clients/compiled/windows/*
 
       - name: Upload macOS Installer (.dmg)
         if: matrix.os_name == 'macos'
         uses: actions/upload-artifact@v4
         with:
           name: Daily-GK-macOS-Installer
-          path: src-tauri/target/release/bundle/dmg/*.dmg
+          path: clients/compiled/macos/*
 
       - name: Upload Linux Installers (.deb & .AppImage)
         if: matrix.os_name == 'linux'
         uses: actions/upload-artifact@v4
         with:
           name: Daily-GK-Linux-Installers
-          path: |
-            src-tauri/target/release/bundle/deb/*.deb
-            src-tauri/target/release/bundle/appimage/*.AppImage
+          path: clients/compiled/linux/*
