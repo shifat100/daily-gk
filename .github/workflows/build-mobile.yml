@@ -111,19 +111,15 @@ jobs:
           }
           EOF
 
-          # টেমপ্লেট তৈরির সময় pod install ফেইল করলেও যেন স্ক্রিপ্ট না থামে
           npx cap add ios || true
 
-          # Podfile এবং Xcode প্রজেক্টে iOS টার্গেট ভার্সন 15.0 এ সেট করা
           sed -i '' "s/platform :ios, .*/platform :ios, '15.0'/" ios/App/Podfile
           sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g" ios/App/App.xcodeproj/project.pbxproj
 
-          # এখন নতুন টার্গেট অনুযায়ী পড ডিপেন্ডেন্সি ইন্সটল করা
           cd ios/App
           pod install
           cd ../..
 
-          # আইকন প্রসেসিং
           if [ -f "../icons/icon-512.png" ]; then
             mkdir -p assets
             cp ../icons/icon-512.png assets/icon-only.png
@@ -142,16 +138,17 @@ jobs:
             -configuration Debug \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            BUILD_DIR=./build clean build
+            clean build
 
       - name: Package into IPA
         run: |
           cd capacitor-build/ios/App
           mkdir -p Payload
-          cp -r build/Debug-iphoneos/App.app Payload/
+          cp -r build/Build/Products/Debug-iphoneos/App.app Payload/
           zip -r daily-gk.ipa Payload
 
       - name: Upload Temporary iOS Artifact
