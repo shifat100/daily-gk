@@ -5,7 +5,7 @@ on:
     paths:
       - 'clients/sources/mobile/**'
       - 'icons/icon-512.png'
-  workflow_dispatch: # Actions ট্যাব থেকে ম্যানুয়ালি রান করার অপশন
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -32,21 +32,17 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Setup Capacitor & Generate Android Project
         run: |
           mkdir -p capacitor-build
           cd capacitor-build
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets
+          # স্ট্যাবল Capacitor ভার্সন ইনস্টল
+          npm install @capacitor/core@^6.0.0 @capacitor/cli@^6.0.0 @capacitor/android@^6.0.0 @capacitor/assets@^3.0.5
           
-          # Web Directory সেটআপ এবং মোবাইল সোর্স কপি
           mkdir -p www
           cp -r ../clients/sources/mobile/* www/
 
-          # Capacitor কনফিগারেশন তৈরি
           cat <<EOF > capacitor.config.json
           {
             "appId": "com.shifat100.dailygk",
@@ -58,7 +54,7 @@ jobs:
 
           npx cap add android
 
-          # অ্যাপ আইকন প্রসেসিং (icons/icon-512.png থেকে)
+          # icons/icon-512.png থেকে আইকন তৈরি
           if [ -f "../icons/icon-512.png" ]; then
             mkdir -p assets
             cp ../icons/icon-512.png assets/icon-only.png
@@ -101,7 +97,7 @@ jobs:
           mkdir -p capacitor-build
           cd capacitor-build
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/assets
+          npm install @capacitor/core@^6.0.0 @capacitor/cli@^6.0.0 @capacitor/ios@^6.0.0 @capacitor/assets@^3.0.5
           
           mkdir -p www
           cp -r ../clients/sources/mobile/* www/
@@ -115,7 +111,17 @@ jobs:
           }
           EOF
 
-          npx cap add ios
+          # টেমপ্লেট তৈরির সময় pod install ফেইল করলেও যেন স্ক্রিপ্ট না থামে
+          npx cap add ios || true
+
+          # Podfile এবং Xcode প্রজেক্টে iOS টার্গেট ভার্সন 15.0 এ সেট করা
+          sed -i '' "s/platform :ios, .*/platform :ios, '15.0'/" ios/App/Podfile
+          sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g" ios/App/App.xcodeproj/project.pbxproj
+
+          # এখন নতুন টার্গেট অনুযায়ী পড ডিপেন্ডেন্সি ইন্সটল করা
+          cd ios/App
+          pod install
+          cd ../..
 
           # আইকন প্রসেসিং
           if [ -f "../icons/icon-512.png" ]; then
@@ -184,11 +190,9 @@ jobs:
           mkdir -p clients/compiled/android
           mkdir -p clients/compiled/iphone
           
-          # ফাইলগুলো নির্দিষ্ট ফোল্ডারে স্থানান্তর
           mv temp-android/app-debug.apk clients/compiled/android/daily-gk.apk
           mv temp-iphone/daily-gk.ipa clients/compiled/iphone/daily-gk.ipa
           
-          # টেম্পোরারি ফোল্ডার পরিষ্কার
           rm -rf temp-android temp-iphone
 
       - name: Commit and Push Changes
@@ -198,7 +202,6 @@ jobs:
           
           git add clients/compiled/android/daily-gk.apk clients/compiled/iphone/daily-gk.ipa
           
-          # যদি কোনো পরিবর্তন থাকে তবেই কেবল কমিট করবে
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
