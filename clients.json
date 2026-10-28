@@ -1,54 +1,5 @@
 [
     {
-        "id": "j2me",
-        "name": "Java Feature Phone MIDlet",
-        "category": "Feature Phone",
-        "file": "clients/live/j2me/Daily-GK.jar",
-        "size_kb": 35.2
-    },
-    {
-        "id": "linux",
-        "name": "Linux Shell Launcher",
-        "category": "Desktop",
-        "file": "clients/live/linux/Daily-GK.sh",
-        "size_kb": 0.6
-    },
-    {
-        "id": "html",
-        "name": "index",
-        "category": "Cloudphone",
-        "file": "clients/live/cloudphone/index.html",
-        "size_kb": 29.5
-    },
-    {
-        "id": "windows",
-        "name": "Windows Desktop Launcher",
-        "category": "Desktop",
-        "file": "clients/live/windows/Daily-GK.bat",
-        "size_kb": 0.6
-    },
-    {
-        "id": "android",
-        "name": "Android Package",
-        "category": "Mobile",
-        "file": "clients/live/android/Daily-GK.apk",
-        "size_kb": 173
-    },
-    {
-        "id": "mre",
-        "name": "MediaTek MRE Application",
-        "category": "Feature Phone",
-        "file": "clients/live/mre/Daily-GK.vbm",
-        "size_kb": 0.3
-    },
-    {
-        "id": "java",
-        "name": "Midlet",
-        "category": "J2me",
-        "file": "clients/sources/j2me/Midlet.java",
-        "size_kb": 42.6
-    },
-    {
         "id": "as",
         "name": "DailyGK-320x480",
         "category": "Adobe-flash",
@@ -70,18 +21,18 @@
         "size_kb": 54
     },
     {
-        "id": "js",
-        "name": "popup",
-        "category": "Extensions",
-        "file": "clients/sources/extensions/popup.js",
-        "size_kb": 30.6
+        "id": "java",
+        "name": "Midlet",
+        "category": "J2me",
+        "file": "clients/sources/j2me/Midlet.java",
+        "size_kb": 42.6
     },
     {
-        "id": "json",
-        "name": "manifest.v3",
-        "category": "Extensions",
-        "file": "clients/sources/extensions/manifest.v3.json",
-        "size_kb": 0.6
+        "id": "html",
+        "name": "index",
+        "category": "Mobile",
+        "file": "clients/sources/mobile/index.html",
+        "size_kb": 0
     },
     {
         "id": "pem",
@@ -89,27 +40,6 @@
         "category": "Extensions",
         "file": "clients/sources/extensions/extensions.pem",
         "size_kb": 1.7
-    },
-    {
-        "id": "json",
-        "name": "manifest.v2",
-        "category": "Extensions",
-        "file": "clients/sources/extensions/manifest.v2.json",
-        "size_kb": 0.6
-    },
-    {
-        "id": "html",
-        "name": "popup",
-        "category": "Extensions",
-        "file": "clients/sources/extensions/popup.html",
-        "size_kb": 18.2
-    },
-    {
-        "id": "png",
-        "name": "icon16",
-        "category": "Icons",
-        "file": "clients/sources/extensions/icons/icon16.png",
-        "size_kb": 0.4
     },
     {
         "id": "png",
@@ -120,17 +50,31 @@
     },
     {
         "id": "png",
+        "name": "icon16",
+        "category": "Icons",
+        "file": "clients/sources/extensions/icons/icon16.png",
+        "size_kb": 0.4
+    },
+    {
+        "id": "png",
         "name": "icon48",
         "category": "Icons",
         "file": "clients/sources/extensions/icons/icon48.png",
         "size_kb": 1.3
     },
     {
-        "id": "json",
-        "name": "manifest.v1",
+        "id": "js",
+        "name": "popup",
         "category": "Extensions",
-        "file": "clients/sources/extensions/manifest.v1.json",
-        "size_kb": 0.3
+        "file": "clients/sources/extensions/popup.js",
+        "size_kb": 30.6
+    },
+    {
+        "id": "html",
+        "name": "popup",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/popup.html",
+        "size_kb": 18.2
     },
     {
         "id": "md",
@@ -140,18 +84,32 @@
         "size_kb": 0.2
     },
     {
+        "id": "json",
+        "name": "manifest.v3",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v3.json",
+        "size_kb": 0.6
+    },
+    {
+        "id": "json",
+        "name": "manifest.v1",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v1.json",
+        "size_kb": 0.3
+    },
+    {
+        "id": "json",
+        "name": "manifest.v2",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v2.json",
+        "size_kb": 0.6
+    },
+    {
         "id": "c",
         "name": "daily-gk",
         "category": "Mre",
         "file": "clients/sources/mre/daily-gk.c",
         "size_kb": 41.5
-    },
-    {
-        "id": "j2me",
-        "name": "Java Feature Phone MIDlet",
-        "category": "Feature Phone",
-        "file": "clients/compiled/j2me/Daily-GK.jar",
-        "size_kb": 35.5
     },
     {
         "id": "swf",
@@ -168,18 +126,18 @@
         "size_kb": 9.9
     },
     {
+        "id": "j2me",
+        "name": "Java Feature Phone MIDlet",
+        "category": "Feature Phone",
+        "file": "clients/compiled/j2me/Daily-GK.jar",
+        "size_kb": 35.5
+    },
+    {
         "id": "xpi",
         "name": "Daily-GK-M2",
         "category": "Firefox",
         "file": "clients/compiled/extensions/firefox/Daily-GK-M2.xpi",
         "size_kb": 17.4
-    },
-    {
-        "id": "xpi",
-        "name": "Daily-GK-M3",
-        "category": "Firefox",
-        "file": "clients/compiled/extensions/firefox/Daily-GK-M3.xpi",
-        "size_kb": 17.5
     },
     {
         "id": "md",
@@ -189,18 +147,11 @@
         "size_kb": 3.7
     },
     {
-        "id": "crx",
-        "name": "Daily-GK",
-        "category": "Chrome",
-        "file": "clients/compiled/extensions/chrome/Daily-GK.crx",
-        "size_kb": 19
-    },
-    {
-        "id": "md",
-        "name": "readme",
-        "category": "Chrome",
-        "file": "clients/compiled/extensions/chrome/readme.md",
-        "size_kb": 3.7
+        "id": "xpi",
+        "name": "Daily-GK-M3",
+        "category": "Firefox",
+        "file": "clients/compiled/extensions/firefox/Daily-GK-M3.xpi",
+        "size_kb": 17.5
     },
     {
         "id": "nex",
@@ -224,6 +175,20 @@
         "size_kb": 0
     },
     {
+        "id": "md",
+        "name": "readme",
+        "category": "Chrome",
+        "file": "clients/compiled/extensions/chrome/readme.md",
+        "size_kb": 3.7
+    },
+    {
+        "id": "crx",
+        "name": "Daily-GK",
+        "category": "Chrome",
+        "file": "clients/compiled/extensions/chrome/Daily-GK.crx",
+        "size_kb": 19
+    },
+    {
         "id": "mre",
         "name": "MediaTek MRE Application",
         "category": "Feature Phone",
@@ -236,6 +201,48 @@
         "category": "Html5",
         "file": "clients/compiled/html5/index.html",
         "size_kb": 80.1
+    },
+    {
+        "id": "windows",
+        "name": "Windows Desktop Launcher",
+        "category": "Desktop",
+        "file": "clients/live/windows/Daily-GK.bat",
+        "size_kb": 0.6
+    },
+    {
+        "id": "html",
+        "name": "index",
+        "category": "Cloudphone",
+        "file": "clients/live/cloudphone/index.html",
+        "size_kb": 29.5
+    },
+    {
+        "id": "j2me",
+        "name": "Java Feature Phone MIDlet",
+        "category": "Feature Phone",
+        "file": "clients/live/j2me/Daily-GK.jar",
+        "size_kb": 35.2
+    },
+    {
+        "id": "android",
+        "name": "Android Package",
+        "category": "Mobile",
+        "file": "clients/live/android/Daily-GK.apk",
+        "size_kb": 173
+    },
+    {
+        "id": "mre",
+        "name": "MediaTek MRE Application",
+        "category": "Feature Phone",
+        "file": "clients/live/mre/Daily-GK.vbm",
+        "size_kb": 0.3
+    },
+    {
+        "id": "linux",
+        "name": "Linux Shell Launcher",
+        "category": "Desktop",
+        "file": "clients/live/linux/Daily-GK.sh",
+        "size_kb": 0.6
     },
     {
         "id": "ttf",
