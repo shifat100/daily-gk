@@ -37,9 +37,9 @@ jobs:
           mkdir -p capacitor-build
           cd capacitor-build
           npm init -y
-          # স্ট্যাবল Capacitor ভার্সন ইনস্টল
           npm install @capacitor/core@^6.0.0 @capacitor/cli@^6.0.0 @capacitor/android@^6.0.0 @capacitor/assets@^3.0.5
           
+          # Web Directory সেটআপ এবং সোর্স কপি
           mkdir -p www
           cp -r ../clients/sources/mobile/* www/
 
@@ -54,7 +54,7 @@ jobs:
 
           npx cap add android
 
-          # icons/icon-512.png থেকে আইকন তৈরি
+          # icons/icon-512.png থেকে আইকন জেনারেট করা
           if [ -f "../icons/icon-512.png" ]; then
             mkdir -p assets
             cp ../icons/icon-512.png assets/icon-only.png
@@ -111,15 +111,19 @@ jobs:
           }
           EOF
 
+          # টেমপ্লেট তৈরির সময় pod install ফেইল করলেও যেন স্ক্রিপ্ট চলতে থাকে
           npx cap add ios || true
 
+          # Podfile এবং Xcode প্রজেক্টে iOS ভার্সন টার্গেট 15.0 এ সেট করা
           sed -i '' "s/platform :ios, .*/platform :ios, '15.0'/" ios/App/Podfile
           sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g" ios/App/App.xcodeproj/project.pbxproj
 
+          # নতুন টার্গেটে ডিপেন্ডেন্সি ইন্সটল করা
           cd ios/App
           pod install
           cd ../..
 
+          # আইকন জেনারেট করা
           if [ -f "../icons/icon-512.png" ]; then
             mkdir -p assets
             cp ../icons/icon-512.png assets/icon-only.png
@@ -187,6 +191,7 @@ jobs:
           mkdir -p clients/compiled/android
           mkdir -p clients/compiled/iphone
           
+          # আউটপুট ফোল্ডারে নির্দিষ্ট নামে স্থানান্তর
           mv temp-android/app-debug.apk clients/compiled/android/daily-gk.apk
           mv temp-iphone/daily-gk.ipa clients/compiled/iphone/daily-gk.ipa
           
