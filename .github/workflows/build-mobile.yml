@@ -39,22 +39,38 @@ jobs:
           npm init -y
           npm install @capacitor/core@^6.0.0 @capacitor/cli@^6.0.0 @capacitor/android@^6.0.0 @capacitor/assets@^3.0.5
           
-          # Web Directory সেটআপ এবং সোর্স কপি
           mkdir -p www
+          # আপনার একক এইচটিএমএল ফাইল সরাসরি কপি
           cp -r ../clients/sources/mobile/* www/
 
+          # হোয়াইট স্ক্রিন ও স্প্ল্যাশ স্ক্রিন ফ্রিজিং রোধ করতে কনফিগারেশন
           cat <<EOF > capacitor.config.json
           {
             "appId": "com.shifat100.dailygk",
             "appName": "Daily GK",
             "webDir": "www",
-            "bundledWebRuntime": false
+            "bundledWebRuntime": false,
+            "backgroundColor": "#f8f9fc",
+            "server": {
+              "androidScheme": "http",
+              "cleartext": true,
+              "allowNavigation": ["*"]
+            },
+            "plugins": {
+              "SplashScreen": {
+                "launchShowDuration": 0,
+                "launchAutoHide": true
+              }
+            }
           }
           EOF
 
           npx cap add android
 
-          # icons/icon-512.png থেকে আইকন জেনারেট করা
+          # Manifest-এ হার্ডওয়্যার এক্সিলারেশন ও ক্লিয়ারটেক্সট যোগ (হোয়াইট স্ক্রিন ফিক্স)
+          sed -i 's/<application /<application android:hardwareAccelerated="true" android:usesCleartextTraffic="true" /' android/app/src/main/AndroidManifest.xml
+
+          # আইকন জেনারেট
           if [ -f "../icons/icon-512.png" ]; then
             mkdir -p assets
             cp ../icons/icon-512.png assets/icon-only.png
@@ -107,23 +123,30 @@ jobs:
             "appId": "com.shifat100.dailygk",
             "appName": "Daily GK",
             "webDir": "www",
-            "bundledWebRuntime": false
+            "bundledWebRuntime": false,
+            "backgroundColor": "#f8f9fc",
+            "server": {
+              "cleartext": true,
+              "allowNavigation": ["*"]
+            },
+            "plugins": {
+              "SplashScreen": {
+                "launchShowDuration": 0,
+                "launchAutoHide": true
+              }
+            }
           }
           EOF
 
-          # টেমপ্লেট তৈরির সময় pod install ফেইল করলেও যেন স্ক্রিপ্ট চলতে থাকে
           npx cap add ios || true
 
-          # Podfile এবং Xcode প্রজেক্টে iOS ভার্সন টার্গেট 15.0 এ সেট করা
           sed -i '' "s/platform :ios, .*/platform :ios, '15.0'/" ios/App/Podfile
           sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g" ios/App/App.xcodeproj/project.pbxproj
 
-          # নতুন টার্গেটে ডিপেন্ডেন্সি ইন্সটল করা
           cd ios/App
           pod install
           cd ../..
 
-          # আইকন জেনারেট করা
           if [ -f "../icons/icon-512.png" ]; then
             mkdir -p assets
             cp ../icons/icon-512.png assets/icon-only.png
@@ -191,7 +214,6 @@ jobs:
           mkdir -p clients/compiled/android
           mkdir -p clients/compiled/iphone
           
-          # আউটপুট ফোল্ডারে নির্দিষ্ট নামে স্থানান্তর
           mv temp-android/app-debug.apk clients/compiled/android/daily-gk.apk
           mv temp-iphone/daily-gk.ipa clients/compiled/iphone/daily-gk.ipa
           
