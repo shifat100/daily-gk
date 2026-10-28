@@ -1,0 +1,208 @@
+name: Build Mobile Apps (Android & iOS)
+
+on:
+  push:
+    paths:
+      - 'clients/sources/mobile/**'
+      - 'icons/icon-512.png'
+  workflow_dispatch: # Actions ট্যাব থেকে ম্যানুয়ালি রান করার অপশন
+
+permissions:
+  contents: write
+
+jobs:
+  # ==========================================
+  # ১. ANDROID BUILD JOB
+  # ==========================================
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Capacitor & Generate Android Project
+        run: |
+          mkdir -p capacitor-build
+          cd capacitor-build
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets
+          
+          # Web Directory সেটআপ এবং মোবাইল সোর্স কপি
+          mkdir -p www
+          cp -r ../clients/sources/mobile/* www/
+
+          # Capacitor কনফিগারেশন তৈরি
+          cat <<EOF > capacitor.config.json
+          {
+            "appId": "com.shifat100.dailygk",
+            "appName": "Daily GK",
+            "webDir": "www",
+            "bundledWebRuntime": false
+          }
+          EOF
+
+          npx cap add android
+
+          # অ্যাপ আইকন প্রসেসিং (icons/icon-512.png থেকে)
+          if [ -f "../icons/icon-512.png" ]; then
+            mkdir -p assets
+            cp ../icons/icon-512.png assets/icon-only.png
+            cp ../icons/icon-512.png assets/icon-foreground.png
+            cp ../icons/icon-512.png assets/icon-background.png
+            npx @capacitor/assets generate --android || true
+          fi
+
+          npx cap sync android
+
+      - name: Build Android APK
+        run: |
+          cd capacitor-build/android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload Temporary Android Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: capacitor-build/android/app/build/outputs/apk/debug/app-debug.apk
+
+  # ==========================================
+  # ২. iOS BUILD JOB (iPhone)
+  # ==========================================
+  build-ios:
+    name: Build iPhone IPA
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Capacitor & Generate iOS Project
+        run: |
+          mkdir -p capacitor-build
+          cd capacitor-build
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/assets
+          
+          mkdir -p www
+          cp -r ../clients/sources/mobile/* www/
+
+          cat <<EOF > capacitor.config.json
+          {
+            "appId": "com.shifat100.dailygk",
+            "appName": "Daily GK",
+            "webDir": "www",
+            "bundledWebRuntime": false
+          }
+          EOF
+
+          npx cap add ios
+
+          # আইকন প্রসেসিং
+          if [ -f "../icons/icon-512.png" ]; then
+            mkdir -p assets
+            cp ../icons/icon-512.png assets/icon-only.png
+            cp ../icons/icon-512.png assets/icon-foreground.png
+            cp ../icons/icon-512.png assets/icon-background.png
+            npx @capacitor/assets generate --ios || true
+          fi
+
+          npx cap sync ios
+
+      - name: Build Xcode Project (Unsigned)
+        run: |
+          cd capacitor-build/ios/App
+          xcodebuild -scheme App \
+            -workspace App.xcworkspace \
+            -configuration Debug \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            BUILD_DIR=./build clean build
+
+      - name: Package into IPA
+        run: |
+          cd capacitor-build/ios/App
+          mkdir -p Payload
+          cp -r build/Debug-iphoneos/App.app Payload/
+          zip -r daily-gk.ipa Payload
+
+      - name: Upload Temporary iOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iphone-ipa
+          path: capacitor-build/ios/App/daily-gk.ipa
+
+  # ==========================================
+  # ৩. COMMIT & PUSH TO REPO
+  # ==========================================
+  commit-and-push:
+    name: Commit & Push Compiled Binaries
+    needs: [build-android, build-ios]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Android Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apk
+          path: temp-android
+
+      - name: Download iOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: iphone-ipa
+          path: temp-iphone
+
+      - name: Move to Target Output Directories
+        run: |
+          mkdir -p clients/compiled/android
+          mkdir -p clients/compiled/iphone
+          
+          # ফাইলগুলো নির্দিষ্ট ফোল্ডারে স্থানান্তর
+          mv temp-android/app-debug.apk clients/compiled/android/daily-gk.apk
+          mv temp-iphone/daily-gk.ipa clients/compiled/iphone/daily-gk.ipa
+          
+          # টেম্পোরারি ফোল্ডার পরিষ্কার
+          rm -rf temp-android temp-iphone
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add clients/compiled/android/daily-gk.apk clients/compiled/iphone/daily-gk.ipa
+          
+          # যদি কোনো পরিবর্তন থাকে তবেই কেবল কমিট করবে
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(build): automated mobile binaries update [skip ci]"
+            git pull --rebase origin ${{ github.ref_name }}
+            git push origin ${{ github.ref_name }}
+          fi
