@@ -801,7 +801,7 @@
 
       <button class="drawer-item" onclick="cycleTheme();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
-        <span id="label-theme">Theme: Light (Paper)</span>
+        <span id="label-theme">Theme: Light</span>
       </button>
 
       <button class="drawer-item" onclick="showJumpDialog(); closeDrawer();">
@@ -907,7 +907,7 @@
   <div class="dialog-backdrop" id="dialog-about">
     <div class="md-dialog" style="text-align:center;">
       <h3 style="margin:0 0 6px 0;">Daily GK</h3>
-      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.3 (Native MD3 Edition)</p>
+      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.3</p>
       <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 16px 0;">Developer: <b>Shifat100</b></p>
       <p style="font-size:12px; color:var(--md-outline); margin:0;">Ultra-compact binary exam engine designed for high-density offline evaluations.</p>
       <div class="dialog-actions" style="justify-content:center; margin-top:16px;">
@@ -931,7 +931,7 @@
 
     const THEMES = ["light", "blue", "red", "green", "gold", "oled"];
     const THEME_NAMES = {
-      "light": "Light (Paper)",
+      "light": "Light",
       "blue": "Fluent Blue",
       "red": "Ruby Red",
       "green": "Emerald Green",
@@ -1716,7 +1716,7 @@
 
     function toggleLayoutMode() {
       runtime.layoutMode = (runtime.layoutMode === "focus") ? "sheet" : "focus";
-      document.getElementById('label-layout-mode').textContent = (runtime.layoutMode === "focus") ? "Layout: Focus Card (Swipe)" : "Layout: Continuous Sheet";
+      document.getElementById('label-layout-mode').textContent = (runtime.layoutMode === "focus") ? "Layout: Focus Card" : "Layout: Continuous Sheet";
       if (runtime.totalQuestions > 0) updateLayoutView();
     }
 
