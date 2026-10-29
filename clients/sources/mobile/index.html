@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Daily GK - Android MD3</title>
-  <style>
+  <title>Daily GK</title>
+   <style>
     /* ==========================================================================
-       MATERIAL DESIGN 3 (MATERIAL YOU) TOKEN ENGINE
+       MATERIAL DESIGN 3 PALETTES & TOKENS
        ========================================================================== */
     :root {
       --md-primary: #0061a4;
@@ -14,21 +14,17 @@
       --md-primary-container: #d1e4ff;
       --md-on-primary-container: #001d36;
       --md-surface: #fdfcff;
-      --md-surface-dim: #f2f3f7;
-      --md-surface-bright: #ffffff;
-      --md-surface-container-low: #f7f8fc;
-      --md-surface-container: #edeef3;
-      --md-surface-container-high: #e7e8ed;
+      --md-surface-dim: #f0f2f7;
+      --md-surface-container: #edeef2;
+      --md-surface-container-high: #e2e4e9;
       --md-on-surface: #1a1c1e;
       --md-on-surface-variant: #43474e;
       --md-outline: #73777f;
       --md-outline-variant: #c3c7d0;
-      --md-success: #146c2e;
-      --md-success-container: #c6f6cb;
-      --md-on-success-container: #002107;
+      --md-success: #107c41;
+      --md-success-container: #d1e7dd;
       --md-error: #ba1a1a;
       --md-error-container: #ffdad6;
-      --md-on-error-container: #410002;
       --canvas-fg: #1a1c1e;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -37,15 +33,14 @@
     }
 
     [data-theme="blue"] {
-      --md-primary: #9ecaff;
-      --md-on-primary: #003258;
-      --md-primary-container: #00497d;
-      --md-on-primary-container: #d1e4ff;
-      --md-surface: #111318;
-      --md-surface-dim: #0c0e12;
-      --md-surface-container-low: #15181d;
-      --md-surface-container: #1d2025;
-      --md-surface-container-high: #272a30;
+      --md-primary: #3894ff;
+      --md-on-primary: #003063;
+      --md-primary-container: #00468b;
+      --md-on-primary-container: #d2e4ff;
+      --md-surface: #111418;
+      --md-surface-dim: #0b0e12;
+      --md-surface-container: #1b1e23;
+      --md-surface-container-high: #24282f;
       --md-on-surface: #e2e2e6;
       --md-on-surface-variant: #c3c7d0;
       --md-outline: #8d9199;
@@ -87,9 +82,8 @@
       --md-on-primary-container: #eaddff;
       --md-surface: #000000;
       --md-surface-dim: #000000;
-      --md-surface-container-low: #0a0a0a;
-      --md-surface-container: #141414;
-      --md-surface-container-high: #1f1f1f;
+      --md-surface-container: #121212;
+      --md-surface-container-high: #1c1c1e;
       --md-on-surface: #ffffff;
       --md-on-surface-variant: #cac4d0;
       --md-outline: #938f99;
@@ -117,9 +111,7 @@
       flex-direction: column;
     }
 
-    /* ==========================================================================
-       TOP APP BAR & INTEGRATED SEARCH BAR (M3 SPEC)
-       ========================================================================== */
+    /* TOP APP BAR */
     .top-app-bar {
       height: calc(64px + var(--safe-top));
       padding-top: var(--safe-top);
@@ -176,7 +168,6 @@
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
-      position: relative;
     }
 
     .icon-btn:active {
@@ -204,32 +195,11 @@
 
     .mode-pill.study {
       background: var(--md-success-container);
-      color: var(--md-on-success-container);
+      color: var(--md-success);
       border-color: var(--md-success);
     }
 
-    /* M3 SEARCH HEADER CHIP BAR */
-    .search-active-banner {
-      height: 40px;
-      background: var(--md-primary-container);
-      color: var(--md-on-primary-container);
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      font-size: 12px;
-      font-weight: 500;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--md-outline-variant);
-    }
-
-    .search-active-banner.visible {
-      display: flex;
-    }
-
-    /* ==========================================================================
-       VIEWPORT STAGE: FOCUS CAROUSEL & CONTINUOUS SHEET
-       ========================================================================== */
+    /* VIEWPORT STAGE */
     .viewport-stage {
       flex: 1;
       overflow: hidden;
@@ -239,7 +209,7 @@
       background: var(--md-surface-dim);
     }
 
-    /* FOCUS VIEW */
+    /* FOCUS MODE CAROUSEL */
     .focus-carousel {
       flex: 1;
       display: flex;
@@ -247,23 +217,23 @@
       justify-content: center;
       padding: 16px;
       position: relative;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
-    /* MD3 CARD */
+    /* EXAM CARD (REAL SIZE RENDERER) */
     .exam-card {
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       background: var(--md-surface);
-      border-radius: 24px;
-      padding: 16px 20px;
+      border-radius: 20px;
+      padding: 18px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.06);
       border: 1px solid var(--md-outline-variant);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       touch-action: pan-y;
-      will-change: transform, opacity;
+      will-change: transform;
       transform-origin: center center;
     }
 
@@ -283,34 +253,31 @@
       letter-spacing: 0.5px;
     }
 
-    /* ==========================================================================
-       INTRINSIC REAL-SIZE RASTER CANVAS
-       ========================================================================== */
+    /* REAL-SIZE CONTAINER - PREVENTS ARTIFICIAL STRETCH */
     .pak-canvas-wrap {
-      display: flex;
+      display: inline-flex;
       justify-content: flex-start;
-      align-items: flex-start;
-      width: 100%;
-      height: auto;
-      min-height: 0;
-      overflow-x: auto;
+      align-items: center;
       padding: 4px 0;
+      width: fit-content;
+      max-width: 100%;
+      overflow-x: auto;
     }
 
+    /* ZERO SCALING/STRETCHING - NATURAL SOURCE DIMENSIONS */
     .pak-canvas {
       image-rendering: pixelated;
       image-rendering: crisp-edges;
       display: block;
       width: auto !important;
       height: auto !important;
-      max-width: none !important;
-      flex-shrink: 0;
+      max-width: none;
     }
 
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .opt-card {
@@ -318,11 +285,13 @@
       align-items: center;
       gap: 12px;
       padding: 8px 12px;
-      background: var(--md-surface-container-low);
+      background: var(--md-surface-container);
       border: 1.5px solid transparent;
       border-radius: 12px;
       cursor: pointer;
       transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      width: 100%;
+      overflow: hidden;
     }
 
     .opt-card:active {
@@ -355,7 +324,7 @@
       flex-shrink: 0;
     }
 
-    /* CONTINUOUS SCROLLER (CHUNKED DYNAMIC PAGINATION) */
+    /* SHEET (DYNAMIC CONTINUOUS SCROLLER) */
     .sheet-scroller {
       flex: 1;
       overflow-y: auto;
@@ -364,18 +333,26 @@
       flex-direction: column;
       align-items: center;
       gap: 16px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .sheet-scroller .exam-card {
       max-width: 580px;
     }
 
-    .sheet-sentinel-loader {
-      padding: 16px;
+    .dynamic-loader-btn {
+      width: 100%;
+      max-width: 580px;
+      padding: 14px;
       text-align: center;
-      font-size: 12px;
-      color: var(--md-on-surface-variant);
-      font-weight: 500;
+      background: var(--md-surface);
+      border: 1px dashed var(--md-outline);
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--md-primary);
+      cursor: pointer;
+      margin-bottom: 24px;
     }
 
     /* EMPTY STATE */
@@ -398,28 +375,14 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
     .btn-tonal:active {
       opacity: 0.85;
     }
 
-    .btn-text {
-      background: transparent;
-      border: none;
-      color: var(--md-primary);
-      font-weight: 500;
-      font-size: 14px;
-      padding: 8px 12px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    /* ==========================================================================
-       BOTTOM COMMAND & CONTROLLER BAR
-       ========================================================================== */
+    /* BOTTOM CONTROLLER */
     .bottom-command-bar {
       height: calc(56px + var(--safe-bottom));
       padding-bottom: var(--safe-bottom);
@@ -455,9 +418,7 @@
       font-weight: 700;
     }
 
-    /* ==========================================================================
-       MD3 NAVIGATION DRAWER
-       ========================================================================== */
+    /* MD3 NAVIGATION DRAWER */
     .scrim {
       position: fixed;
       inset: 0;
@@ -525,7 +486,6 @@
       font-weight: 500;
       cursor: pointer;
       text-align: left;
-      text-decoration: none;
     }
 
     .drawer-item:active {
@@ -538,9 +498,7 @@
       margin: 8px 12px;
     }
 
-    /* ==========================================================================
-       MD3 BOTTOM SHEETS (EXAM MATRIX & RECENT)
-       ========================================================================== */
+    /* MD3 BOTTOM SHEET (EXAM MATRIX & RECENT) */
     .bottom-sheet {
       position: fixed;
       left: 0;
@@ -712,13 +670,21 @@
       gap: 12px;
       margin-top: 20px;
     }
+
+    .btn-text {
+      background: transparent;
+      border: none;
+      color: var(--md-primary);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body data-theme="light">
 
-  <!-- ========================================================================
-       TOP APP BAR
-       ======================================================================== -->
+  <!-- TOP APP BAR -->
   <header class="top-app-bar">
     <div class="app-bar-content">
       <button class="icon-btn" onclick="openDrawer()" aria-label="Menu">
@@ -732,45 +698,34 @@
 
     <div style="display:flex; align-items:center; gap:8px;">
       <div class="mode-pill" id="btn-mode-toggle" onclick="toggleReadingMode()">QUIZ</div>
-      <button class="icon-btn" onclick="openMatrixSheet()" aria-label="Exam Matrix">
+      <button class="icon-btn" onclick="openMatrixSheet()" aria-label="Matrix">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
       </button>
     </div>
   </header>
 
-  <!-- SEARCH ACTIVE STATUS BANNER -->
-  <div class="search-active-banner" id="search-active-banner">
-    <span id="search-active-label">Search active: 0 matches</span>
-    <button class="btn-text" onclick="clearSearch()" style="color:inherit; font-size:12px; padding:4px 8px;">✕ Clear</button>
-  </div>
-
-  <!-- ========================================================================
-       VIEWPORT STAGE
-       ======================================================================== -->
+  <!-- VIEWPORT STAGE -->
   <main class="viewport-stage" id="viewport">
     
-    <!-- Empty Initial State -->
+    <!-- Empty Initial State (No Demo) -->
     <div class="empty-state" id="view-empty-state">
       <svg style="width:64px; height:64px; fill:var(--md-primary); margin-bottom:12px;" viewBox="0 0 24 24">
         <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
       </svg>
-      <h2 style="font-size:20px; margin:0 0 8px 0;">No Questions Loaded</h2>
+      <h2 style="font-size:20px; margin:0 0 8px 0;">No Package Loaded</h2>
       <p style="color:var(--md-on-surface-variant); font-size:13px; line-height:1.5; margin:0 0 16px 0;">
-        Open a .pak file from your device, run the built-in sample demo exam, or download official packages in your browser.
+        Open an offline .pak package file from your device storage or download official packages.
       </p>
       <button class="btn-tonal" onclick="triggerFileInput()">
         <svg style="width:18px; height:18px; fill:currentColor;" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
         <span>Open .PAK File</span>
       </button>
       <div style="margin-top:10px;">
-        <button class="btn-text" onclick="loadSampleDemoPack()">Run Sample Demo Exam</button>
-      </div>
-      <div>
-        <a class="btn-text" href="https://shifat100.github.io/daily-gk/client-pack.html" target="_blank" rel="noopener noreferrer" onclick="openDownloadLink(event)">Download More Packages...</a>
+        <button class="btn-text" onclick="openDownloadLink()">Download More Packages...</button>
       </div>
     </div>
 
-    <!-- Focus Mode Container (Swipe & Pinch Gestures Active) -->
+    <!-- Focus Mode Container (Swipe & Real-size Dimensions) -->
     <div class="focus-carousel" id="view-focus-mode" style="display:none;">
       <div class="exam-card" id="focus-card">
         <div class="card-header">
@@ -784,17 +739,15 @@
       </div>
     </div>
 
-    <!-- Sheet Mode Container (Dynamic Chunked Infinite Scroll) -->
+    <!-- Continuous Sheet Mode (10-at-a-time Dynamic Append) -->
     <div class="sheet-scroller" id="view-sheet-mode" style="display:none;" onscroll="handleSheetScroll()">
-      <div id="sheet-cards-container" style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;"></div>
-      <div class="sheet-sentinel-loader" id="sheet-loader-sentinel">Scroll down to load more...</div>
+      <div id="sheet-cards-container" style="width:100%; display:flex; flex-direction:column; align-items:center; gap:16px;"></div>
+      <div class="dynamic-loader-btn" id="sheet-loader-btn" onclick="appendNextSheetBatch()">Load Next 10 Questions...</div>
     </div>
 
   </main>
 
-  <!-- ========================================================================
-       BOTTOM COMMAND & CONTROLLER BAR
-       ======================================================================== -->
+  <!-- BOTTOM CONTROLLER BAR -->
   <footer class="bottom-command-bar">
     <div style="display:flex; align-items:center; gap:4px;">
       <button class="icon-btn" onclick="prevItem()" aria-label="Previous">
@@ -817,14 +770,12 @@
 
   <input type="file" id="binary-file-input" accept=".pak" style="display:none;" onchange="handleFileSelected(event)">
 
-  <!-- ========================================================================
-       MD3 NAVIGATION DRAWER
-       ======================================================================== -->
+  <!-- NAVIGATION DRAWER -->
   <div class="scrim" id="drawer-scrim" onclick="closeDrawer()"></div>
   <aside class="nav-drawer" id="nav-drawer">
     <div class="drawer-header">
       <h3>Daily GK</h3>
-      <span style="font-size:12px; color:var(--md-outline);">Developer: Shifat100 • Android MD3 Native Engine</span>
+      <span style="font-size:12px; color:var(--md-outline);">Developer: Shifat100 • Native MD3 Edition</span>
     </div>
 
     <div class="drawer-list">
@@ -832,25 +783,20 @@
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
         <span>Open PAK File...</span>
       </button>
-      <button class="drawer-item" onclick="loadSampleDemoPack(); closeDrawer();">
-        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-        <span>Load Demo Exam</span>
-      </button>
       <button class="drawer-item" onclick="openRecentSheet(); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
         <span>Recent Files...</span>
       </button>
-      <!-- Always Open in External Browser -->
-      <a class="drawer-item" href="https://shifat100.github.io/daily-gk/client-pack.html" target="_blank" rel="noopener noreferrer" onclick="openDownloadLink(event); closeDrawer();">
+      <button class="drawer-item" onclick="openDownloadLink(); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
         <span>Download More Packages...</span>
-      </a>
+      </button>
 
       <div class="drawer-divider"></div>
 
       <button class="drawer-item" onclick="toggleLayoutMode(); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
-        <span id="label-layout-mode">Layout: Focus Card (Swipe)</span>
+        <span id="label-layout-mode">Layout: Focus Card</span>
       </button>
 
       <button class="drawer-item" onclick="cycleTheme();">
@@ -871,7 +817,7 @@
 
       <button class="drawer-item" onclick="openDialog('dialog-specs'); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-        <span>Technical Architecture</span>
+        <span>Technical Specs</span>
       </button>
       <button class="drawer-item" onclick="openDialog('dialog-about'); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -880,9 +826,7 @@
     </div>
   </aside>
 
-  <!-- ========================================================================
-       MD3 BOTTOM SHEET: EXAM MATRIX
-       ======================================================================== -->
+  <!-- BOTTOM SHEET: EXAM MATRIX -->
   <div class="scrim" id="matrix-scrim" onclick="closeMatrixSheet()"></div>
   <div class="bottom-sheet" id="sheet-matrix">
     <div class="sheet-drag-handle"></div>
@@ -906,9 +850,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       MD3 BOTTOM SHEET: RECENT FILES
-       ======================================================================== -->
+  <!-- BOTTOM SHEET: RECENT FILES -->
   <div class="scrim" id="recent-scrim" onclick="closeRecentSheet()"></div>
   <div class="bottom-sheet" id="sheet-recent">
     <div class="sheet-drag-handle"></div>
@@ -917,13 +859,11 @@
       <button class="btn-text" onclick="clearAllRecentFiles()" style="color:var(--md-error);">Clear All</button>
     </div>
     <div class="sheet-body" id="recent-files-list">
-      <span style="color:var(--md-on-surface-variant)">Querying packages...</span>
+      <span style="color:var(--md-on-surface-variant)">Loading packages...</span>
     </div>
   </div>
 
-  <!-- ========================================================================
-       MD3 DIALOGS
-       ======================================================================== -->
+  <!-- DIALOGS -->
   <div class="dialog-backdrop" id="dialog-jump">
     <div class="md-dialog">
       <h3>Jump to Question</h3>
@@ -954,9 +894,9 @@
     <div class="md-dialog">
       <h3>Technical Architecture</h3>
       <div style="font-size:12px; color:var(--md-on-surface-variant); line-height:1.6;">
-        <p><b>Intrinsic Raster Scaling:</b> Canvas respects native question pixel geometry without distorted layout stretching.</p>
-        <p><b>Lazy Infinite Chunks:</b> Continuous scroll loads 10 questions at a time dynamically, eliminating UI lockup.</p>
-        <p><b>Search-Driven Flow:</b> Filtering redirects next/previous navigation to consecutive matched search items.</p>
+        <p><b>Dynamic 10-Card Streaming:</b> Continuous sheet renders in chunks of 10 items, preventing DOM thrashing and memory exhaustion.</p>
+        <p><b>Natural Sizing:</b> Pixel-crisp 1:1 raster scaling prevents canvas distortion and preserves original document heights.</p>
+        <p><b>Filter-Aware Iterator:</b> Next and Prev controls navigate strictly within active search filters.</p>
       </div>
       <div class="dialog-actions">
         <button class="btn-text" onclick="closeDialog('dialog-specs')">OK</button>
@@ -967,18 +907,16 @@
   <div class="dialog-backdrop" id="dialog-about">
     <div class="md-dialog" style="text-align:center;">
       <h3 style="margin:0 0 6px 0;">Daily GK</h3>
-      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.3 (Android Native MD3)</p>
+      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.3 (Native MD3 Edition)</p>
       <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 16px 0;">Developer: <b>Shifat100</b></p>
-      <p style="font-size:12px; color:var(--md-outline); margin:0;">Optimized for responsive touch gestures and massive question banks.</p>
+      <p style="font-size:12px; color:var(--md-outline); margin:0;">Ultra-compact binary exam engine designed for high-density offline evaluations.</p>
       <div class="dialog-actions" style="justify-content:center; margin-top:16px;">
         <button class="btn-text" onclick="closeDialog('dialog-about')">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- ========================================================================
-       ENGINE SCRIPT
-       ======================================================================== -->
+  <!-- JAVASCRIPT ENGINE -->
   <script>
     const QUESTION_W         = 224;
     const QUESTION_BYTES_ROW = 28;
@@ -1018,23 +956,32 @@
       currentTheme: "light",
       currentFilter: "all",
       searchQuery: "",
-      filteredIndices: [], // Tracks active search matches
-      isSearchActive: false,
-      sheetLoadedCount: 0,  // Dynamic 10-by-10 lazy loader tracking
-      isSheetLoading: false,
+      matchedIndices: [],
+      sheetLoadedCount: 0, // dynamic 10-chunk counter
+      isAppendingBatch: false,
       zoom: 1.0
     };
 
-    /* HAPTIC FEEDBACK BRIDGE */
-    function hapticFeedback() {
-      if (navigator.vibrate) {
-        try { navigator.vibrate(8); } catch(e) {}
+    /* ==========================================================================
+       EXTERNAL BROWSER INTENT HANDLER
+       ========================================================================== */
+    function openDownloadLink() {
+      // Directs Android WebView, PWA, or Safari/Chrome to open in system browser
+      const targetWindow = window.open(DOWNLOAD_URL, '_system');
+      if (!targetWindow || targetWindow.closed || typeof targetWindow.closed === 'undefined') {
+        const link = document.createElement('a');
+        link.href = DOWNLOAD_URL;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
       }
     }
 
-    /* -------------------------------------------------------------------------
-       INDEXEDDB STORAGE ENGINE
-       ------------------------------------------------------------------------- */
+    /* ==========================================================================
+       INDEXEDDB STORAGE MANAGER
+       ========================================================================== */
     function openDatabase() {
       return new Promise((resolve, reject) => {
         const req = indexedDB.open(DB_NAME, DB_VERSION);
@@ -1104,9 +1051,9 @@
       });
     }
 
-    /* -------------------------------------------------------------------------
-       PAK PARSER & 1-BIT DECOMPRESSOR
-       ------------------------------------------------------------------------- */
+    /* ==========================================================================
+       BINARY DECOMPRESSOR & 1-BIT NATURAL PIXEL RASTERIZER
+       ========================================================================== */
     function loadPakFromBuffer(arrayBuffer, name) {
       const view = new DataView(arrayBuffer);
       const magic = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2), view.getUint8(3));
@@ -1130,8 +1077,8 @@
       runtime.userAnswers = {};
       runtime.entries = [];
       runtime.searchIndex = {};
-      runtime.filteredIndices = [];
-      runtime.isSearchActive = false;
+      runtime.searchQuery = "";
+      runtime.matchedIndices = [];
 
       for (let i = 0; i < runtime.totalQuestions; i++) {
         const pos = indexOffset + (i * ENTRY_SIZE);
@@ -1148,7 +1095,7 @@
         });
       }
 
-      // Decode UTF-8 Search index
+      // Read UTF-8 Search Index
       if (searchOffset > 0 && searchOffset < runtime.fileSize) {
         let sPos = searchOffset;
         const decoder = new TextDecoder("utf-8");
@@ -1163,6 +1110,8 @@
         }
       }
 
+      computeMatchedSubset();
+
       document.getElementById('view-empty-state').style.display = 'none';
       document.getElementById('bar-title').textContent = name;
       document.getElementById('jump-max-val').textContent = runtime.totalQuestions;
@@ -1172,6 +1121,7 @@
       updateScoreUI();
     }
 
+    // Direct memory blit preserving real pixel dimensions (No Stretching)
     function blitMaskToCanvas(canvas, width, height, bytesPerRow, byteData) {
       canvas.width = width;
       canvas.height = height;
@@ -1212,9 +1162,9 @@
       return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
     }
 
-    /* -------------------------------------------------------------------------
-       CARD & DYNAMIC SHEET LOADING
-       ------------------------------------------------------------------------- */
+    /* ==========================================================================
+       LAYOUT MODES & DYNAMIC CHUNKED LOADER (10 AT A TIME)
+       ========================================================================== */
     function updateLayoutView() {
       const focusView = document.getElementById('view-focus-mode');
       const sheetView = document.getElementById('view-sheet-mode');
@@ -1226,7 +1176,7 @@
       } else {
         focusView.style.display = 'none';
         sheetView.style.display = 'flex';
-        initDynamicContinuousSheet();
+        initContinuousSheet();
       }
       updateStatusDisplay();
     }
@@ -1241,14 +1191,12 @@
       document.getElementById('focus-q-num').textContent = `Question ${idx + 1} of ${runtime.totalQuestions}`;
       document.getElementById('bar-subtitle').textContent = `Question ${idx + 1} of ${runtime.totalQuestions}`;
 
-      // Question Canvas
       const qCanvas = document.getElementById('focus-question-canvas');
       const qBytes = entry.q_h * QUESTION_BYTES_ROW;
       const qData = new Uint8Array(runtime.buffer, offset, qBytes);
       blitMaskToCanvas(qCanvas, QUESTION_W, entry.q_h, QUESTION_BYTES_ROW, qData);
       offset += qBytes;
 
-      // Options
       const optWrap = document.getElementById('focus-options-wrap');
       optWrap.innerHTML = "";
 
@@ -1263,28 +1211,30 @@
       updateStatusDisplay();
     }
 
-    /* DYNAMIC CHUNKED LOADER (10 AT A TIME TO PREVENT FREEZE) */
-    function initDynamicContinuousSheet() {
+    // Dynamic 10-Question Streamer for Continuous Sheet
+    function initContinuousSheet() {
       const container = document.getElementById('sheet-cards-container');
       container.innerHTML = "";
       runtime.sheetLoadedCount = 0;
-      loadNextSheetChunk(10);
+      appendNextSheetBatch();
     }
 
-    function loadNextSheetChunk(batchSize = 10) {
-      if (!runtime.entries || runtime.entries.length === 0) return;
+    function appendNextSheetBatch() {
+      if (runtime.isAppendingBatch) return;
       if (runtime.sheetLoadedCount >= runtime.totalQuestions) {
-        document.getElementById('sheet-loader-sentinel').textContent = "All questions loaded.";
+        document.getElementById('sheet-loader-btn').style.display = 'none';
         return;
       }
 
-      runtime.isSheetLoading = true;
+      runtime.isAppendingBatch = true;
       const container = document.getElementById('sheet-cards-container');
-      const start = runtime.sheetLoadedCount;
-      const end = Math.min(start + batchSize, runtime.totalQuestions);
+      const batchSize = 10;
+      const startIdx = runtime.sheetLoadedCount;
+      const endIdx = Math.min(runtime.totalQuestions, startIdx + batchSize);
+
       const frag = document.createDocumentFragment();
 
-      for (let idx = start; idx < end; idx++) {
+      for (let idx = startIdx; idx < endIdx; idx++) {
         const entry = runtime.entries[idx];
         let offset = runtime.payloadBase + entry.payloadOffset;
 
@@ -1323,26 +1273,26 @@
 
       container.appendChild(frag);
 
-      for (let idx = start; idx < end; idx++) {
+      for (let idx = startIdx; idx < endIdx; idx++) {
         refreshOptionColors(idx, document.getElementById(`sheet-opts-${idx}`));
       }
 
-      runtime.sheetLoadedCount = end;
-      runtime.isSheetLoading = false;
+      runtime.sheetLoadedCount = endIdx;
+      runtime.isAppendingBatch = false;
 
-      const sentinel = document.getElementById('sheet-loader-sentinel');
+      const loaderBtn = document.getElementById('sheet-loader-btn');
       if (runtime.sheetLoadedCount >= runtime.totalQuestions) {
-        sentinel.textContent = `All ${runtime.totalQuestions} questions displayed`;
+        loaderBtn.style.display = 'none';
       } else {
-        sentinel.textContent = `Showing 1–${runtime.sheetLoadedCount} of ${runtime.totalQuestions} (Scroll down to load more)`;
+        loaderBtn.style.display = 'block';
+        loaderBtn.textContent = `Load Next 10 Questions (${runtime.sheetLoadedCount}/${runtime.totalQuestions})...`;
       }
     }
 
     function handleSheetScroll() {
-      if (runtime.layoutMode !== 'sheet' || runtime.isSheetLoading) return;
       const scroller = document.getElementById('view-sheet-mode');
-      if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 300) {
-        loadNextSheetChunk(10);
+      if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 120) {
+        appendNextSheetBatch();
       }
     }
 
@@ -1374,7 +1324,6 @@
       if (runtime.readingMode === "STUDY") return;
       if (runtime.userAnswers[qIdx] !== undefined) return;
 
-      hapticFeedback();
       const entry = runtime.entries[qIdx];
       runtime.userAnswers[qIdx] = optIdx;
 
@@ -1424,79 +1373,78 @@
     }
 
     function updateStatusDisplay() {
-      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
-        const currentSearchPos = runtime.filteredIndices.indexOf(runtime.currentIdx) + 1;
-        document.getElementById('bottom-status-idx').textContent = `Match ${currentSearchPos || 1} of ${runtime.filteredIndices.length} (Q ${runtime.currentIdx + 1})`;
-      } else {
-        document.getElementById('bottom-status-idx').textContent = `${runtime.currentIdx + 1} of ${runtime.totalQuestions}`;
+      document.getElementById('bottom-status-idx').textContent = `${runtime.currentIdx + 1} of ${runtime.totalQuestions}`;
+    }
+
+    /* ==========================================================================
+       SEARCH-FILTERED SMART NAVIGATION (NEXT / PREV ITERATOR)
+       ========================================================================== */
+    function computeMatchedSubset() {
+      const q = runtime.searchQuery;
+      runtime.matchedIndices = [];
+      for (let i = 0; i < runtime.totalQuestions; i++) {
+        let match = true;
+        if (runtime.currentFilter === 'wrong') match = (runtime.userAnswers[i] !== undefined && runtime.userAnswers[i] !== runtime.entries[i].correct);
+        else if (runtime.currentFilter === 'unanswered') match = (runtime.userAnswers[i] === undefined);
+
+        if (match && q) {
+          const numMatch = (i + 1).toString().includes(q);
+          const textMatch = runtime.searchIndex[i] && runtime.searchIndex[i].toLowerCase().includes(q);
+          match = (numMatch || textMatch);
+        }
+        if (match) runtime.matchedIndices.push(i);
       }
     }
 
-    /* -------------------------------------------------------------------------
-       SEARCH-LINKED NAVIGATION (NEXT / PREV JUMP CONSECUTIVE SEARCH ITEMS)
-       ------------------------------------------------------------------------- */
+    function handleMatrixSearch(val) {
+      runtime.searchQuery = val.trim().toLowerCase();
+      computeMatchedSubset();
+      applyMatrixFilter();
+
+      // If active search finds matches, immediately snap view to first matched question
+      if (runtime.matchedIndices.length > 0) {
+        jumpToIndex(runtime.matchedIndices[0]);
+      }
+    }
+
     function nextItem() {
-      hapticFeedback();
-      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
-        const curPos = runtime.filteredIndices.indexOf(runtime.currentIdx);
-        if (curPos !== -1 && curPos < runtime.filteredIndices.length - 1) {
-          jumpToIndex(runtime.filteredIndices[curPos + 1]);
+      if (runtime.matchedIndices.length > 0) {
+        // Iterate only through matched search questions
+        const currPos = runtime.matchedIndices.indexOf(runtime.currentIdx);
+        if (currPos !== -1 && currPos < runtime.matchedIndices.length - 1) {
+          jumpToIndex(runtime.matchedIndices[currPos + 1]);
+        } else if (currPos === -1) {
+          // Find next greater index in matched set
+          const next = runtime.matchedIndices.find(idx => idx > runtime.currentIdx);
+          if (next !== undefined) jumpToIndex(next);
         }
       } else {
-        if (runtime.layoutMode === 'focus') {
-          if (runtime.currentIdx < runtime.totalQuestions - 1) renderFocusCard(runtime.currentIdx + 1);
-        } else {
-          jumpToIndex(Math.min(runtime.totalQuestions - 1, runtime.currentIdx + 1));
+        if (runtime.currentIdx < runtime.totalQuestions - 1) {
+          jumpToIndex(runtime.currentIdx + 1);
         }
       }
     }
 
     function prevItem() {
-      hapticFeedback();
-      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
-        const curPos = runtime.filteredIndices.indexOf(runtime.currentIdx);
-        if (curPos > 0) {
-          jumpToIndex(runtime.filteredIndices[curPos - 1]);
+      if (runtime.matchedIndices.length > 0) {
+        const currPos = runtime.matchedIndices.indexOf(runtime.currentIdx);
+        if (currPos > 0) {
+          jumpToIndex(runtime.matchedIndices[currPos - 1]);
+        } else if (currPos === -1) {
+          const reversed = [...runtime.matchedIndices].reverse();
+          const prev = reversed.find(idx => idx < runtime.currentIdx);
+          if (prev !== undefined) jumpToIndex(prev);
         }
       } else {
-        if (runtime.layoutMode === 'focus') {
-          if (runtime.currentIdx > 0) renderFocusCard(runtime.currentIdx - 1);
-        } else {
-          jumpToIndex(Math.max(0, runtime.currentIdx - 1));
+        if (runtime.currentIdx > 0) {
+          jumpToIndex(runtime.currentIdx - 1);
         }
       }
     }
 
-    function jumpToIndex(idx) {
-      runtime.currentIdx = idx;
-      if (runtime.layoutMode === 'focus') {
-        renderFocusCard(idx);
-      } else {
-        // Ensure element is loaded into sheet DOM
-        if (idx >= runtime.sheetLoadedCount) {
-          loadNextSheetChunk((idx - runtime.sheetLoadedCount) + 10);
-        }
-        setTimeout(() => {
-          const el = document.getElementById(`sheet-card-${idx}`);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 50);
-      }
-      highlightMatrixCurrent(idx);
-      updateStatusDisplay();
-    }
-
-    function clearSearch() {
-      runtime.searchQuery = "";
-      runtime.isSearchActive = false;
-      document.getElementById('matrix-search-input').value = "";
-      document.getElementById('search-active-banner').classList.remove('visible');
-      applyMatrixFilter();
-      updateStatusDisplay();
-    }
-
-    /* -------------------------------------------------------------------------
-       SWIPE & PINCH-TO-ZOOM TOUCH ENGINE
-       ------------------------------------------------------------------------- */
+    /* ==========================================================================
+       GESTURE ENGINE: SWIPE / PINCH-TO-ZOOM / DOUBLE TAP
+       ========================================================================== */
     const focusCard = document.getElementById('focus-card');
     let touchStartX = 0, touchStartY = 0, touchMoveX = 0, touchStartTime = 0;
     let isSwiping = false, lastTap = 0, initialPinchDist = 0, baseScale = 1.0;
@@ -1607,9 +1555,9 @@
       localStorage.setItem("dgk_zoom", runtime.zoom);
     }
 
-    /* -------------------------------------------------------------------------
-       EXAM MATRIX, LIVE SEARCH & ACTIVE MATCH TRACKING
-       ------------------------------------------------------------------------- */
+    /* ==========================================================================
+       EXAM MATRIX
+       ========================================================================== */
     function buildMatrixGrid() {
       const grid = document.getElementById('q-matrix-grid');
       grid.innerHTML = "";
@@ -1630,6 +1578,22 @@
       applyMatrixFilter();
     }
 
+    function jumpToIndex(idx) {
+      runtime.currentIdx = idx;
+      if (runtime.layoutMode === 'focus') {
+        renderFocusCard(idx);
+      } else {
+        // In continuous sheet, ensure item exists or append until it is reached
+        while (idx >= runtime.sheetLoadedCount && runtime.sheetLoadedCount < runtime.totalQuestions) {
+          appendNextSheetBatch();
+        }
+        const el = document.getElementById(`sheet-card-${idx}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      highlightMatrixCurrent(idx);
+      updateStatusDisplay();
+    }
+
     function updateMatrixBadge(idx, isCorrect) {
       const b = document.getElementById(`matrix-badge-${idx}`);
       if (b) {
@@ -1648,74 +1612,35 @@
       runtime.currentFilter = filter;
       document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
       document.getElementById(`chip-filter-${filter}`).classList.add('active');
+      computeMatchedSubset();
       applyMatrixFilter();
-    }
-
-    function handleMatrixSearch(val) {
-      runtime.searchQuery = val.trim().toLowerCase();
-      runtime.isSearchActive = runtime.searchQuery.length > 0;
-      applyMatrixFilter();
-
-      // If search becomes active and we have matches, auto-jump to first match
-      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
-        jumpToIndex(runtime.filteredIndices[0]);
-        document.getElementById('search-active-banner').classList.add('visible');
-        document.getElementById('search-active-label').textContent = `Search active: ${runtime.filteredIndices.length} matches ("${runtime.searchQuery}")`;
-      } else if (!runtime.isSearchActive) {
-        document.getElementById('search-active-banner').classList.remove('visible');
-      }
-      updateStatusDisplay();
     }
 
     function applyMatrixFilter() {
-      runtime.filteredIndices = [];
-
       document.querySelectorAll('.matrix-badge').forEach((b, i) => {
-        const entry = runtime.entries[i];
-        const ans = runtime.userAnswers[i];
-        let visible = true;
-
-        if (runtime.currentFilter === 'wrong') visible = (ans !== undefined && ans !== entry.correct);
-        else if (runtime.currentFilter === 'unanswered') visible = (ans === undefined);
-
-        if (visible && runtime.searchQuery) {
-          const numMatch = (i + 1).toString().includes(runtime.searchQuery);
-          const textMatch = runtime.searchIndex[i] && runtime.searchIndex[i].toLowerCase().includes(runtime.searchQuery);
-          visible = (numMatch || textMatch);
-        }
-
-        b.style.display = visible ? 'flex' : 'none';
-        if (visible) runtime.filteredIndices.push(i);
+        const isMatched = runtime.matchedIndices.includes(i);
+        b.style.display = isMatched ? 'flex' : 'none';
       });
     }
 
-    /* -------------------------------------------------------------------------
-       EXTERNAL BROWSER LINK HANDLER
-       ------------------------------------------------------------------------- */
-    function openDownloadLink(e) {
-      if (e) e.preventDefault();
-      const targetUrl = DOWNLOAD_URL;
-
-      // Handle Android Cordova / Capacitor WebView system browser bridges
-      try {
-        if (window.navigator && window.navigator.app && window.navigator.app.loadUrl) {
-          window.navigator.app.loadUrl(targetUrl, { openExternal: true });
-          return;
-        }
-      } catch (err) {}
-
-      // Standard Fallback with _system (for InAppBrowser) and _blank
-      try {
-        const opened = window.open(targetUrl, '_system');
-        if (opened) return;
-      } catch (err) {}
-
-      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    /* ==========================================================================
+       FILE ACCESS & RECENT FILES
+       ========================================================================== */
+    function triggerFileInput() {
+      document.getElementById('binary-file-input').click();
     }
 
-    /* -------------------------------------------------------------------------
-       RECENT FILES (INDEXEDDB)
-       ------------------------------------------------------------------------- */
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        storePakInIndexedDB(file.name, file.size, evt.target.result);
+        loadPakFromBuffer(evt.target.result, file.name);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
     async function openRecentSheet() {
       openSheet('sheet-recent', 'recent-scrim');
       const listContainer = document.getElementById('recent-files-list');
@@ -1769,129 +1694,9 @@
       closeSheet('sheet-recent', 'recent-scrim');
     }
 
-    /* -------------------------------------------------------------------------
-       FILE PICKER & HIGH CAPACITY DEMO MAKER
-       ------------------------------------------------------------------------- */
-    function triggerFileInput() {
-      document.getElementById('binary-file-input').click();
-    }
-
-    function handleFileSelected(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        storePakInIndexedDB(file.name, file.size, evt.target.result);
-        loadPakFromBuffer(evt.target.result, file.name);
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    function synthesizeTextMask(text, width, height, bytesPerRow) {
-      const c = document.createElement('canvas');
-      c.width = width;
-      c.height = height;
-      const ctx = c.getContext('2d');
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 13px Roboto, sans-serif';
-      ctx.textBaseline = 'top';
-      ctx.fillText(text, 6, Math.floor((height - 14) / 2));
-
-      const imgData = ctx.getImageData(0, 0, width, height).data;
-      const buffer = new Uint8Array(height * bytesPerRow);
-
-      for (let r = 0; r < height; r++) {
-        for (let x = 0; x < width; x++) {
-          if (imgData[(r * width + x) * 4] > 120) {
-            const byteIdx = r * bytesPerRow + (x >> 3);
-            buffer[byteIdx] |= (1 << (7 - (x & 7)));
-          }
-        }
-      }
-      return buffer;
-    }
-
-    function loadSampleDemoPack() {
-      const demoData = [
-        { q: "What is the capital city of France?", opts: ["London", "Paris", "Berlin", "Rome"], ans: 1 },
-        { q: "Which element has chemical symbol 'O'?", opts: ["Gold", "Silver", "Oxygen", "Iron"], ans: 2 },
-        { q: "How many planets are in Solar System?", opts: ["Seven", "Eight", "Nine", "Ten"], ans: 1 },
-        { q: "Which ocean is the largest on Earth?", opts: ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic"], ans: 0 },
-        { q: "What is the speed of light in vacuum?", opts: ["300,000 km/s", "150,000 km/s", "10,000 km/s", "Sound speed"], ans: 0 },
-        { q: "Who painted the Mona Lisa masterpiece?", opts: ["Michelangelo", "Leonardo da Vinci", "Raphael", "Picasso"], ans: 1 },
-        { q: "Which gas do plants absorb from atmosphere?", opts: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], ans: 1 },
-        { q: "What is the largest living mammal?", opts: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"], ans: 1 },
-        { q: "In what year did humans first land on Moon?", opts: ["1965", "1969", "1972", "1975"], ans: 1 },
-        { q: "Which is the smallest prime number?", opts: ["Zero", "One", "Two", "Three"], ans: 2 }
-      ];
-
-      const count = demoData.length;
-      const qH = 34, optH = 24;
-      const qBytes = qH * QUESTION_BYTES_ROW;
-      const optBytes = optH * OPTION_BYTES_ROW;
-      const singlePayload = qBytes + (4 * optBytes);
-      const headerSize = 20;
-      const indexSize = count * ENTRY_SIZE;
-      const payloadBase = headerSize + indexSize;
-
-      const encoder = new TextEncoder();
-      let searchBufLen = 0;
-      const encodedTexts = demoData.map(d => {
-        const enc = encoder.encode(d.q);
-        searchBufLen += 4 + enc.length;
-        return enc;
-      });
-
-      const searchOffset = payloadBase + (count * singlePayload);
-      const totalSize = searchOffset + searchBufLen;
-      const buffer = new ArrayBuffer(totalSize);
-      const view = new DataView(buffer);
-      const u8 = new Uint8Array(buffer);
-
-      u8[0] = 68; u8[1] = 71; u8[2] = 75; u8[3] = 49;
-      view.setUint32(4, count, true);
-      view.setUint32(8, headerSize, true);
-      view.setUint32(12, searchOffset, true);
-      view.setUint32(16, payloadBase, true);
-
-      for (let i = 0; i < count; i++) {
-        const payloadOffset = i * singlePayload;
-        const entryPos = headerSize + (i * ENTRY_SIZE);
-
-        view.setUint32(entryPos, payloadOffset, true);
-        view.setUint16(entryPos + 4, qH, true);
-        view.setUint16(entryPos + 6, optH, true);
-        view.setUint16(entryPos + 8, optH, true);
-        view.setUint16(entryPos + 10, optH, true);
-        view.setUint16(entryPos + 12, optH, true);
-        view.setUint8(entryPos + 14, demoData[i].ans);
-
-        u8.set(synthesizeTextMask(demoData[i].q, QUESTION_W, qH, QUESTION_BYTES_ROW), payloadBase + payloadOffset);
-        let cur = payloadBase + payloadOffset + qBytes;
-        for (let o = 0; o < 4; o++) {
-          u8.set(synthesizeTextMask(demoData[i].opts[o], OPTION_W, optH, OPTION_BYTES_ROW), cur);
-          cur += optBytes;
-        }
-      }
-
-      let sPos = searchOffset;
-      for (let i = 0; i < count; i++) {
-        view.setUint16(sPos, i, true);
-        view.setUint16(sPos + 2, encodedTexts[i].length, true);
-        u8.set(encodedTexts[i], sPos + 4);
-        sPos += 4 + encodedTexts[i].length;
-      }
-
-      const sampleName = "Sample_Standard_Exam_10Q.pak";
-      storePakInIndexedDB(sampleName, totalSize, buffer);
-      loadPakFromBuffer(buffer, sampleName);
-    }
-
-    /* -------------------------------------------------------------------------
-       MODES, THEMES & DIALOG CONTROLLERS
-       ------------------------------------------------------------------------- */
+    /* ==========================================================================
+       MODES, THEMES, DIALOGS & LIFECYCLE
+       ========================================================================== */
     function toggleReadingMode() {
       runtime.readingMode = (runtime.readingMode === "QUIZ") ? "STUDY" : "QUIZ";
       const pill = document.getElementById('btn-mode-toggle');
@@ -1999,7 +1804,7 @@
       document.getElementById(id).classList.remove('open');
     }
 
-    /* INITIALIZATION */
+    // Initialize persisted theme & zoom
     (function init() {
       const savedTheme = localStorage.getItem("dgk_theme") || "light";
       setTheme(savedTheme);
