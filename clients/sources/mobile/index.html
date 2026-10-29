@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Daily GK - Android</title>
+  <title>Daily GK - Android MD3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       MATERIAL DESIGN 3 DESIGN SYSTEM & PALETTES
+       MATERIAL DESIGN 3 (MATERIAL YOU) TOKEN ENGINE
        ========================================================================== */
     :root {
       --md-primary: #0061a4;
@@ -14,18 +17,21 @@
       --md-primary-container: #d1e4ff;
       --md-on-primary-container: #001d36;
       --md-surface: #fdfcff;
-      --md-surface-dim: #edeef2;
+      --md-surface-dim: #f2f3f7;
       --md-surface-bright: #ffffff;
-      --md-surface-container: #f0f2f7;
-      --md-surface-container-high: #e7e9ee;
+      --md-surface-container-low: #f7f8fc;
+      --md-surface-container: #edeef3;
+      --md-surface-container-high: #e7e8ed;
       --md-on-surface: #1a1c1e;
       --md-on-surface-variant: #43474e;
       --md-outline: #73777f;
       --md-outline-variant: #c3c7d0;
-      --md-success: #107c41;
-      --md-success-container: #d1e7dd;
+      --md-success: #146c2e;
+      --md-success-container: #c6f6cb;
+      --md-on-success-container: #002107;
       --md-error: #ba1a1a;
       --md-error-container: #ffdad6;
+      --md-on-error-container: #410002;
       --canvas-fg: #1a1c1e;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -34,14 +40,15 @@
     }
 
     [data-theme="blue"] {
-      --md-primary: #3894ff;
-      --md-on-primary: #003063;
-      --md-primary-container: #00468b;
-      --md-on-primary-container: #d2e4ff;
-      --md-surface: #111418;
-      --md-surface-dim: #0c0f12;
-      --md-surface-container: #1b1e23;
-      --md-surface-container-high: #25282e;
+      --md-primary: #9ecaff;
+      --md-on-primary: #003258;
+      --md-primary-container: #00497d;
+      --md-on-primary-container: #d1e4ff;
+      --md-surface: #111318;
+      --md-surface-dim: #0c0e12;
+      --md-surface-container-low: #15181d;
+      --md-surface-container: #1d2025;
+      --md-surface-container-high: #272a30;
       --md-on-surface: #e2e2e6;
       --md-on-surface-variant: #c3c7d0;
       --md-outline: #8d9199;
@@ -83,8 +90,9 @@
       --md-on-primary-container: #eaddff;
       --md-surface: #000000;
       --md-surface-dim: #000000;
-      --md-surface-container: #121212;
-      --md-surface-container-high: #1c1c1e;
+      --md-surface-container-low: #0a0a0a;
+      --md-surface-container: #141414;
+      --md-surface-container-high: #1f1f1f;
       --md-on-surface: #ffffff;
       --md-on-surface-variant: #cac4d0;
       --md-outline: #938f99;
@@ -112,7 +120,9 @@
       flex-direction: column;
     }
 
-    /* TOP APP BAR */
+    /* ==========================================================================
+       TOP APP BAR & INTEGRATED SEARCH BAR (M3 SPEC)
+       ========================================================================== */
     .top-app-bar {
       height: calc(64px + var(--safe-top));
       padding-top: var(--safe-top);
@@ -130,7 +140,7 @@
     .app-bar-content {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex: 1;
       overflow: hidden;
     }
@@ -169,6 +179,7 @@
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
+      position: relative;
     }
 
     .icon-btn:active {
@@ -184,7 +195,7 @@
     .mode-pill {
       font-size: 11px;
       font-weight: 700;
-      padding: 5px 12px;
+      padding: 6px 12px;
       border-radius: 100px;
       background: var(--md-surface-container);
       border: 1px solid var(--md-outline);
@@ -196,11 +207,32 @@
 
     .mode-pill.study {
       background: var(--md-success-container);
-      color: var(--md-success);
+      color: var(--md-on-success-container);
       border-color: var(--md-success);
     }
 
-    /* VIEWPORT STAGE */
+    /* M3 SEARCH HEADER CHIP BAR */
+    .search-active-banner {
+      height: 40px;
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+      font-weight: 500;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--md-outline-variant);
+    }
+
+    .search-active-banner.visible {
+      display: flex;
+    }
+
+    /* ==========================================================================
+       VIEWPORT STAGE: FOCUS CAROUSEL & CONTINUOUS SHEET
+       ========================================================================== */
     .viewport-stage {
       flex: 1;
       overflow: hidden;
@@ -210,7 +242,7 @@
       background: var(--md-surface-dim);
     }
 
-    /* FOCUS MODE CAROUSEL */
+    /* FOCUS VIEW */
     .focus-carousel {
       flex: 1;
       display: flex;
@@ -218,20 +250,21 @@
       justify-content: center;
       padding: 16px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
+    /* MD3 CARD */
     .exam-card {
       width: 100%;
       max-width: 520px;
       background: var(--md-surface);
-      border-radius: 20px;
-      padding: 18px;
+      border-radius: 24px;
+      padding: 16px 20px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.06);
       border: 1px solid var(--md-outline-variant);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       touch-action: pan-y;
       will-change: transform, opacity;
       transform-origin: center center;
@@ -242,7 +275,7 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--md-surface-container-high);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
 
     .q-number-pill {
@@ -253,33 +286,42 @@
       letter-spacing: 0.5px;
     }
 
+    /* ==========================================================================
+       INTRINSIC REAL-SIZE RASTER CANVAS
+       ========================================================================== */
     .pak-canvas-wrap {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      overflow-x: auto;
       padding: 4px 0;
-      overflow: hidden;
     }
 
     .pak-canvas {
       image-rendering: pixelated;
       image-rendering: crisp-edges;
-      max-width: 100%;
-      height: auto;
       display: block;
+      width: auto !important;
+      height: auto !important;
+      max-width: none !important;
+      flex-shrink: 0;
     }
 
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .opt-card {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 14px;
-      background: var(--md-surface-container);
+      padding: 8px 12px;
+      background: var(--md-surface-container-low);
       border: 1.5px solid transparent;
       border-radius: 12px;
       cursor: pointer;
@@ -302,13 +344,13 @@
     }
 
     .opt-index {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: var(--md-surface);
       border: 1px solid var(--md-outline);
       color: var(--md-on-surface);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -316,7 +358,7 @@
       flex-shrink: 0;
     }
 
-    /* SHEET (CONTINUOUS SCROLL) MODE */
+    /* CONTINUOUS SCROLLER (CHUNKED DYNAMIC PAGINATION) */
     .sheet-scroller {
       flex: 1;
       overflow-y: auto;
@@ -328,7 +370,15 @@
     }
 
     .sheet-scroller .exam-card {
-      max-width: 600px;
+      max-width: 580px;
+    }
+
+    .sheet-sentinel-loader {
+      padding: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+      font-weight: 500;
     }
 
     /* EMPTY STATE */
@@ -358,7 +408,21 @@
       opacity: 0.85;
     }
 
-    /* BOTTOM COMMAND BAR */
+    .btn-text {
+      background: transparent;
+      border: none;
+      color: var(--md-primary);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 8px 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* ==========================================================================
+       BOTTOM COMMAND & CONTROLLER BAR
+       ========================================================================== */
     .bottom-command-bar {
       height: calc(56px + var(--safe-bottom));
       padding-bottom: var(--safe-bottom);
@@ -394,11 +458,13 @@
       font-weight: 700;
     }
 
-    /* MD3 NAVIGATION DRAWER */
+    /* ==========================================================================
+       MD3 NAVIGATION DRAWER
+       ========================================================================== */
     .scrim {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.48);
+      background: rgba(0,0,0,0.5);
       z-index: 500;
       opacity: 0;
       pointer-events: none;
@@ -462,6 +528,7 @@
       font-weight: 500;
       cursor: pointer;
       text-align: left;
+      text-decoration: none;
     }
 
     .drawer-item:active {
@@ -474,7 +541,9 @@
       margin: 8px 12px;
     }
 
-    /* MD3 BOTTOM SHEET (MATRIX & RECENT) */
+    /* ==========================================================================
+       MD3 BOTTOM SHEETS (EXAM MATRIX & RECENT)
+       ========================================================================== */
     .bottom-sheet {
       position: fixed;
       left: 0;
@@ -599,7 +668,6 @@
       border-color: var(--md-error);
     }
 
-    /* RECENT ITEMS LIST */
     .recent-item {
       display: flex;
       align-items: center;
@@ -647,16 +715,6 @@
       gap: 12px;
       margin-top: 20px;
     }
-
-    .btn-text {
-      background: transparent;
-      border: none;
-      color: var(--md-primary);
-      font-weight: 500;
-      font-size: 14px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body data-theme="light">
@@ -677,14 +735,20 @@
 
     <div style="display:flex; align-items:center; gap:8px;">
       <div class="mode-pill" id="btn-mode-toggle" onclick="toggleReadingMode()">QUIZ</div>
-      <button class="icon-btn" onclick="openMatrixSheet()" aria-label="Matrix">
+      <button class="icon-btn" onclick="openMatrixSheet()" aria-label="Exam Matrix">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
       </button>
     </div>
   </header>
 
+  <!-- SEARCH ACTIVE STATUS BANNER -->
+  <div class="search-active-banner" id="search-active-banner">
+    <span id="search-active-label">Search active: 0 matches</span>
+    <button class="btn-text" onclick="clearSearch()" style="color:inherit; font-size:12px; padding:4px 8px;">✕ Clear</button>
+  </div>
+
   <!-- ========================================================================
-       VIEWPORT STAGE (SWIPE FOCUS & SHEET MODES)
+       VIEWPORT STAGE
        ======================================================================== -->
   <main class="viewport-stage" id="viewport">
     
@@ -695,7 +759,7 @@
       </svg>
       <h2 style="font-size:20px; margin:0 0 8px 0;">No Questions Loaded</h2>
       <p style="color:var(--md-on-surface-variant); font-size:13px; line-height:1.5; margin:0 0 16px 0;">
-        Open a .pak file from your storage, try the high-capacity demo pack, or download official packages online.
+        Open a .pak file from your device, run the built-in sample demo exam, or download official packages in your browser.
       </p>
       <button class="btn-tonal" onclick="triggerFileInput()">
         <svg style="width:18px; height:18px; fill:currentColor;" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
@@ -705,7 +769,7 @@
         <button class="btn-text" onclick="loadSampleDemoPack()">Run Sample Demo Exam</button>
       </div>
       <div>
-        <button class="btn-text" onclick="openDownloadLink()">Download More Packages...</button>
+        <a class="btn-text" href="https://shifat100.github.io/daily-gk/client-pack.html" target="_blank" rel="noopener noreferrer" onclick="openDownloadLink(event)">Download More Packages...</a>
       </div>
     </div>
 
@@ -723,8 +787,11 @@
       </div>
     </div>
 
-    <!-- Sheet Mode Container (Continuous Scroll) -->
-    <div class="sheet-scroller" id="view-sheet-mode" style="display:none;"></div>
+    <!-- Sheet Mode Container (Dynamic Chunked Infinite Scroll) -->
+    <div class="sheet-scroller" id="view-sheet-mode" style="display:none;" onscroll="handleSheetScroll()">
+      <div id="sheet-cards-container" style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;"></div>
+      <div class="sheet-sentinel-loader" id="sheet-loader-sentinel">Scroll down to load more...</div>
+    </div>
 
   </main>
 
@@ -760,7 +827,7 @@
   <aside class="nav-drawer" id="nav-drawer">
     <div class="drawer-header">
       <h3>Daily GK</h3>
-      <span style="font-size:12px; color:var(--md-outline);">Developer: Shifat100 • v1.2 High-Capacity Engine</span>
+      <span style="font-size:12px; color:var(--md-outline);">Developer: Shifat100 • Android MD3 Native Engine</span>
     </div>
 
     <div class="drawer-list">
@@ -776,20 +843,19 @@
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
         <span>Recent Files...</span>
       </button>
-      <button class="drawer-item" onclick="openDownloadLink(); closeDrawer();">
+      <!-- Always Open in External Browser -->
+      <a class="drawer-item" href="https://shifat100.github.io/daily-gk/client-pack.html" target="_blank" rel="noopener noreferrer" onclick="openDownloadLink(event); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
         <span>Download More Packages...</span>
-      </button>
+      </a>
 
       <div class="drawer-divider"></div>
 
-      <!-- Layout Mode -->
       <button class="drawer-item" onclick="toggleLayoutMode(); closeDrawer();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
         <span id="label-layout-mode">Layout: Focus Card (Swipe)</span>
       </button>
 
-      <!-- Theme Switcher -->
       <button class="drawer-item" onclick="cycleTheme();">
         <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
         <span id="label-theme">Theme: Light (Paper)</span>
@@ -828,12 +894,10 @@
       <span id="matrix-progress-counter" style="font-size:13px; font-weight:700; color:var(--md-primary);">0 / 0</span>
     </div>
     
-    <!-- Real Live Search Box (Searches Numbers & UTF-8 Text) -->
     <div class="search-wrap">
       <input type="text" class="search-input-field" id="matrix-search-input" placeholder="Search question # or text..." oninput="handleMatrixSearch(this.value)">
     </div>
 
-    <!-- Filter Chips -->
     <div class="filter-chips">
       <div class="filter-chip active" id="chip-filter-all" onclick="setMatrixFilter('all')">All</div>
       <div class="filter-chip" id="chip-filter-wrong" onclick="setMatrixFilter('wrong')">Wrong</div>
@@ -846,7 +910,7 @@
   </div>
 
   <!-- ========================================================================
-       MD3 BOTTOM SHEET: RECENT FILES (INDEXEDDB)
+       MD3 BOTTOM SHEET: RECENT FILES
        ======================================================================== -->
   <div class="scrim" id="recent-scrim" onclick="closeRecentSheet()"></div>
   <div class="bottom-sheet" id="sheet-recent">
@@ -856,15 +920,13 @@
       <button class="btn-text" onclick="clearAllRecentFiles()" style="color:var(--md-error);">Clear All</button>
     </div>
     <div class="sheet-body" id="recent-files-list">
-      <span style="color:var(--md-on-surface-variant)">Loading saved files...</span>
+      <span style="color:var(--md-on-surface-variant)">Querying packages...</span>
     </div>
   </div>
 
   <!-- ========================================================================
        MD3 DIALOGS
        ======================================================================== -->
-
-  <!-- Jump Dialog -->
   <div class="dialog-backdrop" id="dialog-jump">
     <div class="md-dialog">
       <h3>Jump to Question</h3>
@@ -879,7 +941,6 @@
     </div>
   </div>
 
-  <!-- Scorecard Result -->
   <div class="dialog-backdrop" id="dialog-scorecard">
     <div class="md-dialog" style="text-align:center;">
       <h3 style="margin:0 0 8px 0;">Exam Session Completed</h3>
@@ -892,14 +953,13 @@
     </div>
   </div>
 
-  <!-- Technical Specs -->
   <div class="dialog-backdrop" id="dialog-specs">
     <div class="md-dialog">
       <h3>Technical Architecture</h3>
       <div style="font-size:12px; color:var(--md-on-surface-variant); line-height:1.6;">
-        <p><b>1-Bit Decompression:</b> Direct binary bit-shifting directly generates <code>ImageData</code> buffers with zero intermediate layout penalties.</p>
-        <p><b>Search Index:</b> High-speed binary search blocks unpack UTF-8 strings dynamically for live instant matching.</p>
-        <p><b>Hardware Accelerated:</b> Hardware CSS 3D matrix transitions for 60fps swipe flings and zero memory leaks.</p>
+        <p><b>Intrinsic Raster Scaling:</b> Canvas respects native question pixel geometry without distorted layout stretching.</p>
+        <p><b>Lazy Infinite Chunks:</b> Continuous scroll loads 10 questions at a time dynamically, eliminating UI lockup.</p>
+        <p><b>Search-Driven Flow:</b> Filtering redirects next/previous navigation to consecutive matched search items.</p>
       </div>
       <div class="dialog-actions">
         <button class="btn-text" onclick="closeDialog('dialog-specs')">OK</button>
@@ -907,13 +967,12 @@
     </div>
   </div>
 
-  <!-- About Dialog -->
   <div class="dialog-backdrop" id="dialog-about">
     <div class="md-dialog" style="text-align:center;">
       <h3 style="margin:0 0 6px 0;">Daily GK</h3>
-      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.2 (High-Capacity Engine)</p>
+      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.3 (Android Native MD3)</p>
       <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 16px 0;">Developer: <b>Shifat100</b></p>
-      <p style="font-size:12px; color:var(--md-outline); margin:0;">High-density offline evaluation engine optimized for Android and mobile browsers.</p>
+      <p style="font-size:12px; color:var(--md-outline); margin:0;">Optimized for responsive touch gestures and massive question banks.</p>
       <div class="dialog-actions" style="justify-content:center; margin-top:16px;">
         <button class="btn-text" onclick="closeDialog('dialog-about')">Close</button>
       </div>
@@ -921,7 +980,7 @@
   </div>
 
   <!-- ========================================================================
-       CORE ENGINE SCRIPT
+       ENGINE SCRIPT
        ======================================================================== -->
   <script>
     const QUESTION_W         = 224;
@@ -962,11 +1021,22 @@
       currentTheme: "light",
       currentFilter: "all",
       searchQuery: "",
+      filteredIndices: [], // Tracks active search matches
+      isSearchActive: false,
+      sheetLoadedCount: 0,  // Dynamic 10-by-10 lazy loader tracking
+      isSheetLoading: false,
       zoom: 1.0
     };
 
+    /* HAPTIC FEEDBACK BRIDGE */
+    function hapticFeedback() {
+      if (navigator.vibrate) {
+        try { navigator.vibrate(8); } catch(e) {}
+      }
+    }
+
     /* -------------------------------------------------------------------------
-       INDEXEDDB STORAGE
+       INDEXEDDB STORAGE ENGINE
        ------------------------------------------------------------------------- */
     function openDatabase() {
       return new Promise((resolve, reject) => {
@@ -1038,7 +1108,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       PAK PARSER & 1-BIT RASTER ENGINE
+       PAK PARSER & 1-BIT DECOMPRESSOR
        ------------------------------------------------------------------------- */
     function loadPakFromBuffer(arrayBuffer, name) {
       const view = new DataView(arrayBuffer);
@@ -1063,6 +1133,8 @@
       runtime.userAnswers = {};
       runtime.entries = [];
       runtime.searchIndex = {};
+      runtime.filteredIndices = [];
+      runtime.isSearchActive = false;
 
       for (let i = 0; i < runtime.totalQuestions; i++) {
         const pos = indexOffset + (i * ENTRY_SIZE);
@@ -1079,7 +1151,7 @@
         });
       }
 
-      // Read UTF-8 Search Index
+      // Decode UTF-8 Search index
       if (searchOffset > 0 && searchOffset < runtime.fileSize) {
         let sPos = searchOffset;
         const decoder = new TextDecoder("utf-8");
@@ -1144,7 +1216,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       CARD & SHEET RENDERING
+       CARD & DYNAMIC SHEET LOADING
        ------------------------------------------------------------------------- */
     function updateLayoutView() {
       const focusView = document.getElementById('view-focus-mode');
@@ -1157,7 +1229,7 @@
       } else {
         focusView.style.display = 'none';
         sheetView.style.display = 'flex';
-        renderContinuousSheet();
+        initDynamicContinuousSheet();
       }
       updateStatusDisplay();
     }
@@ -1194,11 +1266,28 @@
       updateStatusDisplay();
     }
 
-    function renderContinuousSheet() {
-      const sheetView = document.getElementById('view-sheet-mode');
-      sheetView.innerHTML = "";
+    /* DYNAMIC CHUNKED LOADER (10 AT A TIME TO PREVENT FREEZE) */
+    function initDynamicContinuousSheet() {
+      const container = document.getElementById('sheet-cards-container');
+      container.innerHTML = "";
+      runtime.sheetLoadedCount = 0;
+      loadNextSheetChunk(10);
+    }
 
-      for (let idx = 0; idx < runtime.totalQuestions; idx++) {
+    function loadNextSheetChunk(batchSize = 10) {
+      if (!runtime.entries || runtime.entries.length === 0) return;
+      if (runtime.sheetLoadedCount >= runtime.totalQuestions) {
+        document.getElementById('sheet-loader-sentinel').textContent = "All questions loaded.";
+        return;
+      }
+
+      runtime.isSheetLoading = true;
+      const container = document.getElementById('sheet-cards-container');
+      const start = runtime.sheetLoadedCount;
+      const end = Math.min(start + batchSize, runtime.totalQuestions);
+      const frag = document.createDocumentFragment();
+
+      for (let idx = start; idx < end; idx++) {
         const entry = runtime.entries[idx];
         let offset = runtime.payloadBase + entry.payloadOffset;
 
@@ -1232,8 +1321,31 @@
           optList.appendChild(item);
         }
         card.appendChild(optList);
-        sheetView.appendChild(card);
-        refreshOptionColors(idx, optList);
+        frag.appendChild(card);
+      }
+
+      container.appendChild(frag);
+
+      for (let idx = start; idx < end; idx++) {
+        refreshOptionColors(idx, document.getElementById(`sheet-opts-${idx}`));
+      }
+
+      runtime.sheetLoadedCount = end;
+      runtime.isSheetLoading = false;
+
+      const sentinel = document.getElementById('sheet-loader-sentinel');
+      if (runtime.sheetLoadedCount >= runtime.totalQuestions) {
+        sentinel.textContent = `All ${runtime.totalQuestions} questions displayed`;
+      } else {
+        sentinel.textContent = `Showing 1–${runtime.sheetLoadedCount} of ${runtime.totalQuestions} (Scroll down to load more)`;
+      }
+    }
+
+    function handleSheetScroll() {
+      if (runtime.layoutMode !== 'sheet' || runtime.isSheetLoading) return;
+      const scroller = document.getElementById('view-sheet-mode');
+      if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 300) {
+        loadNextSheetChunk(10);
       }
     }
 
@@ -1248,12 +1360,15 @@
       num.textContent = (optIdx + 1);
       item.appendChild(num);
 
+      const canvasWrap = document.createElement('div');
+      canvasWrap.className = 'pak-canvas-wrap';
       const canvas = document.createElement('canvas');
       canvas.className = 'pak-canvas';
       const len = height * OPTION_BYTES_ROW;
       const data = new Uint8Array(runtime.buffer, offset, len);
       blitMaskToCanvas(canvas, OPTION_W, height, OPTION_BYTES_ROW, data);
-      item.appendChild(canvas);
+      canvasWrap.appendChild(canvas);
+      item.appendChild(canvasWrap);
 
       return item;
     }
@@ -1262,6 +1377,7 @@
       if (runtime.readingMode === "STUDY") return;
       if (runtime.userAnswers[qIdx] !== undefined) return;
 
+      hapticFeedback();
       const entry = runtime.entries[qIdx];
       runtime.userAnswers[qIdx] = optIdx;
 
@@ -1278,7 +1394,6 @@
 
       updateMatrixBadge(qIdx, isRight);
 
-      // Auto trigger scorecard upon completing exam
       if (Object.keys(runtime.userAnswers).length === runtime.totalQuestions) {
         setTimeout(showScorecard, 400);
       }
@@ -1312,11 +1427,78 @@
     }
 
     function updateStatusDisplay() {
-      document.getElementById('bottom-status-idx').textContent = `${runtime.currentIdx + 1} of ${runtime.totalQuestions}`;
+      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
+        const currentSearchPos = runtime.filteredIndices.indexOf(runtime.currentIdx) + 1;
+        document.getElementById('bottom-status-idx').textContent = `Match ${currentSearchPos || 1} of ${runtime.filteredIndices.length} (Q ${runtime.currentIdx + 1})`;
+      } else {
+        document.getElementById('bottom-status-idx').textContent = `${runtime.currentIdx + 1} of ${runtime.totalQuestions}`;
+      }
     }
 
     /* -------------------------------------------------------------------------
-       GESTURES ENGINE: FLING SWIPE, PINCH-TO-ZOOM, DOUBLE-TAP
+       SEARCH-LINKED NAVIGATION (NEXT / PREV JUMP CONSECUTIVE SEARCH ITEMS)
+       ------------------------------------------------------------------------- */
+    function nextItem() {
+      hapticFeedback();
+      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
+        const curPos = runtime.filteredIndices.indexOf(runtime.currentIdx);
+        if (curPos !== -1 && curPos < runtime.filteredIndices.length - 1) {
+          jumpToIndex(runtime.filteredIndices[curPos + 1]);
+        }
+      } else {
+        if (runtime.layoutMode === 'focus') {
+          if (runtime.currentIdx < runtime.totalQuestions - 1) renderFocusCard(runtime.currentIdx + 1);
+        } else {
+          jumpToIndex(Math.min(runtime.totalQuestions - 1, runtime.currentIdx + 1));
+        }
+      }
+    }
+
+    function prevItem() {
+      hapticFeedback();
+      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
+        const curPos = runtime.filteredIndices.indexOf(runtime.currentIdx);
+        if (curPos > 0) {
+          jumpToIndex(runtime.filteredIndices[curPos - 1]);
+        }
+      } else {
+        if (runtime.layoutMode === 'focus') {
+          if (runtime.currentIdx > 0) renderFocusCard(runtime.currentIdx - 1);
+        } else {
+          jumpToIndex(Math.max(0, runtime.currentIdx - 1));
+        }
+      }
+    }
+
+    function jumpToIndex(idx) {
+      runtime.currentIdx = idx;
+      if (runtime.layoutMode === 'focus') {
+        renderFocusCard(idx);
+      } else {
+        // Ensure element is loaded into sheet DOM
+        if (idx >= runtime.sheetLoadedCount) {
+          loadNextSheetChunk((idx - runtime.sheetLoadedCount) + 10);
+        }
+        setTimeout(() => {
+          const el = document.getElementById(`sheet-card-${idx}`);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
+      }
+      highlightMatrixCurrent(idx);
+      updateStatusDisplay();
+    }
+
+    function clearSearch() {
+      runtime.searchQuery = "";
+      runtime.isSearchActive = false;
+      document.getElementById('matrix-search-input').value = "";
+      document.getElementById('search-active-banner').classList.remove('visible');
+      applyMatrixFilter();
+      updateStatusDisplay();
+    }
+
+    /* -------------------------------------------------------------------------
+       SWIPE & PINCH-TO-ZOOM TOUCH ENGINE
        ------------------------------------------------------------------------- */
     const focusCard = document.getElementById('focus-card');
     let touchStartX = 0, touchStartY = 0, touchMoveX = 0, touchStartTime = 0;
@@ -1330,7 +1512,6 @@
         touchStartTime = Date.now();
         isSwiping = true;
 
-        // Double tap recognition for zoom toggle
         const now = Date.now();
         if (now - lastTap < 280 && now - lastTap > 0) {
           applyZoom(runtime.zoom === 1.0 ? 1.35 : 1.0);
@@ -1380,11 +1561,11 @@
       focusCard.style.transition = 'transform 0.25s cubic-bezier(0.2, 0.0, 0, 1.0)';
 
       if ((Math.abs(diffX) > 65 || velocity > 0.45) && Math.abs(diffX) > 25) {
-        if (diffX < 0 && runtime.currentIdx < runtime.totalQuestions - 1) {
+        if (diffX < 0) {
           // Swipe Left -> Next
           focusCard.style.transform = 'translateX(-120%) rotate(-10deg)';
           setTimeout(() => {
-            renderFocusCard(runtime.currentIdx + 1);
+            nextItem();
             focusCard.style.transition = 'none';
             focusCard.style.transform = 'translateX(100%)';
             setTimeout(() => {
@@ -1392,11 +1573,11 @@
               focusCard.style.transform = 'translateX(0)';
             }, 20);
           }, 160);
-        } else if (diffX > 0 && runtime.currentIdx > 0) {
+        } else {
           // Swipe Right -> Prev
           focusCard.style.transform = 'translateX(120%) rotate(10deg)';
           setTimeout(() => {
-            renderFocusCard(runtime.currentIdx - 1);
+            prevItem();
             focusCard.style.transition = 'none';
             focusCard.style.transform = 'translateX(-100%)';
             setTimeout(() => {
@@ -1404,36 +1585,15 @@
               focusCard.style.transform = 'translateX(0)';
             }, 20);
           }, 160);
-        } else {
-          focusCard.style.transform = 'translateX(0) rotate(0deg)';
         }
       } else {
         focusCard.style.transform = 'translateX(0) rotate(0deg)';
       }
     });
 
-    // Edge Swipe Left to open drawer
     window.addEventListener('touchstart', (e) => {
       if (e.touches[0].clientX < 22) openDrawer();
     });
-
-    function nextItem() {
-      if (runtime.layoutMode === 'focus') {
-        if (runtime.currentIdx < runtime.totalQuestions - 1) renderFocusCard(runtime.currentIdx + 1);
-      } else {
-        const next = Math.min(runtime.totalQuestions - 1, runtime.currentIdx + 1);
-        jumpToIndex(next);
-      }
-    }
-
-    function prevItem() {
-      if (runtime.layoutMode === 'focus') {
-        if (runtime.currentIdx > 0) renderFocusCard(runtime.currentIdx - 1);
-      } else {
-        const prev = Math.max(0, runtime.currentIdx - 1);
-        jumpToIndex(prev);
-      }
-    }
 
     function stepZoom(delta) {
       applyZoom(runtime.zoom + delta);
@@ -1451,7 +1611,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       EXAM MATRIX & LIVE SEARCH FILTER
+       EXAM MATRIX, LIVE SEARCH & ACTIVE MATCH TRACKING
        ------------------------------------------------------------------------- */
     function buildMatrixGrid() {
       const grid = document.getElementById('q-matrix-grid');
@@ -1471,18 +1631,6 @@
       }
       grid.appendChild(frag);
       applyMatrixFilter();
-    }
-
-    function jumpToIndex(idx) {
-      runtime.currentIdx = idx;
-      if (runtime.layoutMode === 'focus') {
-        renderFocusCard(idx);
-      } else {
-        const el = document.getElementById(`sheet-card-${idx}`);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      highlightMatrixCurrent(idx);
-      updateStatusDisplay();
     }
 
     function updateMatrixBadge(idx, isCorrect) {
@@ -1508,10 +1656,23 @@
 
     function handleMatrixSearch(val) {
       runtime.searchQuery = val.trim().toLowerCase();
+      runtime.isSearchActive = runtime.searchQuery.length > 0;
       applyMatrixFilter();
+
+      // If search becomes active and we have matches, auto-jump to first match
+      if (runtime.isSearchActive && runtime.filteredIndices.length > 0) {
+        jumpToIndex(runtime.filteredIndices[0]);
+        document.getElementById('search-active-banner').classList.add('visible');
+        document.getElementById('search-active-label').textContent = `Search active: ${runtime.filteredIndices.length} matches ("${runtime.searchQuery}")`;
+      } else if (!runtime.isSearchActive) {
+        document.getElementById('search-active-banner').classList.remove('visible');
+      }
+      updateStatusDisplay();
     }
 
     function applyMatrixFilter() {
+      runtime.filteredIndices = [];
+
       document.querySelectorAll('.matrix-badge').forEach((b, i) => {
         const entry = runtime.entries[i];
         const ans = runtime.userAnswers[i];
@@ -1527,7 +1688,32 @@
         }
 
         b.style.display = visible ? 'flex' : 'none';
+        if (visible) runtime.filteredIndices.push(i);
       });
+    }
+
+    /* -------------------------------------------------------------------------
+       EXTERNAL BROWSER LINK HANDLER
+       ------------------------------------------------------------------------- */
+    function openDownloadLink(e) {
+      if (e) e.preventDefault();
+      const targetUrl = DOWNLOAD_URL;
+
+      // Handle Android Cordova / Capacitor WebView system browser bridges
+      try {
+        if (window.navigator && window.navigator.app && window.navigator.app.loadUrl) {
+          window.navigator.app.loadUrl(targetUrl, { openExternal: true });
+          return;
+        }
+      } catch (err) {}
+
+      // Standard Fallback with _system (for InAppBrowser) and _blank
+      try {
+        const opened = window.open(targetUrl, '_system');
+        if (opened) return;
+      } catch (err) {}
+
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
     }
 
     /* -------------------------------------------------------------------------
@@ -1587,7 +1773,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       DEMO GENERATOR & FILE PICKER
+       FILE PICKER & HIGH CAPACITY DEMO MAKER
        ------------------------------------------------------------------------- */
     function triggerFileInput() {
       document.getElementById('binary-file-input').click();
@@ -1639,6 +1825,8 @@
         { q: "What is the speed of light in vacuum?", opts: ["300,000 km/s", "150,000 km/s", "10,000 km/s", "Sound speed"], ans: 0 },
         { q: "Who painted the Mona Lisa masterpiece?", opts: ["Michelangelo", "Leonardo da Vinci", "Raphael", "Picasso"], ans: 1 },
         { q: "Which gas do plants absorb from atmosphere?", opts: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], ans: 1 },
+        { q: "What is the largest living mammal?", opts: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"], ans: 1 },
+        { q: "In what year did humans first land on Moon?", opts: ["1965", "1969", "1972", "1975"], ans: 1 },
         { q: "Which is the smallest prime number?", opts: ["Zero", "One", "Two", "Three"], ans: 2 }
       ];
 
@@ -1665,7 +1853,7 @@
       const view = new DataView(buffer);
       const u8 = new Uint8Array(buffer);
 
-      u8[0] = 68; u8[1] = 71; u8[2] = 75; u8[3] = 49; // DGK1
+      u8[0] = 68; u8[1] = 71; u8[2] = 75; u8[3] = 49;
       view.setUint32(4, count, true);
       view.setUint32(8, headerSize, true);
       view.setUint32(12, searchOffset, true);
@@ -1699,17 +1887,13 @@
         sPos += 4 + encodedTexts[i].length;
       }
 
-      const sampleName = "Sample_Standard_Exam_8Q.pak";
+      const sampleName = "Sample_Standard_Exam_10Q.pak";
       storePakInIndexedDB(sampleName, totalSize, buffer);
       loadPakFromBuffer(buffer, sampleName);
     }
 
-    function openDownloadLink() {
-      window.open(DOWNLOAD_URL, "_blank");
-    }
-
     /* -------------------------------------------------------------------------
-       MODES, THEMES, DIALOGS & NAVIGATION
+       MODES, THEMES & DIALOG CONTROLLERS
        ------------------------------------------------------------------------- */
     function toggleReadingMode() {
       runtime.readingMode = (runtime.readingMode === "QUIZ") ? "STUDY" : "QUIZ";
@@ -1721,7 +1905,7 @@
         if (runtime.layoutMode === 'focus') {
           refreshOptionColors(runtime.currentIdx, document.getElementById('focus-options-wrap'));
         } else {
-          for (let i = 0; i < runtime.totalQuestions; i++) {
+          for (let i = 0; i < runtime.sheetLoadedCount; i++) {
             refreshOptionColors(i, document.getElementById(`sheet-opts-${i}`));
           }
         }
@@ -1818,7 +2002,7 @@
       document.getElementById(id).classList.remove('open');
     }
 
-    // Initialize persisted theme & zoom
+    /* INITIALIZATION */
     (function init() {
       const savedTheme = localStorage.getItem("dgk_theme") || "light";
       setTheme(savedTheme);
