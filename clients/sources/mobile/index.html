@@ -1,1 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Daily GK - Android</title>
+  <style>
+    /* ==========================================================================
+       MATERIAL DESIGN 3 DESIGN SYSTEM & PALETTES
+       ========================================================================== */
+    :root {
+      --md-primary: #0061a4;
+      --md-on-primary: #ffffff;
+      --md-primary-container: #d1e4ff;
+      --md-on-primary-container: #001d36;
+      --md-surface: #fdfcff;
+      --md-surface-dim: #edeef2;
+      --md-surface-bright: #ffffff;
+      --md-surface-container: #f0f2f7;
+      --md-surface-container-high: #e7e9ee;
+      --md-on-surface: #1a1c1e;
+      --md-on-surface-variant: #43474e;
+      --md-outline: #73777f;
+      --md-outline-variant: #c3c7d0;
+      --md-success: #107c41;
+      --md-success-container: #d1e7dd;
+      --md-error: #ba1a1a;
+      --md-error-container: #ffdad6;
+      --canvas-fg: #1a1c1e;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --font-system: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
+    }
 
+    [data-theme="blue"] {
+      --md-primary: #3894ff;
+      --md-on-primary: #003063;
+      --md-primary-container: #00468b;
+      --md-on-primary-container: #d2e4ff;
+      --md-surface: #111418;
+      --md-surface-dim: #0c0f12;
+      --md-surface-container: #1b1e23;
+      --md-surface-container-high: #25282e;
+      --md-on-surface: #e2e2e6;
+      --md-on-surface-variant: #c3c7d0;
+      --md-outline: #8d9199;
+      --md-outline-variant: #43474e;
+      --canvas-fg: #e2e2e6;
+    }
+
+    [data-theme="red"] {
+      --md-primary: #b3261e;
+      --md-on-primary: #ffffff;
+      --md-primary-container: #f9dedc;
+      --md-on-primary-container: #410e0b;
+      --md-surface-container: #fbf0f0;
+      --md-surface-container-high: #f3e2e2;
+    }
+
+    [data-theme="green"] {
+      --md-primary: #1e6c38;
+      --md-on-primary: #ffffff;
+      --md-primary-container: #a5f3b3;
+      --md-on-primary-container: #00210b;
+      --md-surface-container: #edf7ef;
+      --md-surface-container-high: #deede1;
+    }
+
+    [data-theme="gold"] {
+      --md-primary: #855400;
+      --md-on-primary: #ffffff;
+      --md-primary-container: #ffddb6;
+      --md-on-primary-container: #2b1700;
+      --md-surface-container: #fdf5ea;
+      --md-surface-container-high: #f5ead8;
+    }
+
+    [data-theme="oled"] {
+      --md-primary: #cfbcff;
+      --md-on-primary: #381e72;
+      --md-primary-container: #4f378b;
+      --md-on-primary-container: #eaddff;
+      --md-surface: #000000;
+      --md-surface-dim: #000000;
+      --md-surface-container: #121212;
+      --md-surface-container-high: #1c1c1e;
+      --md-on-surface: #ffffff;
+      --md-on-surface-variant: #cac4d0;
+      --md-outline: #938f99;
+      --md-outline-variant: #49454f;
+      --canvas-fg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-system);
+      background: var(--md-surface-dim);
+      color: var(--md-on-surface);
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP APP BAR */
+    .top-app-bar {
+      height: calc(64px + var(--safe-top));
+      padding-top: var(--safe-top);
+      background: var(--md-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 8px;
+      padding-right: 8px;
+      border-bottom: 1px solid var(--md-outline-variant);
+      z-index: 100;
+      flex-shrink: 0;
+    }
+
+    .app-bar-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .app-title-wrap {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .app-title {
+      font-size: 18px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .app-subtitle {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--md-on-surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .icon-btn:active {
+      background: var(--md-surface-container-high);
+    }
+
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .mode-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 100px;
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline);
+      color: var(--md-on-surface);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .mode-pill.study {
+      background: var(--md-success-container);
+      color: var(--md-success);
+      border-color: var(--md-success);
+    }
+
+    /* VIEWPORT STAGE */
+    .viewport-stage {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--md-surface-dim);
+    }
+
+    /* FOCUS MODE CAROUSEL */
+    .focus-carousel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exam-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--md-surface);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border: 1px solid var(--md-outline-variant);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      touch-action: pan-y;
+      will-change: transform, opacity;
+      transform-origin: center center;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--md-surface-container-high);
+      padding-bottom: 10px;
+    }
+
+    .q-number-pill {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--md-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pak-canvas-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 4px 0;
+      overflow: hidden;
+    }
+
+    .pak-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--md-surface-container);
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+
+    .opt-card:active {
+      transform: scale(0.985);
+      background: var(--md-surface-container-high);
+    }
+
+    .opt-card.correct {
+      background: var(--md-success-container) !important;
+      border-color: var(--md-success) !important;
+    }
+
+    .opt-card.wrong {
+      background: var(--md-error-container) !important;
+      border-color: var(--md-error) !important;
+    }
+
+    .opt-index {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--md-surface);
+      border: 1px solid var(--md-outline);
+      color: var(--md-on-surface);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* SHEET (CONTINUOUS SCROLL) MODE */
+    .sheet-scroller {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sheet-scroller .exam-card {
+      max-width: 600px;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      margin: auto;
+      text-align: center;
+      padding: 24px;
+      max-width: 320px;
+    }
+
+    .btn-tonal {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .btn-tonal:active {
+      opacity: 0.85;
+    }
+
+    /* BOTTOM COMMAND BAR */
+    .bottom-command-bar {
+      height: calc(56px + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+      background: var(--md-surface);
+      border-top: 1px solid var(--md-outline-variant);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 12px;
+      padding-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+
+    .mini-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline);
+      color: var(--md-on-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* MD3 NAVIGATION DRAWER */
+    .scrim {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.48);
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .scrim.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 320px;
+      max-width: 82vw;
+      background: var(--md-surface);
+      z-index: 600;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1);
+      display: flex;
+      flex-direction: column;
+      padding: var(--safe-top) 12px var(--safe-bottom) 12px;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+    }
+
+    .nav-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 24px 16px 14px 16px;
+    }
+
+    .drawer-header h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .drawer-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drawer-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      border-radius: 100px;
+      border: none;
+      background: transparent;
+      color: var(--md-on-surface);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .drawer-item:active {
+      background: var(--md-surface-container);
+    }
+
+    .drawer-divider {
+      height: 1px;
+      background: var(--md-surface-container-high);
+      margin: 8px 12px;
+    }
+
+    /* MD3 BOTTOM SHEET (MATRIX & RECENT) */
+    .bottom-sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--md-surface);
+      border-radius: 28px 28px 0 0;
+      z-index: 700;
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1);
+      display: flex;
+      flex-direction: column;
+      max-height: 84vh;
+      padding-bottom: var(--safe-bottom);
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.25);
+    }
+
+    .bottom-sheet.open {
+      transform: translateY(0);
+    }
+
+    .sheet-drag-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--md-outline);
+      opacity: 0.4;
+      margin: 12px auto 8px auto;
+    }
+
+    .sheet-head {
+      padding: 8px 20px 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sheet-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .search-wrap {
+      padding: 0 20px 12px 20px;
+    }
+
+    .search-input-field {
+      width: 100%;
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline);
+      border-radius: 100px;
+      padding: 10px 18px;
+      font-size: 14px;
+      color: var(--md-on-surface);
+      outline: none;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 12px 20px;
+    }
+
+    .filter-chip {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      background: var(--md-surface-container);
+      color: var(--md-on-surface);
+      border: 1px solid var(--md-outline-variant);
+      cursor: pointer;
+    }
+
+    .filter-chip.active {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      border-color: var(--md-primary);
+      font-weight: 700;
+    }
+
+    .sheet-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 20px 24px 20px;
+    }
+
+    .q-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .matrix-badge {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline-variant);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--md-on-surface);
+      cursor: pointer;
+    }
+
+    .matrix-badge.current {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      border-color: var(--md-primary);
+    }
+
+    .matrix-badge.correct {
+      background: var(--md-success-container);
+      color: var(--md-success);
+      border-color: var(--md-success);
+    }
+
+    .matrix-badge.wrong {
+      background: var(--md-error-container);
+      color: var(--md-error);
+      border-color: var(--md-error);
+    }
+
+    /* RECENT ITEMS LIST */
+    .recent-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline-variant);
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+
+    /* DIALOGS */
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 800;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .dialog-backdrop.open {
+      display: flex;
+    }
+
+    .md-dialog {
+      background: var(--md-surface);
+      width: 100%;
+      max-width: 360px;
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    }
+
+    .md-dialog h3 {
+      margin: 0 0 12px 0;
+      font-size: 19px;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-text {
+      background: transparent;
+      border: none;
+      color: var(--md-primary);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- ========================================================================
+       TOP APP BAR
+       ======================================================================== -->
+  <header class="top-app-bar">
+    <div class="app-bar-content">
+      <button class="icon-btn" onclick="openDrawer()" aria-label="Menu">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+      <div class="app-title-wrap">
+        <div class="app-title" id="bar-title">Daily GK</div>
+        <div class="app-subtitle" id="bar-subtitle">No package active</div>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div class="mode-pill" id="btn-mode-toggle" onclick="toggleReadingMode()">QUIZ</div>
+      <button class="icon-btn" onclick="openMatrixSheet()" aria-label="Matrix">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       VIEWPORT STAGE (SWIPE FOCUS & SHEET MODES)
+       ======================================================================== -->
+  <main class="viewport-stage" id="viewport">
+    
+    <!-- Empty Initial State -->
+    <div class="empty-state" id="view-empty-state">
+      <svg style="width:64px; height:64px; fill:var(--md-primary); margin-bottom:12px;" viewBox="0 0 24 24">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+      </svg>
+      <h2 style="font-size:20px; margin:0 0 8px 0;">No Questions Loaded</h2>
+      <p style="color:var(--md-on-surface-variant); font-size:13px; line-height:1.5; margin:0 0 16px 0;">
+        Open a .pak file from your storage, try the high-capacity demo pack, or download official packages online.
+      </p>
+      <button class="btn-tonal" onclick="triggerFileInput()">
+        <svg style="width:18px; height:18px; fill:currentColor;" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+        <span>Open .PAK File</span>
+      </button>
+      <div style="margin-top:10px;">
+        <button class="btn-text" onclick="loadSampleDemoPack()">Run Sample Demo Exam</button>
+      </div>
+      <div>
+        <button class="btn-text" onclick="openDownloadLink()">Download More Packages...</button>
+      </div>
+    </div>
+
+    <!-- Focus Mode Container (Swipe & Pinch Gestures Active) -->
+    <div class="focus-carousel" id="view-focus-mode" style="display:none;">
+      <div class="exam-card" id="focus-card">
+        <div class="card-header">
+          <span class="q-number-pill" id="focus-q-num">Question 1 of 0</span>
+          <span style="font-size:12px; font-weight:700; color:var(--md-success);" id="focus-score-counter">Score: 0 / 0</span>
+        </div>
+        <div class="pak-canvas-wrap">
+          <canvas id="focus-question-canvas" class="pak-canvas"></canvas>
+        </div>
+        <div class="options-list" id="focus-options-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Sheet Mode Container (Continuous Scroll) -->
+    <div class="sheet-scroller" id="view-sheet-mode" style="display:none;"></div>
+
+  </main>
+
+  <!-- ========================================================================
+       BOTTOM COMMAND & CONTROLLER BAR
+       ======================================================================== -->
+  <footer class="bottom-command-bar">
+    <div style="display:flex; align-items:center; gap:4px;">
+      <button class="icon-btn" onclick="prevItem()" aria-label="Previous">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <button class="icon-btn" onclick="nextItem()" aria-label="Next">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
+    </div>
+
+    <div style="font-size:12px; color:var(--md-on-surface-variant); font-weight:500;" id="bottom-status-idx">0 of 0</div>
+
+    <div class="zoom-controls">
+      <button class="mini-btn" onclick="stepZoom(-0.1)">-</button>
+      <span id="zoom-label" style="width:34px; text-align:center;">100%</span>
+      <button class="mini-btn" onclick="stepZoom(0.1)">+</button>
+      <button class="mini-btn" onclick="resetZoom()" style="width:auto; padding:0 6px;">1:1</button>
+    </div>
+  </footer>
+
+  <input type="file" id="binary-file-input" accept=".pak" style="display:none;" onchange="handleFileSelected(event)">
+
+  <!-- ========================================================================
+       MD3 NAVIGATION DRAWER
+       ======================================================================== -->
+  <div class="scrim" id="drawer-scrim" onclick="closeDrawer()"></div>
+  <aside class="nav-drawer" id="nav-drawer">
+    <div class="drawer-header">
+      <h3>Daily GK</h3>
+      <span style="font-size:12px; color:var(--md-outline);">Developer: Shifat100 • v1.2 High-Capacity Engine</span>
+    </div>
+
+    <div class="drawer-list">
+      <button class="drawer-item" onclick="triggerFileInput(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        <span>Open PAK File...</span>
+      </button>
+      <button class="drawer-item" onclick="loadSampleDemoPack(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        <span>Load Demo Exam</span>
+      </button>
+      <button class="drawer-item" onclick="openRecentSheet(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        <span>Recent Files...</span>
+      </button>
+      <button class="drawer-item" onclick="openDownloadLink(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+        <span>Download More Packages...</span>
+      </button>
+
+      <div class="drawer-divider"></div>
+
+      <!-- Layout Mode -->
+      <button class="drawer-item" onclick="toggleLayoutMode(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+        <span id="label-layout-mode">Layout: Focus Card (Swipe)</span>
+      </button>
+
+      <!-- Theme Switcher -->
+      <button class="drawer-item" onclick="cycleTheme();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+        <span id="label-theme">Theme: Light (Paper)</span>
+      </button>
+
+      <button class="drawer-item" onclick="showJumpDialog(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+        <span>Jump to Question...</span>
+      </button>
+      <button class="drawer-item" onclick="resetQuizScore(); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+        <span>Reset Quiz Score</span>
+      </button>
+
+      <div class="drawer-divider"></div>
+
+      <button class="drawer-item" onclick="openDialog('dialog-specs'); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        <span>Technical Architecture</span>
+      </button>
+      <button class="drawer-item" onclick="openDialog('dialog-about'); closeDrawer();">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <span>About</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       MD3 BOTTOM SHEET: EXAM MATRIX
+       ======================================================================== -->
+  <div class="scrim" id="matrix-scrim" onclick="closeMatrixSheet()"></div>
+  <div class="bottom-sheet" id="sheet-matrix">
+    <div class="sheet-drag-handle"></div>
+    <div class="sheet-head">
+      <span class="sheet-title">Exam Question Matrix</span>
+      <span id="matrix-progress-counter" style="font-size:13px; font-weight:700; color:var(--md-primary);">0 / 0</span>
+    </div>
+    
+    <!-- Real Live Search Box (Searches Numbers & UTF-8 Text) -->
+    <div class="search-wrap">
+      <input type="text" class="search-input-field" id="matrix-search-input" placeholder="Search question # or text..." oninput="handleMatrixSearch(this.value)">
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="filter-chips">
+      <div class="filter-chip active" id="chip-filter-all" onclick="setMatrixFilter('all')">All</div>
+      <div class="filter-chip" id="chip-filter-wrong" onclick="setMatrixFilter('wrong')">Wrong</div>
+      <div class="filter-chip" id="chip-filter-unanswered" onclick="setMatrixFilter('unanswered')">Unanswered</div>
+    </div>
+
+    <div class="sheet-body">
+      <div class="q-matrix-grid" id="q-matrix-grid"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MD3 BOTTOM SHEET: RECENT FILES (INDEXEDDB)
+       ======================================================================== -->
+  <div class="scrim" id="recent-scrim" onclick="closeRecentSheet()"></div>
+  <div class="bottom-sheet" id="sheet-recent">
+    <div class="sheet-drag-handle"></div>
+    <div class="sheet-head">
+      <span class="sheet-title">Recent Files</span>
+      <button class="btn-text" onclick="clearAllRecentFiles()" style="color:var(--md-error);">Clear All</button>
+    </div>
+    <div class="sheet-body" id="recent-files-list">
+      <span style="color:var(--md-on-surface-variant)">Loading saved files...</span>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MD3 DIALOGS
+       ======================================================================== -->
+
+  <!-- Jump Dialog -->
+  <div class="dialog-backdrop" id="dialog-jump">
+    <div class="md-dialog">
+      <h3>Jump to Question</h3>
+      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 12px 0;">
+        Enter question number (1 to <span id="jump-max-val">1</span>):
+      </p>
+      <input type="number" id="input-jump-val" class="search-input-field" min="1" value="1" style="border-radius:8px;">
+      <div class="dialog-actions">
+        <button class="btn-text" onclick="closeDialog('dialog-jump')">Cancel</button>
+        <button class="btn-text" onclick="confirmJump()">Go</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scorecard Result -->
+  <div class="dialog-backdrop" id="dialog-scorecard">
+    <div class="md-dialog" style="text-align:center;">
+      <h3 style="margin:0 0 8px 0;">Exam Session Completed</h3>
+      <div style="font-size:36px; font-weight:700; color:var(--md-primary); margin:12px 0;" id="scorecard-total">0 / 0</div>
+      <p style="color:var(--md-on-surface-variant); font-size:13px;" id="scorecard-msg">All items processed.</p>
+      <div class="dialog-actions" style="justify-content:center;">
+        <button class="btn-text" onclick="resetQuizScore(); closeDialog('dialog-scorecard');">Restart</button>
+        <button class="btn-text" onclick="closeDialog('dialog-scorecard');">Review</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Specs -->
+  <div class="dialog-backdrop" id="dialog-specs">
+    <div class="md-dialog">
+      <h3>Technical Architecture</h3>
+      <div style="font-size:12px; color:var(--md-on-surface-variant); line-height:1.6;">
+        <p><b>1-Bit Decompression:</b> Direct binary bit-shifting directly generates <code>ImageData</code> buffers with zero intermediate layout penalties.</p>
+        <p><b>Search Index:</b> High-speed binary search blocks unpack UTF-8 strings dynamically for live instant matching.</p>
+        <p><b>Hardware Accelerated:</b> Hardware CSS 3D matrix transitions for 60fps swipe flings and zero memory leaks.</p>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn-text" onclick="closeDialog('dialog-specs')">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Dialog -->
+  <div class="dialog-backdrop" id="dialog-about">
+    <div class="md-dialog" style="text-align:center;">
+      <h3 style="margin:0 0 6px 0;">Daily GK</h3>
+      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 4px 0;">Version: v1.2 (High-Capacity Engine)</p>
+      <p style="font-size:13px; color:var(--md-on-surface-variant); margin:0 0 16px 0;">Developer: <b>Shifat100</b></p>
+      <p style="font-size:12px; color:var(--md-outline); margin:0;">High-density offline evaluation engine optimized for Android and mobile browsers.</p>
+      <div class="dialog-actions" style="justify-content:center; margin-top:16px;">
+        <button class="btn-text" onclick="closeDialog('dialog-about')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       CORE ENGINE SCRIPT
+       ======================================================================== -->
+  <script>
+    const QUESTION_W         = 224;
+    const QUESTION_BYTES_ROW = 28;
+    const OPTION_W           = 208;
+    const OPTION_BYTES_ROW   = 26;
+    const ENTRY_SIZE         = 20;
+    const DOWNLOAD_URL       = "https://shifat100.github.io/daily-gk/client-pack.html";
+
+    const DB_NAME = "DailyGK_Storage";
+    const DB_VERSION = 1;
+    const STORE_NAME = "pak_packages";
+
+    const THEMES = ["light", "blue", "red", "green", "gold", "oled"];
+    const THEME_NAMES = {
+      "light": "Light (Paper)",
+      "blue": "Fluent Blue",
+      "red": "Ruby Red",
+      "green": "Emerald Green",
+      "gold": "Imperial Gold",
+      "oled": "AMOLED Dark"
+    };
+
+    const runtime = {
+      buffer: null,
+      view: null,
+      fileName: "",
+      fileSize: 0,
+      totalQuestions: 0,
+      payloadBase: 0,
+      entries: [],
+      searchIndex: {},
+      userAnswers: {},
+      currentIdx: 0,
+      score: 0,
+      readingMode: "QUIZ",
+      layoutMode: "focus", // "focus" or "sheet"
+      currentTheme: "light",
+      currentFilter: "all",
+      searchQuery: "",
+      zoom: 1.0
+    };
+
+    /* -------------------------------------------------------------------------
+       INDEXEDDB STORAGE
+       ------------------------------------------------------------------------- */
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: "name" });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function storePakInIndexedDB(name, size, arrayBuffer) {
+      try {
+        const db = await openDatabase();
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        tx.objectStore(STORE_NAME).put({
+          name: name,
+          size: size,
+          date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
+          buffer: arrayBuffer
+        });
+      } catch (err) {
+        console.warn("DB save error:", err);
+      }
+    }
+
+    async function getAllRecentFromIndexedDB() {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const req = tx.objectStore(STORE_NAME).getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function getPakFromIndexedDB(name) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const req = tx.objectStore(STORE_NAME).get(name);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function deleteFromIndexedDB(name) {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const req = tx.objectStore(STORE_NAME).delete(name);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function clearAllIndexedDB() {
+      const db = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const req = tx.objectStore(STORE_NAME).clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+       PAK PARSER & 1-BIT RASTER ENGINE
+       ------------------------------------------------------------------------- */
+    function loadPakFromBuffer(arrayBuffer, name) {
+      const view = new DataView(arrayBuffer);
+      const magic = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2), view.getUint8(3));
+
+      if (magic !== "DGK1") {
+        alert("Invalid file: Header magic 'DGK1' not found.");
+        return;
+      }
+
+      runtime.buffer = arrayBuffer;
+      runtime.view = view;
+      runtime.fileName = name;
+      runtime.fileSize = arrayBuffer.byteLength;
+      runtime.totalQuestions = view.getUint32(4, true);
+      const indexOffset    = view.getUint32(8, true);
+      const searchOffset   = view.getUint32(12, true);
+      runtime.payloadBase  = view.getUint32(16, true);
+
+      runtime.currentIdx = 0;
+      runtime.score = 0;
+      runtime.userAnswers = {};
+      runtime.entries = [];
+      runtime.searchIndex = {};
+
+      for (let i = 0; i < runtime.totalQuestions; i++) {
+        const pos = indexOffset + (i * ENTRY_SIZE);
+        runtime.entries.push({
+          payloadOffset: view.getUint32(pos, true),
+          q_h: view.getUint16(pos + 4, true),
+          opt_h: [
+            view.getUint16(pos + 6, true),
+            view.getUint16(pos + 8, true),
+            view.getUint16(pos + 10, true),
+            view.getUint16(pos + 12, true)
+          ],
+          correct: view.getUint8(pos + 14)
+        });
+      }
+
+      // Read UTF-8 Search Index
+      if (searchOffset > 0 && searchOffset < runtime.fileSize) {
+        let sPos = searchOffset;
+        const decoder = new TextDecoder("utf-8");
+        for (let i = 0; i < runtime.totalQuestions; i++) {
+          if (sPos + 4 > runtime.fileSize) break;
+          const qId = view.getUint16(sPos, true);
+          const tLen = view.getUint16(sPos + 2, true);
+          if (sPos + 4 + tLen > runtime.fileSize) break;
+          const textBytes = new Uint8Array(arrayBuffer, sPos + 4, tLen);
+          runtime.searchIndex[qId] = decoder.decode(textBytes);
+          sPos += 4 + tLen;
+        }
+      }
+
+      document.getElementById('view-empty-state').style.display = 'none';
+      document.getElementById('bar-title').textContent = name;
+      document.getElementById('jump-max-val').textContent = runtime.totalQuestions;
+
+      buildMatrixGrid();
+      updateLayoutView();
+      updateScoreUI();
+    }
+
+    function blitMaskToCanvas(canvas, width, height, bytesPerRow, byteData) {
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      const img = ctx.createImageData(width, height);
+      const data = img.data;
+
+      const fgColor = getComputedStyle(document.body).getPropertyValue('--canvas-fg').trim() || "#1a1c1e";
+      const rgb = parseHex(fgColor);
+
+      for (let r = 0; r < height; r++) {
+        for (let b = 0; b < bytesPerRow; b++) {
+          const byteVal = byteData[r * bytesPerRow + b];
+          if (byteVal === 0) continue;
+
+          for (let bit = 0; bit < 8; bit++) {
+            if (byteVal & (0x80 >> bit)) {
+              const sx = (b * 8) + bit;
+              if (sx < width) {
+                const idx = (r * width + sx) * 4;
+                data[idx]     = rgb.r;
+                data[idx + 1] = rgb.g;
+                data[idx + 2] = rgb.b;
+                data[idx + 3] = 255;
+              }
+            }
+          }
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+
+    function parseHex(h) {
+      let c = h.replace('#', '');
+      if (c.length === 3) c = c.split('').map(x => x + x).join('');
+      const n = parseInt(c, 16);
+      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+    }
+
+    /* -------------------------------------------------------------------------
+       CARD & SHEET RENDERING
+       ------------------------------------------------------------------------- */
+    function updateLayoutView() {
+      const focusView = document.getElementById('view-focus-mode');
+      const sheetView = document.getElementById('view-sheet-mode');
+
+      if (runtime.layoutMode === 'focus') {
+        focusView.style.display = 'flex';
+        sheetView.style.display = 'none';
+        renderFocusCard(runtime.currentIdx);
+      } else {
+        focusView.style.display = 'none';
+        sheetView.style.display = 'flex';
+        renderContinuousSheet();
+      }
+      updateStatusDisplay();
+    }
+
+    function renderFocusCard(idx) {
+      if (idx < 0 || idx >= runtime.totalQuestions) return;
+      runtime.currentIdx = idx;
+
+      const entry = runtime.entries[idx];
+      let offset = runtime.payloadBase + entry.payloadOffset;
+
+      document.getElementById('focus-q-num').textContent = `Question ${idx + 1} of ${runtime.totalQuestions}`;
+      document.getElementById('bar-subtitle').textContent = `Question ${idx + 1} of ${runtime.totalQuestions}`;
+
+      // Question Canvas
+      const qCanvas = document.getElementById('focus-question-canvas');
+      const qBytes = entry.q_h * QUESTION_BYTES_ROW;
+      const qData = new Uint8Array(runtime.buffer, offset, qBytes);
+      blitMaskToCanvas(qCanvas, QUESTION_W, entry.q_h, QUESTION_BYTES_ROW, qData);
+      offset += qBytes;
+
+      // Options
+      const optWrap = document.getElementById('focus-options-wrap');
+      optWrap.innerHTML = "";
+
+      for (let i = 0; i < 4; i++) {
+        const item = createOptionElement(idx, i, offset, entry.opt_h[i]);
+        offset += (entry.opt_h[i] * OPTION_BYTES_ROW);
+        optWrap.appendChild(item);
+      }
+
+      refreshOptionColors(idx, optWrap);
+      highlightMatrixCurrent(idx);
+      updateStatusDisplay();
+    }
+
+    function renderContinuousSheet() {
+      const sheetView = document.getElementById('view-sheet-mode');
+      sheetView.innerHTML = "";
+
+      for (let idx = 0; idx < runtime.totalQuestions; idx++) {
+        const entry = runtime.entries[idx];
+        let offset = runtime.payloadBase + entry.payloadOffset;
+
+        const card = document.createElement('div');
+        card.className = 'exam-card';
+        card.id = `sheet-card-${idx}`;
+
+        const header = document.createElement('div');
+        header.className = 'card-header';
+        header.innerHTML = `<span class="q-number-pill">Question ${idx + 1} of ${runtime.totalQuestions}</span>`;
+        card.appendChild(header);
+
+        const canvasWrap = document.createElement('div');
+        canvasWrap.className = 'pak-canvas-wrap';
+        const qCanvas = document.createElement('canvas');
+        qCanvas.className = 'pak-canvas';
+        const qBytes = entry.q_h * QUESTION_BYTES_ROW;
+        const qData = new Uint8Array(runtime.buffer, offset, qBytes);
+        blitMaskToCanvas(qCanvas, QUESTION_W, entry.q_h, QUESTION_BYTES_ROW, qData);
+        offset += qBytes;
+        canvasWrap.appendChild(qCanvas);
+        card.appendChild(canvasWrap);
+
+        const optList = document.createElement('div');
+        optList.className = 'options-list';
+        optList.id = `sheet-opts-${idx}`;
+
+        for (let i = 0; i < 4; i++) {
+          const item = createOptionElement(idx, i, offset, entry.opt_h[i]);
+          offset += (entry.opt_h[i] * OPTION_BYTES_ROW);
+          optList.appendChild(item);
+        }
+        card.appendChild(optList);
+        sheetView.appendChild(card);
+        refreshOptionColors(idx, optList);
+      }
+    }
+
+    function createOptionElement(qIdx, optIdx, offset, height) {
+      const item = document.createElement('div');
+      item.className = 'opt-card';
+      item.id = `opt-${qIdx}-${optIdx}`;
+      item.onclick = () => handleOptionSelected(qIdx, optIdx);
+
+      const num = document.createElement('div');
+      num.className = 'opt-index';
+      num.textContent = (optIdx + 1);
+      item.appendChild(num);
+
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pak-canvas';
+      const len = height * OPTION_BYTES_ROW;
+      const data = new Uint8Array(runtime.buffer, offset, len);
+      blitMaskToCanvas(canvas, OPTION_W, height, OPTION_BYTES_ROW, data);
+      item.appendChild(canvas);
+
+      return item;
+    }
+
+    function handleOptionSelected(qIdx, optIdx) {
+      if (runtime.readingMode === "STUDY") return;
+      if (runtime.userAnswers[qIdx] !== undefined) return;
+
+      const entry = runtime.entries[qIdx];
+      runtime.userAnswers[qIdx] = optIdx;
+
+      const isRight = (optIdx === entry.correct);
+      if (isRight) runtime.score++;
+
+      updateScoreUI();
+
+      if (runtime.layoutMode === 'focus') {
+        refreshOptionColors(qIdx, document.getElementById('focus-options-wrap'));
+      } else {
+        refreshOptionColors(qIdx, document.getElementById(`sheet-opts-${qIdx}`));
+      }
+
+      updateMatrixBadge(qIdx, isRight);
+
+      // Auto trigger scorecard upon completing exam
+      if (Object.keys(runtime.userAnswers).length === runtime.totalQuestions) {
+        setTimeout(showScorecard, 400);
+      }
+    }
+
+    function refreshOptionColors(qIdx, parentWrap) {
+      if (!parentWrap) return;
+      const entry = runtime.entries[qIdx];
+      const answered = runtime.userAnswers[qIdx];
+
+      for (let i = 0; i < 4; i++) {
+        const el = parentWrap.querySelector(`#opt-${qIdx}-${i}`);
+        if (!el) continue;
+        el.classList.remove('correct', 'wrong');
+
+        if (runtime.readingMode === "STUDY") {
+          if (i === entry.correct) el.classList.add('correct');
+        } else {
+          if (answered !== undefined) {
+            if (i === entry.correct) el.classList.add('correct');
+            else if (i === answered) el.classList.add('wrong');
+          }
+        }
+      }
+    }
+
+    function updateScoreUI() {
+      const scoreStr = `Score: ${runtime.score} / ${runtime.totalQuestions}`;
+      document.getElementById('focus-score-counter').textContent = scoreStr;
+      document.getElementById('matrix-progress-counter').textContent = `${Object.keys(runtime.userAnswers).length} / ${runtime.totalQuestions}`;
+    }
+
+    function updateStatusDisplay() {
+      document.getElementById('bottom-status-idx').textContent = `${runtime.currentIdx + 1} of ${runtime.totalQuestions}`;
+    }
+
+    /* -------------------------------------------------------------------------
+       GESTURES ENGINE: FLING SWIPE, PINCH-TO-ZOOM, DOUBLE-TAP
+       ------------------------------------------------------------------------- */
+    const focusCard = document.getElementById('focus-card');
+    let touchStartX = 0, touchStartY = 0, touchMoveX = 0, touchStartTime = 0;
+    let isSwiping = false, lastTap = 0, initialPinchDist = 0, baseScale = 1.0;
+
+    focusCard.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoveX = touchStartX;
+        touchStartTime = Date.now();
+        isSwiping = true;
+
+        // Double tap recognition for zoom toggle
+        const now = Date.now();
+        if (now - lastTap < 280 && now - lastTap > 0) {
+          applyZoom(runtime.zoom === 1.0 ? 1.35 : 1.0);
+          e.preventDefault();
+        }
+        lastTap = now;
+      } else if (e.touches.length === 2) {
+        isSwiping = false;
+        initialPinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        baseScale = runtime.zoom;
+      }
+    }, { passive: false });
+
+    focusCard.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1 && isSwiping) {
+        touchMoveX = e.touches[0].clientX;
+        const diffX = touchMoveX - touchStartX;
+        const diffY = e.touches[0].clientY - touchStartY;
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          focusCard.style.transition = 'none';
+          focusCard.style.transform = `translateX(${diffX * 0.7}px) rotate(${diffX * 0.03}deg)`;
+          e.preventDefault();
+        }
+      } else if (e.touches.length === 2 && initialPinchDist > 0) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        let s = (dist / initialPinchDist) * baseScale;
+        applyZoom(Math.min(Math.max(0.7, s), 2.2));
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    focusCard.addEventListener('touchend', (e) => {
+      if (!isSwiping) return;
+      isSwiping = false;
+
+      const diffX = touchMoveX - touchStartX;
+      const elapsed = Date.now() - touchStartTime;
+      const velocity = Math.abs(diffX) / elapsed;
+
+      focusCard.style.transition = 'transform 0.25s cubic-bezier(0.2, 0.0, 0, 1.0)';
+
+      if ((Math.abs(diffX) > 65 || velocity > 0.45) && Math.abs(diffX) > 25) {
+        if (diffX < 0 && runtime.currentIdx < runtime.totalQuestions - 1) {
+          // Swipe Left -> Next
+          focusCard.style.transform = 'translateX(-120%) rotate(-10deg)';
+          setTimeout(() => {
+            renderFocusCard(runtime.currentIdx + 1);
+            focusCard.style.transition = 'none';
+            focusCard.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+              focusCard.style.transition = 'transform 0.25s cubic-bezier(0.2, 0.0, 0, 1.0)';
+              focusCard.style.transform = 'translateX(0)';
+            }, 20);
+          }, 160);
+        } else if (diffX > 0 && runtime.currentIdx > 0) {
+          // Swipe Right -> Prev
+          focusCard.style.transform = 'translateX(120%) rotate(10deg)';
+          setTimeout(() => {
+            renderFocusCard(runtime.currentIdx - 1);
+            focusCard.style.transition = 'none';
+            focusCard.style.transform = 'translateX(-100%)';
+            setTimeout(() => {
+              focusCard.style.transition = 'transform 0.25s cubic-bezier(0.2, 0.0, 0, 1.0)';
+              focusCard.style.transform = 'translateX(0)';
+            }, 20);
+          }, 160);
+        } else {
+          focusCard.style.transform = 'translateX(0) rotate(0deg)';
+        }
+      } else {
+        focusCard.style.transform = 'translateX(0) rotate(0deg)';
+      }
+    });
+
+    // Edge Swipe Left to open drawer
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches[0].clientX < 22) openDrawer();
+    });
+
+    function nextItem() {
+      if (runtime.layoutMode === 'focus') {
+        if (runtime.currentIdx < runtime.totalQuestions - 1) renderFocusCard(runtime.currentIdx + 1);
+      } else {
+        const next = Math.min(runtime.totalQuestions - 1, runtime.currentIdx + 1);
+        jumpToIndex(next);
+      }
+    }
+
+    function prevItem() {
+      if (runtime.layoutMode === 'focus') {
+        if (runtime.currentIdx > 0) renderFocusCard(runtime.currentIdx - 1);
+      } else {
+        const prev = Math.max(0, runtime.currentIdx - 1);
+        jumpToIndex(prev);
+      }
+    }
+
+    function stepZoom(delta) {
+      applyZoom(runtime.zoom + delta);
+    }
+
+    function resetZoom() {
+      applyZoom(1.0);
+    }
+
+    function applyZoom(val) {
+      runtime.zoom = Math.min(Math.max(0.6, val), 2.2);
+      document.getElementById('view-focus-mode').style.transform = `scale(${runtime.zoom})`;
+      document.getElementById('zoom-label').textContent = Math.round(runtime.zoom * 100) + '%';
+      localStorage.setItem("dgk_zoom", runtime.zoom);
+    }
+
+    /* -------------------------------------------------------------------------
+       EXAM MATRIX & LIVE SEARCH FILTER
+       ------------------------------------------------------------------------- */
+    function buildMatrixGrid() {
+      const grid = document.getElementById('q-matrix-grid');
+      grid.innerHTML = "";
+      const frag = document.createDocumentFragment();
+
+      for (let i = 0; i < runtime.totalQuestions; i++) {
+        const b = document.createElement('div');
+        b.className = 'matrix-badge';
+        b.id = `matrix-badge-${i}`;
+        b.textContent = (i + 1);
+        b.onclick = () => {
+          jumpToIndex(i);
+          closeMatrixSheet();
+        };
+        frag.appendChild(b);
+      }
+      grid.appendChild(frag);
+      applyMatrixFilter();
+    }
+
+    function jumpToIndex(idx) {
+      runtime.currentIdx = idx;
+      if (runtime.layoutMode === 'focus') {
+        renderFocusCard(idx);
+      } else {
+        const el = document.getElementById(`sheet-card-${idx}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      highlightMatrixCurrent(idx);
+      updateStatusDisplay();
+    }
+
+    function updateMatrixBadge(idx, isCorrect) {
+      const b = document.getElementById(`matrix-badge-${idx}`);
+      if (b) {
+        b.classList.remove('correct', 'wrong');
+        b.classList.add(isCorrect ? 'correct' : 'wrong');
+      }
+    }
+
+    function highlightMatrixCurrent(idx) {
+      document.querySelectorAll('.matrix-badge').forEach((b, i) => {
+        b.classList.toggle('current', i === idx);
+      });
+    }
+
+    function setMatrixFilter(filter) {
+      runtime.currentFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      document.getElementById(`chip-filter-${filter}`).classList.add('active');
+      applyMatrixFilter();
+    }
+
+    function handleMatrixSearch(val) {
+      runtime.searchQuery = val.trim().toLowerCase();
+      applyMatrixFilter();
+    }
+
+    function applyMatrixFilter() {
+      document.querySelectorAll('.matrix-badge').forEach((b, i) => {
+        const entry = runtime.entries[i];
+        const ans = runtime.userAnswers[i];
+        let visible = true;
+
+        if (runtime.currentFilter === 'wrong') visible = (ans !== undefined && ans !== entry.correct);
+        else if (runtime.currentFilter === 'unanswered') visible = (ans === undefined);
+
+        if (visible && runtime.searchQuery) {
+          const numMatch = (i + 1).toString().includes(runtime.searchQuery);
+          const textMatch = runtime.searchIndex[i] && runtime.searchIndex[i].toLowerCase().includes(runtime.searchQuery);
+          visible = (numMatch || textMatch);
+        }
+
+        b.style.display = visible ? 'flex' : 'none';
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+       RECENT FILES (INDEXEDDB)
+       ------------------------------------------------------------------------- */
+    async function openRecentSheet() {
+      openSheet('sheet-recent', 'recent-scrim');
+      const listContainer = document.getElementById('recent-files-list');
+      listContainer.innerHTML = `<span style="color:var(--md-on-surface-variant)">Querying packages...</span>`;
+
+      try {
+        const list = await getAllRecentFromIndexedDB();
+        if (!list || list.length === 0) {
+          listContainer.innerHTML = `<div style="text-align:center; padding:18px; color:var(--md-on-surface-variant);">No saved files.</div>`;
+          return;
+        }
+
+        listContainer.innerHTML = list.map(item => `
+          <div class="recent-item">
+            <div>
+              <div style="font-weight:600; font-size:14px;">${item.name}</div>
+              <div style="font-size:11px; color:var(--md-outline);">${Math.round(item.size / 1024)} KB • ${item.date}</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn-text" onclick="loadRecentItem('${item.name}')">Open</button>
+              <button class="btn-text" onclick="deleteRecentItem('${item.name}')" style="color:var(--md-error);">✕</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        listContainer.innerHTML = `<span style="color:var(--md-error)">Error: ${err.message}</span>`;
+      }
+    }
+
+    async function loadRecentItem(name) {
+      const rec = await getPakFromIndexedDB(name);
+      if (rec && rec.buffer) {
+        loadPakFromBuffer(rec.buffer, rec.name);
+        closeRecentSheet();
+      }
+    }
+
+    async function deleteRecentItem(name) {
+      await deleteFromIndexedDB(name);
+      openRecentSheet();
+    }
+
+    async function clearAllRecentFiles() {
+      if (confirm("Clear all packages stored in database?")) {
+        await clearAllIndexedDB();
+        openRecentSheet();
+      }
+    }
+
+    function closeRecentSheet() {
+      closeSheet('sheet-recent', 'recent-scrim');
+    }
+
+    /* -------------------------------------------------------------------------
+       DEMO GENERATOR & FILE PICKER
+       ------------------------------------------------------------------------- */
+    function triggerFileInput() {
+      document.getElementById('binary-file-input').click();
+    }
+
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        storePakInIndexedDB(file.name, file.size, evt.target.result);
+        loadPakFromBuffer(evt.target.result, file.name);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function synthesizeTextMask(text, width, height, bytesPerRow) {
+      const c = document.createElement('canvas');
+      c.width = width;
+      c.height = height;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 13px Roboto, sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText(text, 6, Math.floor((height - 14) / 2));
+
+      const imgData = ctx.getImageData(0, 0, width, height).data;
+      const buffer = new Uint8Array(height * bytesPerRow);
+
+      for (let r = 0; r < height; r++) {
+        for (let x = 0; x < width; x++) {
+          if (imgData[(r * width + x) * 4] > 120) {
+            const byteIdx = r * bytesPerRow + (x >> 3);
+            buffer[byteIdx] |= (1 << (7 - (x & 7)));
+          }
+        }
+      }
+      return buffer;
+    }
+
+    function loadSampleDemoPack() {
+      const demoData = [
+        { q: "What is the capital city of France?", opts: ["London", "Paris", "Berlin", "Rome"], ans: 1 },
+        { q: "Which element has chemical symbol 'O'?", opts: ["Gold", "Silver", "Oxygen", "Iron"], ans: 2 },
+        { q: "How many planets are in Solar System?", opts: ["Seven", "Eight", "Nine", "Ten"], ans: 1 },
+        { q: "Which ocean is the largest on Earth?", opts: ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic"], ans: 0 },
+        { q: "What is the speed of light in vacuum?", opts: ["300,000 km/s", "150,000 km/s", "10,000 km/s", "Sound speed"], ans: 0 },
+        { q: "Who painted the Mona Lisa masterpiece?", opts: ["Michelangelo", "Leonardo da Vinci", "Raphael", "Picasso"], ans: 1 },
+        { q: "Which gas do plants absorb from atmosphere?", opts: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], ans: 1 },
+        { q: "Which is the smallest prime number?", opts: ["Zero", "One", "Two", "Three"], ans: 2 }
+      ];
+
+      const count = demoData.length;
+      const qH = 34, optH = 24;
+      const qBytes = qH * QUESTION_BYTES_ROW;
+      const optBytes = optH * OPTION_BYTES_ROW;
+      const singlePayload = qBytes + (4 * optBytes);
+      const headerSize = 20;
+      const indexSize = count * ENTRY_SIZE;
+      const payloadBase = headerSize + indexSize;
+
+      const encoder = new TextEncoder();
+      let searchBufLen = 0;
+      const encodedTexts = demoData.map(d => {
+        const enc = encoder.encode(d.q);
+        searchBufLen += 4 + enc.length;
+        return enc;
+      });
+
+      const searchOffset = payloadBase + (count * singlePayload);
+      const totalSize = searchOffset + searchBufLen;
+      const buffer = new ArrayBuffer(totalSize);
+      const view = new DataView(buffer);
+      const u8 = new Uint8Array(buffer);
+
+      u8[0] = 68; u8[1] = 71; u8[2] = 75; u8[3] = 49; // DGK1
+      view.setUint32(4, count, true);
+      view.setUint32(8, headerSize, true);
+      view.setUint32(12, searchOffset, true);
+      view.setUint32(16, payloadBase, true);
+
+      for (let i = 0; i < count; i++) {
+        const payloadOffset = i * singlePayload;
+        const entryPos = headerSize + (i * ENTRY_SIZE);
+
+        view.setUint32(entryPos, payloadOffset, true);
+        view.setUint16(entryPos + 4, qH, true);
+        view.setUint16(entryPos + 6, optH, true);
+        view.setUint16(entryPos + 8, optH, true);
+        view.setUint16(entryPos + 10, optH, true);
+        view.setUint16(entryPos + 12, optH, true);
+        view.setUint8(entryPos + 14, demoData[i].ans);
+
+        u8.set(synthesizeTextMask(demoData[i].q, QUESTION_W, qH, QUESTION_BYTES_ROW), payloadBase + payloadOffset);
+        let cur = payloadBase + payloadOffset + qBytes;
+        for (let o = 0; o < 4; o++) {
+          u8.set(synthesizeTextMask(demoData[i].opts[o], OPTION_W, optH, OPTION_BYTES_ROW), cur);
+          cur += optBytes;
+        }
+      }
+
+      let sPos = searchOffset;
+      for (let i = 0; i < count; i++) {
+        view.setUint16(sPos, i, true);
+        view.setUint16(sPos + 2, encodedTexts[i].length, true);
+        u8.set(encodedTexts[i], sPos + 4);
+        sPos += 4 + encodedTexts[i].length;
+      }
+
+      const sampleName = "Sample_Standard_Exam_8Q.pak";
+      storePakInIndexedDB(sampleName, totalSize, buffer);
+      loadPakFromBuffer(buffer, sampleName);
+    }
+
+    function openDownloadLink() {
+      window.open(DOWNLOAD_URL, "_blank");
+    }
+
+    /* -------------------------------------------------------------------------
+       MODES, THEMES, DIALOGS & NAVIGATION
+       ------------------------------------------------------------------------- */
+    function toggleReadingMode() {
+      runtime.readingMode = (runtime.readingMode === "QUIZ") ? "STUDY" : "QUIZ";
+      const pill = document.getElementById('btn-mode-toggle');
+      pill.textContent = runtime.readingMode;
+      pill.classList.toggle('study', runtime.readingMode === "STUDY");
+
+      if (runtime.totalQuestions > 0) {
+        if (runtime.layoutMode === 'focus') {
+          refreshOptionColors(runtime.currentIdx, document.getElementById('focus-options-wrap'));
+        } else {
+          for (let i = 0; i < runtime.totalQuestions; i++) {
+            refreshOptionColors(i, document.getElementById(`sheet-opts-${i}`));
+          }
+        }
+      }
+    }
+
+    function toggleLayoutMode() {
+      runtime.layoutMode = (runtime.layoutMode === "focus") ? "sheet" : "focus";
+      document.getElementById('label-layout-mode').textContent = (runtime.layoutMode === "focus") ? "Layout: Focus Card (Swipe)" : "Layout: Continuous Sheet";
+      if (runtime.totalQuestions > 0) updateLayoutView();
+    }
+
+    function cycleTheme() {
+      const currIdx = THEMES.indexOf(runtime.currentTheme);
+      const nextTheme = THEMES[(currIdx + 1) % THEMES.length];
+      setTheme(nextTheme);
+    }
+
+    function setTheme(t) {
+      runtime.currentTheme = t;
+      document.body.setAttribute('data-theme', t);
+      document.getElementById('label-theme').textContent = `Theme: ${THEME_NAMES[t]}`;
+      localStorage.setItem("dgk_theme", t);
+      if (runtime.totalQuestions > 0) updateLayoutView();
+    }
+
+    function resetQuizScore() {
+      runtime.score = 0;
+      runtime.userAnswers = {};
+      updateScoreUI();
+      document.querySelectorAll('.matrix-badge').forEach(b => b.classList.remove('correct', 'wrong'));
+      if (runtime.totalQuestions > 0) updateLayoutView();
+    }
+
+    function showScorecard() {
+      document.getElementById('scorecard-total').textContent = `${runtime.score} / ${runtime.totalQuestions}`;
+      const pct = (runtime.score / runtime.totalQuestions) * 100;
+      let text = "Full test evaluation completed.";
+      if (pct === 100) text = "Flawless score: 100% correct across all items!";
+      else if (pct >= 60) text = "Passing score achieved!";
+      else text = "Practice recommended via Study Mode.";
+      document.getElementById('scorecard-msg').textContent = text;
+      openDialog('dialog-scorecard');
+    }
+
+    function showJumpDialog() {
+      if (!runtime.totalQuestions) return;
+      document.getElementById('input-jump-val').max = runtime.totalQuestions;
+      document.getElementById('input-jump-val').value = runtime.currentIdx + 1;
+      openDialog('dialog-jump');
+    }
+
+    function confirmJump() {
+      const v = parseInt(document.getElementById('input-jump-val').value);
+      if (!isNaN(v) && v >= 1 && v <= runtime.totalQuestions) {
+        jumpToIndex(v - 1);
+        closeDialog('dialog-jump');
+      }
+    }
+
+    function openDrawer() {
+      document.getElementById('nav-drawer').classList.add('open');
+      document.getElementById('drawer-scrim').classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('drawer-scrim').classList.remove('open');
+    }
+
+    function openMatrixSheet() {
+      openSheet('sheet-matrix', 'matrix-scrim');
+    }
+
+    function closeMatrixSheet() {
+      closeSheet('sheet-matrix', 'matrix-scrim');
+    }
+
+    function openSheet(id, scrimId) {
+      document.getElementById(id).classList.add('open');
+      document.getElementById(scrimId).classList.add('open');
+    }
+
+    function closeSheet(id, scrimId) {
+      document.getElementById(id).classList.remove('open');
+      document.getElementById(scrimId).classList.remove('open');
+    }
+
+    function openDialog(id) {
+      document.getElementById(id).classList.add('open');
+    }
+
+    function closeDialog(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    // Initialize persisted theme & zoom
+    (function init() {
+      const savedTheme = localStorage.getItem("dgk_theme") || "light";
+      setTheme(savedTheme);
+      const savedZoom = localStorage.getItem("dgk_zoom");
+      if (savedZoom) applyZoom(parseFloat(savedZoom));
+    })();
+  </script>
+</body>
+</html>
