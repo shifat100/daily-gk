@@ -32,7 +32,7 @@
         "name": "index",
         "category": "Mobile",
         "file": "clients/sources/mobile/index.html",
-        "size_kb": 69.6
+        "size_kb": 60.1
     },
     {
         "id": "pem",
@@ -214,7 +214,7 @@
         "name": "Android Package",
         "category": "Mobile",
         "file": "clients/compiled/android/daily-gk.apk",
-        "size_kb": 3759.3
+        "size_kb": 3761.5
     },
     {
         "id": "mre",
@@ -235,7 +235,7 @@
         "name": "daily-gk",
         "category": "Iphone",
         "file": "clients/compiled/iphone/daily-gk.ipa",
-        "size_kb": 1146.1
+        "size_kb": 1147.8
     },
     {
         "id": "appimage",
