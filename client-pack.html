@@ -390,7 +390,9 @@
       text-overflow: ellipsis;
     }
 
-    /* RETRO MODAL STYLES */
+    /* ============================================================
+       README MODAL & RENDERED MARKDOWN VIEWER STYLES
+       ============================================================ */
     .win-modal-overlay {
       display: none;
       position: fixed;
@@ -398,7 +400,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       z-index: 9999;
       justify-content: center;
       align-items: center;
@@ -413,7 +415,7 @@
       border-bottom: 2px solid #404040;
       box-shadow: 2px 2px 0px #000000;
       width: 100%;
-      max-width: 520px;
+      max-width: 580px;
       display: flex;
       flex-direction: column;
     }
@@ -425,20 +427,97 @@
       gap: 8px;
     }
 
+    /* Rendered Markdown Window */
     .win-doc-viewer {
       background-color: #ffffff;
       border-top: 2px solid #808080;
       border-left: 2px solid #808080;
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
-      padding: 8px;
-      height: 220px;
+      padding: 10px 14px;
+      height: 260px;
       overflow-y: auto;
+      font-family: "Tahoma", "Verdana", "Arial", sans-serif;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #111111;
+    }
+
+    .win-doc-viewer .md-h1 {
+      font-size: 15px;
+      font-weight: bold;
+      border-bottom: 2px solid #000080;
+      padding-bottom: 3px;
+      margin: 4px 0 8px 0;
+      color: #000080;
+    }
+
+    .win-doc-viewer .md-h2 {
+      font-size: 13px;
+      font-weight: bold;
+      border-bottom: 1px solid #d4d0c8;
+      padding-bottom: 2px;
+      margin: 8px 0 6px 0;
+      color: #222222;
+    }
+
+    .win-doc-viewer .md-h3, .win-doc-viewer .md-h4 {
+      font-size: 11px;
+      font-weight: bold;
+      margin: 6px 0 4px 0;
+      color: #333333;
+    }
+
+    .win-doc-viewer .md-p {
+      margin: 0 0 6px 0;
+    }
+
+    .win-doc-viewer .md-ul, .win-doc-viewer .md-ol {
+      margin: 0 0 8px 18px;
+      padding: 0;
+    }
+
+    .win-doc-viewer li {
+      margin-bottom: 3px;
+    }
+
+    .win-doc-viewer .md-code-block {
+      background-color: #f6f6f2;
+      border: 1px solid #b8b8b0;
+      padding: 6px 8px;
+      margin: 6px 0;
       font-family: "Courier New", monospace;
       font-size: 11px;
       white-space: pre-wrap;
       word-wrap: break-word;
-      color: #000;
+    }
+
+    .win-doc-viewer .md-inline-code {
+      background-color: #ecece6;
+      border: 1px solid #cfcfc8;
+      padding: 0 3px;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+    }
+
+    .win-doc-viewer .md-quote {
+      border-left: 3px solid #000080;
+      background-color: #f4f7fc;
+      padding: 4px 8px;
+      margin: 6px 0;
+      color: #333333;
+    }
+
+    .win-doc-viewer .md-hr {
+      border: none;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      margin: 8px 0;
+    }
+
+    .win-doc-viewer .md-link {
+      color: #000080;
+      text-decoration: underline;
     }
 
     .win-dialog-actions {
@@ -527,9 +606,10 @@
         </div>
       </div>
       <div class="win-dialog-content">
-        <div style="font-size: 11px; font-weight: bold; color: #333;" id="readmeNoticeText">
-          Please review the folder instructions before downloading:
+        <div style="font-size: 11px; font-weight: bold; color: #222;" id="readmeNoticeText">
+          Please review the instructions below before downloading:
         </div>
+        <!-- Rendered markdown goes here -->
         <div class="win-doc-viewer" id="readmeContent">Loading instructions...</div>
       </div>
       <div class="win-dialog-actions">
@@ -571,6 +651,15 @@
       try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e) {}
       try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) {}
       return null;
+    }
+
+    // CHECK IF FILE IS A README (SO IT GETS HIDDEN FROM FILE LISTS)
+    function isReadmeFile(filePath) {
+      if (!filePath) return false;
+      var clean = filePath.replace(/\\/g, "/").toLowerCase();
+      var parts = clean.split("/");
+      var fileName = parts[parts.length - 1];
+      return (fileName === "readme.md" || fileName === "readme.txt");
     }
 
     function switchTab(tabName) {
@@ -640,21 +729,160 @@
 
     function renderCurrentView() {
       document.getElementById("loadingStatus").style.display = "none";
-      var data = getActiveDataset();
+      var rawData = getActiveDataset();
       var filterText = (document.getElementById("filterInput").value || "").toLowerCase().trim();
 
+      // Filter out README files so they are hidden from the file list
+      var visibleData = [];
+      for (var i = 0; i < rawData.length; i++) {
+        var item = rawData[i];
+        if (isReadmeFile(item.file)) {
+          // Pre-populate folder README knowledge
+          var dir = getFileDirectory(item.file);
+          if (!folderReadmeCache[dir]) {
+            folderReadmeCache[dir] = { url: item.file, content: null };
+          }
+          continue;
+        }
+        visibleData.push(item);
+      }
+
       if (currentView === "solid") {
-        renderSolidView(data, filterText);
+        renderSolidView(visibleData, filterText);
       } else {
-        renderTreeView(data, filterText);
+        renderTreeView(visibleData, filterText);
       }
     }
 
     /* ============================================================
-       README DETECTION & CONFIRMATION LOGIC
+       LIGHTWEIGHT EMBEDDED MARKDOWN PARSER (RETRO COMPATIBLE)
+       ============================================================ */
+    function escapeHtml(text) {
+      return (text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatInlineMarkdown(str) {
+      str = escapeHtml(str);
+      // Links [text](url)
+      str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="md-link">$1</a>');
+      // Bold **text** or __text__
+      str = str.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      str = str.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      // Italic *text* or _text_
+      str = str.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      str = str.replace(/_([^_]+)_/g, '<em>$1</em>');
+      return str;
+    }
+
+    function renderMarkdownToHtml(md) {
+      if (!md) return "<em>(Empty documentation)</em>";
+
+      var src = md.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+      // Handle code blocks ``` ... ```
+      var codeBlocks = [];
+      src = src.replace(/```([\s\S]*?)```/g, function(match, code) {
+        var id = "___CODE_BLOCK_" + codeBlocks.length + "___";
+        codeBlocks.push('<pre class="md-code-block"><code>' + escapeHtml(code.replace(/^\n+|\n+$/g, "")) + '</code></pre>');
+        return id;
+      });
+
+      // Handle inline code `...`
+      var inlineCodes = [];
+      src = src.replace(/`([^`]+)`/g, function(match, code) {
+        var id = "___INLINE_CODE_" + inlineCodes.length + "___";
+        inlineCodes.push('<code class="md-inline-code">' + escapeHtml(code) + '</code>');
+        return id;
+      });
+
+      var lines = src.split("\n");
+      var out = [];
+      var inList = false;
+      var inOrderedList = false;
+
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+
+        if (line.indexOf("___CODE_BLOCK_") !== -1) {
+          if (inList) { out.push("</ul>"); inList = false; }
+          if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
+          out.push(line);
+          continue;
+        }
+
+        // Unordered List item (- or *)
+        var ulMatch = line.match(/^(\s*)[-*+]\s+(.*)$/);
+        if (ulMatch) {
+          if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
+          if (!inList) { out.push('<ul class="md-ul">'); inList = true; }
+          out.push("<li>" + formatInlineMarkdown(ulMatch[2]) + "</li>");
+          continue;
+        }
+
+        // Ordered List item (1. )
+        var olMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
+        if (olMatch) {
+          if (inList) { out.push("</ul>"); inList = false; }
+          if (!inOrderedList) { out.push('<ol class="md-ol">'); inOrderedList = true; }
+          out.push("<li>" + formatInlineMarkdown(olMatch[2]) + "</li>");
+          continue;
+        }
+
+        if (inList) { out.push("</ul>"); inList = false; }
+        if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
+
+        if (!line.trim()) continue;
+
+        // Headings (#, ##, ###)
+        var hMatch = line.match(/^(#{1,6})\s+(.*)$/);
+        if (hMatch) {
+          var lvl = hMatch[1].length;
+          out.push('<h' + lvl + ' class="md-h' + lvl + '">' + formatInlineMarkdown(hMatch[2]) + '</h' + lvl + '>');
+          continue;
+        }
+
+        // Horizontal line
+        if (/^(\*{3,}|-{3,}|_{3,})$/.test(line.trim())) {
+          out.push('<hr class="md-hr" />');
+          continue;
+        }
+
+        // Blockquote
+        if (/^>\s+(.*)$/.test(line)) {
+          out.push('<blockquote class="md-quote">' + formatInlineMarkdown(line.replace(/^>\s+/, "")) + '</blockquote>');
+          continue;
+        }
+
+        // Standard Paragraph
+        out.push('<p class="md-p">' + formatInlineMarkdown(line) + '</p>');
+      }
+
+      if (inList) out.push("</ul>");
+      if (inOrderedList) out.push("</ol>");
+
+      var resultHtml = out.join("\n");
+
+      // Re-insert code blocks & inline code
+      for (var c = 0; c < inlineCodes.length; c++) {
+        resultHtml = resultHtml.replace("___INLINE_CODE_" + c + "___", inlineCodes[c]);
+      }
+      for (var b = 0; b < codeBlocks.length; b++) {
+        resultHtml = resultHtml.replace("___CODE_BLOCK_" + b + "___", codeBlocks[b]);
+      }
+
+      return resultHtml;
+    }
+
+    /* ============================================================
+       README CHECK & FILE DOWNLOAD HANDLER
        ============================================================ */
     function getFileDirectory(filePath) {
-      filePath = filePath.replace(/\\/g, "/");
+      filePath = (filePath || "").replace(/\\/g, "/");
       var idx = filePath.lastIndexOf("/");
       return (idx !== -1) ? filePath.substring(0, idx) : "";
     }
@@ -669,12 +897,15 @@
     }
 
     function checkReadme(dirPath, callback) {
-      if (folderReadmeCache.hasOwnProperty(dirPath)) {
+      if (folderReadmeCache.hasOwnProperty(dirPath) && folderReadmeCache[dirPath] && folderReadmeCache[dirPath].content) {
         callback(folderReadmeCache[dirPath]);
         return;
       }
 
-      var readmeUrl = (dirPath ? dirPath + "/" : "") + "README.md";
+      var readmeUrl = (folderReadmeCache[dirPath] && folderReadmeCache[dirPath].url) 
+        ? folderReadmeCache[dirPath].url 
+        : ((dirPath ? dirPath + "/" : "") + "README.md");
+
       var xhr = createXHR();
       if (!xhr) {
         callback(null);
@@ -719,25 +950,29 @@
     function handleFileDownloadRequest(fileUrl, fileName) {
       var dir = getFileDirectory(fileUrl);
 
-      // Check if folder has README
+      // Check if this folder has a README
       checkReadme(dir, function(readmeInfo) {
         if (readmeInfo && readmeInfo.content) {
           openReadmeModal(fileUrl, fileName, readmeInfo.content, dir);
         } else {
-          // No README detected, trigger instant download
+          // No README detected in folder, download directly
           triggerDirectDownload(fileUrl, fileName);
         }
       });
     }
 
-    function openReadmeModal(fileUrl, fileName, readmeContent, dir) {
+    function openReadmeModal(fileUrl, fileName, readmeRawContent, dir) {
       var modal = document.getElementById("readmeModal");
       var title = document.getElementById("readmeModalTitle");
       var content = document.getElementById("readmeContent");
+      var noticeText = document.getElementById("readmeNoticeText");
       var btn = document.getElementById("btnConfirmDownload");
 
       title.innerHTML = "Folder Notice - " + (dir ? dir + "/" : "") + "README.md";
-      content.innerText = readmeContent;
+      noticeText.innerHTML = "Please read instructions before downloading: <strong>" + escapeHtml(fileName) + "</strong>";
+
+      // Render Markdown into styled HTML
+      content.innerHTML = renderMarkdownToHtml(readmeRawContent);
 
       btn.onclick = function() {
         closeReadmeModal();
@@ -752,7 +987,7 @@
     }
 
     /* ============================================================
-       1. SOLID VIEW RENDERER (Clean Grouped Cards)
+       1. SOLID VIEW RENDERER
        ============================================================ */
     function renderSolidView(list, filter) {
       var container = document.getElementById("workspaceContent");
@@ -764,6 +999,9 @@
       for (var i = 0; i < list.length; i++) {
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
+
+        // Extra guard: never display README files in UI
+        if (isReadmeFile(filePath)) continue;
 
         if (filter) {
           var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
@@ -851,7 +1089,7 @@
     }
 
     /* ============================================================
-       2. TREE VIEW RENDERER (Classic Explorer Hierarchy)
+       2. TREE VIEW RENDERER
        ============================================================ */
     function buildTreeStructure(list, filter) {
       var root = { name: (activeTab === "packs" ? "data/" : "root/"), type: "dir", children: {} };
@@ -859,6 +1097,9 @@
       for (var i = 0; i < list.length; i++) {
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
+
+        // Never display README files in Tree
+        if (isReadmeFile(filePath)) continue;
 
         if (filter) {
           var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
@@ -1030,15 +1271,18 @@
     function updateStatusBar(list, tabType) {
       var totalKb = 0;
       var totalQs = 0;
+      var validCount = 0;
 
       for (var i = 0; i < list.length; i++) {
+        if (isReadmeFile(list[i].file)) continue;
+        validCount++;
         totalKb += (list[i].size_kb || 0);
         if (list[i].questions) totalQs += list[i].questions;
       }
 
       document.getElementById("sb-status").innerHTML = "Ready.";
-      document.getElementById("sb-objects").innerHTML = list.length + " File(s)";
-      document.getElementById("sb-extra").innerHTML = (tabType === "packs") ? (totalQs.toLocaleString() + " Questions") : (list.length + " Platforms");
+      document.getElementById("sb-objects").innerHTML = validCount + " File(s)";
+      document.getElementById("sb-extra").innerHTML = (tabType === "packs") ? (totalQs.toLocaleString() + " Questions") : (validCount + " Platforms");
       document.getElementById("sb-size").innerHTML = (totalKb / 1024).toFixed(2) + " MB";
     }
 
