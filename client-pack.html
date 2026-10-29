@@ -210,9 +210,7 @@
       overflow-x: auto;
     }
 
-    /* ============================================================
-       1. SOLID VIEW STYLES (CLEAN GROUPED CARDS)
-       ============================================================ */
+    /* SOLID VIEW STYLES */
     .solid-folder-group {
       border-bottom: 1px solid #e0e0e0;
     }
@@ -233,25 +231,23 @@
       background: #e6e6dc;
     }
 
-    
-.toggle-box {
-  width: 16px;
-  height: 14px;
-  line-height: 1;
-  text-align: center;
-  font-family: "Courier New", monospace;
-  font-size: 8px;
-  font-weight: bold;
-  border: 1px solid #808080;
-  background: #ffffff;
-  color: #000000;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-sizing: border-box;
-}
+    .toggle-box {
+      width: 16px;
+      height: 14px;
+      line-height: 1;
+      text-align: center;
+      font-family: "Courier New", monospace;
+      font-size: 8px;
+      font-weight: bold;
+      border: 1px solid #808080;
+      background: #ffffff;
+      color: #000000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
     
     .solid-file-row {
       display: flex;
@@ -300,6 +296,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .file-name-link:hover {
@@ -324,9 +321,7 @@
       padding: 3px 10px;
     }
 
-    /* ============================================================
-       2. TREE VIEW STYLES (CLASSIC EXPLORER HIERARCHY - CLEANED)
-       ============================================================ */
+    /* TREE VIEW STYLES */
     .tree-branch {
       list-style-type: none;
       margin: 0;
@@ -365,15 +360,6 @@
       text-decoration: underline;
     }
 
-    .tree-file-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      gap: 8px;
-      padding-right: 6px;
-    }
-
     .tree-collapsed {
       display: none;
     }
@@ -402,6 +388,64 @@
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    /* RETRO MODAL STYLES */
+    .win-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .win-dialog-box {
+      background-color: #d4d0c8;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+      box-shadow: 2px 2px 0px #000000;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .win-dialog-content {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .win-doc-viewer {
+      background-color: #ffffff;
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-right: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      padding: 8px;
+      height: 220px;
+      overflow-y: auto;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #000;
+    }
+
+    .win-dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      padding: 4px 10px 10px 10px;
     }
 
     /* MOBILE ADJUSTMENTS */
@@ -473,6 +517,30 @@
 
   </div>
 
+  <!-- RETRO README CONFIRMATION MODAL -->
+  <div class="win-modal-overlay" id="readmeModal">
+    <div class="win-dialog-box">
+      <div class="win-titlebar">
+        <div class="win-titlebar-text" id="readmeModalTitle">Folder Notice - README.md</div>
+        <div class="win-titlebar-controls">
+          <button class="win-btn-sys" onclick="closeReadmeModal()">X</button>
+        </div>
+      </div>
+      <div class="win-dialog-content">
+        <div style="font-size: 11px; font-weight: bold; color: #333;" id="readmeNoticeText">
+          Please review the folder instructions before downloading:
+        </div>
+        <div class="win-doc-viewer" id="readmeContent">Loading instructions...</div>
+      </div>
+      <div class="win-dialog-actions">
+        <button class="win-btn" style="font-weight:bold; color: #000080;" id="btnConfirmDownload">
+          [ I Confirm and Download ]
+        </button>
+        <button class="win-btn" onclick="closeReadmeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script type="text/javascript">
     var FALLBACK_PACKS = [
       { "id": "master", "name": "Master Question Bank (All Questions)", "category": "All", "file": "data/master.pak", "questions": 7052, "size_kb": 24240.48 },
@@ -490,10 +558,13 @@
       { "id": "mre", "name": "MediaTek MRE VXP Application", "category": "Feature Phone", "file": "Daily-GK.vbm", "size_kb": 780.0 }
     ];
 
-    var activeTab = "packs";   // 'packs' or 'clients'
-    var currentView = "solid"; // 'solid' or 'tree'
+    var activeTab = "packs";
+    var currentView = "solid";
     var packsData = null;
     var clientsData = null;
+
+    // Cache to prevent repeated network requests for README detection
+    var folderReadmeCache = {};
 
     function createXHR() {
       if (window.XMLHttpRequest) return new XMLHttpRequest();
@@ -580,13 +651,113 @@
     }
 
     /* ============================================================
+       README DETECTION & CONFIRMATION LOGIC
+       ============================================================ */
+    function getFileDirectory(filePath) {
+      filePath = filePath.replace(/\\/g, "/");
+      var idx = filePath.lastIndexOf("/");
+      return (idx !== -1) ? filePath.substring(0, idx) : "";
+    }
+
+    function triggerDirectDownload(fileUrl, fileName) {
+      var a = document.createElement("a");
+      a.href = fileUrl;
+      a.download = fileName || "";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function checkReadme(dirPath, callback) {
+      if (folderReadmeCache.hasOwnProperty(dirPath)) {
+        callback(folderReadmeCache[dirPath]);
+        return;
+      }
+
+      var readmeUrl = (dirPath ? dirPath + "/" : "") + "README.md";
+      var xhr = createXHR();
+      if (!xhr) {
+        callback(null);
+        return;
+      }
+
+      xhr.open("GET", readmeUrl + "?t=" + new Date().getTime(), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            folderReadmeCache[dirPath] = { url: readmeUrl, content: xhr.responseText };
+            callback(folderReadmeCache[dirPath]);
+          } else {
+            // Check lowercase fallback readme.md
+            var xhrLower = createXHR();
+            var readmeLowerUrl = (dirPath ? dirPath + "/" : "") + "readme.md";
+            xhrLower.open("GET", readmeLowerUrl + "?t=" + new Date().getTime(), true);
+            xhrLower.onreadystatechange = function() {
+              if (xhrLower.readyState === 4) {
+                if (xhrLower.status === 200) {
+                  folderReadmeCache[dirPath] = { url: readmeLowerUrl, content: xhrLower.responseText };
+                  callback(folderReadmeCache[dirPath]);
+                } else {
+                  folderReadmeCache[dirPath] = null;
+                  callback(null);
+                }
+              }
+            };
+            try { xhrLower.send(null); } catch(e) { 
+              folderReadmeCache[dirPath] = null;
+              callback(null); 
+            }
+          }
+        }
+      };
+      try { xhr.send(null); } catch (e) { 
+        folderReadmeCache[dirPath] = null;
+        callback(null); 
+      }
+    }
+
+    function handleFileDownloadRequest(fileUrl, fileName) {
+      var dir = getFileDirectory(fileUrl);
+
+      // Check if folder has README
+      checkReadme(dir, function(readmeInfo) {
+        if (readmeInfo && readmeInfo.content) {
+          openReadmeModal(fileUrl, fileName, readmeInfo.content, dir);
+        } else {
+          // No README detected, trigger instant download
+          triggerDirectDownload(fileUrl, fileName);
+        }
+      });
+    }
+
+    function openReadmeModal(fileUrl, fileName, readmeContent, dir) {
+      var modal = document.getElementById("readmeModal");
+      var title = document.getElementById("readmeModalTitle");
+      var content = document.getElementById("readmeContent");
+      var btn = document.getElementById("btnConfirmDownload");
+
+      title.innerHTML = "Folder Notice - " + (dir ? dir + "/" : "") + "README.md";
+      content.innerText = readmeContent;
+
+      btn.onclick = function() {
+        closeReadmeModal();
+        triggerDirectDownload(fileUrl, fileName);
+      };
+
+      modal.style.display = "flex";
+    }
+
+    function closeReadmeModal() {
+      document.getElementById("readmeModal").style.display = "none";
+    }
+
+    /* ============================================================
        1. SOLID VIEW RENDERER (Clean Grouped Cards)
        ============================================================ */
     function renderSolidView(list, filter) {
       var container = document.getElementById("workspaceContent");
       container.innerHTML = "";
 
-      // Group files
       var groups = {};
       var count = 0;
 
@@ -661,12 +832,12 @@
             '<div class="file-left">' +
               '<div class="file-title-line">' +
                 '<span class="type-badge">' + badgeText + '</span> ' +
-                '<a class="file-name-link" href="' + d.file + '" download>' + fileObj.fileName + '</a>' +
+                '<a class="file-name-link" href="javascript:void(0);" onclick="handleFileDownloadRequest(\'' + d.file + '\', \'' + fileObj.fileName + '\')">' + fileObj.fileName + '</a>' +
               '</div>' +
               '<div class="file-meta-line">' + metaText + '</div>' +
             '</div>' +
             '<div class="file-right">' +
-              '<a class="win-btn btn-download" href="' + d.file + '" download>Download</a>' +
+              '<a class="win-btn btn-download" href="javascript:void(0);" onclick="handleFileDownloadRequest(\'' + d.file + '\', \'' + fileObj.fileName + '\')">Download</a>' +
             '</div>';
 
           listDiv.appendChild(row);
@@ -680,7 +851,7 @@
     }
 
     /* ============================================================
-       2. TREE VIEW RENDERER (Classic Explorer Hierarchy - Aligned)
+       2. TREE VIEW RENDERER (Classic Explorer Hierarchy)
        ============================================================ */
     function buildTreeStructure(list, filter) {
       var root = { name: (activeTab === "packs" ? "data/" : "root/"), type: "dir", children: {} };
@@ -694,7 +865,6 @@
           if (matchStr.indexOf(filter) === -1) continue;
         }
 
-        // Normalize path: ignore root 'data/' in hierarchical sub-nesting
         var cleanPath = filePath;
         if (activeTab === "packs" && cleanPath.indexOf("data/") === 0) {
           cleanPath = cleanPath.substring(5);
@@ -779,12 +949,12 @@
               '<div class="file-title-line">' +
                 '<span class="tree-guide">|--</span> ' +
                 '<span class="type-badge">' + badgeText + '</span> ' +
-                '<a class="file-name-link" href="' + d.file + '" download>' + item.name + '</a>' +
+                '<a class="file-name-link" href="javascript:void(0);" onclick="handleFileDownloadRequest(\'' + d.file + '\', \'' + item.name + '\')">' + item.name + '</a>' +
               '</div>' +
               '<div class="file-meta-line" style="padding-left: 20px;">' + metaText + '</div>' +
             '</div>' +
             '<div class="file-right">' +
-              '<a class="win-btn btn-download" href="' + d.file + '" download>Download</a>' +
+              '<a class="win-btn btn-download" href="javascript:void(0);" onclick="handleFileDownloadRequest(\'' + d.file + '\', \'' + item.name + '\')">Download</a>' +
             '</div>';
 
           liFile.appendChild(rowFile);
