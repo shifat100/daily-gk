@@ -391,7 +391,7 @@
     }
 
     /* ============================================================
-       README MODAL & RENDERED MARKDOWN VIEWER STYLES
+       README MODAL & FULL MARKDOWN VIEWER STYLES
        ============================================================ */
     .win-modal-overlay {
       display: none;
@@ -415,7 +415,7 @@
       border-bottom: 2px solid #404040;
       box-shadow: 2px 2px 0px #000000;
       width: 100%;
-      max-width: 580px;
+      max-width: 680px;
       display: flex;
       flex-direction: column;
     }
@@ -434,9 +434,10 @@
       border-left: 2px solid #808080;
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
-      padding: 10px 14px;
-      height: 260px;
+      padding: 12px 14px;
+      height: 320px;
       overflow-y: auto;
+      overflow-x: auto;
       font-family: "Tahoma", "Verdana", "Arial", sans-serif;
       font-size: 11px;
       line-height: 1.5;
@@ -448,7 +449,7 @@
       font-weight: bold;
       border-bottom: 2px solid #000080;
       padding-bottom: 3px;
-      margin: 4px 0 8px 0;
+      margin: 6px 0 8px 0;
       color: #000080;
     }
 
@@ -457,54 +458,88 @@
       font-weight: bold;
       border-bottom: 1px solid #d4d0c8;
       padding-bottom: 2px;
-      margin: 8px 0 6px 0;
+      margin: 10px 0 6px 0;
       color: #222222;
     }
 
     .win-doc-viewer .md-h3, .win-doc-viewer .md-h4 {
       font-size: 11px;
       font-weight: bold;
-      margin: 6px 0 4px 0;
+      margin: 8px 0 4px 0;
       color: #333333;
     }
 
     .win-doc-viewer .md-p {
-      margin: 0 0 6px 0;
+      margin: 0 0 8px 0;
     }
 
     .win-doc-viewer .md-ul, .win-doc-viewer .md-ol {
-      margin: 0 0 8px 18px;
+      margin: 0 0 8px 20px;
       padding: 0;
     }
 
     .win-doc-viewer li {
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
+    /* Inline and Block Code */
     .win-doc-viewer .md-code-block {
-      background-color: #f6f6f2;
-      border: 1px solid #b8b8b0;
+      background-color: #f7f7f3;
+      border: 1px solid #a0a0a0;
       padding: 6px 8px;
-      margin: 6px 0;
+      margin: 8px 0;
       font-family: "Courier New", monospace;
       font-size: 11px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
+      white-space: pre;
+      overflow-x: auto;
     }
 
     .win-doc-viewer .md-inline-code {
-      background-color: #ecece6;
-      border: 1px solid #cfcfc8;
-      padding: 0 3px;
+      background-color: #eef0f2;
+      border: 1px solid #c2c6ca;
+      padding: 1px 4px;
       font-family: "Courier New", monospace;
-      font-size: 10px;
+      font-size: 11px;
+      color: #a00000;
+    }
+
+    /* Retro Markdown Tables */
+    .win-doc-viewer .md-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 11px;
+    }
+
+    .win-doc-viewer .md-table th,
+    .win-doc-viewer .md-table td {
+      border: 1px solid #808080;
+      padding: 5px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .win-doc-viewer .md-table th {
+      background-color: #d4d0c8;
+      font-weight: bold;
+      color: #000000;
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+    }
+
+    .win-doc-viewer .md-table tr:nth-child(even) td {
+      background-color: #f6f8f9;
+    }
+
+    .win-doc-viewer .md-table tr:hover td {
+      background-color: #eff3f6;
     }
 
     .win-doc-viewer .md-quote {
       border-left: 3px solid #000080;
       background-color: #f4f7fc;
       padding: 4px 8px;
-      margin: 6px 0;
+      margin: 8px 0;
       color: #333333;
     }
 
@@ -512,7 +547,7 @@
       border: none;
       border-top: 1px solid #808080;
       border-bottom: 1px solid #ffffff;
-      margin: 8px 0;
+      margin: 10px 0;
     }
 
     .win-doc-viewer .md-link {
@@ -609,7 +644,6 @@
         <div style="font-size: 11px; font-weight: bold; color: #222;" id="readmeNoticeText">
           Please review the instructions below before downloading:
         </div>
-        <!-- Rendered markdown goes here -->
         <div class="win-doc-viewer" id="readmeContent">Loading instructions...</div>
       </div>
       <div class="win-dialog-actions">
@@ -643,7 +677,6 @@
     var packsData = null;
     var clientsData = null;
 
-    // Cache to prevent repeated network requests for README detection
     var folderReadmeCache = {};
 
     function createXHR() {
@@ -653,7 +686,7 @@
       return null;
     }
 
-    // CHECK IF FILE IS A README (SO IT GETS HIDDEN FROM FILE LISTS)
+    // Identifies README to hide it from lists
     function isReadmeFile(filePath) {
       if (!filePath) return false;
       var clean = filePath.replace(/\\/g, "/").toLowerCase();
@@ -732,17 +765,15 @@
       var rawData = getActiveDataset();
       var filterText = (document.getElementById("filterInput").value || "").toLowerCase().trim();
 
-      // Filter out README files so they are hidden from the file list
       var visibleData = [];
       for (var i = 0; i < rawData.length; i++) {
         var item = rawData[i];
         if (isReadmeFile(item.file)) {
-          // Pre-populate folder README knowledge
           var dir = getFileDirectory(item.file);
           if (!folderReadmeCache[dir]) {
             folderReadmeCache[dir] = { url: item.file, content: null };
           }
-          continue;
+          continue; // README is hidden from file lists
         }
         visibleData.push(item);
       }
@@ -755,7 +786,7 @@
     }
 
     /* ============================================================
-       LIGHTWEIGHT EMBEDDED MARKDOWN PARSER (RETRO COMPATIBLE)
+       ROBUST MARKDOWN PARSER (WITH TABLES & COLLISION-FREE CODE)
        ============================================================ */
     function escapeHtml(text) {
       return (text || "")
@@ -768,15 +799,25 @@
 
     function formatInlineMarkdown(str) {
       str = escapeHtml(str);
-      // Links [text](url)
+      // Links: [text](url)
       str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="md-link">$1</a>');
-      // Bold **text** or __text__
+      // Bold: **text** or __text__
       str = str.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      str = str.replace(/__([^_]+)__/g, '<strong>$1</strong>');
-      // Italic *text* or _text_
+      str = str.replace(/\b__([^_]+)__\b/g, '<strong>$1</strong>');
+      // Italic: *text* or _text_
       str = str.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-      str = str.replace(/_([^_]+)_/g, '<em>$1</em>');
+      str = str.replace(/\b_([^_]+)_\b/g, '<em>$1</em>');
       return str;
+    }
+
+    function parseTableRowCells(lineStr) {
+      var clean = lineStr.replace(/^\|/, "").replace(/\|$/, "");
+      var raw = clean.split("|");
+      var cells = [];
+      for (var i = 0; i < raw.length; i++) {
+        cells.push(raw[i].trim());
+      }
+      return cells;
     }
 
     function renderMarkdownToHtml(md) {
@@ -784,95 +825,146 @@
 
       var src = md.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-      // Handle code blocks ``` ... ```
+      // 1. Extract Code Blocks (Use unicode characters to prevent underscore collision)
       var codeBlocks = [];
-      src = src.replace(/```([\s\S]*?)```/g, function(match, code) {
-        var id = "___CODE_BLOCK_" + codeBlocks.length + "___";
+      src = src.replace(/```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g, function(match, lang, code) {
+        var token = "\uE000CB" + codeBlocks.length + "\uE001";
         codeBlocks.push('<pre class="md-code-block"><code>' + escapeHtml(code.replace(/^\n+|\n+$/g, "")) + '</code></pre>');
-        return id;
+        return "\n" + token + "\n";
       });
 
-      // Handle inline code `...`
+      // 2. Extract Inline Code (No underscores used in token)
       var inlineCodes = [];
-      src = src.replace(/`([^`]+)`/g, function(match, code) {
-        var id = "___INLINE_CODE_" + inlineCodes.length + "___";
+      src = src.replace(/`([^`\n]+)`/g, function(match, code) {
+        var token = "\uE000IC" + inlineCodes.length + "\uE001";
         inlineCodes.push('<code class="md-inline-code">' + escapeHtml(code) + '</code>');
-        return id;
+        return token;
       });
 
-      var lines = src.split("\n");
+      var rawLines = src.split("\n");
+      var lines = [];
+      for (var r = 0; r < rawLines.length; r++) {
+        lines.push(rawLines[r]);
+      }
+
       var out = [];
       var inList = false;
       var inOrderedList = false;
+      var i = 0;
 
-      for (var i = 0; i < lines.length; i++) {
+      function closeLists() {
+        if (inList) { out.push("</ul>"); inList = false; }
+        if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
+      }
+
+      while (i < lines.length) {
         var line = lines[i];
+        var trimmed = line.trim();
 
-        if (line.indexOf("___CODE_BLOCK_") !== -1) {
-          if (inList) { out.push("</ul>"); inList = false; }
-          if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
-          out.push(line);
+        // Code block placeholder check
+        if (trimmed.indexOf("\uE000CB") === 0) {
+          closeLists();
+          out.push(trimmed);
+          i++;
           continue;
         }
 
-        // Unordered List item (- or *)
+        // Blank line
+        if (!trimmed) {
+          closeLists();
+          i++;
+          continue;
+        }
+
+        // Table check: starts with | and next row has divider |:---|
+        if (trimmed.charAt(0) === "|" && (i + 1 < lines.length) && /^\s*\|?\s*:?-+:?\s*\|/.test(lines[i + 1])) {
+          closeLists();
+          var tableHtml = '<table class="md-table">';
+          
+          var headerCols = parseTableRowCells(trimmed);
+          tableHtml += "<thead><tr>";
+          for (var h = 0; h < headerCols.length; h++) {
+            tableHtml += "<th>" + formatInlineMarkdown(headerCols[h]) + "</th>";
+          }
+          tableHtml += "</tr></thead><tbody>";
+
+          i += 2; // skip header & separator
+
+          while (i < lines.length && lines[i].trim().charAt(0) === "|") {
+            var rowCols = parseTableRowCells(lines[i].trim());
+            tableHtml += "<tr>";
+            for (var c = 0; c < headerCols.length; c++) {
+              var val = (c < rowCols.length) ? rowCols[c] : "";
+              tableHtml += "<td>" + formatInlineMarkdown(val) + "</td>";
+            }
+            tableHtml += "</tr>";
+            i++;
+          }
+          tableHtml += "</tbody></table>";
+          out.push(tableHtml);
+          continue;
+        }
+
+        // Unordered list (- or *)
         var ulMatch = line.match(/^(\s*)[-*+]\s+(.*)$/);
         if (ulMatch) {
           if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
           if (!inList) { out.push('<ul class="md-ul">'); inList = true; }
           out.push("<li>" + formatInlineMarkdown(ulMatch[2]) + "</li>");
+          i++;
           continue;
         }
 
-        // Ordered List item (1. )
+        // Ordered list (1. 2. etc.)
         var olMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
         if (olMatch) {
           if (inList) { out.push("</ul>"); inList = false; }
           if (!inOrderedList) { out.push('<ol class="md-ol">'); inOrderedList = true; }
           out.push("<li>" + formatInlineMarkdown(olMatch[2]) + "</li>");
+          i++;
           continue;
         }
 
-        if (inList) { out.push("</ul>"); inList = false; }
-        if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
+        closeLists();
 
-        if (!line.trim()) continue;
-
-        // Headings (#, ##, ###)
+        // Headings (#, ##, etc.)
         var hMatch = line.match(/^(#{1,6})\s+(.*)$/);
         if (hMatch) {
           var lvl = hMatch[1].length;
           out.push('<h' + lvl + ' class="md-h' + lvl + '">' + formatInlineMarkdown(hMatch[2]) + '</h' + lvl + '>');
+          i++;
           continue;
         }
 
         // Horizontal line
-        if (/^(\*{3,}|-{3,}|_{3,})$/.test(line.trim())) {
+        if (/^(\*{3,}|-{3,}|_{3,})$/.test(trimmed)) {
           out.push('<hr class="md-hr" />');
+          i++;
           continue;
         }
 
         // Blockquote
-        if (/^>\s+(.*)$/.test(line)) {
-          out.push('<blockquote class="md-quote">' + formatInlineMarkdown(line.replace(/^>\s+/, "")) + '</blockquote>');
+        if (/^>\s?(.*)$/.test(line)) {
+          out.push('<blockquote class="md-quote">' + formatInlineMarkdown(line.replace(/^>\s?/, "")) + '</blockquote>');
+          i++;
           continue;
         }
 
         // Standard Paragraph
         out.push('<p class="md-p">' + formatInlineMarkdown(line) + '</p>');
+        i++;
       }
 
-      if (inList) out.push("</ul>");
-      if (inOrderedList) out.push("</ol>");
+      closeLists();
 
       var resultHtml = out.join("\n");
 
-      // Re-insert code blocks & inline code
-      for (var c = 0; c < inlineCodes.length; c++) {
-        resultHtml = resultHtml.replace("___INLINE_CODE_" + c + "___", inlineCodes[c]);
+      // Restore Inline Codes & Code Blocks cleanly
+      for (var ic = 0; ic < inlineCodes.length; ic++) {
+        resultHtml = resultHtml.split("\uE000IC" + ic + "\uE001").join(inlineCodes[ic]);
       }
-      for (var b = 0; b < codeBlocks.length; b++) {
-        resultHtml = resultHtml.replace("___CODE_BLOCK_" + b + "___", codeBlocks[b]);
+      for (var cb = 0; cb < codeBlocks.length; cb++) {
+        resultHtml = resultHtml.split("\uE000CB" + cb + "\uE001").join(codeBlocks[cb]);
       }
 
       return resultHtml;
@@ -919,7 +1011,6 @@
             folderReadmeCache[dirPath] = { url: readmeUrl, content: xhr.responseText };
             callback(folderReadmeCache[dirPath]);
           } else {
-            // Check lowercase fallback readme.md
             var xhrLower = createXHR();
             var readmeLowerUrl = (dirPath ? dirPath + "/" : "") + "readme.md";
             xhrLower.open("GET", readmeLowerUrl + "?t=" + new Date().getTime(), true);
@@ -950,12 +1041,10 @@
     function handleFileDownloadRequest(fileUrl, fileName) {
       var dir = getFileDirectory(fileUrl);
 
-      // Check if this folder has a README
       checkReadme(dir, function(readmeInfo) {
         if (readmeInfo && readmeInfo.content) {
           openReadmeModal(fileUrl, fileName, readmeInfo.content, dir);
         } else {
-          // No README detected in folder, download directly
           triggerDirectDownload(fileUrl, fileName);
         }
       });
@@ -969,9 +1058,8 @@
       var btn = document.getElementById("btnConfirmDownload");
 
       title.innerHTML = "Folder Notice - " + (dir ? dir + "/" : "") + "README.md";
-      noticeText.innerHTML = "Please read instructions before downloading: <strong>" + escapeHtml(fileName) + "</strong>";
+      noticeText.innerHTML = "Please review the instructions below before downloading: <strong>" + escapeHtml(fileName) + "</strong>";
 
-      // Render Markdown into styled HTML
       content.innerHTML = renderMarkdownToHtml(readmeRawContent);
 
       btn.onclick = function() {
@@ -987,7 +1075,7 @@
     }
 
     /* ============================================================
-       1. SOLID VIEW RENDERER
+       SOLID VIEW RENDERER
        ============================================================ */
     function renderSolidView(list, filter) {
       var container = document.getElementById("workspaceContent");
@@ -1000,7 +1088,6 @@
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
-        // Extra guard: never display README files in UI
         if (isReadmeFile(filePath)) continue;
 
         if (filter) {
@@ -1089,7 +1176,7 @@
     }
 
     /* ============================================================
-       2. TREE VIEW RENDERER
+       TREE VIEW RENDERER
        ============================================================ */
     function buildTreeStructure(list, filter) {
       var root = { name: (activeTab === "packs" ? "data/" : "root/"), type: "dir", children: {} };
@@ -1098,7 +1185,6 @@
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
-        // Never display README files in Tree
         if (isReadmeFile(filePath)) continue;
 
         if (filter) {
