@@ -1,6 +1,6 @@
 /**
  * Daily GK for KryonOS (DGTX Clean Text Engine)
- * Features: Manual File Selection First -> Quiz/Study Execution
+ * Automated Catalog Downloader under Menu System
  */
 
 var SCREEN_WIDTH = System.screenWidth();   // 240
@@ -26,13 +26,19 @@ var STATE_QUESTION      = 2;
 var STATE_FEEDBACK      = 3;
 var STATE_MENU          = 4;
 var STATE_SCORECARD     = 5;
+var STATE_DOWNLOAD_MENU = 6;
+var STATE_DOWNLOADING   = 7;
 
 // Modes
 var MODE_QUIZ  = 0;
 var MODE_STUDY = 1;
 
+// Catalog & Base Download URL
+var CATALOG_URL  = "https://raw.githubusercontent.com/shifat100/daily-gk/main/packs.json";
+var RAW_BASE_URL = "https://raw.githubusercontent.com/shifat100/daily-gk/main/";
+
 var app = {
-    state: STATE_FILE_LIST, // সবসময় ফাইল লিস্ট থেকে শুরু হবে
+    state: STATE_FILE_LIST,
     prevState: STATE_FILE_LIST,
     readMode: MODE_QUIZ,
 
@@ -44,7 +50,13 @@ var app = {
 
     menuSelectedIdx: 0,
 
-    questions: [],         // Parsed DGTX JSON data
+    // Online Download Packs Cache
+    onlinePacks: [],
+    onlinePage: 0,
+    downloadProgress: 0,
+    downloadStatusText: "",
+
+    questions: [],
     totalQuestions: 0,
     currentQId: 0,
     selectedOption: 0,
@@ -77,12 +89,11 @@ function wrapText(str, maxChars) {
 }
 
 // =========================================================================
-// DGTX Footer Extractor (Zero-Drift Text Parser)
+// DGTX Footer Extractor
 // =========================================================================
 function extractDgtxPayload(rawStr) {
     if (!rawStr || rawStr.length < 28) return null;
 
-    // Check if the last 4 bytes contain "DGTX"
     var dgtxTag = rawStr.substring(rawStr.length - 4);
     if (dgtxTag === "DGTX") {
         var b0 = rawStr.charCodeAt(rawStr.length - 8) & 0xFF;
@@ -102,7 +113,6 @@ function extractDgtxPayload(rawStr) {
         }
     }
 
-    // Fallback: search for clean JSON array syntax '[{"id":' inside string
     var directIdx = rawStr.lastIndexOf('[{"id":');
     if (directIdx !== -1) {
         var potentialJson = rawStr.substring(directIdx);
@@ -161,7 +171,6 @@ function scanAllDrives() {
     app.selectedFileIdx = 0;
     app.fileListPage = 0;
 
-    // SD Card
     if (FS.exists("/sd/")) {
         scanDir("/sd/");
         var sdDirs = FS.listDir("/sd/");
@@ -172,7 +181,6 @@ function scanAllDrives() {
         }
     }
 
-    // Local Storage
     scanDir("/local/");
     var locDirs = FS.listDir("/local/");
     for (var k = 0; k < locDirs.length; k++) {
@@ -217,6 +225,86 @@ function openPak(path) {
 }
 
 // =========================================================================
+// Download Packages from packs.json
+// =========================================================================
+function fetchOnlineCatalog() {
+    if (!Network.isConnected()) {
+        Network.showWiFiPrompt();
+        return;
+    }
+
+    System.fillScreen(COLOR_BG);
+    System.setTextColor(COLOR_HL, COLOR_BG);
+    System.drawString("Fetching packs.json...", 45, 140, 2);
+    System.drawString("github.com/shifat100/daily-gk", 30, 165, 1);
+
+    var res = Network.get(CATALOG_URL);
+    if (res && res.status === 200 && res.body) {
+        try {
+            app.onlinePacks = JSON.parse(res.body);
+            app.onlinePage = 0;
+            app.state = STATE_DOWNLOAD_MENU;
+            return;
+        } catch (e) {
+            print("[Catalog] JSON Error: " + e);
+        }
+    }
+
+    // ফলব্যাক: যদি নেটওয়ার্ক থেকে ক্যাটালগ না আসে
+    app.onlinePacks = [
+        { "name": "Master Question Bank", "file": "data/master.pak", "questions": 7322, "size_kb": 30198.8 },
+        { "name": "2026 সাধারণ জ্ঞান", "file": "data/2026/2026.pak", "questions": 2742, "size_kb": 11388.23 },
+        { "name": "2025 সাধারণ জ্ঞান", "file": "data/2025/2025.pak", "questions": 3421, "size_kb": 13468.3 },
+        { "name": "AI", "file": "data/ai/ai.pak", "questions": 1057, "size_kb": 4962.04 },
+        { "name": "বই থেকে", "file": "data/books/books.pak", "questions": 102, "size_kb": 377.94 }
+    ];
+    app.onlinePage = 0;
+    app.state = STATE_DOWNLOAD_MENU;
+}
+
+function startDownloadPack(packItem) {
+    if (!Network.isConnected()) {
+        Network.showWiFiPrompt();
+        return;
+    }
+
+    var fullUrl = packItem.url;
+    if (!fullUrl) {
+        fullUrl = RAW_BASE_URL + packItem.file.replace("./", "");
+    }
+
+    var localDestDir = FS.exists("/sd/") ? "/sd/daily-gk/" : "/local/daily-gk/";
+    if (!FS.exists(localDestDir)) {
+        FS.mkdir(localDestDir);
+    }
+
+    var fileName = packItem.file.substring(packItem.file.lastIndexOf("/") + 1);
+    var localPath = localDestDir + fileName;
+
+    app.downloadProgress = 0;
+    app.downloadStatusText = "Downloading " + fileName + "...";
+    app.state = STATE_DOWNLOADING;
+    drawScreen();
+
+    var success = Network.downloadFile(fullUrl, localPath, function(readBytes, totalBytes) {
+        if (totalBytes > 0) {
+            app.downloadProgress = Math.floor((readBytes * 100) / totalBytes);
+            drawDownloadingScreen();
+        }
+    });
+
+    if (success) {
+        System.notify("Saved!", fileName + " downloaded.", "success", 3000);
+        scanAllDrives();
+        app.state = STATE_FILE_LIST;
+    } else {
+        System.notify("Download Failed", "Network timeout or file error", "error", 3000);
+        app.state = STATE_DOWNLOAD_MENU;
+    }
+    drawScreen();
+}
+
+// =========================================================================
 // Screen Drawers
 // =========================================================================
 function drawSoftbar(left, center, right) {
@@ -242,7 +330,6 @@ function drawSoftbar(left, center, right) {
 function drawFileList() {
     System.fillScreen(COLOR_BG);
 
-    // Header
     System.fillRect(0, 0, SCREEN_WIDTH, 26, COLOR_HL);
     System.setTextColor(COLOR_TEXT, COLOR_HL);
     System.drawString("Select Package (" + app.pakList.length + ")", 8, 6, 2);
@@ -272,7 +359,6 @@ function drawFileList() {
         curY += 46;
     }
 
-    // Pagination info
     var totalPages = Math.ceil(app.pakList.length / app.filesPerPage);
     if (totalPages > 1) {
         System.setTextColor(COLOR_MUTED, COLOR_BG);
@@ -280,9 +366,71 @@ function drawFileList() {
         System.drawString(pInfo, 100, 275, 1);
     }
 
-    var leftBtn = (app.fileListPage > 0) ? "< Prev" : "Rescan";
+    var leftBtn = (app.fileListPage > 0) ? "< Prev" : "Menu";
     var rightBtn = (endIdx < app.pakList.length) ? "Next >" : "Exit";
     drawSoftbar(leftBtn, "Open", rightBtn);
+}
+
+// Download Packages Screen (Rendered from packs.json)
+function drawDownloadMenu() {
+    System.fillScreen(COLOR_BG);
+
+    System.fillRect(0, 0, SCREEN_WIDTH, 26, COLOR_GREEN);
+    System.setTextColor(COLOR_TEXT, COLOR_GREEN);
+    System.drawString("Download Packages", 8, 6, 2);
+
+    var startIdx = app.onlinePage * 4;
+    var endIdx = Math.min(startIdx + 4, app.onlinePacks.length);
+    var curY = 32;
+
+    for (var i = startIdx; i < endIdx; i++) {
+        var pack = app.onlinePacks[i];
+        System.fillRect(8, curY, 224, 52, COLOR_CARD);
+        System.drawRect(8, curY, 224, 52, COLOR_BORDER);
+
+        System.setTextColor(COLOR_HL, COLOR_CARD);
+        var title = pack.name || pack.file;
+        if (title.length > 20) title = title.substring(0, 18) + "..";
+        System.drawString(title, 14, curY + 6, 2);
+
+        System.setTextColor(COLOR_MUTED, COLOR_CARD);
+        var qCount = pack.questions ? (pack.questions + " Qs") : "";
+        var sz = pack.size_kb ? (Math.round(pack.size_kb) + " KB") : "";
+        System.drawString(qCount + "  |  " + sz, 14, curY + 26, 1);
+
+        System.fillRect(164, curY + 12, 60, 28, COLOR_HL);
+        System.setTextColor(COLOR_TEXT, COLOR_HL);
+        System.drawString("GET", 182, curY + 18, 2);
+
+        curY += 58;
+    }
+
+    var totalPages = Math.ceil(app.onlinePacks.length / 4);
+    var leftBtn = (app.onlinePage > 0) ? "< Prev" : "";
+    var rightBtn = (endIdx < app.onlinePacks.length) ? "Next >" : "Back";
+    drawSoftbar(leftBtn, "", rightBtn);
+}
+
+function drawDownloadingScreen() {
+    System.fillScreen(COLOR_BG);
+
+    System.fillRect(10, 80, 220, 160, COLOR_CARD);
+    System.drawRect(10, 80, 220, 160, COLOR_HL);
+
+    System.setTextColor(COLOR_TEXT, COLOR_CARD);
+    System.drawString(app.downloadStatusText, 20, 100, 2);
+
+    System.drawRect(20, 140, 200, 20, COLOR_BORDER);
+    var fillW = Math.floor((app.downloadProgress * 196) / 100);
+    if (fillW > 0) {
+        System.fillRect(22, 142, fillW, 16, COLOR_GREEN);
+    }
+
+    System.setTextColor(COLOR_ORANGE, COLOR_CARD);
+    System.drawString(app.downloadProgress + "%", 110, 175, 2);
+
+    System.setTextColor(COLOR_MUTED, COLOR_CARD);
+    System.drawString("Saving to Storage...", 65, 205, 1);
 }
 
 function drawQuestionScreen() {
@@ -291,14 +439,12 @@ function drawQuestionScreen() {
     if (app.currentQId < 0 || app.currentQId >= app.totalQuestions) return;
     var qData = app.questions[app.currentQId];
 
-    // Top Header Bar
     System.fillRect(0, 0, SCREEN_WIDTH, 26, COLOR_HL);
     System.setTextColor(COLOR_TEXT, COLOR_HL);
     var header = "Q " + (app.currentQId + 1) + "/" + app.totalQuestions +
                  (app.readMode === MODE_STUDY ? " (Study)" : " (Quiz)");
     System.drawString(header, 8, 6, 2);
 
-    // Question Box
     var qLines = wrapText(qData.q, 26);
     var qCardH = Math.max(50, (qLines.length * 16) + 12);
     System.fillRect(8, 30, 224, qCardH, COLOR_CARD);
@@ -311,7 +457,6 @@ function drawQuestionScreen() {
         lineY += 16;
     }
 
-    // Four Options
     var optY = 30 + qCardH + 6;
     var opts = qData.opts || [];
     var correctAns = qData.ans;
@@ -349,7 +494,6 @@ function drawQuestionScreen() {
         optY += optH + 4;
     }
 
-    // Softbar
     if (app.readMode === MODE_STUDY) {
         drawSoftbar("Menu", "Next >", "Packs");
     } else {
@@ -371,11 +515,11 @@ function drawNoFiles() {
     System.setTextColor(COLOR_ORANGE, COLOR_CARD);
     System.drawString("No .PAK files detected!", 16, 48, 2);
     System.setTextColor(COLOR_TEXT, COLOR_CARD);
-    System.drawString("Put your .PAK files in:", 16, 75, 2);
+    System.drawString("Download packages from:", 16, 75, 2);
     System.setTextColor(COLOR_GREEN, COLOR_CARD);
-    System.drawString("/sd/ or /local/", 16, 95, 2);
+    System.drawString("shifat100.github.io/daily-gk", 16, 95, 1);
 
-    drawSoftbar("", "Rescan", "Exit");
+    drawSoftbar("Menu", "Rescan", "Exit");
 }
 
 function drawMenu() {
@@ -383,14 +527,15 @@ function drawMenu() {
     System.fillRect(12, 28, 216, 256, COLOR_CARD);
     System.fillRect(12, 28, 216, 26, COLOR_HL);
     System.setTextColor(COLOR_TEXT, COLOR_HL);
-    System.drawString("Reading Options", 20, 34, 2);
+    System.drawString("Options Menu", 20, 34, 2);
 
     var menuTitles = [
-        "1. Search Questions",
-        "2. Jump To Question",
-        (app.readMode === MODE_STUDY) ? "3. Mode: [Study -> Quiz]" : "3. Mode: [Quiz -> Study]",
-        "4. Return to Packs",
-        "5. About Daily GK"
+        "1. Download Packages",
+        "2. Search Questions",
+        "3. Jump To Question",
+        (app.readMode === MODE_STUDY) ? "4. Mode: [Study -> Quiz]" : "4. Mode: [Quiz -> Study]",
+        "5. Rescan Storage",
+        "6. Return to Packs"
     ];
 
     var my = 62;
@@ -428,11 +573,15 @@ function drawScreen() {
         drawMenu();
     } else if (app.state === STATE_SCORECARD) {
         drawScorecard();
+    } else if (app.state === STATE_DOWNLOAD_MENU) {
+        drawDownloadMenu();
+    } else if (app.state === STATE_DOWNLOADING) {
+        drawDownloadingScreen();
     }
 }
 
 // =========================================================================
-// Input Event Handling
+// Input Event Handling (Touch)
 // =========================================================================
 function handleTouchInput(touch) {
     var x = touch.x;
@@ -446,7 +595,15 @@ function handleTouchInput(touch) {
                 if (app.fileListPage > 0) {
                     app.fileListPage--;
                 } else {
-                    scanAllDrives();
+                    app.menuSelectedIdx = 0;
+                    app.state = STATE_MENU;
+                }
+            } else if (app.state === STATE_NO_FILES) {
+                app.menuSelectedIdx = 0;
+                app.state = STATE_MENU;
+            } else if (app.state === STATE_DOWNLOAD_MENU) {
+                if (app.onlinePage > 0) {
+                    app.onlinePage--;
                 }
             } else if (app.state === STATE_QUESTION || app.state === STATE_FEEDBACK) {
                 app.menuSelectedIdx = 0;
@@ -497,21 +654,28 @@ function handleTouchInput(touch) {
                 if (app.fileListPage < totalPages - 1) {
                     app.fileListPage++;
                 } else {
-                    throw new Error("OS_EXIT"); // ওএস লঞ্চারে ফিরে যাওয়া
+                    throw new Error("OS_EXIT");
+                }
+            } else if (app.state === STATE_DOWNLOAD_MENU) {
+                var totalOnPages = Math.ceil(app.onlinePacks.length / 4);
+                if (app.onlinePage < totalOnPages - 1) {
+                    app.onlinePage++;
+                } else {
+                    app.state = STATE_FILE_LIST;
                 }
             } else if (app.state === STATE_NO_FILES) {
                 throw new Error("OS_EXIT");
             } else if (app.state === STATE_MENU) {
-                app.state = STATE_QUESTION;
+                app.state = (app.questions.length > 0) ? STATE_QUESTION : STATE_FILE_LIST;
             } else if (app.state === STATE_QUESTION || app.state === STATE_FEEDBACK || app.state === STATE_SCORECARD) {
-                app.state = STATE_FILE_LIST; // প্যাকেজ লিস্টে ফিরে যাওয়া
+                app.state = STATE_FILE_LIST;
             }
         }
         drawScreen();
         return;
     }
 
-    // 2. File Selection List (Direct item tap)
+    // 2. File Selection List
     if (app.state === STATE_FILE_LIST) {
         var startIdx = app.fileListPage * app.filesPerPage;
         var endIdx = Math.min(startIdx + app.filesPerPage, app.pakList.length);
@@ -528,7 +692,22 @@ function handleTouchInput(touch) {
         }
     }
 
-    // 3. Question Options Touch
+    // 3. Download Packages Screen (Touch GET Button)
+    if (app.state === STATE_DOWNLOAD_MENU) {
+        var startOIdx = app.onlinePage * 4;
+        var endOIdx = Math.min(startOIdx + 4, app.onlinePacks.length);
+        var curOY = 32;
+
+        for (var j = startOIdx; j < endOIdx; j++) {
+            if (y >= curOY && y <= curOY + 52) {
+                startDownloadPack(app.onlinePacks[j]);
+                return;
+            }
+            curOY += 58;
+        }
+    }
+
+    // 4. Question Options Touch
     if (app.state === STATE_QUESTION) {
         var qLines = wrapText(app.questions[app.currentQId].q, 26);
         var qCardH = Math.max(50, (qLines.length * 16) + 12);
@@ -564,7 +743,7 @@ function handleTouchInput(touch) {
         drawScreen();
     } else if (app.state === STATE_MENU) {
         var my = 62;
-        for (var m = 0; m < 5; m++) {
+        for (var m = 0; m < 6; m++) {
             if (x >= 18 && x <= 222 && y >= my && y <= my + 30) {
                 app.menuSelectedIdx = m;
                 triggerMenuAction();
@@ -579,6 +758,11 @@ function handleTouchInput(touch) {
 function triggerMenuAction() {
     switch (app.menuSelectedIdx) {
         case 0:
+            // Download Packages from packs.json
+            fetchOnlineCatalog();
+            break;
+        case 1:
+            // Search
             var term = System.prompt("Search Question Text:", "");
             if (term && term.length > 0) {
                 for (var i = 0; i < app.totalQuestions; i++) {
@@ -592,7 +776,8 @@ function triggerMenuAction() {
             }
             app.state = STATE_QUESTION;
             break;
-        case 1:
+        case 2:
+            // Jump
             var numStr = System.prompt("Jump To Q (1 - " + app.totalQuestions + "):", "");
             if (numStr) {
                 var target = parseInt(numStr, 10);
@@ -604,16 +789,18 @@ function triggerMenuAction() {
             }
             app.state = STATE_QUESTION;
             break;
-        case 2:
+        case 3:
+            // Mode toggle
             app.readMode = (app.readMode === MODE_QUIZ) ? MODE_STUDY : MODE_QUIZ;
             app.state = STATE_QUESTION;
             break;
-        case 3:
-            app.state = STATE_FILE_LIST;
-            break;
         case 4:
-            System.notify("Daily GK", "Ported for KryonOS by Shifat100", "info", 3000);
-            app.state = STATE_QUESTION;
+            // Rescan
+            scanAllDrives();
+            break;
+        case 5:
+            // Back
+            app.state = STATE_FILE_LIST;
             break;
     }
 }
@@ -621,10 +808,9 @@ function triggerMenuAction() {
 // =========================================================================
 // Initialization
 // =========================================================================
-scanAllDrives(); // ড্রাইভ স্ক্যান করবে এবং ফাইল লিস্ট তৈরি করবে
-drawScreen();    // সরাসরি ফাইল লিস্ট স্ক্রিন ড্র করবে
+scanAllDrives();
+drawScreen();
 
-// Event Loop
 while (true) {
     var touch = System.getTouch();
     if (touch && touch.touched) {
@@ -636,4 +822,4 @@ while (true) {
         app.lastTouchState = false;
     }
     System.delay(20);
-        }
+}
