@@ -675,18 +675,28 @@
       return (fileName === "readme.md" || fileName === "readme.txt");
     }
 
-    // FILTERS OUT ANY FILE FROM "clients/sources" OR "sources/"
-    function isSourcesFile(item) {
+    // FILTERS OUT ANY FILE FROM "clients/sources", "sources/", "clients/scripts", OR "scripts/"
+    function isExcludedFile(item) {
       if (!item) return false;
       var f = (item.file || "").replace(/\\/g, "/").toLowerCase();
       var cat = (item.category || "").toLowerCase();
 
+      // Exclude sources
       if (f.indexOf("clients/sources") !== -1 || f.indexOf("/sources/") !== -1 || f.indexOf("sources/") === 0) {
         return true;
       }
       if (cat === "sources" || cat === "source" || cat.indexOf("source") !== -1) {
         return true;
       }
+
+      // Exclude scripts
+      if (f.indexOf("clients/scripts") !== -1 || f.indexOf("/scripts/") !== -1 || f.indexOf("scripts/") === 0) {
+        return true;
+      }
+      if (cat === "scripts" || cat === "script" || cat.indexOf("script") !== -1) {
+        return true;
+      }
+
       return false;
     }
 
@@ -764,8 +774,8 @@
       for (var i = 0; i < rawData.length; i++) {
         var item = rawData[i];
         
-        // Exclude clients/sources
-        if (isSourcesFile(item)) continue;
+        // Exclude clients/sources and clients/scripts
+        if (isExcludedFile(item)) continue;
 
         // Cache and hide READMEs
         if (isReadmeFile(item.file)) {
@@ -1063,7 +1073,7 @@
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
-        if (isReadmeFile(filePath)) continue;
+        if (isReadmeFile(filePath) || isExcludedFile(item)) continue;
 
         if (filter) {
           var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
@@ -1161,7 +1171,7 @@
         var item = list[i];
         var filePath = (item.file || "").replace(/\\/g, "/");
 
-        if (isReadmeFile(filePath)) continue;
+        if (isReadmeFile(filePath) || isExcludedFile(item)) continue;
 
         if (filter) {
           var matchStr = (item.name + " " + filePath + " " + (item.category || "")).toLowerCase();
@@ -1336,7 +1346,7 @@
       var validCount = 0;
 
       for (var i = 0; i < list.length; i++) {
-        if (isReadmeFile(list[i].file) || isSourcesFile(list[i])) continue;
+        if (isReadmeFile(list[i].file) || isExcludedFile(list[i])) continue;
         validCount++;
         totalKb += (list[i].size_kb || 0);
         if (list[i].questions) totalQs += list[i].questions;
@@ -1353,4 +1363,4 @@
     };
   </script>
 </body>
-                                                              </html>
+</html>
