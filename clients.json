@@ -112,6 +112,13 @@
         "size_kb": 41.5
     },
     {
+        "id": "json",
+        "name": "app",
+        "category": "Kryon-os",
+        "file": "clients/sources/kryon-os/app.json",
+        "size_kb": 0.3
+    },
+    {
         "id": "js",
         "name": "main",
         "category": "Kryon-os",
