@@ -84,4 +84,3 @@ After launching Daily GK, the app scans storage for questions and quiz packs. Pl
   * The `api` level in `app.json` must be less than or equal to your device's current KryonOS API level (default: `1`).
 * **App Crashes or Shows a Black Screen on Launch?**
   * If your board has limited SRAM (no PSRAM enabled), disable Wi-Fi in **Settings > WiFi Options** to free up 60–80 KB of RAM before launching the app.
-```
