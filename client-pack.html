@@ -8,8 +8,8 @@
   <style type="text/css">
     /* ============================================================
        NOSTALGIA UI (WIN 98/2000 SYSTEM THEME)
-       SUPPORTS: TREE VIEW & SOLID VIEW | STRICTLY NO EMOJIS
-       COMPATIBLE WITH OLD (IE6+, OPERA MINI) AND MODERN BROWSERS
+       COMPATIBLE WITH OLD BROWSERS (OPERA MINI 4, IE6+, J2ME)
+       AND MODERN BROWSERS ALIKE (STRICTLY NO CSS FLEXBOX/ES6)
        ============================================================ */
     * {
       box-sizing: border-box;
@@ -27,6 +27,18 @@
       padding: 6px;
     }
 
+    /* CLEARFIX HELPER */
+    .clearfix:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+    }
+    .clearfix {
+      zoom: 1;
+    }
+
     /* MAIN CONTAINER WINDOW */
     .win-window {
       background-color: #d4d0c8;
@@ -34,7 +46,6 @@
       border-left: 2px solid #ffffff;
       border-right: 2px solid #404040;
       border-bottom: 2px solid #404040;
-      box-shadow: 2px 2px 0px #000000;
       max-width: 860px;
       margin: 0 auto;
       width: 100%;
@@ -43,33 +54,36 @@
     /* TITLEBAR */
     .win-titlebar {
       height: 22px;
+      line-height: 18px;
       background: #000080;
       background: -webkit-linear-gradient(left, #000080, #1084d0);
       background: -moz-linear-gradient(left, #000080, #1084d0);
       background: linear-gradient(to right, #000080, #1084d0);
       padding: 2px 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       color: #ffffff;
       font-weight: bold;
+      overflow: hidden;
+      clear: both;
     }
 
     .win-titlebar-text {
+      float: left;
       padding-left: 3px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: 11px;
+      line-height: 18px;
+      max-width: 75%;
     }
 
     .win-titlebar-controls {
-      display: flex;
-      gap: 2px;
-      flex-shrink: 0;
+      float: right;
+      white-space: nowrap;
     }
 
     .win-btn-sys {
+      display: inline-block;
       width: 16px;
       height: 14px;
       line-height: 10px;
@@ -84,6 +98,10 @@
       color: #000000;
       cursor: pointer;
       text-align: center;
+      text-decoration: none;
+      vertical-align: middle;
+      margin-left: 2px;
+      padding: 0;
     }
 
     .win-btn-sys:active {
@@ -95,26 +113,30 @@
 
     /* TABS */
     .win-tab-strip {
-      display: flex;
       background: #d4d0c8;
       padding: 5px 6px 0 6px;
       border-bottom: 1px solid #808080;
-      gap: 3px;
+      white-space: nowrap;
+      overflow-x: auto;
     }
 
     .win-tab-btn {
+      display: inline-block;
       background-color: #d4d0c8;
       border-top: 2px solid #ffffff;
       border-left: 2px solid #ffffff;
       border-right: 2px solid #404040;
       border-bottom: none;
-      padding: 4px 12px;
+      padding: 4px 10px;
       font-family: inherit;
       font-size: 11px;
       color: #000000;
       cursor: pointer;
       margin-bottom: -1px;
+      margin-right: 2px;
       white-space: nowrap;
+      text-decoration: none;
+      vertical-align: bottom;
     }
 
     .win-tab-btn.active {
@@ -123,44 +145,39 @@
       font-weight: bold;
     }
 
-    /* TOOLBAR WITH VIEW TOGGLES */
+    /* TOOLBAR */
     .win-toolbar {
       background: #d4d0c8;
       padding: 4px 6px;
       border-bottom: 1px solid #808080;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      flex-wrap: wrap;
+      clear: both;
     }
 
     .toolbar-left {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex: 1;
-      min-width: 180px;
+      float: left;
+      width: 58%;
+      white-space: nowrap;
     }
 
     .toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      float: right;
+      width: 40%;
+      text-align: right;
+      white-space: nowrap;
     }
 
     .win-input {
-      width: 100%;
       background-color: #ffffff;
       border-top: 1px solid #808080;
       border-left: 1px solid #808080;
       border-right: 1px solid #ffffff;
       border-bottom: 1px solid #ffffff;
-      padding: 3px 5px;
+      padding: 2px 4px;
       font-family: inherit;
       font-size: 11px;
       color: #000000;
-      outline: none;
+      width: 60%;
+      max-width: 170px;
     }
 
     .win-btn {
@@ -171,13 +188,14 @@
       border-bottom: 1px solid #404040;
       font-family: inherit;
       font-size: 11px;
-      padding: 3px 8px;
+      padding: 2px 6px;
       color: #000000;
       cursor: pointer;
       text-decoration: none;
       white-space: nowrap;
       display: inline-block;
       text-align: center;
+      vertical-align: middle;
     }
 
     .win-btn:active {
@@ -218,13 +236,11 @@
     .solid-folder-header {
       background: #f0f0ea;
       border-bottom: 1px solid #d4d0c8;
-      padding: 5px 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      padding: 4px 6px;
       font-weight: bold;
       color: #222222;
-      cursor: pointer;
+      display: block;
+      text-decoration: none;
     }
 
     .solid-folder-header:hover {
@@ -234,28 +250,25 @@
     .toggle-box {
       width: 16px;
       height: 14px;
-      line-height: 1;
+      line-height: 12px;
       text-align: center;
       font-family: "Courier New", monospace;
-      font-size: 8px;
+      font-size: 9px;
       font-weight: bold;
       border: 1px solid #808080;
       background: #ffffff;
       color: #000000;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-sizing: border-box;
+      display: inline-block;
+      margin-right: 4px;
+      vertical-align: middle;
+      text-decoration: none;
     }
     
     .solid-file-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 10px 6px 24px;
+      display: table;
+      width: 100%;
       border-bottom: 1px solid #f2f2f2;
-      gap: 8px;
+      padding: 4px 6px;
     }
 
     .solid-file-row:hover {
@@ -263,17 +276,12 @@
     }
 
     .file-left {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-      flex: 1;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: left;
     }
 
     .file-title-line {
-      display: flex;
-      align-items: center;
-      gap: 6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -282,21 +290,19 @@
     .type-badge {
       font-size: 9px;
       font-weight: bold;
-      padding: 0 4px;
+      padding: 0 3px;
       border: 1px solid #a0a0a0;
       background: #e6e6e6;
       color: #000080;
-      flex-shrink: 0;
+      display: inline-block;
+      margin-right: 4px;
     }
 
     .file-name-link {
       color: #000080;
       font-weight: bold;
       text-decoration: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      cursor: pointer;
+      display: inline;
     }
 
     .file-name-link:hover {
@@ -306,26 +312,29 @@
     .file-meta-line {
       color: #555555;
       font-size: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin-top: 2px;
     }
 
     .file-right {
-      flex-shrink: 0;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
+      width: 85px;
+      white-space: nowrap;
+      padding-left: 6px;
     }
 
     .btn-download {
       font-weight: bold;
       color: #000000;
-      padding: 3px 10px;
+      padding: 2px 8px;
     }
 
     /* TREE VIEW STYLES */
     .tree-branch {
       list-style-type: none;
       margin: 0;
-      padding-left: 16px;
+      padding-left: 14px;
     }
 
     .tree-branch.root-level {
@@ -333,8 +342,6 @@
     }
 
     .tree-node-row {
-      display: flex;
-      align-items: center;
       padding: 3px 0;
       line-height: 18px;
       white-space: nowrap;
@@ -347,12 +354,13 @@
     .tree-guide {
       font-family: "Courier New", monospace;
       color: #888888;
-      margin-right: 4px;
+      margin-right: 3px;
     }
 
     .tree-dir-name {
       font-weight: bold;
       color: #000000;
+      text-decoration: none;
       cursor: pointer;
     }
 
@@ -361,7 +369,7 @@
     }
 
     .tree-collapsed {
-      display: none;
+      display: none !important;
     }
 
     /* STATUS BAR */
@@ -369,30 +377,30 @@
       background-color: #d4d0c8;
       border-top: 1px solid #808080;
       padding: 2px 4px;
-      display: flex;
-      gap: 4px;
+      display: table;
+      width: 100%;
     }
 
     .win-status-pane {
+      display: table-cell;
+      vertical-align: middle;
       background: #d4d0c8;
       border-top: 1px solid #808080;
       border-left: 1px solid #808080;
       border-right: 1px solid #ffffff;
       border-bottom: 1px solid #ffffff;
-      padding: 2px 6px;
+      padding: 2px 5px;
       font-size: 10px;
       white-space: nowrap;
     }
 
     .pane-flex {
-      flex: 1;
+      width: 40%;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* ============================================================
-       README MODAL & FULL MARKDOWN VIEWER STYLES
-       ============================================================ */
+    /* README MODAL STYLES */
     .win-modal-overlay {
       display: none;
       position: fixed;
@@ -400,11 +408,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.45);
+      background: #666666;
+      background: rgba(0, 0, 0, 0.55);
       z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      padding: 12px;
+      text-align: center;
+      padding: 10px 4px;
+      overflow-y: auto;
     }
 
     .win-dialog-box {
@@ -413,83 +422,73 @@
       border-left: 2px solid #ffffff;
       border-right: 2px solid #404040;
       border-bottom: 2px solid #404040;
-      box-shadow: 2px 2px 0px #000000;
       width: 100%;
-      max-width: 680px;
-      display: flex;
-      flex-direction: column;
+      max-width: 650px;
+      margin: 20px auto;
+      text-align: left;
     }
 
     .win-dialog-content {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      padding: 8px;
     }
 
-    /* Rendered Markdown Window */
     .win-doc-viewer {
       background-color: #ffffff;
       border-top: 2px solid #808080;
       border-left: 2px solid #808080;
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
-      padding: 12px 14px;
-      height: 320px;
+      padding: 8px 10px;
+      height: 280px;
       overflow-y: auto;
       overflow-x: auto;
-      font-family: "Tahoma", "Verdana", "Arial", sans-serif;
       font-size: 11px;
-      line-height: 1.5;
+      line-height: 1.4;
       color: #111111;
+      margin-top: 6px;
     }
 
     .win-doc-viewer .md-h1 {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: bold;
       border-bottom: 2px solid #000080;
-      padding-bottom: 3px;
-      margin: 6px 0 8px 0;
+      padding-bottom: 2px;
+      margin: 4px 0 6px 0;
       color: #000080;
     }
 
     .win-doc-viewer .md-h2 {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       border-bottom: 1px solid #d4d0c8;
       padding-bottom: 2px;
-      margin: 10px 0 6px 0;
+      margin: 8px 0 4px 0;
       color: #222222;
     }
 
-    .win-doc-viewer .md-h3, .win-doc-viewer .md-h4 {
+    .win-doc-viewer .md-h3 {
       font-size: 11px;
       font-weight: bold;
-      margin: 8px 0 4px 0;
+      margin: 6px 0 3px 0;
       color: #333333;
     }
 
     .win-doc-viewer .md-p {
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
     }
 
     .win-doc-viewer .md-ul, .win-doc-viewer .md-ol {
-      margin: 0 0 8px 20px;
+      margin: 0 0 6px 18px;
       padding: 0;
     }
 
-    .win-doc-viewer li {
-      margin-bottom: 4px;
-    }
-
-    /* Inline and Block Code */
     .win-doc-viewer .md-code-block {
       background-color: #f7f7f3;
       border: 1px solid #a0a0a0;
-      padding: 6px 8px;
-      margin: 8px 0;
+      padding: 4px 6px;
+      margin: 6px 0;
       font-family: "Courier New", monospace;
-      font-size: 11px;
+      font-size: 10px;
       white-space: pre;
       overflow-x: auto;
     }
@@ -497,79 +496,43 @@
     .win-doc-viewer .md-inline-code {
       background-color: #eef0f2;
       border: 1px solid #c2c6ca;
-      padding: 1px 4px;
+      padding: 0 2px;
       font-family: "Courier New", monospace;
-      font-size: 11px;
+      font-size: 10px;
       color: #a00000;
     }
 
-    /* Retro Markdown Tables */
     .win-doc-viewer .md-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 10px 0;
+      margin: 8px 0;
       font-size: 11px;
     }
 
     .win-doc-viewer .md-table th,
     .win-doc-viewer .md-table td {
       border: 1px solid #808080;
-      padding: 5px 7px;
+      padding: 4px 6px;
       text-align: left;
-      vertical-align: top;
     }
 
     .win-doc-viewer .md-table th {
       background-color: #d4d0c8;
       font-weight: bold;
-      color: #000000;
-      border-top: 1px solid #ffffff;
-      border-left: 1px solid #ffffff;
-    }
-
-    .win-doc-viewer .md-table tr:nth-child(even) td {
-      background-color: #f6f8f9;
-    }
-
-    .win-doc-viewer .md-table tr:hover td {
-      background-color: #eff3f6;
-    }
-
-    .win-doc-viewer .md-quote {
-      border-left: 3px solid #000080;
-      background-color: #f4f7fc;
-      padding: 4px 8px;
-      margin: 8px 0;
-      color: #333333;
-    }
-
-    .win-doc-viewer .md-hr {
-      border: none;
-      border-top: 1px solid #808080;
-      border-bottom: 1px solid #ffffff;
-      margin: 10px 0;
-    }
-
-    .win-doc-viewer .md-link {
-      color: #000080;
-      text-decoration: underline;
     }
 
     .win-dialog-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 6px;
-      padding: 4px 10px 10px 10px;
+      text-align: right;
+      padding: 6px 8px 8px 8px;
     }
 
-    /* MOBILE ADJUSTMENTS */
+    /* MOBILE & FEATURE PHONES ADJUSTMENTS */
     @media (max-width: 480px) {
       body { padding: 0; }
-      .win-window { border: none; box-shadow: none; }
-      .solid-file-row { padding-left: 14px; }
-      .win-statusbar { flex-wrap: wrap; }
-      .win-toolbar { flex-direction: column; align-items: stretch; }
-      .toolbar-left, .toolbar-right { width: 100%; justify-content: space-between; }
+      .win-window { border: none; }
+      .toolbar-left, .toolbar-right { float: none; width: 100%; text-align: left; margin-bottom: 4px; }
+      .win-statusbar { display: block; }
+      .win-status-pane { display: inline-block; margin-bottom: 2px; }
     }
   </style>
 </head>
@@ -582,33 +545,33 @@
     <div class="win-titlebar">
       <div class="win-titlebar-text" id="winTitleText">Daily GK - Package Explorer</div>
       <div class="win-titlebar-controls">
-        <button class="win-btn-sys" onclick="alert('Daily GK Universal Package Explorer')">?</button>
-        <button class="win-btn-sys" onclick="window.location.reload()">_</button>
-        <button class="win-btn-sys" onclick="window.location.href='index.html'">X</button>
+        <button type="button" class="win-btn-sys" onclick="alert('Daily GK Universal Package Explorer')" title="Help">?</button>
+        <button type="button" class="win-btn-sys" onclick="window.location.reload()" title="Refresh">_</button>
+        <!-- CLOSE BUTTON (TRIGGERS HISTORY BACK) -->
+        <button type="button" class="win-btn-sys" onclick="handleWinClose()" title="Back / Close">X</button>
       </div>
     </div>
 
     <!-- 2. TABS -->
     <div class="win-tab-strip">
-      <button class="win-tab-btn active" id="tabBtnPacks" onclick="switchTab('packs')">
+      <a href="javascript:void(0);" class="win-tab-btn active" id="tabBtnPacks" onclick="switchTab('packs')">
         Question Packs (.pak)
-      </button>
-      <button class="win-tab-btn" id="tabBtnClients" onclick="switchTab('clients')">
+      </a>
+      <a href="javascript:void(0);" class="win-tab-btn" id="tabBtnClients" onclick="switchTab('clients')">
         Client Apps (.apk, .bat, .jar)
-      </button>
+      </a>
     </div>
 
     <!-- 3. TOOLBAR WITH VIEW TOGGLES -->
-    <div class="win-toolbar">
+    <div class="win-toolbar clearfix">
       <div class="toolbar-left">
-        <span style="font-weight:bold; color:#333;">Find:</span>
-        <input type="text" id="filterInput" class="win-input" onkeyup="applyFilter(this.value)" placeholder="Search packages..." />
-        <button class="win-btn" onclick="clearFilter()">Clear</button>
+        <strong>Find:</strong>
+        <input type="text" id="filterInput" class="win-input" onkeyup="applyFilter(this.value)" placeholder="Search..." />
+        <button type="button" class="win-btn" onclick="clearFilter()">Clear</button>
       </div>
       <div class="toolbar-right">
-        <span style="color:#555;">View:</span>
-        <button class="win-btn" id="btnViewTree" onclick="switchView('tree')">[Tree View]</button>
-        <button class="win-btn pressed" id="btnViewSolid" onclick="switchView('solid')">[Solid View]</button>
+        <button type="button" class="win-btn" id="btnViewTree" onclick="switchView('tree')">[Tree View]</button>
+        <button type="button" class="win-btn pressed" id="btnViewSolid" onclick="switchView('solid')">[Solid View]</button>
         <a class="win-btn" href="index.html">[App]</a>
       </div>
     </div>
@@ -637,7 +600,7 @@
       <div class="win-titlebar">
         <div class="win-titlebar-text" id="readmeModalTitle">Folder Notice - README.md</div>
         <div class="win-titlebar-controls">
-          <button class="win-btn-sys" onclick="closeReadmeModal()">X</button>
+          <button type="button" class="win-btn-sys" onclick="closeReadmeModal()">X</button>
         </div>
       </div>
       <div class="win-dialog-content">
@@ -647,15 +610,18 @@
         <div class="win-doc-viewer" id="readmeContent">Loading instructions...</div>
       </div>
       <div class="win-dialog-actions">
-        <button class="win-btn" style="font-weight:bold; color: #000080;" id="btnConfirmDownload">
+        <button type="button" class="win-btn" style="font-weight:bold; color: #000080;" id="btnConfirmDownload">
           [ I Confirm and Download ]
         </button>
-        <button class="win-btn" onclick="closeReadmeModal()">Cancel</button>
+        <button type="button" class="win-btn" onclick="closeReadmeModal()">Cancel</button>
       </div>
     </div>
   </div>
 
   <script type="text/javascript">
+    /* ============================================================
+       STRICT ES3/ES5 ENGINE - SUPPORTS OPERA MINI 4 & ALL OLD ENGINES
+       ============================================================ */
     var FALLBACK_PACKS = [
       { "id": "master", "name": "Master Question Bank (All Questions)", "category": "All", "file": "data/master.pak", "questions": 7052, "size_kb": 24240.48 },
       { "id": "2026", "name": "সাধারণ জ্ঞান (2026)", "category": "সাধারণ জ্ঞান", "file": "data/2026/2026.pak", "questions": 2472, "size_kb": 8452.92 },
@@ -676,8 +642,22 @@
     var currentView = "solid";
     var packsData = null;
     var clientsData = null;
-
     var folderReadmeCache = {};
+
+    // String trim helper for older browsers without String.prototype.trim
+    function safeTrim(str) {
+      if (!str) return "";
+      return ("" + str).replace(/^\s+|\s+$/g, "");
+    }
+
+    // CLOSE BUTTON HANDLER: HISTORY BACK
+    function handleWinClose() {
+      if (window.history && window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    }
 
     function createXHR() {
       if (window.XMLHttpRequest) return new XMLHttpRequest();
@@ -686,13 +666,28 @@
       return null;
     }
 
-    // Identifies README to hide it from lists
+    // Identifies README to hide it from standard lists
     function isReadmeFile(filePath) {
       if (!filePath) return false;
       var clean = filePath.replace(/\\/g, "/").toLowerCase();
       var parts = clean.split("/");
       var fileName = parts[parts.length - 1];
       return (fileName === "readme.md" || fileName === "readme.txt");
+    }
+
+    // FILTERS OUT ANY FILE FROM "clients/sources" OR "sources/"
+    function isSourcesFile(item) {
+      if (!item) return false;
+      var f = (item.file || "").replace(/\\/g, "/").toLowerCase();
+      var cat = (item.category || "").toLowerCase();
+
+      if (f.indexOf("clients/sources") !== -1 || f.indexOf("/sources/") !== -1 || f.indexOf("sources/") === 0) {
+        return true;
+      }
+      if (cat === "sources" || cat === "source" || cat.indexOf("source") !== -1) {
+        return true;
+      }
+      return false;
     }
 
     function switchTab(tabName) {
@@ -763,18 +758,24 @@
     function renderCurrentView() {
       document.getElementById("loadingStatus").style.display = "none";
       var rawData = getActiveDataset();
-      var filterText = (document.getElementById("filterInput").value || "").toLowerCase().trim();
+      var filterText = safeTrim((document.getElementById("filterInput").value || "")).toLowerCase();
 
       var visibleData = [];
       for (var i = 0; i < rawData.length; i++) {
         var item = rawData[i];
+        
+        // Exclude clients/sources
+        if (isSourcesFile(item)) continue;
+
+        // Cache and hide READMEs
         if (isReadmeFile(item.file)) {
           var dir = getFileDirectory(item.file);
           if (!folderReadmeCache[dir]) {
             folderReadmeCache[dir] = { url: item.file, content: null };
           }
-          continue; // README is hidden from file lists
+          continue;
         }
+
         visibleData.push(item);
       }
 
@@ -786,7 +787,7 @@
     }
 
     /* ============================================================
-       ROBUST MARKDOWN PARSER (WITH TABLES & COLLISION-FREE CODE)
+       MARKDOWN PARSER
        ============================================================ */
     function escapeHtml(text) {
       return (text || "")
@@ -799,12 +800,9 @@
 
     function formatInlineMarkdown(str) {
       str = escapeHtml(str);
-      // Links: [text](url)
       str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="md-link">$1</a>');
-      // Bold: **text** or __text__
       str = str.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       str = str.replace(/\b__([^_]+)__\b/g, '<strong>$1</strong>');
-      // Italic: *text* or _text_
       str = str.replace(/\*([^*]+)\*/g, '<em>$1</em>');
       str = str.replace(/\b_([^_]+)_\b/g, '<em>$1</em>');
       return str;
@@ -815,7 +813,7 @@
       var raw = clean.split("|");
       var cells = [];
       for (var i = 0; i < raw.length; i++) {
-        cells.push(raw[i].trim());
+        cells.push(safeTrim(raw[i]));
       }
       return cells;
     }
@@ -825,7 +823,6 @@
 
       var src = md.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-      // 1. Extract Code Blocks (Use unicode characters to prevent underscore collision)
       var codeBlocks = [];
       src = src.replace(/```([a-zA-Z0-9_-]*)\n?([\s\S]*?)```/g, function(match, lang, code) {
         var token = "\uE000CB" + codeBlocks.length + "\uE001";
@@ -833,7 +830,6 @@
         return "\n" + token + "\n";
       });
 
-      // 2. Extract Inline Code (No underscores used in token)
       var inlineCodes = [];
       src = src.replace(/`([^`\n]+)`/g, function(match, code) {
         var token = "\uE000IC" + inlineCodes.length + "\uE001";
@@ -841,12 +837,7 @@
         return token;
       });
 
-      var rawLines = src.split("\n");
-      var lines = [];
-      for (var r = 0; r < rawLines.length; r++) {
-        lines.push(rawLines[r]);
-      }
-
+      var lines = src.split("\n");
       var out = [];
       var inList = false;
       var inOrderedList = false;
@@ -859,9 +850,8 @@
 
       while (i < lines.length) {
         var line = lines[i];
-        var trimmed = line.trim();
+        var trimmed = safeTrim(line);
 
-        // Code block placeholder check
         if (trimmed.indexOf("\uE000CB") === 0) {
           closeLists();
           out.push(trimmed);
@@ -869,29 +859,24 @@
           continue;
         }
 
-        // Blank line
         if (!trimmed) {
           closeLists();
           i++;
           continue;
         }
 
-        // Table check: starts with | and next row has divider |:---|
         if (trimmed.charAt(0) === "|" && (i + 1 < lines.length) && /^\s*\|?\s*:?-+:?\s*\|/.test(lines[i + 1])) {
           closeLists();
-          var tableHtml = '<table class="md-table">';
-          
+          var tableHtml = '<table class="md-table"><thead><tr>';
           var headerCols = parseTableRowCells(trimmed);
-          tableHtml += "<thead><tr>";
           for (var h = 0; h < headerCols.length; h++) {
             tableHtml += "<th>" + formatInlineMarkdown(headerCols[h]) + "</th>";
           }
           tableHtml += "</tr></thead><tbody>";
+          i += 2;
 
-          i += 2; // skip header & separator
-
-          while (i < lines.length && lines[i].trim().charAt(0) === "|") {
-            var rowCols = parseTableRowCells(lines[i].trim());
+          while (i < lines.length && safeTrim(lines[i]).charAt(0) === "|") {
+            var rowCols = parseTableRowCells(safeTrim(lines[i]));
             tableHtml += "<tr>";
             for (var c = 0; c < headerCols.length; c++) {
               var val = (c < rowCols.length) ? rowCols[c] : "";
@@ -905,7 +890,6 @@
           continue;
         }
 
-        // Unordered list (- or *)
         var ulMatch = line.match(/^(\s*)[-*+]\s+(.*)$/);
         if (ulMatch) {
           if (inOrderedList) { out.push("</ol>"); inOrderedList = false; }
@@ -915,7 +899,6 @@
           continue;
         }
 
-        // Ordered list (1. 2. etc.)
         var olMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
         if (olMatch) {
           if (inList) { out.push("</ul>"); inList = false; }
@@ -927,7 +910,6 @@
 
         closeLists();
 
-        // Headings (#, ##, etc.)
         var hMatch = line.match(/^(#{1,6})\s+(.*)$/);
         if (hMatch) {
           var lvl = hMatch[1].length;
@@ -936,21 +918,18 @@
           continue;
         }
 
-        // Horizontal line
         if (/^(\*{3,}|-{3,}|_{3,})$/.test(trimmed)) {
           out.push('<hr class="md-hr" />');
           i++;
           continue;
         }
 
-        // Blockquote
         if (/^>\s?(.*)$/.test(line)) {
           out.push('<blockquote class="md-quote">' + formatInlineMarkdown(line.replace(/^>\s?/, "")) + '</blockquote>');
           i++;
           continue;
         }
 
-        // Standard Paragraph
         out.push('<p class="md-p">' + formatInlineMarkdown(line) + '</p>');
         i++;
       }
@@ -958,8 +937,6 @@
       closeLists();
 
       var resultHtml = out.join("\n");
-
-      // Restore Inline Codes & Code Blocks cleanly
       for (var ic = 0; ic < inlineCodes.length; ic++) {
         resultHtml = resultHtml.split("\uE000IC" + ic + "\uE001").join(inlineCodes[ic]);
       }
@@ -1040,7 +1017,6 @@
 
     function handleFileDownloadRequest(fileUrl, fileName) {
       var dir = getFileDirectory(fileUrl);
-
       checkReadme(dir, function(readmeInfo) {
         if (readmeInfo && readmeInfo.content) {
           openReadmeModal(fileUrl, fileName, readmeInfo.content, dir);
@@ -1059,7 +1035,6 @@
 
       title.innerHTML = "Folder Notice - " + (dir ? dir + "/" : "") + "README.md";
       noticeText.innerHTML = "Please review the instructions below before downloading: <strong>" + escapeHtml(fileName) + "</strong>";
-
       content.innerHTML = renderMarkdownToHtml(readmeRawContent);
 
       btn.onclick = function() {
@@ -1067,7 +1042,7 @@
         triggerDirectDownload(fileUrl, fileName);
       };
 
-      modal.style.display = "flex";
+      modal.style.display = "block";
     }
 
     function closeReadmeModal() {
@@ -1126,8 +1101,9 @@
         var cId = "solid-grp-" + folderSeq;
         var tId = "solid-tog-" + folderSeq;
 
-        var header = document.createElement("div");
+        var header = document.createElement("a");
         header.className = "solid-folder-header";
+        header.href = "javascript:void(0);";
         header.onclick = (function(boxId, togId) {
           return function() { toggleBlock(boxId, togId); };
         })(cId, tId);
@@ -1150,7 +1126,7 @@
           row.className = "solid-file-row";
 
           var metaText = (d.category ? d.category : "General") + " &bull; " +
-                         (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
+                         (d.questions ? d.questions + " Qs &bull; " : "") +
                          formatKB(d.size_kb);
 
           row.innerHTML =
@@ -1241,9 +1217,9 @@
           rowDir.className = "tree-node-row";
           rowDir.innerHTML =
             '<span class="tree-guide">|--</span> ' +
-            '<span id="' + togId + '" class="toggle-box" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">[-]</span> ' +
+            '<a href="javascript:void(0);" id="' + togId + '" class="toggle-box" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">[-]</a> ' +
             '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
-            '<span class="tree-dir-name" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">' + item.name + '/</span>';
+            '<a href="javascript:void(0);" class="tree-dir-name" onclick="toggleBlock(\'' + subUlId + '\', \'' + togId + '\')">' + item.name + '/</a>';
 
           liDir.appendChild(rowDir);
 
@@ -1265,10 +1241,10 @@
           var rowFile = document.createElement("div");
           rowFile.className = "solid-file-row";
           rowFile.style.border = "none";
-          rowFile.style.paddingLeft = "8px";
+          rowFile.style.paddingLeft = "4px";
 
           var metaText = (d.category ? d.category : "General") + " &bull; " +
-                         (d.questions ? d.questions.toLocaleString() + " Qs &bull; " : "") +
+                         (d.questions ? d.questions + " Qs &bull; " : "") +
                          formatKB(d.size_kb);
 
           rowFile.innerHTML =
@@ -1278,7 +1254,7 @@
                 '<span class="type-badge">' + badgeText + '</span> ' +
                 '<a class="file-name-link" href="javascript:void(0);" onclick="handleFileDownloadRequest(\'' + d.file + '\', \'' + item.name + '\')">' + item.name + '</a>' +
               '</div>' +
-              '<div class="file-meta-line" style="padding-left: 20px;">' + metaText + '</div>' +
+              '<div class="file-meta-line" style="padding-left: 18px;">' + metaText + '</div>' +
             '</div>' +
             '<div class="file-right">' +
               '<a class="win-btn btn-download" href="javascript:void(0);" onclick="handleFileDownloadRequest(\'' + d.file + '\', \'' + item.name + '\')">Download</a>' +
@@ -1306,9 +1282,9 @@
       var rootHeader = document.createElement("div");
       rootHeader.className = "tree-node-row";
       rootHeader.innerHTML =
-        '<span id="' + rootTogId + '" class="toggle-box" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">[-]</span> ' +
+        '<a href="javascript:void(0);" id="' + rootTogId + '" class="toggle-box" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">[-]</a> ' +
         '<span style="font-weight:bold; color:#806000; margin-right:4px;">[DIR]</span> ' +
-        '<span class="tree-dir-name" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">' + rootTree.name + '</span>';
+        '<a href="javascript:void(0);" class="tree-dir-name" onclick="toggleBlock(\'' + rootSubId + '\', \'' + rootTogId + '\')">' + rootTree.name + '</a>';
 
       rootUl.appendChild(rootHeader);
 
@@ -1360,7 +1336,7 @@
       var validCount = 0;
 
       for (var i = 0; i < list.length; i++) {
-        if (isReadmeFile(list[i].file)) continue;
+        if (isReadmeFile(list[i].file) || isSourcesFile(list[i])) continue;
         validCount++;
         totalKb += (list[i].size_kb || 0);
         if (list[i].questions) totalQs += list[i].questions;
@@ -1368,7 +1344,7 @@
 
       document.getElementById("sb-status").innerHTML = "Ready.";
       document.getElementById("sb-objects").innerHTML = validCount + " File(s)";
-      document.getElementById("sb-extra").innerHTML = (tabType === "packs") ? (totalQs.toLocaleString() + " Questions") : (validCount + " Platforms");
+      document.getElementById("sb-extra").innerHTML = (tabType === "packs") ? (totalQs + " Questions") : (validCount + " Platforms");
       document.getElementById("sb-size").innerHTML = (totalKb / 1024).toFixed(2) + " MB";
     }
 
@@ -1377,4 +1353,4 @@
     };
   </script>
 </body>
-</html>
+                                                              </html>
