@@ -154,6 +154,13 @@
         "size_kb": 0
     },
     {
+        "id": "vsix",
+        "name": "Daily-GK",
+        "category": "Vscode",
+        "file": "clients/compiled/vscode/Daily-GK.vsix",
+        "size_kb": 45.1
+    },
+    {
         "id": "swf",
         "name": "DailyGK-240x320",
         "category": "Adobe-flash",
