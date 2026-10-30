@@ -1,0 +1,45 @@
+{
+  "name": "daily-gk",
+  "displayName": "Daily GK Quiz Player",
+  "description": "Daily GK Universal MRE .PAK Engine for VS Code",
+  "version": "1.0.0",
+  "publisher": "shifat100",
+  "author": {
+    "name": "Shifat",
+    "url": "https://shifat100.github.io/daily-gk/"
+  },
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shifat100/daily-gk"
+  },
+  "homepage": "https://shifat100.github.io/daily-gk/",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other",
+    "Education"
+  ],
+  "keywords": [
+    "quiz",
+    "daily gk",
+    "pak",
+    "mcq",
+    "study"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onCommand:daily-gk.open"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "daily-gk.open",
+        "title": "Daily GK: Open Quiz Player",
+        "category": "Education",
+        "icon": "$(mortar-board)"
+      }
+    ]
+  }
+}
