@@ -5,8 +5,8 @@
     "category": "All",
     "file": "data/master.pak",
     "questions": 7322,
-    "size_kb": 25261.01,
-    "updated_at": "2026-10-26"
+    "size_kb": 30198.8,
+    "updated_at": "2026-10-30"
   },
   {
     "id": "2026",
@@ -14,8 +14,8 @@
     "category": "সাধারণ জ্ঞান",
     "file": "data/2026/2026.pak",
     "questions": 2742,
-    "size_kb": 9473.45,
-    "updated_at": "2026-10-26"
+    "size_kb": 11388.23,
+    "updated_at": "2026-10-30"
   },
   {
     "id": "2025",
@@ -23,8 +23,8 @@
     "category": "সাধারণ জ্ঞান",
     "file": "data/2025/2025.pak",
     "questions": 3421,
-    "size_kb": 11331.31,
-    "updated_at": "2026-10-26"
+    "size_kb": 13468.3,
+    "updated_at": "2026-10-30"
   },
   {
     "id": "ai",
@@ -32,8 +32,8 @@
     "category": "AI",
     "file": "data/ai/ai.pak",
     "questions": 1057,
-    "size_kb": 4136.0,
-    "updated_at": "2026-10-26"
+    "size_kb": 4962.04,
+    "updated_at": "2026-10-30"
   },
   {
     "id": "books",
@@ -41,7 +41,7 @@
     "category": "বই থেকে",
     "file": "data/books/books.pak",
     "questions": 102,
-    "size_kb": 320.3,
-    "updated_at": "2026-10-26"
+    "size_kb": 377.94,
+    "updated_at": "2026-10-30"
   }
 ]
