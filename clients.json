@@ -112,6 +112,13 @@
         "size_kb": 41.5
     },
     {
+        "id": "js",
+        "name": "main",
+        "category": "Kryon-os",
+        "file": "clients/sources/kryon-os/main.js",
+        "size_kb": 21.9
+    },
+    {
         "id": "dmg",
         "name": "Daily GK_1.0.0_aarch64",
         "category": "Macos",
