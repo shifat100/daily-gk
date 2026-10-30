@@ -147,13 +147,6 @@
         "size_kb": 2256
     },
     {
-        "id": "md",
-        "name": "readme",
-        "category": "Vscode",
-        "file": "clients/compiled/vscode/readme.md",
-        "size_kb": 0
-    },
-    {
         "id": "vsix",
         "name": "Daily-GK",
         "category": "Vscode",
