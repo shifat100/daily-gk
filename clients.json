@@ -1,5 +1,12 @@
 [
     {
+        "id": "md",
+        "name": "readme",
+        "category": "Vscode",
+        "file": "clients/sources/vscode/readme.md",
+        "size_kb": 0
+    },
+    {
         "id": "as",
         "name": "DailyGK-320x480",
         "category": "Adobe-flash",
