@@ -10,7 +10,7 @@ This guide explains how to locally install and run the **Daily GK** application 
 Make sure your package folder contains the following two files:
 
 ```text
-com.dailygk.quiz/
+com.shifat100.dailygk/
 ├── app.json
 └── main.js
 ```
@@ -22,8 +22,8 @@ com.dailygk.quiz/
 ### Method 1: Using MicroSD Card & On-Device App Installer (Recommended / Offline)
 
 1. Insert your **MicroSD card** into a computer/card reader (ensure the card is formatted as **FAT32**).
-2. Create a folder named `com.dailygk.quiz` anywhere on the card (e.g., in the root directory or a `Downloads` folder).
-3. Copy both `app.json` and `main.js` inside the `com.dailygk.quiz/` folder.
+2. Create a folder named `com.shifat100.dailygk` anywhere on the card (e.g., in the root directory or a `Downloads` folder).
+3. Copy both `app.json` and `main.js` inside the `com.shifat100.dailygk/` folder.
 4. Eject the SD card, insert it into your KryonOS device, and power it on.
 5. From the KryonOS Home Screen, scroll down and tap **`App Installer`** under the **`[ SYSTEM ]`** section.
 6. Select **`SD Card`** and browse to the directory where you placed the folder.
@@ -43,8 +43,8 @@ If you do not have an SD card, you can install the app directly into internal fl
 4. Open a browser on your PC or smartphone, navigate to the device's IP, and log in.
 5. In the storage sidebar, select **`LittleFS (Flash)`**.
 6. Open the **`apps`** directory (path: `/littlefs/apps/`).
-7. Click the **New Folder** button on the toolbar and name it: `com.dailygk.quiz`.
-8. Enter the newly created `com.dailygk.quiz` folder and click **Upload** to upload both `app.json` and `main.js`.
+7. Click the **New Folder** button on the toolbar and name it: `com.shifat100.dailygk`.
+8. Enter the newly created `com.shifat100.dailygk` folder and click **Upload** to upload both `app.json` and `main.js`.
 9. Once uploaded, exit to the KryonOS Launcher or restart your device. **Daily GK** will appear on the Home Screen.
 
 ---
@@ -55,9 +55,9 @@ To bypass the installer and deploy the app directly:
 
 1. Mount your MicroSD card and place the folder directly at:
    ```text
-   /sd/apps/com.dailygk.quiz/
+   /sd/apps/com.shifat100.dailygk/
    ```
-   *(Or for internal flash memory: `/local/apps/com.dailygk.quiz/`)*
+   *(Or for internal flash memory: `/local/apps/com.shifat100.dailygk/`)*
 2. Re-insert the card into your device and boot into KryonOS. The OS will automatically scan `/sd/apps/` and register **Daily GK** on the Home Screen.
 
 ---
@@ -80,7 +80,7 @@ After launching Daily GK, the app scans storage for questions and quiz packs. Pl
 ## 4. Troubleshooting
 
 * **Installation Blocked (Invalid Package Name / Author Conflict)?**
-  * The `packageName` in `app.json` must be strictly lowercase, contain no spaces, and include at least one dot (e.g., `com.dailygk.quiz`).
+  * The `packageName` in `app.json` must be strictly lowercase, contain no spaces, and include at least one dot (e.g., `com.shifat100.dailygk`).
   * The `api` level in `app.json` must be less than or equal to your device's current KryonOS API level (default: `1`).
 * **App Crashes or Shows a Black Screen on Launch?**
   * If your board has limited SRAM (no PSRAM enabled), disable Wi-Fi in **Settings > WiFi Options** to free up 60–80 KB of RAM before launching the app.
