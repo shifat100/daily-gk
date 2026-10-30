@@ -252,6 +252,13 @@
         "size_kb": 1145.7
     },
     {
+        "id": "js",
+        "name": "main",
+        "category": "Kryon-os",
+        "file": "clients/compiled/kryon-os/main.js",
+        "size_kb": 0
+    },
+    {
         "id": "appimage",
         "name": "daily-gk_1.0.0_amd64",
         "category": "Linux",
