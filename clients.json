@@ -2,6 +2,62 @@
     {
         "id": "md",
         "name": "readme",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/readme.md",
+        "size_kb": 2.5
+    },
+    {
+        "id": "json",
+        "name": "package",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/package.json",
+        "size_kb": 0.9
+    },
+    {
+        "id": "vsixmanifest",
+        "name": "extension",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/extension.vsixmanifest",
+        "size_kb": 0.8
+    },
+    {
+        "id": "png",
+        "name": "icon",
+        "category": "Media",
+        "file": "clients/sources/vscode/extension/media/icon.png",
+        "size_kb": 24.6
+    },
+    {
+        "id": "js",
+        "name": "main",
+        "category": "Media",
+        "file": "clients/sources/vscode/extension/media/main.js",
+        "size_kb": 36.9
+    },
+    {
+        "id": "html",
+        "name": "index",
+        "category": "Media",
+        "file": "clients/sources/vscode/extension/media/index.html",
+        "size_kb": 33.9
+    },
+    {
+        "id": "js",
+        "name": "extension",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/extension.js",
+        "size_kb": 2.7
+    },
+    {
+        "id": "xml",
+        "name": "[Content_Types]",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/[Content_Types].xml",
+        "size_kb": 0.6
+    },
+    {
+        "id": "md",
+        "name": "readme",
         "category": "Vscode",
         "file": "clients/sources/vscode/readme.md",
         "size_kb": 0
