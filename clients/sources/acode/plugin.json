@@ -1,0 +1,15 @@
+{
+  "id": "com.shifat100.dailygk",
+  "name": "Daily GK",
+  "main": "main.js",
+  "version": "1.0.1",
+  "minVersionCode": 292,
+  "readme": "readme.md",
+  "icon": "icon.png",
+  "price": 0,
+  "author": {
+    "name": "Shifat100",
+    "github": "shifat100"
+  },
+  "keywords": ["quiz", "gk", "pak", "mcq", "study", "education"]
+}
