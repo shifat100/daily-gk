@@ -1,73 +1,241 @@
 [
     {
-        "id": "js",
-        "name": "main",
-        "category": "Acode",
-        "file": "clients/sources/acode/main.js",
-        "size_kb": 0
+        "id": "swf",
+        "name": "DailyGK-240x320",
+        "category": "Adobe-flash",
+        "file": "clients/compiled/adobe-flash/DailyGK-240x320.swf",
+        "size_kb": 9.6
+    },
+    {
+        "id": "swf",
+        "name": "DailyGK-320x480",
+        "category": "Adobe-flash",
+        "file": "clients/compiled/adobe-flash/DailyGK-320x480.swf",
+        "size_kb": 9.9
+    },
+    {
+        "id": "j2me",
+        "name": "Java Feature Phone MIDlet",
+        "category": "Feature Phone",
+        "file": "clients/compiled/j2me/Daily-GK.jar",
+        "size_kb": 35.5
+    },
+    {
+        "id": "dmg",
+        "name": "Daily GK_1.0.0_aarch64",
+        "category": "Macos",
+        "file": "clients/compiled/macos/Daily GK_1.0.0_aarch64.dmg",
+        "size_kb": 3001.5
+    },
+    {
+        "id": "xpi",
+        "name": "Daily-GK-M3",
+        "category": "Firefox",
+        "file": "clients/compiled/extensions/firefox/Daily-GK-M3.xpi",
+        "size_kb": 17.5
+    },
+    {
+        "id": "xpi",
+        "name": "Daily-GK-M2",
+        "category": "Firefox",
+        "file": "clients/compiled/extensions/firefox/Daily-GK-M2.xpi",
+        "size_kb": 17.4
     },
     {
         "id": "md",
         "name": "readme",
-        "category": "Extension",
-        "file": "clients/sources/vscode/extension/readme.md",
-        "size_kb": 2.5
+        "category": "Firefox",
+        "file": "clients/compiled/extensions/firefox/readme.md",
+        "size_kb": 3.7
     },
     {
-        "id": "json",
-        "name": "package",
-        "category": "Extension",
-        "file": "clients/sources/vscode/extension/package.json",
-        "size_kb": 0.9
+        "id": "md",
+        "name": "readme",
+        "category": "Chrome",
+        "file": "clients/compiled/extensions/chrome/readme.md",
+        "size_kb": 3.7
     },
     {
-        "id": "vsixmanifest",
-        "name": "extension",
-        "category": "Extension",
-        "file": "clients/sources/vscode/extension/extension.vsixmanifest",
-        "size_kb": 0.8
+        "id": "crx",
+        "name": "Daily-GK",
+        "category": "Chrome",
+        "file": "clients/compiled/extensions/chrome/Daily-GK.crx",
+        "size_kb": 19
     },
     {
-        "id": "png",
-        "name": "icon",
-        "category": "Media",
-        "file": "clients/sources/vscode/extension/media/icon.png",
-        "size_kb": 24.6
+        "id": "md",
+        "name": "readme",
+        "category": "Extensions",
+        "file": "clients/compiled/extensions/readme.md",
+        "size_kb": 0
+    },
+    {
+        "id": "nex",
+        "name": "extensions",
+        "category": "Opera",
+        "file": "clients/compiled/extensions/opera/extensions.nex",
+        "size_kb": 19
+    },
+    {
+        "id": "md",
+        "name": "readme",
+        "category": "Opera",
+        "file": "clients/compiled/extensions/opera/readme.md",
+        "size_kb": 1
+    },
+    {
+        "id": "vsix",
+        "name": "Daily-GK",
+        "category": "Vscode",
+        "file": "clients/compiled/vscode/Daily-GK.vsix",
+        "size_kb": 45.1
+    },
+    {
+        "id": "windows",
+        "name": "Windows Executable",
+        "category": "Desktop",
+        "file": "clients/compiled/windows/Daily GK_1.0.0_x64-setup.exe",
+        "size_kb": 1492.9
+    },
+    {
+        "id": "msi",
+        "name": "Daily GK_1.0.0_x64_en-US",
+        "category": "Windows",
+        "file": "clients/compiled/windows/Daily GK_1.0.0_x64_en-US.msi",
+        "size_kb": 2256
+    },
+    {
+        "id": "android",
+        "name": "Android Package",
+        "category": "Mobile",
+        "file": "clients/compiled/android/daily-gk.apk",
+        "size_kb": 3759
     },
     {
         "id": "js",
         "name": "main",
-        "category": "Media",
-        "file": "clients/sources/vscode/extension/media/main.js",
-        "size_kb": 36.9
+        "category": "Kryon-os",
+        "file": "clients/compiled/kryon-os/main.js",
+        "size_kb": 15.2
+    },
+    {
+        "id": "json",
+        "name": "app",
+        "category": "Kryon-os",
+        "file": "clients/compiled/kryon-os/app.json",
+        "size_kb": 0.3
+    },
+    {
+        "id": "md",
+        "name": "readme",
+        "category": "Kryon-os",
+        "file": "clients/compiled/kryon-os/readme.md",
+        "size_kb": 3.8
     },
     {
         "id": "html",
         "name": "index",
-        "category": "Media",
-        "file": "clients/sources/vscode/extension/media/index.html",
-        "size_kb": 33.9
+        "category": "Html5",
+        "file": "clients/compiled/html5/index.html",
+        "size_kb": 80.1
     },
     {
-        "id": "js",
-        "name": "extension",
-        "category": "Extension",
-        "file": "clients/sources/vscode/extension/extension.js",
-        "size_kb": 2.7
+        "id": "mre",
+        "name": "MediaTek MRE Application",
+        "category": "Feature Phone",
+        "file": "clients/compiled/mre/Daily-GK.vxp",
+        "size_kb": 132
     },
     {
-        "id": "xml",
-        "name": "[Content_Types]",
-        "category": "Extension",
-        "file": "clients/sources/vscode/extension/[Content_Types].xml",
-        "size_kb": 0.6
+        "id": "ipa",
+        "name": "daily-gk",
+        "category": "Iphone",
+        "file": "clients/compiled/iphone/daily-gk.ipa",
+        "size_kb": 1145.7
+    },
+    {
+        "id": "archive",
+        "name": "Zip Archive",
+        "category": "Package",
+        "file": "clients/compiled/acode/Daily-GK.zip",
+        "size_kb": 8.2
     },
     {
         "id": "md",
         "name": "readme",
-        "category": "Vscode",
-        "file": "clients/sources/vscode/readme.md",
+        "category": "Acode",
+        "file": "clients/compiled/acode/readme.md",
         "size_kb": 0
+    },
+    {
+        "id": "deb",
+        "name": "daily-gk_1.0.0_amd64",
+        "category": "Linux",
+        "file": "clients/compiled/linux/daily-gk_1.0.0_amd64.deb",
+        "size_kb": 2453.9
+    },
+    {
+        "id": "appimage",
+        "name": "daily-gk_1.0.0_amd64",
+        "category": "Linux",
+        "file": "clients/compiled/linux/daily-gk_1.0.0_amd64.AppImage",
+        "size_kb": 86449.2
+    },
+    {
+        "id": "ttf",
+        "name": "Kalpurush",
+        "category": "Python",
+        "file": "clients/scripts/python/Kalpurush.ttf",
+        "size_kb": 307.2
+    },
+    {
+        "id": "py",
+        "name": "builder",
+        "category": "Python",
+        "file": "clients/scripts/python/builder.py",
+        "size_kb": 25.2
+    },
+    {
+        "id": "j2me",
+        "name": "Java Feature Phone MIDlet",
+        "category": "Feature Phone",
+        "file": "clients/live/j2me/Daily-GK.jar",
+        "size_kb": 35.2
+    },
+    {
+        "id": "windows",
+        "name": "Windows Desktop Launcher",
+        "category": "Desktop",
+        "file": "clients/live/windows/Daily-GK.bat",
+        "size_kb": 0.6
+    },
+    {
+        "id": "android",
+        "name": "Android Package",
+        "category": "Mobile",
+        "file": "clients/live/android/Daily-GK.apk",
+        "size_kb": 173
+    },
+    {
+        "id": "mre",
+        "name": "MediaTek MRE Application",
+        "category": "Feature Phone",
+        "file": "clients/live/mre/Daily-GK.vbm",
+        "size_kb": 0.3
+    },
+    {
+        "id": "html",
+        "name": "index",
+        "category": "Cloudphone",
+        "file": "clients/live/cloudphone/index.html",
+        "size_kb": 29.5
+    },
+    {
+        "id": "linux",
+        "name": "Linux Shell Launcher",
+        "category": "Desktop",
+        "file": "clients/live/linux/Daily-GK.sh",
+        "size_kb": 0.6
     },
     {
         "id": "as",
@@ -98,25 +266,11 @@
         "size_kb": 42.6
     },
     {
-        "id": "html",
-        "name": "index",
-        "category": "Mobile",
-        "file": "clients/sources/mobile/index.html",
-        "size_kb": 60
-    },
-    {
-        "id": "pem",
-        "name": "extensions",
-        "category": "Extensions",
-        "file": "clients/sources/extensions/extensions.pem",
-        "size_kb": 1.7
-    },
-    {
         "id": "png",
-        "name": "icon128",
+        "name": "icon48",
         "category": "Icons",
-        "file": "clients/sources/extensions/icons/icon128.png",
-        "size_kb": 3.5
+        "file": "clients/sources/extensions/icons/icon48.png",
+        "size_kb": 1.3
     },
     {
         "id": "png",
@@ -127,17 +281,24 @@
     },
     {
         "id": "png",
-        "name": "icon48",
+        "name": "icon128",
         "category": "Icons",
-        "file": "clients/sources/extensions/icons/icon48.png",
-        "size_kb": 1.3
+        "file": "clients/sources/extensions/icons/icon128.png",
+        "size_kb": 3.5
     },
     {
-        "id": "js",
-        "name": "popup",
+        "id": "json",
+        "name": "manifest.v1",
         "category": "Extensions",
-        "file": "clients/sources/extensions/popup.js",
-        "size_kb": 30.6
+        "file": "clients/sources/extensions/manifest.v1.json",
+        "size_kb": 0.3
+    },
+    {
+        "id": "json",
+        "name": "manifest.v3",
+        "category": "Extensions",
+        "file": "clients/sources/extensions/manifest.v3.json",
+        "size_kb": 0.6
     },
     {
         "id": "html",
@@ -154,18 +315,18 @@
         "size_kb": 0.2
     },
     {
-        "id": "json",
-        "name": "manifest.v3",
+        "id": "pem",
+        "name": "extensions",
         "category": "Extensions",
-        "file": "clients/sources/extensions/manifest.v3.json",
-        "size_kb": 0.6
+        "file": "clients/sources/extensions/extensions.pem",
+        "size_kb": 1.7
     },
     {
-        "id": "json",
-        "name": "manifest.v1",
+        "id": "js",
+        "name": "popup",
         "category": "Extensions",
-        "file": "clients/sources/extensions/manifest.v1.json",
-        "size_kb": 0.3
+        "file": "clients/sources/extensions/popup.js",
+        "size_kb": 30.6
     },
     {
         "id": "json",
@@ -173,6 +334,90 @@
         "category": "Extensions",
         "file": "clients/sources/extensions/manifest.v2.json",
         "size_kb": 0.6
+    },
+    {
+        "id": "md",
+        "name": "readme",
+        "category": "Vscode",
+        "file": "clients/sources/vscode/readme.md",
+        "size_kb": 0
+    },
+    {
+        "id": "vsixmanifest",
+        "name": "extension",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/extension.vsixmanifest",
+        "size_kb": 0.8
+    },
+    {
+        "id": "xml",
+        "name": "[Content_Types]",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/[Content_Types].xml",
+        "size_kb": 0.6
+    },
+    {
+        "id": "md",
+        "name": "readme",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/readme.md",
+        "size_kb": 2.5
+    },
+    {
+        "id": "json",
+        "name": "package",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/package.json",
+        "size_kb": 0.9
+    },
+    {
+        "id": "js",
+        "name": "extension",
+        "category": "Extension",
+        "file": "clients/sources/vscode/extension/extension.js",
+        "size_kb": 2.7
+    },
+    {
+        "id": "js",
+        "name": "main",
+        "category": "Media",
+        "file": "clients/sources/vscode/extension/media/main.js",
+        "size_kb": 36.9
+    },
+    {
+        "id": "html",
+        "name": "index",
+        "category": "Media",
+        "file": "clients/sources/vscode/extension/media/index.html",
+        "size_kb": 33.9
+    },
+    {
+        "id": "png",
+        "name": "icon",
+        "category": "Media",
+        "file": "clients/sources/vscode/extension/media/icon.png",
+        "size_kb": 24.6
+    },
+    {
+        "id": "html",
+        "name": "index",
+        "category": "Mobile",
+        "file": "clients/sources/mobile/index.html",
+        "size_kb": 60
+    },
+    {
+        "id": "js",
+        "name": "main",
+        "category": "Kryon-os",
+        "file": "clients/sources/kryon-os/main.js",
+        "size_kb": 28
+    },
+    {
+        "id": "json",
+        "name": "app",
+        "category": "Kryon-os",
+        "file": "clients/sources/kryon-os/app.json",
+        "size_kb": 0.3
     },
     {
         "id": "c",
@@ -183,254 +428,23 @@
     },
     {
         "id": "json",
-        "name": "app",
-        "category": "Kryon-os",
-        "file": "clients/sources/kryon-os/app.json",
+        "name": "plugin",
+        "category": "Acode",
+        "file": "clients/sources/acode/plugin.json",
         "size_kb": 0.3
     },
     {
         "id": "js",
         "name": "main",
-        "category": "Kryon-os",
-        "file": "clients/sources/kryon-os/main.js",
-        "size_kb": 28
-    },
-    {
-        "id": "dmg",
-        "name": "Daily GK_1.0.0_aarch64",
-        "category": "Macos",
-        "file": "clients/compiled/macos/Daily GK_1.0.0_aarch64.dmg",
-        "size_kb": 3001.5
-    },
-    {
-        "id": "archive",
-        "name": "Zip Archive",
-        "category": "Package",
-        "file": "clients/compiled/acode/Daily-GK.zip",
-        "size_kb": 8.2
+        "category": "Acode",
+        "file": "clients/sources/acode/main.js",
+        "size_kb": 32.6
     },
     {
         "id": "md",
         "name": "readme",
         "category": "Acode",
-        "file": "clients/compiled/acode/readme.md",
-        "size_kb": 0
-    },
-    {
-        "id": "windows",
-        "name": "Windows Executable",
-        "category": "Desktop",
-        "file": "clients/compiled/windows/Daily GK_1.0.0_x64-setup.exe",
-        "size_kb": 1492.9
-    },
-    {
-        "id": "msi",
-        "name": "Daily GK_1.0.0_x64_en-US",
-        "category": "Windows",
-        "file": "clients/compiled/windows/Daily GK_1.0.0_x64_en-US.msi",
-        "size_kb": 2256
-    },
-    {
-        "id": "vsix",
-        "name": "Daily-GK",
-        "category": "Vscode",
-        "file": "clients/compiled/vscode/Daily-GK.vsix",
-        "size_kb": 45.1
-    },
-    {
-        "id": "swf",
-        "name": "DailyGK-240x320",
-        "category": "Adobe-flash",
-        "file": "clients/compiled/adobe-flash/DailyGK-240x320.swf",
-        "size_kb": 9.6
-    },
-    {
-        "id": "swf",
-        "name": "DailyGK-320x480",
-        "category": "Adobe-flash",
-        "file": "clients/compiled/adobe-flash/DailyGK-320x480.swf",
-        "size_kb": 9.9
-    },
-    {
-        "id": "j2me",
-        "name": "Java Feature Phone MIDlet",
-        "category": "Feature Phone",
-        "file": "clients/compiled/j2me/Daily-GK.jar",
-        "size_kb": 35.5
-    },
-    {
-        "id": "xpi",
-        "name": "Daily-GK-M2",
-        "category": "Firefox",
-        "file": "clients/compiled/extensions/firefox/Daily-GK-M2.xpi",
-        "size_kb": 17.4
-    },
-    {
-        "id": "md",
-        "name": "readme",
-        "category": "Firefox",
-        "file": "clients/compiled/extensions/firefox/readme.md",
-        "size_kb": 3.7
-    },
-    {
-        "id": "xpi",
-        "name": "Daily-GK-M3",
-        "category": "Firefox",
-        "file": "clients/compiled/extensions/firefox/Daily-GK-M3.xpi",
-        "size_kb": 17.5
-    },
-    {
-        "id": "nex",
-        "name": "extensions",
-        "category": "Opera",
-        "file": "clients/compiled/extensions/opera/extensions.nex",
-        "size_kb": 19
-    },
-    {
-        "id": "md",
-        "name": "readme",
-        "category": "Opera",
-        "file": "clients/compiled/extensions/opera/readme.md",
-        "size_kb": 1
-    },
-    {
-        "id": "md",
-        "name": "readme",
-        "category": "Extensions",
-        "file": "clients/compiled/extensions/readme.md",
-        "size_kb": 0
-    },
-    {
-        "id": "md",
-        "name": "readme",
-        "category": "Chrome",
-        "file": "clients/compiled/extensions/chrome/readme.md",
-        "size_kb": 3.7
-    },
-    {
-        "id": "crx",
-        "name": "Daily-GK",
-        "category": "Chrome",
-        "file": "clients/compiled/extensions/chrome/Daily-GK.crx",
-        "size_kb": 19
-    },
-    {
-        "id": "android",
-        "name": "Android Package",
-        "category": "Mobile",
-        "file": "clients/compiled/android/daily-gk.apk",
-        "size_kb": 3759
-    },
-    {
-        "id": "mre",
-        "name": "MediaTek MRE Application",
-        "category": "Feature Phone",
-        "file": "clients/compiled/mre/Daily-GK.vxp",
-        "size_kb": 132
-    },
-    {
-        "id": "html",
-        "name": "index",
-        "category": "Html5",
-        "file": "clients/compiled/html5/index.html",
-        "size_kb": 80.1
-    },
-    {
-        "id": "ipa",
-        "name": "daily-gk",
-        "category": "Iphone",
-        "file": "clients/compiled/iphone/daily-gk.ipa",
-        "size_kb": 1145.7
-    },
-    {
-        "id": "json",
-        "name": "app",
-        "category": "Kryon-os",
-        "file": "clients/compiled/kryon-os/app.json",
-        "size_kb": 0.3
-    },
-    {
-        "id": "md",
-        "name": "readme",
-        "category": "Kryon-os",
-        "file": "clients/compiled/kryon-os/readme.md",
-        "size_kb": 3.8
-    },
-    {
-        "id": "js",
-        "name": "main",
-        "category": "Kryon-os",
-        "file": "clients/compiled/kryon-os/main.js",
-        "size_kb": 15.2
-    },
-    {
-        "id": "appimage",
-        "name": "daily-gk_1.0.0_amd64",
-        "category": "Linux",
-        "file": "clients/compiled/linux/daily-gk_1.0.0_amd64.AppImage",
-        "size_kb": 86449.2
-    },
-    {
-        "id": "deb",
-        "name": "daily-gk_1.0.0_amd64",
-        "category": "Linux",
-        "file": "clients/compiled/linux/daily-gk_1.0.0_amd64.deb",
-        "size_kb": 2453.9
-    },
-    {
-        "id": "windows",
-        "name": "Windows Desktop Launcher",
-        "category": "Desktop",
-        "file": "clients/live/windows/Daily-GK.bat",
-        "size_kb": 0.6
-    },
-    {
-        "id": "html",
-        "name": "index",
-        "category": "Cloudphone",
-        "file": "clients/live/cloudphone/index.html",
-        "size_kb": 29.5
-    },
-    {
-        "id": "j2me",
-        "name": "Java Feature Phone MIDlet",
-        "category": "Feature Phone",
-        "file": "clients/live/j2me/Daily-GK.jar",
-        "size_kb": 35.2
-    },
-    {
-        "id": "android",
-        "name": "Android Package",
-        "category": "Mobile",
-        "file": "clients/live/android/Daily-GK.apk",
-        "size_kb": 173
-    },
-    {
-        "id": "mre",
-        "name": "MediaTek MRE Application",
-        "category": "Feature Phone",
-        "file": "clients/live/mre/Daily-GK.vbm",
-        "size_kb": 0.3
-    },
-    {
-        "id": "linux",
-        "name": "Linux Shell Launcher",
-        "category": "Desktop",
-        "file": "clients/live/linux/Daily-GK.sh",
-        "size_kb": 0.6
-    },
-    {
-        "id": "ttf",
-        "name": "Kalpurush",
-        "category": "Python",
-        "file": "clients/scripts/python/Kalpurush.ttf",
-        "size_kb": 307.2
-    },
-    {
-        "id": "py",
-        "name": "builder",
-        "category": "Python",
-        "file": "clients/scripts/python/builder.py",
-        "size_kb": 25.2
+        "file": "clients/sources/acode/readme.md",
+        "size_kb": 0.8
     }
 ]
