@@ -196,6 +196,13 @@
         "size_kb": 3001.5
     },
     {
+        "id": "md",
+        "name": "readme",
+        "category": "Acode",
+        "file": "clients/compiled/acode/readme.md",
+        "size_kb": 0
+    },
+    {
         "id": "windows",
         "name": "Windows Executable",
         "category": "Desktop",
