@@ -1,5 +1,12 @@
 [
     {
+        "id": "js",
+        "name": "main",
+        "category": "Acode",
+        "file": "clients/sources/acode/main.js",
+        "size_kb": 0
+    },
+    {
         "id": "md",
         "name": "readme",
         "category": "Extension",
