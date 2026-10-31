@@ -196,6 +196,13 @@
         "size_kb": 3001.5
     },
     {
+        "id": "archive",
+        "name": "Zip Archive",
+        "category": "Package",
+        "file": "clients/compiled/acode/Daily-GK.zip",
+        "size_kb": 8.2
+    },
+    {
         "id": "md",
         "name": "readme",
         "category": "Acode",
