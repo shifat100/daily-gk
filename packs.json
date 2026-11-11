@@ -4,18 +4,18 @@
     "name": "Master Question Bank (All Questions)",
     "category": "All",
     "file": "data/master.pak",
-    "questions": 7367,
-    "size_kb": 30410.08,
-    "updated_at": "2026-11-10"
+    "questions": 7538,
+    "size_kb": 31215.44,
+    "updated_at": "2026-11-11"
   },
   {
     "id": "2026",
     "name": "সাধারণ জ্ঞান",
     "category": "সাধারণ জ্ঞান",
     "file": "data/2026/2026.pak",
-    "questions": 2787,
-    "size_kb": 11595.03,
-    "updated_at": "2026-11-10"
+    "questions": 2958,
+    "size_kb": 12400.39,
+    "updated_at": "2026-11-11"
   },
   {
     "id": "2025",
@@ -24,7 +24,7 @@
     "file": "data/2025/2025.pak",
     "questions": 3421,
     "size_kb": 13471.65,
-    "updated_at": "2026-11-10"
+    "updated_at": "2026-11-11"
   },
   {
     "id": "ai",
@@ -33,7 +33,7 @@
     "file": "data/ai/ai.pak",
     "questions": 1057,
     "size_kb": 4963.07,
-    "updated_at": "2026-11-10"
+    "updated_at": "2026-11-11"
   },
   {
     "id": "books",
@@ -42,6 +42,6 @@
     "file": "data/books/books.pak",
     "questions": 102,
     "size_kb": 378.04,
-    "updated_at": "2026-11-10"
+    "updated_at": "2026-11-11"
   }
 ]
