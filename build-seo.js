@@ -19,7 +19,8 @@ const BN_MAP = {
 
 function slugify(str) {
     let out = '';
-    for (const ch of String(str || '').trim()) {
+    const normalized = String(str || '').trim().normalize('NFC');
+    for (const ch of normalized) {
         out += (BN_MAP[ch] !== undefined) ? BN_MAP[ch] : ch;
     }
     return out
@@ -62,6 +63,8 @@ function parseMcqFile(text) {
             desc = last;
             opts = parts.slice(0, -2);
         }
+        if (Number.isNaN(ans) || !opts.length) continue;
+
         items.push({
             title: line1.replace(/\*\*/g, ''),
             opts,
@@ -72,18 +75,36 @@ function parseMcqFile(text) {
     return items;
 }
 
-function buildTopicHtml(entry, allEntries) {
+function getRelatedEntries(entry, index, allEntries, limit = 15) {
+    const sameCat = allEntries.filter(e => e.slug !== entry.slug && e.cat === entry.cat);
+    const others = [];
+    for (let offset = 1; offset < allEntries.length; offset++) {
+        const candidate = allEntries[(index + offset) % allEntries.length];
+        if (candidate.slug !== entry.slug && candidate.cat !== entry.cat) {
+            others.push(candidate);
+        }
+    }
+    return [...sameCat, ...others].slice(0, limit);
+}
+
+function buildTopicHtml(entry, index, allEntries) {
     const pageUrl = `${BASE_URL}/topics/${entry.slug}.html`;
     const interactiveUrl = `../?cat=${encodeURIComponent(entry.cat)}&topic=${encodeURIComponent(entry.topic)}`;
     const letters = ['A', 'B', 'C', 'D', 'E'];
+    const isBengali = /[\u0980-\u09FF]/.test(entry.topic + entry.cat + (entry.questions[0]?.title || ''));
+    const langCode = isBengali ? 'bn' : 'en';
 
     const quizQuestionsLd = entry.questions.slice(0, 30).map(q => ({
         "@type": "Question",
+        "eduQuestionType": "Multiple choice",
         "name": q.title,
         "acceptedAnswer": {
             "@type": "Answer",
             "text": q.opts[q.ans] || ""
-        }
+        },
+        "suggestedAnswer": q.opts
+            .filter((_, oi) => oi !== q.ans)
+            .map(o => ({ "@type": "Answer", "text": o }))
     }));
 
     const jsonLd = {
@@ -93,6 +114,7 @@ function buildTopicHtml(entry, allEntries) {
                 "@type": "Quiz",
                 "name": `${entry.topic} (${entry.cat}) MCQ Questions & Answers`,
                 "url": pageUrl,
+                "inLanguage": langCode,
                 "educationalAlignment": {
                     "@type": "AlignmentObject",
                     "alignmentType": "educationalSubject",
@@ -126,14 +148,12 @@ function buildTopicHtml(entry, allEntries) {
         </article>`;
     }).join('\n');
 
-    const relatedLinks = allEntries
-        .filter(e => e.slug !== entry.slug)
-        .slice(0, 15)
+    const relatedLinks = getRelatedEntries(entry, index, allEntries, 15)
         .map(e => `<a href="${e.slug}.html">${escapeHtml(e.topic)} (${e.questions.length})</a>`)
         .join('');
 
     return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${langCode}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -199,12 +219,12 @@ function main() {
     const usedSlugs = new Set();
 
     for (const cat of categories) {
-        const catPath = path.join(ROOT, cat.path);
+        const catPath = path.join(ROOT, String(cat.path || '').replace(/^\/+/, ''));
         if (!fs.existsSync(catPath)) continue;
         const topics = JSON.parse(fs.readFileSync(catPath, 'utf8'));
 
         for (const t of topics) {
-            const txtPath = path.join(ROOT, t.path);
+            const txtPath = path.join(ROOT, String(t.path || '').replace(/^\/+/, ''));
             if (!fs.existsSync(txtPath)) continue;
             const raw = fs.readFileSync(txtPath, 'utf8');
             const questions = parseMcqFile(raw);
@@ -227,12 +247,21 @@ function main() {
         }
     }
 
-    if (!fs.existsSync(TOPICS_DIR)) fs.mkdirSync(TOPICS_DIR, { recursive: true });
-    for (const entry of entries) {
-        fs.writeFileSync(path.join(TOPICS_DIR, `${entry.slug}.html`), buildTopicHtml(entry, entries), 'utf8');
+    // Remove stale .html files before writing fresh ones
+    if (fs.existsSync(TOPICS_DIR)) {
+        for (const file of fs.readdirSync(TOPICS_DIR)) {
+            if (file.endsWith('.html')) {
+                fs.unlinkSync(path.join(TOPICS_DIR, file));
+            }
+        }
+    } else {
+        fs.mkdirSync(TOPICS_DIR, { recursive: true });
     }
 
-    // Generate sitemap.xml
+    entries.forEach((entry, idx) => {
+        fs.writeFileSync(path.join(TOPICS_DIR, `${entry.slug}.html`), buildTopicHtml(entry, idx, entries), 'utf8');
+    });
+
     const today = new Date().toISOString().split('T')[0];
     const urls = [
         { loc: `${BASE_URL}/`, priority: '1.0', changefreq: 'daily' },
@@ -254,11 +283,9 @@ ${urls.map(u => `  <url>
 </urlset>\n`;
     fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemapXml, 'utf8');
 
-    // Generate robots.txt
     const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: ${BASE_URL}/sitemap.xml\n`;
     fs.writeFileSync(path.join(ROOT, 'robots.txt'), robotsTxt, 'utf8');
 
-    // Inject crawlable topic links inside index.html
     const indexPath = path.join(ROOT, 'index.html');
     if (fs.existsSync(indexPath) && entries.length > 0) {
         let indexHtml = fs.readFileSync(indexPath, 'utf8');
