@@ -1,9 +1,18 @@
-[  {
+[
+     {
+    "title": "ডিসেম্বর",
+    "path": "data/ai/dec.mcq"
+  },
+    {
+    "title": "নভেম্বর",
+    "path": "data/ai/nov.mcq"
+  },
+    {
     "title": "অক্টোবর",
     "path": "data/ai/oct.mcq"
 },
   {
-    "title": "সেপ্টেম্বর'২৬ পর্যন্ত",
-    "path": "data/ai/all.mcq"
+    "title": "সেপ্টেম্বর ২০২৬ পর্যন্ত",
+    "path": "data/ai/tillsep.mcq"
   }
 ]
