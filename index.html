@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Viewport optimized for SEO & Accessibility -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#f8f9fd" id="metaThemeColor">
     <meta name="mobile-web-app-capable" content="yes">
@@ -14,10 +13,10 @@
     <title>Daily GK MCQ | General Knowledge & Competitive Exam Prep</title>
     <meta name="title" content="Daily GK MCQ | General Knowledge & Competitive Exam Prep">
     <meta name="description" content="Master General Knowledge with Daily GK MCQ. Practice General Science, World Geography, History, and IT questions with interactive Quiz, Study, and Exam modes.">
-    <meta name="keywords" content="General Knowledge, GK MCQ, Daily GK Quiz, Competitive Exam Preparation, Science GK, Geography MCQ">
+    <meta name="keywords" content="General Knowledge, GK MCQ, Daily GK Quiz, Competitive Exam Preparation, BCS GK, Science GK, Geography MCQ">
     <meta name="author" content="Daily GK">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="https://shifat100.github.io/daily-gk/">
+    <link rel="canonical" href="https://shifat100.github.io/daily-gk/" id="canonicalLink">
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
@@ -33,7 +32,7 @@
     <meta name="twitter:description" content="Practice thousands of GK MCQs for competitive exams with Quiz, Study & Timed Exam modes.">
     <meta name="twitter:image" content="https://shifat100.github.io/daily-gk/thumb.png">
 
-    <!-- Structured Data (Schema.org JSON-LD for Educational WebApp) -->
+    <!-- Structured Data (Schema.org JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -43,6 +42,7 @@
       "description": "Interactive General Knowledge practice app with Quiz, Study, and Timed Exam modes.",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "All",
+      "inLanguage": ["en", "bn"],
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -202,7 +202,6 @@
             position: relative;
         }
 
-        /* Material SVG Icon Utility */
         .svg-icon {
             width: 22px;
             height: 22px;
@@ -381,7 +380,6 @@
             color: var(--md-on-primary-container);
         }
 
-        /* Floating Custom Dropdown Menu */
         .custom-dropdown-menu {
             position: fixed;
             min-width: 175px;
@@ -438,14 +436,9 @@
             color: var(--md-on-secondary-container);
             font-weight: 600;
         }
-        .dd-option-item .dd-check {
-            opacity: 0;
-        }
-        .dd-option-item.selected .dd-check {
-            opacity: 1;
-        }
+        .dd-option-item .dd-check { opacity: 0; }
+        .dd-option-item.selected .dd-check { opacity: 1; }
 
-        /* Material Buttons */
         .md-btn {
             display: inline-flex;
             align-items: center;
@@ -483,23 +476,23 @@
             overflow: hidden;
         }
 
-    .md-navigation-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 82%;
-    max-width: 310px;
-    background: var(--md-surface-container-low);
-    border-radius: 0; /* Changed from: 0 var(--radius-xl) var(--radius-xl) 0 */
-    display: flex;
-    flex-direction: column;
-    z-index: 1200;
-    transform: translateX(-104%);
-    transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1);
-    box-shadow: var(--elevation-3);
-    overflow: hidden;
-}
+        .md-navigation-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 82%;
+            max-width: 310px;
+            background: var(--md-surface-container-low);
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1200;
+            transform: translateX(-104%);
+            transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1);
+            box-shadow: var(--elevation-3);
+            overflow: hidden;
+        }
         .md-navigation-drawer.show {
             transform: translateX(0);
         }
@@ -590,7 +583,7 @@
         }
         .md-scrim.show { opacity: 1; visibility: visible; }
 
-        /* Sidebar Tree */
+        /* Sidebar Tree (Real crawlable <a> links) */
         .md-tree-view { list-style: none; }
         .tree-parent-node {
             padding: 10px 14px;
@@ -603,6 +596,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 2px;
+            text-decoration: none;
             transition: background-color 0.15s;
         }
         .tree-parent-node:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
@@ -637,6 +631,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 2px;
+            text-decoration: none;
         }
         .tree-sub-node:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
         .tree-sub-node.active { background: var(--md-primary-container); color: var(--md-on-primary-container); font-weight: 600; }
@@ -679,7 +674,6 @@
             gap: 8px;
         }
 
-        /* Minimal MD3 Search Bar with Inbuilt EN / Avro Keyboard Switch */
         .search-field-wrapper {
             position: relative;
             display: flex;
@@ -698,10 +692,7 @@
         [data-theme="dark"] .search-field-wrapper:focus-within {
             background: var(--md-surface-container-high);
         }
-        .search-icon {
-            color: var(--md-on-surface-variant);
-            flex-shrink: 0;
-        }
+        .search-icon { color: var(--md-on-surface-variant); flex-shrink: 0; }
         .md-search-input {
             flex: 1;
             min-width: 0;
@@ -712,20 +703,10 @@
             outline: none;
             font-family: inherit;
         }
-        .md-search-input::placeholder {
-            color: var(--md-on-surface-variant);
-        }
-        .clear-search-btn {
-            display: none;
-            width: 30px;
-            height: 30px;
-            flex-shrink: 0;
-        }
-        .clear-search-btn.visible {
-            display: inline-flex;
-        }
+        .md-search-input::placeholder { color: var(--md-on-surface-variant); }
+        .clear-search-btn { display: none; width: 30px; height: 30px; flex-shrink: 0; }
+        .clear-search-btn.visible { display: inline-flex; }
 
-        /* Inbuilt EN / Avro Keyboard Switch Button */
         .kb-toggle-btn {
             height: 32px;
             padding: 0 10px;
@@ -743,23 +724,11 @@
             flex-shrink: 0;
             transition: all 0.16s ease;
         }
-        [data-theme="dark"] .kb-toggle-btn {
-            background: var(--md-surface-container);
-        }
-        .kb-toggle-btn:hover {
-            background: var(--md-surface-container-highest);
-            color: var(--md-on-surface);
-        }
-        .kb-toggle-btn.avro-on {
-            background: var(--md-primary);
-            color: var(--md-on-primary);
-            border-color: var(--md-primary);
-        }
-        .kb-toggle-btn:active {
-            transform: scale(0.95);
-        }
+        [data-theme="dark"] .kb-toggle-btn { background: var(--md-surface-container); }
+        .kb-toggle-btn:hover { background: var(--md-surface-container-highest); color: var(--md-on-surface); }
+        .kb-toggle-btn.avro-on { background: var(--md-primary); color: var(--md-on-primary); border-color: var(--md-primary); }
+        .kb-toggle-btn:active { transform: scale(0.95); }
 
-        /* Minimal Filter Row */
         .filter-chips-row {
             display: flex;
             align-items: center;
@@ -771,12 +740,7 @@
         }
         .filter-chips-row::-webkit-scrollbar { display: none; }
 
-        .md-chip-check {
-            display: inline-flex;
-            align-items: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
+        .md-chip-check { display: inline-flex; align-items: center; cursor: pointer; flex-shrink: 0; }
         .md-chip-check input { display: none; }
         .chip-content {
             display: inline-flex;
@@ -793,9 +757,7 @@
             transition: all 0.15s;
             white-space: nowrap;
         }
-        [data-theme="dark"] .chip-content {
-            background: var(--md-surface-container);
-        }
+        [data-theme="dark"] .chip-content { background: var(--md-surface-container); }
         .md-chip-check input:checked + .chip-content {
             background: var(--md-secondary-container);
             color: var(--md-on-secondary-container);
@@ -806,12 +768,8 @@
         .md-chip-check input:checked + .chip-content .chip-check-tick { display: inline-flex; }
         .md-chip-check input:checked + .chip-content .chip-default-icon { display: none; }
 
-        .print-actions {
-            margin-left: auto;
-            flex-shrink: 0;
-        }
+        .print-actions { margin-left: auto; flex-shrink: 0; }
 
-        /* Status Chip Bar */
         .md-status-chip-bar {
             display: flex;
             align-items: center;
@@ -830,29 +788,19 @@
             font-weight: 600;
             font-size: 0.8rem;
         }
-        .cart-action-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .cart-action-group { display: flex; align-items: center; gap: 6px; }
 
         /* ============================================================
            4. QUESTION CARDS
            ============================================================ */
-        .questions-stream {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .questions-stream { display: flex; flex-direction: column; gap: 12px; }
         .q-card {
             background: var(--md-surface-container-lowest);
             border-radius: var(--radius-lg);
             padding: 15px 16px;
             box-shadow: var(--elevation-1);
         }
-        [data-theme="dark"] .q-card {
-            background: var(--md-surface-container-low);
-        }
+        [data-theme="dark"] .q-card { background: var(--md-surface-container-low); }
 
         .q-meta-bar {
             display: flex;
@@ -890,19 +838,9 @@
             color: var(--md-on-surface);
             margin-bottom: 12px;
         }
-        .q-action-btns {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            margin-top: -4px;
-            margin-right: -6px;
-        }
+        .q-action-btns { display: flex; align-items: center; flex-shrink: 0; margin-top: -4px; margin-right: -6px; }
 
-        .opts-deck {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-        }
+        .opts-deck { display: grid; grid-template-columns: 1fr; gap: 8px; }
         .opt-btn {
             width: 100%;
             min-height: 46px;
@@ -921,9 +859,7 @@
             gap: 11px;
             transition: background-color 0.14s, border-color 0.14s, transform 0.08s;
         }
-        [data-theme="dark"] .opt-btn {
-            background: var(--md-surface-container);
-        }
+        [data-theme="dark"] .opt-btn { background: var(--md-surface-container); }
         .opt-btn:hover:not(:disabled) { background: var(--md-surface-container-high); }
         .opt-btn:active:not(:disabled) { transform: scale(0.988); }
         .opt-btn:disabled { cursor: default; }
@@ -942,9 +878,7 @@
             color: var(--md-on-surface-variant);
             flex-shrink: 0;
         }
-        [data-theme="dark"] .opt-index-badge {
-            background: var(--md-surface-container-high);
-        }
+        [data-theme="dark"] .opt-index-badge { background: var(--md-surface-container-high); }
         .opt-text { flex: 1; line-height: 1.35; }
         .opt-status-icon { display: none; flex-shrink: 0; }
 
@@ -954,11 +888,7 @@
             color: var(--md-correct) !important;
             font-weight: 600;
         }
-        .opt-btn.correct .opt-index-badge {
-            background: var(--md-correct);
-            color: #ffffff;
-            border-color: var(--md-correct);
-        }
+        .opt-btn.correct .opt-index-badge { background: var(--md-correct); color: #ffffff; border-color: var(--md-correct); }
         .opt-btn.correct .opt-status-icon.is-correct { display: inline-flex; }
 
         .opt-btn.wrong {
@@ -967,11 +897,7 @@
             color: var(--md-wrong) !important;
             font-weight: 600;
         }
-        .opt-btn.wrong .opt-index-badge {
-            background: var(--md-wrong);
-            color: #ffffff;
-            border-color: var(--md-wrong);
-        }
+        .opt-btn.wrong .opt-index-badge { background: var(--md-wrong); color: #ffffff; border-color: var(--md-wrong); }
         .opt-btn.wrong .opt-status-icon.is-wrong { display: inline-flex; }
 
         .opt-btn.exam-selected {
@@ -980,11 +906,7 @@
             color: var(--md-on-secondary-container) !important;
             font-weight: 600;
         }
-        .opt-btn.exam-selected .opt-index-badge {
-            background: var(--md-primary);
-            color: var(--md-on-primary);
-            border-color: var(--md-primary);
-        }
+        .opt-btn.exam-selected .opt-index-badge { background: var(--md-primary); color: var(--md-on-primary); border-color: var(--md-primary); }
 
         .q-explanation-box {
             margin-top: 10px;
@@ -1007,20 +929,8 @@
             color: var(--md-on-primary-container);
             padding-bottom: 18px;
         }
-        .exam-progress-track {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 4px;
-            background: rgba(0, 0, 0, 0.12);
-        }
-        .exam-progress-fill {
-            height: 100%;
-            width: 100%;
-            background: var(--md-primary);
-            transition: width 0.9s linear;
-        }
+        .exam-progress-track { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(0,0,0,0.12); }
+        .exam-progress-fill { height: 100%; width: 100%; background: var(--md-primary); transition: width 0.9s linear; }
 
         .timer-box { display: flex; align-items: center; gap: 10px; }
         .timer-digits small { display: block; font-size: 0.68rem; opacity: 0.85; text-transform: uppercase; font-weight: 700; }
@@ -1100,8 +1010,40 @@
             cursor: pointer;
         }
 
+        /* SEO Topic Directory Details (Minimal & Crawlable) */
+        .seo-dir-details {
+            margin-top: 10px;
+            border-top: 1px solid var(--md-outline-variant);
+            padding-top: 8px;
+        }
+        .seo-dir-details summary {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--md-primary);
+            cursor: pointer;
+            list-style: none;
+        }
+        .seo-dir-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .seo-dir-links a {
+            font-size: 0.74rem;
+            color: var(--md-on-surface-variant);
+            background: var(--md-surface-container);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+        }
+        .seo-dir-links a:hover {
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+        }
+
         /* ============================================================
-           5. BOTTOM NAVIGATION BAR (MD3 Active Pill)
+           5. BOTTOM NAVIGATION BAR
            ============================================================ */
         .md-bottom-nav {
             display: none;
@@ -1145,14 +1087,10 @@
         .nav-item .icon-outlined { display: inline-block; }
 
         .nav-item.active { color: var(--md-on-surface); font-weight: 700; }
-        .nav-item.active .nav-indicator-pill {
-            background: var(--md-secondary-container);
-            color: var(--md-on-secondary-container);
-        }
+        .nav-item.active .nav-indicator-pill { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
         .nav-item.active .icon-filled { display: inline-block; }
         .nav-item.active .icon-outlined { display: none; }
 
-        /* FAB & Toast */
         .md-fab {
             position: fixed;
             bottom: 80px;
@@ -1210,7 +1148,6 @@
             50% { opacity: 0.35; }
         }
 
-        /* Responsive Breakpoints */
         @media (max-width: 991px) {
             .brand-mark { display: none; }
             .md-bottom-nav { display: flex; }
@@ -1239,7 +1176,6 @@
             .filter-chips-row { flex-wrap: wrap; }
         }
 
-        /* Print Formats */
         @media print {
             .md-top-app-bar, .md-bottom-nav, .controls-card, .md-pagination-bar,
             .app-footer, .md-fab, .md-navigation-drawer, .q-action-btns, .md-scrim,
@@ -1285,13 +1221,12 @@
                     <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
                 </div>
                 <div class="brand-info">
-                    <h1 class="brand-title">Daily GK</h1>
+                    <span class="brand-title">Daily GK</span>
                     <span class="brand-subtitle" id="headerSubtitle">General Knowledge</span>
                 </div>
             </div>
 
             <div class="app-bar-actions">
-                <!-- Desktop Custom Dropdown for Mode -->
                 <div class="mode-select-wrapper">
                     <select id="viewMode" class="native-hidden-control" aria-hidden="true" tabindex="-1">
                         <option value="quiz">Quiz Mode</option>
@@ -1304,13 +1239,11 @@
                     </button>
                 </div>
 
-                <!-- Dark Theme Toggle -->
                 <button id="darkModeBtn" class="md-icon-btn" aria-label="Toggle Dark Theme" title="Toggle Theme">
                     <svg id="moonIcon" class="svg-icon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
                     <svg id="sunIcon" class="svg-icon" style="display:none;" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
                 </button>
 
-                <!-- Bookmarks / Cart -->
                 <button id="cartViewBtn" class="md-icon-btn badge-btn" aria-label="Saved Questions" title="Saved Questions">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V6c0-.55.45-1 1-1h8c.55 0 1 .45 1 1v12z"/></svg>
                     <span id="cartCount" class="md-badge">0</span>
@@ -1321,8 +1254,8 @@
         <!-- 2. MIDDLE WORKSPACE -->
         <div class="md-app-layout">
 
-            <!-- SIDEBAR / MODAL NAVIGATION DRAWER -->
-            <aside class="md-navigation-drawer" id="appSidebar">
+            <!-- SIDEBAR / NAVIGATION DRAWER -->
+            <aside class="md-navigation-drawer" id="appSidebar" aria-label="Categories Navigation">
                 <div class="drawer-header">
                     <div>
                         <div class="drawer-title">Categories & Topics</div>
@@ -1341,7 +1274,6 @@
                     </ul>
                 </div>
 
-                <!-- DRAWER FOOTER: DIRECT PWA INSTALL & PLATFORM DOWNLOADS -->
                 <div class="drawer-footer">
                     <button id="installBtn" class="md-btn md-btn-primary w-100">
                         <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14zm-1-6h-3V8h-2v5H8l4 4 4-4z"/></svg>
@@ -1349,7 +1281,7 @@
                     </button>
 
                     <div>
-                        <div class="download-platforms-title">Downloads</div>
+                        <div class="download-platforms-title">Direct Downloads</div>
                         <div class="platform-chips-grid">
                             <a href="app-release.apk" download title="Download Android APK" class="platform-chip-btn">
                                 <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#3DDC84;"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.081 12 8.081c-1.8533 0-3.5902.3306-5.1367.8687L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
@@ -1457,14 +1389,13 @@
                 </div>
             </aside>
 
-            <!-- SCRIM OVERLAY -->
             <div id="sidebarOverlay" class="md-scrim" onclick="closeSidebarDrawer()"></div>
 
             <!-- MAIN SCROLLABLE CONTENT -->
             <main class="md-main-content" id="mainScroll">
                 <div class="content-container">
 
-                    <!-- STATUS / CART VIEW CHIP (Shown only when filtered or in Saved View) -->
+                    <!-- STATUS / CART VIEW CHIP -->
                     <div id="topicHeaderCard" class="md-status-chip-bar" style="display:none;">
                         <div class="status-chip">
                             <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
@@ -1482,7 +1413,7 @@
                         </div>
                     </div>
 
-                    <!-- CONTROLS CARD (Minimal Search Bar w/ EN/Avro + Custom Selectbox Dropdowns) -->
+                    <!-- CONTROLS CARD -->
                     <section class="controls-card" id="mainControls">
                         <div class="search-field-wrapper">
                             <svg class="svg-icon sm search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -1497,11 +1428,9 @@
                                 spellcheck="false"
                                 inputmode="text"
                             >
-                            <!-- Clear button: only shown when input has text -->
                             <button type="button" id="clearSearchBtn" class="md-icon-btn clear-search-btn" aria-label="Clear search" title="Clear search">
                                 <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg>
                             </button>
-                            <!-- Inbuilt English / Avro Keyboard Toggle -->
                             <button type="button" id="kbToggleBtn" class="kb-toggle-btn" title="Switch Keyboard: English / Avro Phonetic" aria-label="Switch search keyboard between English and Avro Phonetic">
                                 <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
                                 <span id="kbToggleLabel">EN</span>
@@ -1535,20 +1464,17 @@
                                 </span>
                             </label>
 
-                            <!-- Custom Dropdown: Sort -->
                             <button type="button" id="customSortBtn" class="custom-select-btn" onclick="toggleCustomDropdown(event, 'sort')">
                                 <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
                                 <span id="customSortLabel">1 &rarr; 10</span>
                                 <svg class="svg-icon xs dd-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                             </button>
 
-                            <!-- Custom Dropdown: Per Page -->
                             <button type="button" id="customPerPageBtn" class="custom-select-btn" onclick="toggleCustomDropdown(event, 'perPage')">
                                 <span id="customPerPageLabel">10 / Page</span>
                                 <svg class="svg-icon xs dd-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                             </button>
 
-                            <!-- Custom Dropdown: Print -->
                             <div class="print-actions">
                                 <button type="button" id="customPrintBtn" class="custom-select-btn" onclick="toggleCustomDropdown(event, 'print')" title="Print Questions">
                                     <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
@@ -1586,12 +1512,15 @@
                     <!-- PAGINATION BAR -->
                     <nav id="paginationControls" class="md-pagination-bar" aria-label="Pagination"></nav>
 
-                    <!-- SEO DESCRIPTION CARD -->
+                    <!-- SEO DESCRIPTION & CRAWLABLE TOPIC INDEX -->
                     <article class="md-card" id="seoTextSec">
-                        <h2 style="font-size:0.96rem; font-weight:700; margin-bottom:5px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
+                        <h1 id="pageHeading" style="font-size:1rem; font-weight:700; margin-bottom:5px; color:var(--md-primary);">Daily GK MCQ &ndash; General Knowledge &amp; Competitive Exam Prep</h1>
                         <p style="font-size:0.82rem; color:var(--md-on-surface-variant); line-height:1.5;">
                             Welcome to <strong>Daily GK MCQ</strong>. Master subjects including General Science, Geography, History, Information Technology, and Current Affairs with our interactive Quiz, Study, and Exam modes.
                         </p>
+                        <!-- SEO-DIR-START -->
+                        <!-- Populated automatically by GitHub Actions SEO builder -->
+                        <!-- SEO-DIR-END -->
                     </article>
 
                     <!-- FOOTER -->
@@ -1638,15 +1567,12 @@
         </nav>
     </div>
 
-    <!-- SHARED FLOATING CUSTOM DROPDOWN MENU -->
     <div id="customDropdownMenu" class="custom-dropdown-menu" role="listbox"></div>
 
-    <!-- FAB BACK TO TOP -->
     <button id="backToTop" class="md-fab" title="Scroll to top" aria-label="Scroll to top">
         <svg class="svg-icon md" viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
     </button>
 
-    <!-- SNACKBAR TOAST -->
     <div id="mdToast" class="md-toast" role="status" aria-live="polite">
         <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
         <span id="mdToastText"></span>
@@ -1751,6 +1677,15 @@
             return String(n);
         }
 
+        function buildTopicHref(cat, topic, page) {
+            const p = new URLSearchParams();
+            if (cat) p.set('cat', cat);
+            if (topic) p.set('topic', topic);
+            if (page && page > 1) p.set('page', page);
+            const qs = p.toString();
+            return window.location.pathname + (qs ? '?' + qs : '');
+        }
+
         /* ============================================================
            CUSTOM INLINE SELECTBOX DROPDOWNS
            ============================================================ */
@@ -1766,9 +1701,7 @@
                     { value: 'study', label: 'Study Mode', chip: 'Study Mode' },
                     { value: 'exam', label: 'Exam Mode', chip: 'Exam Mode' }
                 ],
-                onSelect: (opt) => {
-                    switchMode(opt.value);
-                }
+                onSelect: (opt) => switchMode(opt.value)
             },
             sort: {
                 triggerId: 'customSortBtn',
@@ -2242,16 +2175,32 @@
                 if (app.currCat) titleParts.push(app.currCat);
             }
 
-            let baseTitle = "Daily GK MCQ - General Knowledge & Quiz";
-            let fullTitle = titleParts.length > 0 ? `${titleParts.join(' - ')} | ${baseTitle}` : baseTitle;
+            let baseTitle = "Daily GK MCQ | General Knowledge & Competitive Exam Prep";
+            let fullTitle = titleParts.length > 0 ? `${titleParts.join(' - ')} MCQ | Daily GK` : baseTitle;
             document.title = fullTitle;
 
-            let metaDesc = document.querySelector('meta[name="description"]');
+            const h1 = document.getElementById('pageHeading');
+            if (h1) {
+                h1.textContent = titleParts.length > 0
+                    ? `${titleParts.join(' – ')} MCQ Practice & Quiz`
+                    : "Daily GK MCQ – General Knowledge & Competitive Exam Prep";
+            }
+
+            const metaDesc = document.querySelector('meta[name="description"]');
             if (metaDesc) {
                 let desc = titleParts.length > 0
-                    ? `Practice MCQs on ${titleParts.join(', ')}. Prepare for competitive exams with Quiz and Exam modes.`
-                    : "Master General Knowledge with Daily GK MCQ. Practice Science, Geography, History, and IT questions.";
+                    ? `Practice ${titleParts.join(' ')} MCQs with answers and explanations. Prepare for competitive exams with Quiz, Study, and Timed Exam modes.`
+                    : "Master General Knowledge with Daily GK MCQ. Practice General Science, World Geography, History, and IT questions with interactive Quiz, Study, and Exam modes.";
                 metaDesc.setAttribute("content", desc);
+            }
+
+            const canonical = document.getElementById('canonicalLink');
+            if (canonical) {
+                const cParams = new URLSearchParams();
+                if (app.currCat) cParams.set('cat', app.currCat);
+                if (app.currTopic) cParams.set('topic', app.currTopic);
+                const cqs = cParams.toString();
+                canonical.setAttribute('href', 'https://shifat100.github.io/daily-gk/' + (cqs ? '?' + cqs : ''));
             }
         }
 
@@ -2845,7 +2794,7 @@
                         }
                     }
                 }
-                else { // Quiz Mode
+                else {
                     btn.onclick = function() {
                         var siblings = optsDiv.querySelectorAll('.opt-btn');
                         siblings.forEach(sb => sb.disabled = true);
@@ -2873,16 +2822,28 @@
             var ul = document.getElementById('categoryTree');
             if (!ul) return;
             var isAllActive = (!app.currCat && !app.currTopic);
-            ul.innerHTML = `
-                <li class="tree-parent-node ${isAllActive ? 'active-cat' : ''}" onclick="setFilter(null, null)">
-                    <div class="tree-parent-left">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
-                        <span>All Questions</span>
-                    </div>
-                    <div class="tree-parent-right">
-                        <span class="tree-count-pill">${formatCompactCount(app.data.length)}</span>
-                    </div>
-                </li>`;
+
+            ul.innerHTML = '';
+
+            var allLi = document.createElement('li');
+            var allLink = document.createElement('a');
+            allLink.href = buildTopicHref(null, null, 1);
+            allLink.className = 'tree-parent-node' + (isAllActive ? ' active-cat' : '');
+            allLink.innerHTML = `
+                <div class="tree-parent-left">
+                    <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+                    <span>All Questions</span>
+                </div>
+                <div class="tree-parent-right">
+                    <span class="tree-count-pill">${formatCompactCount(app.data.length)}</span>
+                </div>
+            `;
+            allLink.onclick = function(e) {
+                e.preventDefault();
+                setFilter(null, null);
+            };
+            allLi.appendChild(allLink);
+            ul.appendChild(allLi);
 
             for (var cat in app.treeData) {
                 var topics = app.treeData[cat];
@@ -2909,14 +2870,18 @@
 
                 for (var topic in topics) {
                     var tLi = document.createElement('li');
-                    tLi.className = 'tree-sub-node' + (app.currTopic === topic ? ' active' : '');
-                    tLi.innerHTML = `<span>${topic}</span> <small>(${formatCompactCount(topics[topic])})</small>`;
-                    tLi.onclick = (function(c, t) {
+                    var tLink = document.createElement('a');
+                    tLink.href = buildTopicHref(cat, topic, 1);
+                    tLink.className = 'tree-sub-node' + (app.currTopic === topic ? ' active' : '');
+                    tLink.innerHTML = `<span>${topic}</span> <small>(${formatCompactCount(topics[topic])})</small>`;
+                    tLink.onclick = (function(c, t) {
                         return function(e) {
+                            e.preventDefault();
                             e.stopPropagation();
                             setFilter(c, t);
                         };
                     })(cat, topic);
+                    tLi.appendChild(tLink);
                     childUl.appendChild(tLi);
                 }
 
@@ -2949,21 +2914,29 @@
             box.innerHTML = '';
             if (total <= 1 || app.examActive) return;
 
-            var prev = document.createElement('button');
+            var prev = document.createElement(app.page === 1 ? 'button' : 'a');
             prev.className = 'md-btn md-btn-outlined sm';
             prev.innerHTML = `<svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg> <span>Prev</span>`;
-            prev.disabled = app.page === 1;
-            prev.onclick = () => { app.page--; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0, 0); };
+            if (app.page === 1) {
+                prev.disabled = true;
+            } else {
+                prev.href = buildTopicHref(app.currCat, app.currTopic, app.page - 1);
+                prev.onclick = (e) => { e.preventDefault(); app.page--; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0, 0); };
+            }
 
             var info = document.createElement('span');
             info.className = 'page-status-pill';
             info.textContent = `${app.page} / ${total}`;
 
-            var next = document.createElement('button');
+            var next = document.createElement(app.page === total ? 'button' : 'a');
             next.className = 'md-btn md-btn-outlined sm';
             next.innerHTML = `<span>Next</span> <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>`;
-            next.disabled = app.page === total;
-            next.onclick = () => { app.page++; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0, 0); };
+            if (app.page === total) {
+                next.disabled = true;
+            } else {
+                next.href = buildTopicHref(app.currCat, app.currTopic, app.page + 1);
+                next.onclick = (e) => { e.preventDefault(); app.page++; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0, 0); };
+            }
 
             box.appendChild(prev);
             box.appendChild(info);
@@ -3012,7 +2985,7 @@
 
         function ajaxGet(url, success, error, isText) {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', url + '?t=' + Date.now(), true);
+            xhr.open('GET', url, true);
             xhr.onload = function() {
                 if (xhr.status === 200) success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
                 else if (error) error();
@@ -3077,9 +3050,6 @@
                 if (e.keyCode === 123 || (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) || (e.ctrlKey && e.keyCode === 85)) {
                     e.preventDefault();
                 }
-            });
-            document.addEventListener('visibilitychange', () => {
-                document.body.style.filter = document.hidden ? 'blur(10px)' : 'none';
             });
         }
     </script>
