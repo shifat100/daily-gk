@@ -1,6 +1,9 @@
-[
+[  {
+    "title": "অক্টোবর",
+    "path": "data/ai/oct.mcq"
+},
   {
-    "title": "সকল",
+    "title": "সেপ্টেম্বর'২৬ পর্যন্ত",
     "path": "data/ai/all.mcq"
   }
 ]
