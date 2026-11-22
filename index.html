@@ -5,9 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Viewport optimized for SEO & Accessibility -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0061a4">
+    <meta name="theme-color" content="#f8f9fd" id="metaThemeColor">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
-    
+
     <!-- Primary Meta Tags -->
     <title>Daily GK MCQ | General Knowledge & Competitive Exam Prep</title>
     <meta name="title" content="Daily GK MCQ | General Knowledge & Competitive Exam Prep">
@@ -55,65 +57,86 @@
 
     <style>
         /* ============================================================
-           ANDROID MATERIAL DESIGN 3 (MD3) FULL SYSTEM
+           ANDROID MATERIAL DESIGN 3 (CUSTOM UI SYSTEM)
            ============================================================ */
         :root {
-            --font-main: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            
-            /* Light Theme Tokens */
-            --md-primary: #0061a4;
+            --font-main: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+            --md-primary: #0b57d0;
             --md-on-primary: #ffffff;
-            --md-primary-container: #d1e4ff;
-            --md-on-primary-container: #001d36;
-            
-            --md-surface: #fdfcff;
-            --md-surface-container: #f0f4f9;
-            --md-surface-container-high: #e8ecf2;
-            --md-on-surface: #1a1c1e;
-            --md-on-surface-variant: #43474e;
-            --md-outline: #73777f;
-            --md-outline-variant: #c3c7d0;
+            --md-primary-container: #d3e3fd;
+            --md-on-primary-container: #041e49;
+
+            --md-secondary-container: #c2e7ff;
+            --md-on-secondary-container: #001d35;
+
+            --md-surface: #f8f9fd;
+            --md-surface-container-lowest: #ffffff;
+            --md-surface-container-low: #f1f4fa;
+            --md-surface-container: #eaeff7;
+            --md-surface-container-high: #e2e8f2;
+            --md-surface-container-highest: #dae1ec;
+
+            --md-on-surface: #1b1c1f;
+            --md-on-surface-variant: #44474e;
+            --md-outline: #74777f;
+            --md-outline-variant: #c4c6d0;
+
+            --md-inverse-surface: #2f3033;
+            --md-inverse-on-surface: #f1f0f4;
 
             --md-correct: #146c2e;
-            --md-correct-bg: #cbfbcf;
-            --md-wrong: #ba1a1a;
-            --md-wrong-bg: #ffdad6;
+            --md-correct-bg: #d7f7dc;
+            --md-wrong: #b3261e;
+            --md-wrong-bg: #f9dedc;
 
-            --radius-sm: 8px;
+            --radius-xs: 8px;
+            --radius-sm: 12px;
             --radius-md: 16px;
-            --radius-lg: 24px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
             --radius-full: 9999px;
 
-            --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
-            --elevation-3: 0 10px 20px rgba(0,0,0,0.2), 0 6px 6px rgba(0,0,0,0.1);
+            --elevation-1: 0 1px 2px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
+            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.10);
+            --elevation-3: 0 6px 18px 3px rgba(0,0,0,0.14), 0 2px 5px rgba(0,0,0,0.10);
 
             --header-height: 58px;
-            --bottom-nav-height: 60px;
+            --bottom-nav-height: 66px;
         }
 
         [data-theme="dark"] {
-            --md-primary: #9ecaff;
-            --md-on-primary: #003258;
-            --md-primary-container: #00497d;
-            --md-on-primary-container: #d1e4ff;
+            --md-primary: #a8c7fa;
+            --md-on-primary: #062e6f;
+            --md-primary-container: #0842a0;
+            --md-on-primary-container: #d3e3fd;
 
-            --md-surface: #111315;
-            --md-surface-container: #1a1c1e;
-            --md-surface-container-high: #242629;
-            --md-on-surface: #e2e2e6;
-            --md-on-surface-variant: #c3c7d0;
-            --md-outline: #8d9199;
-            --md-outline-variant: #43474e;
+            --md-secondary-container: #004a77;
+            --md-on-secondary-container: #c2e7ff;
 
-            --md-correct: #7be08d;
-            --md-correct-bg: #073917;
-            --md-wrong: #ffb4ab;
-            --md-wrong-bg: #690005;
+            --md-surface: #111318;
+            --md-surface-container-lowest: #0c0e13;
+            --md-surface-container-low: #191c22;
+            --md-surface-container: #1e2128;
+            --md-surface-container-high: #282c34;
+            --md-surface-container-highest: #333741;
 
-            --elevation-1: 0 1px 3px rgba(0,0,0,0.4);
-            --elevation-2: 0 4px 8px rgba(0,0,0,0.5);
-            --elevation-3: 0 8px 16px rgba(0,0,0,0.6);
+            --md-on-surface: #e3e2e6;
+            --md-on-surface-variant: #c4c6d0;
+            --md-outline: #8e9099;
+            --md-outline-variant: #44474e;
+
+            --md-inverse-surface: #e3e2e6;
+            --md-inverse-on-surface: #2f3033;
+
+            --md-correct: #7ee08f;
+            --md-correct-bg: #0c3919;
+            --md-wrong: #f2b8b5;
+            --md-wrong-bg: #601410;
+
+            --elevation-1: 0 1px 3px rgba(0,0,0,0.35);
+            --elevation-2: 0 3px 8px rgba(0,0,0,0.45);
+            --elevation-3: 0 8px 20px rgba(0,0,0,0.6);
         }
 
         * {
@@ -123,11 +146,16 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--md-outline-variant); border-radius: var(--radius-full); }
+
         html, body {
             height: 100%;
             height: 100dvh;
             width: 100%;
             overflow: hidden;
+            overscroll-behavior: none;
         }
 
         body {
@@ -136,9 +164,34 @@
             color: var(--md-on-surface);
             user-select: none;
             -webkit-user-select: none;
+            transition: background-color 0.22s ease, color 0.22s ease;
         }
 
-        /* Native App Frame Container */
+        input, textarea {
+            user-select: text;
+            -webkit-user-select: text;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .native-hidden-control {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            overflow: hidden !important;
+        }
+
         .app-root {
             display: flex;
             flex-direction: column;
@@ -149,131 +202,278 @@
             position: relative;
         }
 
-        /* SVG Utility */
+        /* Material SVG Icon Utility */
         .svg-icon {
             width: 22px;
             height: 22px;
             display: inline-block;
             vertical-align: middle;
             flex-shrink: 0;
+            fill: currentColor;
         }
-        .svg-icon.sm { width: 16px; height: 16px; }
-        .svg-icon.md { width: 26px; height: 26px; }
+        .svg-icon.sm { width: 18px; height: 18px; }
+        .svg-icon.xs { width: 16px; height: 16px; }
+        .svg-icon.md { width: 24px; height: 24px; }
+        .svg-icon.lg { width: 28px; height: 28px; }
 
-        /* Top App Bar */
+        /* ============================================================
+           1. TOP APP BAR
+           ============================================================ */
         .md-top-app-bar {
             height: var(--header-height);
             background: var(--md-surface);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
-            border-bottom: 1px solid var(--md-outline-variant);
+            padding: 0 12px 0 8px;
             z-index: 20;
             flex-shrink: 0;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
         }
+        .md-top-app-bar.scrolled {
+            background: var(--md-surface-container);
+            box-shadow: var(--elevation-1);
+        }
+
         .app-bar-leading {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
+            min-width: 0;
         }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
         .brand-info {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
         .brand-title {
-            font-size: 1.15rem;
+            font-size: 1.12rem;
             font-weight: 700;
-            color: var(--md-primary);
-            line-height: 1.2;
+            color: var(--md-on-surface);
+            line-height: 1.15;
             letter-spacing: -0.2px;
         }
         .brand-subtitle {
             font-size: 0.7rem;
             color: var(--md-on-surface-variant);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
         .app-bar-actions {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .md-icon-btn {
             background: transparent;
             border: none;
-            color: var(--md-on-surface);
-            width: 38px;
-            height: 38px;
+            color: var(--md-on-surface-variant);
+            width: 40px;
+            height: 40px;
             border-radius: var(--radius-full);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background-color 0.15s, transform 0.1s;
         }
         .md-icon-btn:hover {
             background: var(--md-surface-container-high);
+            color: var(--md-on-surface);
+        }
+        .md-icon-btn:active {
+            transform: scale(0.92);
+        }
+        .md-icon-btn.compact {
+            width: 34px;
+            height: 34px;
         }
 
         .badge-btn { position: relative; }
         .md-badge {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 3px;
+            right: 3px;
             background: var(--md-primary);
             color: var(--md-on-primary);
-            font-size: 0.68rem;
-            font-weight: bold;
-            min-width: 18px;
-            height: 18px;
-            border-radius: 9px;
+            font-size: 0.64rem;
+            font-weight: 700;
+            min-width: 17px;
+            height: 17px;
+            border-radius: var(--radius-full);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0 4px;
+            border: 2px solid var(--md-surface);
+        }
+        .md-top-app-bar.scrolled .md-badge {
+            border-color: var(--md-surface-container);
         }
 
-        /* Material UI Controls */
-        .md-select, .md-select-inline {
-            background: var(--md-surface-container);
-            color: var(--md-on-surface);
-            border: 1px solid var(--md-outline-variant);
-            padding: 7px 12px;
+        /* ============================================================
+           CUSTOM SELECTBOX DROPDOWN COMPONENT
+           ============================================================ */
+        .custom-select-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            padding: 0 10px 0 12px;
             border-radius: var(--radius-full);
+            border: 1px solid var(--md-outline-variant);
+            background: var(--md-surface-container-lowest);
+            color: var(--md-on-surface);
             font-family: inherit;
-            font-size: 0.82rem;
-            font-weight: 600;
-            outline: none;
+            font-size: 0.8rem;
+            font-weight: 500;
             cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
+        }
+        [data-theme="dark"] .custom-select-btn {
+            background: var(--md-surface-container);
+        }
+        .custom-select-btn:hover {
+            background: var(--md-surface-container-high);
+        }
+        .custom-select-btn:active {
+            transform: scale(0.97);
+        }
+        .custom-select-btn.open {
+            border-color: var(--md-primary);
+            background: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+        }
+        .custom-select-btn .dd-caret {
+            transition: transform 0.18s ease;
+        }
+        .custom-select-btn.open .dd-caret {
+            transform: rotate(180deg);
+        }
+        .custom-select-btn.tonal {
+            border: none;
+            background: var(--md-surface-container-high);
+            font-weight: 600;
+            height: 36px;
+        }
+        .custom-select-btn.tonal.open {
+            background: var(--md-primary-container);
+            color: var(--md-on-primary-container);
         }
 
+        /* Floating Custom Dropdown Menu (Fixed-positioned to avoid clipping) */
+        .custom-dropdown-menu {
+            position: fixed;
+            min-width: 175px;
+            max-width: calc(100vw - 24px);
+            background: var(--md-surface-container-lowest);
+            border-radius: var(--radius-md);
+            box-shadow: var(--elevation-3);
+            border: 1px solid var(--md-outline-variant);
+            padding: 6px;
+            z-index: 1600;
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            animation: ddFadeIn 0.14s cubic-bezier(0.2, 0, 0, 1);
+        }
+        [data-theme="dark"] .custom-dropdown-menu {
+            background: var(--md-surface-container-high);
+        }
+        .custom-dropdown-menu.show {
+            display: flex;
+        }
+        @keyframes ddFadeIn {
+            from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .dd-option-item {
+            width: 100%;
+            min-height: 40px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--md-on-surface);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: background-color 0.12s;
+        }
+        .dd-option-item:hover {
+            background: var(--md-surface-container-high);
+        }
+        [data-theme="dark"] .dd-option-item:hover {
+            background: var(--md-surface-container-highest);
+        }
+        .dd-option-item.selected {
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+            font-weight: 600;
+        }
+        .dd-option-item .dd-check {
+            opacity: 0;
+        }
+        .dd-option-item.selected .dd-check {
+            opacity: 1;
+        }
+
+        /* Material Buttons */
         .md-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             padding: 9px 18px;
+            min-height: 38px;
             font-family: inherit;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 600;
             border-radius: var(--radius-full);
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.16s, transform 0.1s;
             text-decoration: none;
         }
-        .md-btn.sm {
-            padding: 6px 12px;
-            font-size: 0.8rem;
-        }
+        .md-btn:active:not(:disabled) { transform: scale(0.97); }
+        .md-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .md-btn.sm { padding: 5px 12px; min-height: 34px; font-size: 0.8rem; }
         .md-btn-primary { background: var(--md-primary); color: var(--md-on-primary); }
-        .md-btn-primary:hover { opacity: 0.92; }
-        .md-btn-tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); }
-        .md-btn-outlined { background: transparent; border: 1px solid var(--md-outline); color: var(--md-primary); }
+        .md-btn-tonal { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+        .md-btn-outlined { background: var(--md-surface-container-lowest); border: 1px solid var(--md-outline-variant); color: var(--md-primary); }
+        [data-theme="dark"] .md-btn-outlined { background: var(--md-surface-container); }
         .md-btn-danger-tonal { background: var(--md-wrong-bg); color: var(--md-wrong); }
         .w-100 { width: 100%; }
 
-        /* Main App Workspace (Flex Layout) */
+        /* ============================================================
+           2. WORKSPACE & NAVIGATION DRAWER (FIXED CROP ISSUE)
+           ============================================================ */
         .md-app-layout {
             display: flex;
             flex: 1;
@@ -282,70 +482,63 @@
             overflow: hidden;
         }
 
-        /* ============================================================
-           SIDEBAR / NATIVE NAVIGATION DRAWER (FULL SCREEN MODAL)
-           ============================================================ */
         .md-navigation-drawer {
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
             width: 82%;
-            max-width: 320px;
-            height: 100%;
-            height: 100dvh;
-            background: var(--md-surface-container);
-            border-right: 1px solid var(--md-outline-variant);
+            max-width: 310px;
+            /* No hardcoded 100dvh here so top:0; bottom:0 fits mobile viewport cleanly */
+            background: var(--md-surface-container-low);
+            border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
             display: flex;
             flex-direction: column;
-            z-index: 1200; /* Overlays header & bottom nav cleanly */
-            transform: translateX(-100%);
-            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1200;
+            transform: translateX(-104%);
+            transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1);
             box-shadow: var(--elevation-3);
+            overflow: hidden;
         }
         .md-navigation-drawer.show {
             transform: translateX(0);
         }
 
         .drawer-header {
-            padding: 16px;
-            border-bottom: 1px solid var(--md-outline-variant);
+            padding: 14px 14px 12px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--md-surface);
             flex-shrink: 0;
+            border-bottom: 1px solid var(--md-outline-variant);
         }
-        .drawer-title-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .drawer-title { font-size: 1.05rem; font-weight: 700; color: var(--md-on-surface); }
-        .drawer-subtitle { font-size: 0.72rem; color: var(--md-on-surface-variant); margin-top: 2px; }
-        
+        .drawer-title { font-size: 1rem; font-weight: 700; color: var(--md-on-surface); }
+        .drawer-subtitle { font-size: 0.72rem; color: var(--md-on-surface-variant); margin-top: 1px; }
+
         .drawer-content {
             flex: 1;
+            min-height: 80px;
             overflow-y: auto;
-            padding: 10px 8px;
+            padding: 8px 10px;
             -webkit-overflow-scrolling: touch;
         }
 
         .drawer-footer {
-            padding: 12px 14px;
+            padding: 12px 14px calc(12px + max(0px, env(safe-area-inset-bottom)));
             border-top: 1px solid var(--md-outline-variant);
             display: flex;
             flex-direction: column;
             gap: 10px;
-            background: var(--md-surface);
+            background: var(--md-surface-container);
             flex-shrink: 0;
         }
 
         .download-platforms-title {
-            font-size: 0.74rem;
+            font-size: 0.68rem;
             font-weight: 700;
             color: var(--md-on-surface-variant);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             margin-bottom: 6px;
             text-align: center;
         }
@@ -363,149 +556,260 @@
             justify-content: center;
             gap: 3px;
             padding: 6px 4px;
-            border-radius: var(--radius-sm);
-            background: var(--md-surface-container-high);
-            border: 1px solid var(--md-outline-variant);
+            border-radius: var(--radius-xs);
+            background: var(--md-surface-container-lowest);
             color: var(--md-on-surface);
-            font-size: 0.68rem;
+            font-size: 0.66rem;
             font-weight: 600;
             text-decoration: none;
-            transition: 0.2s;
+            box-shadow: var(--elevation-1);
+            transition: transform 0.12s, background-color 0.18s;
+        }
+        [data-theme="dark"] .platform-chip-btn {
+            background: var(--md-surface-container-high);
         }
         .platform-chip-btn:hover {
-            background: var(--md-primary-container);
-            color: var(--md-on-primary-container);
-            border-color: var(--md-primary);
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+        }
+        .platform-chip-btn:active { transform: scale(0.95); }
+
+        /* Short landscape screen fallback so drawer footer never clips */
+        @media (max-height: 520px) {
+            .md-navigation-drawer { overflow-y: auto; }
+            .drawer-content { flex: 0 0 auto; overflow-y: visible; }
         }
 
         .md-scrim {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.45);
             z-index: 1100;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.25s ease;
         }
-        .md-scrim.show {
-            opacity: 1;
-            visibility: visible;
-        }
+        .md-scrim.show { opacity: 1; visibility: visible; }
 
-        /* Scrolled Main View Area */
+        /* Sidebar Tree */
+        .md-tree-view { list-style: none; }
+        .tree-parent-node {
+            padding: 10px 14px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.86rem;
+            color: var(--md-on-surface-variant);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+            transition: background-color 0.15s;
+        }
+        .tree-parent-node:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
+        .tree-parent-node.active-cat { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+        .tree-parent-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+        .tree-parent-left span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tree-parent-right { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+        .tree-count-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: var(--md-surface-container-highest);
+            color: var(--md-on-surface-variant);
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+        }
+        .tree-parent-node.active-cat .tree-count-pill {
+            background: var(--md-surface-container-lowest);
+            color: var(--md-on-secondary-container);
+        }
+        .tree-chevron { transition: transform 0.2s ease; }
+        .tree-parent-node.expanded .tree-chevron { transform: rotate(90deg); }
+
+        .tree-children-list { list-style: none; padding: 2px 0 4px 12px; display: none; }
+        .tree-children-list.open { display: block; }
+        .tree-sub-node {
+            padding: 8px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            color: var(--md-on-surface-variant);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+        .tree-sub-node:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
+        .tree-sub-node.active { background: var(--md-primary-container); color: var(--md-on-primary-container); font-weight: 600; }
+
+        /* ============================================================
+           3. MAIN CONTENT, MINIMAL SEARCH BAR (WITH EN/AVRO) & CHIPS
+           ============================================================ */
         .md-main-content {
             flex: 1;
             height: 100%;
             overflow-y: auto;
-            padding: 14px;
+            padding: 10px 14px 16px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
         }
-        
+
         .content-container {
-            max-width: 840px;
+            max-width: 820px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding-bottom: 16px;
+            padding-bottom: 20px;
         }
 
-        /* Cards & Search Deck */
         .md-card {
-            background: var(--md-surface-container);
-            border-radius: var(--radius-md);
-            padding: 14px 16px;
+            background: var(--md-surface-container-lowest);
+            border-radius: var(--radius-lg);
+            padding: 16px;
             box-shadow: var(--elevation-1);
-            border: 1px solid var(--md-outline-variant);
         }
+        [data-theme="dark"] .md-card {
+            background: var(--md-surface-container-low);
+        }
+
         .controls-card {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
+
+        /* Minimal MD3 Search Bar with Inbuilt EN / Avro Keyboard Switch */
         .search-field-wrapper {
             position: relative;
             display: flex;
             align-items: center;
+            background: var(--md-surface-container-high);
+            border-radius: var(--radius-full);
+            height: 46px;
+            padding: 0 6px 0 14px;
+            gap: 6px;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        .search-field-wrapper:focus-within {
+            background: var(--md-surface-container-lowest);
+            box-shadow: 0 0 0 2px var(--md-primary);
+        }
+        [data-theme="dark"] .search-field-wrapper:focus-within {
+            background: var(--md-surface-container-high);
         }
         .search-icon {
-            position: absolute;
-            left: 14px;
             color: var(--md-on-surface-variant);
+            flex-shrink: 0;
         }
         .md-search-input {
-            width: 100%;
-            padding: 10px 16px 10px 42px;
-            background: var(--md-surface);
-            border: 1px solid var(--md-outline-variant);
-            border-radius: var(--radius-full);
+            flex: 1;
+            min-width: 0;
+            border: none;
+            background: transparent;
             color: var(--md-on-surface);
             font-size: 0.92rem;
             outline: none;
             font-family: inherit;
         }
-        .md-search-input:focus {
-            border-color: var(--md-primary);
-            box-shadow: 0 0 0 2px var(--md-primary-container);
+        .md-search-input::placeholder {
+            color: var(--md-on-surface-variant);
+        }
+        .clear-search-btn {
+            display: none;
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+        .clear-search-btn.visible {
+            display: inline-flex;
         }
 
+        /* Inbuilt EN / Avro Keyboard Switch Button */
+        .kb-toggle-btn {
+            height: 32px;
+            padding: 0 10px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--md-outline-variant);
+            background: var(--md-surface-container-lowest);
+            color: var(--md-on-surface-variant);
+            font-family: inherit;
+            font-size: 0.74rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.16s ease;
+        }
+        [data-theme="dark"] .kb-toggle-btn {
+            background: var(--md-surface-container);
+        }
+        .kb-toggle-btn:hover {
+            background: var(--md-surface-container-highest);
+            color: var(--md-on-surface);
+        }
+        .kb-toggle-btn.avro-on {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            border-color: var(--md-primary);
+        }
+        .kb-toggle-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Minimal Filter Row */
         .filter-chips-row {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
             gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 2px 0;
         }
+        .filter-chips-row::-webkit-scrollbar { display: none; }
+
         .md-chip-check {
             display: inline-flex;
             align-items: center;
             cursor: pointer;
+            flex-shrink: 0;
         }
         .md-chip-check input { display: none; }
         .chip-content {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 5px 12px;
+            height: 34px;
+            padding: 0 12px;
             border-radius: var(--radius-full);
             border: 1px solid var(--md-outline-variant);
-            background: var(--md-surface);
+            background: var(--md-surface-container-lowest);
             font-size: 0.8rem;
             font-weight: 500;
             color: var(--md-on-surface-variant);
-            transition: 0.2s;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        [data-theme="dark"] .chip-content {
+            background: var(--md-surface-container);
         }
         .md-chip-check input:checked + .chip-content {
-            background: var(--md-primary-container);
-            color: var(--md-on-primary-container);
-            border-color: var(--md-primary);
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+            border-color: transparent;
+            font-weight: 600;
         }
+        .chip-check-tick { display: none; }
+        .md-chip-check input:checked + .chip-content .chip-check-tick { display: inline-flex; }
+        .md-chip-check input:checked + .chip-content .chip-default-icon { display: none; }
 
-        .select-pill {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: var(--md-surface);
-            border: 1px solid var(--md-outline-variant);
-            border-radius: var(--radius-full);
-            padding: 2px 10px;
-            color: var(--md-on-surface-variant);
-        }
-        .select-pill select {
-            border: none;
-            background: transparent;
-            color: inherit;
-            font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: 500;
-            outline: none;
-            cursor: pointer;
-        }
         .print-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
             margin-left: auto;
+            flex-shrink: 0;
         }
 
         /* Status Chip Bar */
@@ -519,13 +823,13 @@
         .status-chip {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             background: var(--md-primary-container);
             color: var(--md-on-primary-container);
             padding: 6px 14px;
             border-radius: var(--radius-full);
             font-weight: 600;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
         }
         .cart-action-group {
             display: flex;
@@ -533,54 +837,68 @@
             gap: 6px;
         }
 
-        /* Question Stream */
+        /* ============================================================
+           4. QUESTION CARDS
+           ============================================================ */
         .questions-stream {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
         .q-card {
-            background: var(--md-surface-container);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            border: 1px solid var(--md-outline-variant);
+            background: var(--md-surface-container-lowest);
+            border-radius: var(--radius-lg);
+            padding: 15px 16px;
             box-shadow: var(--elevation-1);
-            transition: transform 0.15s, box-shadow 0.15s;
         }
-        .q-card:hover {
-            box-shadow: var(--elevation-2);
+        [data-theme="dark"] .q-card {
+            background: var(--md-surface-container-low);
         }
+
         .q-meta-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--md-on-surface-variant);
             margin-bottom: 8px;
+            gap: 8px;
         }
         .q-category-tag {
-            background: var(--md-surface-container-high);
-            padding: 2px 8px;
-            border-radius: var(--radius-sm);
-            font-weight: 500;
+            background: var(--md-surface-container);
+            color: var(--md-on-surface-variant);
+            padding: 3px 9px;
+            border-radius: var(--radius-xs);
+            font-weight: 600;
         }
+        .q-num-badge {
+            font-weight: 700;
+            background: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+            padding: 2px 9px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+        }
+
         .q-header-title {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 12px;
+            gap: 8px;
             font-size: 0.98rem;
             font-weight: 600;
-            line-height: 1.45;
+            line-height: 1.46;
+            color: var(--md-on-surface);
             margin-bottom: 12px;
         }
         .q-action-btns {
             display: flex;
             align-items: center;
-            gap: 2px;
+            flex-shrink: 0;
+            margin-top: -4px;
+            margin-right: -6px;
         }
 
-        /* MCQ Options */
         .opts-deck {
             display: grid;
             grid-template-columns: 1fr;
@@ -588,38 +906,48 @@
         }
         .opt-btn {
             width: 100%;
+            min-height: 46px;
             text-align: left;
-            background: var(--md-surface);
-            border: 1px solid var(--md-outline-variant);
+            background: var(--md-surface-container-low);
+            border: 1.5px solid transparent;
             border-radius: var(--radius-md);
             padding: 9px 12px;
             font-family: inherit;
             font-size: 0.9rem;
+            font-weight: 500;
             color: var(--md-on-surface);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: background 0.15s, border-color 0.15s;
+            gap: 11px;
+            transition: background-color 0.14s, border-color 0.14s, transform 0.08s;
         }
-        .opt-btn:hover:not(:disabled) {
-            background: var(--md-surface-container-high);
-            border-color: var(--md-outline);
+        [data-theme="dark"] .opt-btn {
+            background: var(--md-surface-container);
         }
+        .opt-btn:hover:not(:disabled) { background: var(--md-surface-container-high); }
+        .opt-btn:active:not(:disabled) { transform: scale(0.988); }
+        .opt-btn:disabled { cursor: default; }
+
         .opt-index-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: var(--radius-full);
-            background: var(--md-surface-container);
+            background: var(--md-surface-container-lowest);
             border: 1px solid var(--md-outline-variant);
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             font-weight: 700;
             color: var(--md-on-surface-variant);
             flex-shrink: 0;
         }
+        [data-theme="dark"] .opt-index-badge {
+            background: var(--md-surface-container-high);
+        }
+        .opt-text { flex: 1; line-height: 1.35; }
+        .opt-status-icon { display: none; flex-shrink: 0; }
 
         .opt-btn.correct {
             background: var(--md-correct-bg) !important;
@@ -632,150 +960,160 @@
             color: #ffffff;
             border-color: var(--md-correct);
         }
+        .opt-btn.correct .opt-status-icon.is-correct { display: inline-flex; }
+
         .opt-btn.wrong {
             background: var(--md-wrong-bg) !important;
             border-color: var(--md-wrong) !important;
             color: var(--md-wrong) !important;
+            font-weight: 600;
         }
         .opt-btn.wrong .opt-index-badge {
             background: var(--md-wrong);
             color: #ffffff;
             border-color: var(--md-wrong);
         }
+        .opt-btn.wrong .opt-status-icon.is-wrong { display: inline-flex; }
+
         .opt-btn.exam-selected {
-            background: var(--md-primary-container) !important;
+            background: var(--md-secondary-container) !important;
             border-color: var(--md-primary) !important;
-            color: var(--md-on-primary-container) !important;
+            color: var(--md-on-secondary-container) !important;
             font-weight: 600;
+        }
+        .opt-btn.exam-selected .opt-index-badge {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            border-color: var(--md-primary);
         }
 
         .q-explanation-box {
             margin-top: 10px;
-            padding: 9px 12px;
-            background: var(--md-surface-container-high);
+            padding: 10px 12px;
+            background: var(--md-surface-container);
             border-left: 3px solid var(--md-primary);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            border-radius: var(--radius-xs) var(--radius-sm) var(--radius-sm) var(--radius-xs);
             font-size: 0.84rem;
-            line-height: 1.4;
+            line-height: 1.45;
         }
 
         /* Exam Mode Banner */
         .exam-active-banner {
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-left: 4px solid var(--md-primary);
+            background: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+            padding-bottom: 18px;
         }
-        .timer-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .exam-progress-track {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.12);
         }
-        .timer-digits small { display: block; font-size: 0.68rem; color: var(--md-on-surface-variant); text-transform: uppercase; font-weight: 600; }
-        .timer-digits span { font-size: 1.25rem; font-weight: 700; color: var(--md-primary); }
+        .exam-progress-fill {
+            height: 100%;
+            width: 100%;
+            background: var(--md-primary);
+            transition: width 0.9s linear;
+        }
 
-        .pulse { animation: pulseAnim 1.5s infinite; color: var(--md-primary); }
+        .timer-box { display: flex; align-items: center; gap: 10px; }
+        .timer-digits small { display: block; font-size: 0.68rem; opacity: 0.85; text-transform: uppercase; font-weight: 700; }
+        .timer-digits span { font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        .pulse { animation: pulseAnim 1.5s infinite; }
         @keyframes pulseAnim {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.75; }
         }
 
-        .exam-score-card {
-            text-align: center;
-            padding: 18px;
-            border: 2px solid var(--md-primary);
-        }
-        .score-stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 12px 0;
-        }
+        .exam-score-card { text-align: center; padding: 18px; border: 2px solid var(--md-primary); }
+        .score-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
         .score-pill {
-            padding: 10px;
+            padding: 10px 8px;
             border-radius: var(--radius-md);
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            font-weight: 600;
-            font-size: 0.84rem;
+            align-items: center;
+            gap: 5px;
+            font-weight: 700;
+            font-size: 0.82rem;
         }
         .score-pill.correct { background: var(--md-correct-bg); color: var(--md-correct); }
         .score-pill.wrong { background: var(--md-wrong-bg); color: var(--md-wrong); }
         .score-pill.skipped { background: var(--md-surface-container-high); color: var(--md-on-surface-variant); }
 
-        /* Pagination */
+        /* Minimal Pagination */
         .md-pagination-bar {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
             gap: 8px;
-            padding: 8px 0;
+            padding: 4px 0;
+        }
+        .page-status-pill {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            background: var(--md-surface-container);
+            color: var(--md-on-surface-variant);
         }
         .jump-group {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            margin-left: 8px;
-        }
-        .jump-input {
-            width: 55px;
-            padding: 6px 8px;
-            border-radius: var(--radius-full);
+            background: var(--md-surface-container-lowest);
             border: 1px solid var(--md-outline-variant);
-            background: var(--md-surface);
+            border-radius: var(--radius-full);
+            padding: 2px 3px 2px 8px;
+            height: 34px;
+        }
+        [data-theme="dark"] .jump-group { background: var(--md-surface-container); }
+        .jump-input {
+            width: 44px;
+            border: none;
+            background: transparent;
             color: var(--md-on-surface);
             font-family: inherit;
             text-align: center;
-            font-size: 0.84rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+        }
+        .jump-go-btn {
+            height: 28px;
+            padding: 0 11px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+            font-family: inherit;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
         }
 
-        /* Sidebar Tree */
-        .md-tree-view { list-style: none; }
-        .tree-parent-node {
-            padding: 9px 12px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.88rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 2px;
-        }
-        .tree-parent-node:hover { background: var(--md-surface-container-high); }
-        .tree-children-list { list-style: none; padding-left: 12px; display: none; }
-        .tree-children-list.open { display: block; }
-        .tree-sub-node {
-            padding: 7px 12px;
-            border-radius: var(--radius-sm);
-            font-size: 0.82rem;
-            color: var(--md-on-surface-variant);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .tree-sub-node:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
-        .tree-sub-node.active {
-            background: var(--md-primary-container);
-            color: var(--md-on-primary-container);
-            font-weight: 600;
-        }
-
-        /* Bottom Nav (IN-FLOW FLEX ITEM ON MOBILE) */
+        /* ============================================================
+           5. BOTTOM NAVIGATION BAR (MD3 Active Pill)
+           ============================================================ */
         .md-bottom-nav {
             display: none;
-            height: var(--bottom-nav-height);
+            height: calc(var(--bottom-nav-height) + max(0px, env(safe-area-inset-bottom)));
             background: var(--md-surface-container);
-            border-top: 1px solid var(--md-outline-variant);
             z-index: 100;
             justify-content: space-around;
             align-items: center;
             flex-shrink: 0;
             padding-bottom: max(0px, env(safe-area-inset-bottom));
+            box-shadow: 0 -1px 0 var(--md-outline-variant);
         }
         .nav-item {
             background: none;
@@ -784,104 +1122,127 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
+            justify-content: center;
+            gap: 3px;
             font-family: inherit;
             font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
-            padding: 6px 12px;
+            padding: 5px 8px;
+            flex: 1;
+            max-width: 96px;
         }
-        .nav-item.active {
-            color: var(--md-primary);
-            font-weight: 700;
+        .nav-indicator-pill {
+            width: 56px;
+            height: 28px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.12s;
         }
+        .nav-item:active .nav-indicator-pill { transform: scale(0.92); }
+        .nav-item .icon-filled { display: none; }
+        .nav-item .icon-outlined { display: inline-block; }
+
+        .nav-item.active { color: var(--md-on-surface); font-weight: 700; }
+        .nav-item.active .nav-indicator-pill {
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+        }
+        .nav-item.active .icon-filled { display: inline-block; }
+        .nav-item.active .icon-outlined { display: none; }
 
         /* FAB & Toast */
         .md-fab {
             position: fixed;
-            bottom: 74px;
+            bottom: 80px;
             right: 16px;
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border-radius: var(--radius-md);
             background: var(--md-primary-container);
             color: var(--md-on-primary-container);
             border: none;
-            box-shadow: var(--elevation-2);
+            box-shadow: var(--elevation-3);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             opacity: 0;
             visibility: hidden;
-            transition: 0.25s;
+            transform: scale(0.8);
+            transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
             z-index: 90;
         }
-        .md-fab.show { opacity: 1; visibility: visible; }
+        .md-fab.show { opacity: 1; visibility: visible; transform: scale(1); }
 
         .md-toast {
             position: fixed;
-            bottom: 74px;
+            bottom: 80px;
             left: 50%;
-            transform: translateX(-50%) translateY(40px);
-            background: var(--md-on-surface);
-            color: var(--md-surface);
-            padding: 8px 18px;
-            border-radius: var(--radius-full);
-            font-size: 0.82rem;
+            transform: translateX(-50%) translateY(28px);
+            background: var(--md-inverse-surface);
+            color: var(--md-inverse-on-surface);
+            padding: 9px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.84rem;
             font-weight: 500;
             box-shadow: var(--elevation-3);
             opacity: 0;
             visibility: hidden;
-            transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.22s cubic-bezier(0.2, 0, 0, 1);
             z-index: 2000;
-            text-align: center;
-            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            max-width: calc(100vw - 32px);
         }
-        .md-toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
+        .md-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
         .skeleton-card {
             background: var(--md-surface-container);
-            border-radius: var(--radius-md);
-            height: 130px;
-            animation: pulseSkeleton 1.5s infinite ease-in-out;
+            border-radius: var(--radius-lg);
+            height: 132px;
+            animation: pulseSkeleton 1.4s infinite ease-in-out;
         }
         @keyframes pulseSkeleton {
-            0% { opacity: 0.6; }
-            50% { opacity: 0.3; }
-            100% { opacity: 0.6; }
+            0%, 100% { opacity: 0.75; }
+            50% { opacity: 0.35; }
         }
 
-        /* Responsive Layout Rules */
+        /* Responsive Breakpoints */
         @media (max-width: 991px) {
             .md-bottom-nav { display: flex; }
             .mode-select-wrapper { display: none; }
-            .print-actions { margin-left: 0; width: 100%; justify-content: space-between; }
         }
 
         @media (min-width: 992px) {
             .md-navigation-drawer {
                 position: relative;
+                top: auto;
+                left: auto;
+                bottom: auto;
+                height: 100%; /* Matches .md-app-layout height so footer never crops! */
                 transform: none;
                 z-index: 10;
                 width: 280px;
+                border-radius: 0;
                 box-shadow: none;
+                border-right: 1px solid var(--md-outline-variant);
             }
             .drawer-header button { display: none; }
-            .md-fab { bottom: 24px; }
-            .md-toast { bottom: 30px; }
+            .md-fab { bottom: 24px; right: 24px; }
+            .md-toast { bottom: 28px; }
+            .filter-chips-row { flex-wrap: wrap; }
         }
 
         /* Print Formats */
         @media print {
-            .md-top-app-bar, .md-bottom-nav, .controls-card, .md-pagination-bar, 
+            .md-top-app-bar, .md-bottom-nav, .controls-card, .md-pagination-bar,
             .app-footer, .md-fab, .md-navigation-drawer, .q-action-btns, .md-scrim,
-            #examHeader, #topicHeaderCard, .drawer-footer { display: none !important; }
-            
+            #examHeader, #topicHeaderCard, .drawer-footer, .custom-dropdown-menu { display: none !important; }
+
             body, .app-root, .md-app-layout, .md-main-content, .content-container {
                 height: auto !important;
                 overflow: visible !important;
@@ -895,6 +1256,7 @@
                 box-shadow: none !important;
                 break-inside: avoid;
                 margin-bottom: 12px;
+                border-radius: 8px !important;
             }
             body.print-twocol .questions-stream {
                 display: grid;
@@ -912,36 +1274,43 @@
 
     <div class="app-root">
         <!-- 1. TOP APP BAR -->
-        <header class="md-top-app-bar">
+        <header class="md-top-app-bar" id="topAppBar">
             <div class="app-bar-leading">
                 <button id="menuToggle" class="md-icon-btn" aria-label="Open Navigation Drawer" title="Categories">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <svg class="svg-icon md" viewBox="0 0 24 24"><path d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z"/></svg>
                 </button>
+                <div class="brand-mark" aria-hidden="true">
+                    <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
+                </div>
                 <div class="brand-info">
-    <h1 class="brand-title" style="font-size: 1.15rem; margin:0;">Daily GK</h1>
-    <span class="brand-subtitle">General Knowledge </span>
+                    <h1 class="brand-title">Daily GK</h1>
+                    <span class="brand-subtitle" id="headerSubtitle">General Knowledge</span>
                 </div>
             </div>
 
             <div class="app-bar-actions">
-                <!-- Mode Switcher (Desktop) -->
+                <!-- Desktop Custom Dropdown for Mode -->
                 <div class="mode-select-wrapper">
-                    <select id="viewMode" class="md-select">
+                    <select id="viewMode" class="native-hidden-control" aria-hidden="true" tabindex="-1">
                         <option value="quiz">Quiz Mode</option>
                         <option value="study">Study Mode</option>
                         <option value="exam">Exam Mode</option>
                     </select>
+                    <button type="button" id="customModeSelectBtn" class="custom-select-btn tonal" onclick="toggleCustomDropdown(event, 'mode')">
+                        <span id="customModeLabel">Quiz Mode</span>
+                        <svg class="svg-icon xs dd-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                    </button>
                 </div>
 
                 <!-- Dark Theme Toggle -->
                 <button id="darkModeBtn" class="md-icon-btn" aria-label="Toggle Dark Theme" title="Toggle Theme">
-                    <svg id="moonIcon" class="svg-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <svg id="sunIcon" class="svg-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <svg id="moonIcon" class="svg-icon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                    <svg id="sunIcon" class="svg-icon" style="display:none;" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
                 </button>
 
                 <!-- Bookmarks / Cart -->
                 <button id="cartViewBtn" class="md-icon-btn badge-btn" aria-label="Saved Questions" title="Saved Questions">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V6c0-.55.45-1 1-1h8c.55 0 1 .45 1 1v12z"/></svg>
                     <span id="cartCount" class="md-badge">0</span>
                 </button>
             </div>
@@ -949,19 +1318,19 @@
 
         <!-- 2. MIDDLE WORKSPACE -->
         <div class="md-app-layout">
-            
-            <!-- SIDEBAR / FULL SCREEN MODAL NAVIGATION DRAWER -->
+
+            <!-- SIDEBAR / MODAL NAVIGATION DRAWER -->
             <aside class="md-navigation-drawer" id="appSidebar">
                 <div class="drawer-header">
-                    <div class="drawer-title-group">
+                    <div>
                         <div class="drawer-title">Categories & Topics</div>
                         <div class="drawer-subtitle">Select a topic to practice</div>
                     </div>
-                    <button class="md-icon-btn" onclick="closeSidebarDrawer()" title="Close drawer">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <button class="md-icon-btn compact" onclick="closeSidebarDrawer()" aria-label="Close drawer" title="Close drawer">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg>
                     </button>
                 </div>
-                
+
                 <div class="drawer-content">
                     <ul id="categoryTree" class="md-tree-view">
                         <li style="padding: 16px; text-align: center; color: var(--md-on-surface-variant);">
@@ -972,44 +1341,42 @@
 
                 <!-- DRAWER FOOTER: DIRECT PWA INSTALL & PLATFORM DOWNLOADS -->
                 <div class="drawer-footer">
-                    <!-- Direct PWA Install Button -->
                     <button id="installBtn" class="md-btn md-btn-primary w-100">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14zm-1-6h-3V8h-2v5H8l4 4 4-4z"/></svg>
                         <span>Install as App</span>
                     </button>
 
-                    <!-- Platform Downloads -->
                     <div>
                         <div class="download-platforms-title">Direct Downloads</div>
                         <div class="platform-chips-grid">
                             <a href="app-release.apk" download title="Download Android APK" class="platform-chip-btn">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#3DDC84"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.081 12 8.081c-1.8533 0-3.5902.3306-5.1367.8687L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#3DDC84;"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.081 12 8.081c-1.8533 0-3.5902.3306-5.1367.8687L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
                                 <span>Android</span>
                             </a>
                             <a href="Daily-GK.bat" download title="Download for Windows" class="platform-chip-btn">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.55m10.949-7.95H24V24l-13.051-1.849"/></svg>
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#00a4ef;"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.55m10.949-7.95H24V24l-13.051-1.849"/></svg>
                                 <span>Windows</span>
                             </a>
                             <a href="Daily-GK.sh" download title="Download for Linux" class="platform-chip-btn">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#FCC624"><circle cx="12" cy="12" r="10"/><path d="M12 6c-3 0-4 2-4 4s1 3 1 5c0 2 1 3 3 3s3-1 3-3c0-2 1-3 1-5s-1-4-4-4z" fill="#000"/></svg>
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#FCC624;"><circle cx="12" cy="12" r="10"/><path d="M12 6c-3 0-4 2-4 4s1 3 1 5c0 2 1 3 3 3s3-1 3-3c0-2 1-3 1-5s-1-4-4-4z" fill="#000"/></svg>
                                 <span>Linux</span>
                             </a>
                             <a href="Daily-GK.jar" download title="Download J2ME Java JAR" class="platform-chip-btn">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#E76F00"><path d="M8 17c4 1 8 1 12 0-2 2-6 3-10 2-2 0-3-1-2-2zm-1-4c5 1 10 1 14 0-1 2-5 3-11 2-3 0-4-1-3-2zm5-11c1 2-1 4-2 6 2-1 4-3 3-5-1-1 0-1-1-1z"/></svg>
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#E76F00;"><path d="M8 17c4 1 8 1 12 0-2 2-6 3-10 2-2 0-3-1-2-2zm-1-4c5 1 10 1 14 0-1 2-5 3-11 2-3 0-4-1-3-2zm5-11c1 2-1 4-2 6 2-1 4-3 3-5-1-1 0-1-1-1z"/></svg>
                                 <span>Java JAR</span>
                             </a>
                             <a href="https://www.kaiostech.com/store/apps/?bundle_id=kaios.app.dailygkbn" target="_blank" rel="noopener" title="KaiOS Store" class="platform-chip-btn">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#6F02B5"><path d="M4.47 0a2.81 2.81 0 0 0-2.84 2.78v18.43A2.8 2.8 0 0 0 4.47 24a2.8 2.8 0 0 0 2.85-2.78V2.78A2.83 2.83 0 0 0 4.47 0zm9.4 8.54a2.8 2.8 0 0 0-3.89-.66 2.68 2.68 0 0 0-.68 3.8l8 11.15a2.81 2.81 0 0 0 3.88.66 2.68 2.68 0 0 0 .74-3.72l-.06-.09-7.98-11.14zm3.65-1.18a3.71 3.71 0 0 0 3.74-3.67A3.71 3.71 0 0 0 17.52.02a3.71 3.71 0 0 0-3.75 3.67 3.71 3.71 0 0 0 3.75 3.67z"/></svg>
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#6F02B5;"><path d="M4.47 0a2.81 2.81 0 0 0-2.84 2.78v18.43A2.8 2.8 0 0 0 4.47 24a2.8 2.8 0 0 0 2.85-2.78V2.78A2.83 2.83 0 0 0 4.47 0zm9.4 8.54a2.8 2.8 0 0 0-3.89-.66 2.68 2.68 0 0 0-.68 3.8l8 11.15a2.81 2.81 0 0 0 3.88.66 2.68 2.68 0 0 0 .74-3.72l-.06-.09-7.98-11.14zm3.65-1.18a3.71 3.71 0 0 0 3.74-3.67A3.71 3.71 0 0 0 17.52.02a3.71 3.71 0 0 0-3.75 3.67 3.71 3.71 0 0 0 3.75 3.67z"/></svg>
                                 <span>KaiOS</span>
                             </a>
                             <a href="Daily-GK.vbm" download title="Download for MRE Phone" class="platform-chip-btn">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24" fill="#0088cc"><rect x="4" y="2" width="16" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.5"/></svg>
+                                <svg class="svg-icon sm" viewBox="0 0 24 24" style="fill:#0088cc;"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 18H7V5h10v13z"/></svg>
                                 <span>MRE .vbm</span>
                             </a>
                         </div>
                     </div>
 
-                    <div style="text-align:center; font-size:0.7rem; color:var(--md-on-surface-variant);">
+                    <div style="text-align:center; font-size:0.68rem; color:var(--md-on-surface-variant);">
                         Daily GK &bull; 2026 Edition
                     </div>
                 </div>
@@ -1018,70 +1385,100 @@
             <!-- SCRIM OVERLAY -->
             <div id="sidebarOverlay" class="md-scrim" onclick="closeSidebarDrawer()"></div>
 
-            <!-- MAIN SCROLLABLE CONTENT (100% IN-VIEW, NEVER CUT OFF) -->
+            <!-- MAIN SCROLLABLE CONTENT -->
             <main class="md-main-content" id="mainScroll">
                 <div class="content-container">
 
-                    <!-- STATUS / CART VIEW CHIP -->
+                    <!-- STATUS / CART VIEW CHIP (Shown only when filtered or in Saved View) -->
                     <div id="topicHeaderCard" class="md-status-chip-bar" style="display:none;">
                         <div class="status-chip">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
                             <span id="topicName">All Questions</span>
                         </div>
                         <div id="cartActions" class="cart-action-group" style="display:none;">
                             <button onclick="downloadSavedQuestions()" class="md-btn md-btn-tonal sm" title="Export saved questions to file">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                <span>Download List</span>
+                                <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zm-1-4l-1.41-1.41L13 12.17V4h-2v8.17L8.41 9.59 7 11l5 5 5-5z"/></svg>
+                                <span>Export .TXT</span>
                             </button>
                             <button id="exitCart" class="md-btn md-btn-danger-tonal sm">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                                <span>Exit Saved View</span>
+                                <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg>
+                                <span>Exit Saved</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- CONTROLS CARD -->
-                    <section class="md-card controls-card" id="mainControls">
+                    <!-- CONTROLS CARD (Minimal Search Bar w/ EN/Avro + Custom Selectbox Dropdowns) -->
+                    <section class="controls-card" id="mainControls">
                         <div class="search-field-wrapper">
-                            <svg class="svg-icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            <input type="text" id="searchInput" class="md-search-input" placeholder="Search questions (e.g. Science, History, Geography)...">
+                            <svg class="svg-icon sm search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            <input
+                                type="text"
+                                id="searchInput"
+                                class="md-search-input"
+                                placeholder="Search questions..."
+                                autocomplete="off"
+                                autocorrect="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                inputmode="text"
+                            >
+                            <!-- Clear button: only shown when input has text -->
+                            <button type="button" id="clearSearchBtn" class="md-icon-btn clear-search-btn" aria-label="Clear search" title="Clear search">
+                                <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg>
+                            </button>
+                            <!-- Inbuilt English / Avro Keyboard Toggle -->
+                            <button type="button" id="kbToggleBtn" class="kb-toggle-btn" title="Switch Keyboard: English / Avro Phonetic" aria-label="Switch search keyboard between English and Avro Phonetic">
+                                <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
+                                <span id="kbToggleLabel">EN</span>
+                            </button>
                         </div>
+
+                        <!-- Hidden Compatibility Selects -->
+                        <select id="sortSelect" class="native-hidden-control" aria-hidden="true" tabindex="-1">
+                            <option value="asc">Ascending (1-10)</option>
+                            <option value="desc">Descending (10-1)</option>
+                        </select>
+                        <select id="perPageSelect" class="native-hidden-control" aria-hidden="true" tabindex="-1">
+                            <option value="10" selected>10 / Page</option>
+                            <option value="20">20 / Page</option>
+                            <option value="50">50 / Page</option>
+                            <option value="100">100 / Page</option>
+                        </select>
+                        <select id="printFormatSelect" class="native-hidden-control" aria-hidden="true" tabindex="-1">
+                            <option value="simple">Print: Simple List</option>
+                            <option value="grid">Print: 2x2 Grid</option>
+                            <option value="twocol">Print: 2 Columns</option>
+                        </select>
 
                         <div class="filter-chips-row">
                             <label class="md-chip-check">
                                 <input type="checkbox" id="shuffleCheck">
                                 <span class="chip-content">
-                                    <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                                    Shuffle
+                                    <svg class="svg-icon xs chip-default-icon" viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+                                    <svg class="svg-icon xs chip-check-tick" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    <span>Shuffle</span>
                                 </span>
                             </label>
 
-                            <div class="select-pill">
-                                <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                                <select id="sortSelect">
-                                    <option value="asc">Ascending (1-10)</option>
-                                    <option value="desc">Descending (10-1)</option>
-                                </select>
-                            </div>
+                            <!-- Custom Dropdown: Sort -->
+                            <button type="button" id="customSortBtn" class="custom-select-btn" onclick="toggleCustomDropdown(event, 'sort')">
+                                <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
+                                <span id="customSortLabel">1 &rarr; 10</span>
+                                <svg class="svg-icon xs dd-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            </button>
 
-                            <div class="select-pill">
-                                <select id="perPageSelect" aria-label="Questions per page">
-                                    <option value="10" selected>10 / Page</option>
-                                    <option value="20">20 / Page</option>
-                                    <option value="50">50 / Page</option>
-                                    <option value="100">100 / Page</option>
-                                </select>
-                            </div>
+                            <!-- Custom Dropdown: Per Page -->
+                            <button type="button" id="customPerPageBtn" class="custom-select-btn" onclick="toggleCustomDropdown(event, 'perPage')">
+                                <span id="customPerPageLabel">10 / Page</span>
+                                <svg class="svg-icon xs dd-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            </button>
 
+                            <!-- Custom Dropdown: Print (Format + Action combined cleanly) -->
                             <div class="print-actions">
-                                <select id="printFormatSelect" class="md-select-inline">
-                                    <option value="simple">Print: Simple List</option>
-                                    <option value="grid">Print: 2x2 Grid</option>
-                                    <option value="twocol">Print: 2 Columns</option>
-                                </select>
-                                <button onclick="printQuestions()" class="md-btn md-btn-outlined sm" title="Print Current View">
-                                    <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="6" y="14" width="12" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                <button type="button" id="customPrintBtn" class="custom-select-btn" onclick="toggleCustomDropdown(event, 'print')" title="Print Questions">
+                                    <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
                                     <span>Print</span>
+                                    <svg class="svg-icon xs dd-caret" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -1090,16 +1487,19 @@
                     <!-- EXAM MODE TOP BAR -->
                     <div id="examHeader" class="md-card exam-active-banner" style="display:none;">
                         <div class="timer-box">
-                            <svg class="svg-icon md pulse" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <svg class="svg-icon lg pulse" viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42A8.962 8.962 0 0 0 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9a8.994 8.994 0 0 0 7.03-14.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
                             <div class="timer-digits">
                                 <small>Time Remaining</small>
                                 <span id="examTimerDisplay">00:00</span>
                             </div>
                         </div>
                         <button id="submitExamBtn" class="md-btn md-btn-primary">
-                            <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>Submit Exam</span>
+                            <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Submit</span>
                         </button>
+                        <div class="exam-progress-track">
+                            <div id="examProgressBar" class="exam-progress-fill"></div>
+                        </div>
                     </div>
 
                     <!-- EXAM RESULT SCORECARD -->
@@ -1113,65 +1513,82 @@
 
                     <!-- SEO DESCRIPTION CARD -->
                     <article class="md-card" id="seoTextSec">
-                        <h2 style="font-size:1.02rem; font-weight:700; margin-bottom:6px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
-                        <p style="font-size:0.84rem; color:var(--md-on-surface-variant); line-height:1.5;">
+                        <h2 style="font-size:0.96rem; font-weight:700; margin-bottom:5px; color:var(--md-primary);">General Knowledge & Exam Preparation</h2>
+                        <p style="font-size:0.82rem; color:var(--md-on-surface-variant); line-height:1.5;">
                             Welcome to <strong>Daily GK MCQ</strong>. Master subjects including General Science, Geography, History, Information Technology, and Current Affairs with our interactive Quiz, Study, and Exam modes.
                         </p>
                     </article>
 
                     <!-- FOOTER -->
-                    <footer class="app-footer" style="text-align:center; padding:10px 0; font-size:0.76rem; color:var(--md-on-surface-variant);">
+                    <footer class="app-footer" style="text-align:center; padding:6px 0; font-size:0.74rem; color:var(--md-on-surface-variant);">
                         <div>&copy; 2026 Daily GK MCQ &bull; All Rights Reserved</div>
-                        <div style="margin-top:3px;">Last Updated: <span id="lastUpdateDate">Loading...</span></div>
+                        <div style="margin-top:2px;">Last Updated: <span id="lastUpdateDate">Loading...</span></div>
                     </footer>
                 </div>
             </main>
         </div>
 
-        <!-- 3. BOTTOM NAVIGATION (IN-FLOW FLEX ELEMENT) -->
-        <nav class="md-bottom-nav">
+        <!-- 3. BOTTOM NAVIGATION BAR -->
+        <nav class="md-bottom-nav" aria-label="Primary Modes">
             <button class="nav-item active" onclick="setModeNav('quiz')">
-                <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div class="nav-indicator-pill">
+                    <svg class="svg-icon icon-outlined" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12zm-6.49-5.84c.41-.73 1.18-1.16 1.63-1.8.48-.68.21-1.94-1.14-1.94-.88 0-1.32.67-1.5 1.23l-1.37-.57C11.51 5.96 12.52 5 13.99 5c1.23 0 2.08.56 2.51 1.26.37.6.58 1.73.01 2.57-.63.93-1.23 1.21-1.56 1.81-.13.24-.18.4-.18 1.18h-1.52c.01-.41-.06-1.08.26-1.66zm-.56 3.79c0-.59.47-1.04 1.05-1.04.59 0 1.04.45 1.04 1.04 0 .58-.45 1.05-1.04 1.05-.58 0-1.05-.47-1.05-1.05z"/></svg>
+                    <svg class="svg-icon icon-filled" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6.49 8.16c.41-.73 1.18-1.16 1.63-1.8.48-.68.21-1.94-1.14-1.94-.88 0-1.32.67-1.5 1.23l-1.37-.57C11.51 5.96 12.52 5 13.99 5c1.23 0 2.08.56 2.51 1.26.37.6.58 1.73.01 2.57-.63.93-1.23 1.21-1.56 1.81-.13.24-.18.4-.18 1.18h-1.52c.01-.41-.06-1.08.26-1.66zm-.56 3.79c0-.59.47-1.04 1.05-1.04.59 0 1.04.45 1.04 1.04 0 .58-.45 1.05-1.04 1.05-.58 0-1.05-.47-1.05-1.05z"/></svg>
+                </div>
                 <span>Quiz</span>
             </button>
+
             <button class="nav-item" onclick="setModeNav('study')">
-                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <div class="nav-indicator-pill">
+                    <svg class="svg-icon icon-outlined" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>
+                    <svg class="svg-icon icon-filled" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/><path d="M17.5 10.5c.88 0 1.73.09 2.5.26V9.24c-.79-.15-1.64-.24-2.5-.24-1.7 0-3.24.29-4.5.83v1.66c1.13-.64 2.7-.99 4.5-.99zM13 12.49v1.66c1.13-.64 2.7-.99 4.5-.99.88 0 1.73.09 2.5.26v-1.52c-.79-.15-1.64-.24-2.5-.24-1.7 0-3.24.3-4.5.83zm4.5 1.84c-1.7 0-3.24.29-4.5.83v1.66c1.13-.64 2.7-.99 4.5-.99.88 0 1.73.09 2.5.26v-1.52c-.79-.15-1.64-.24-2.5-.24z"/></svg>
+                </div>
                 <span>Study</span>
             </button>
+
             <button class="nav-item" onclick="setModeNav('exam')">
-                <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <div class="nav-indicator-pill">
+                    <svg class="svg-icon icon-outlined" viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42A8.962 8.962 0 0 0 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9a8.994 8.994 0 0 0 7.03-14.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+                    <svg class="svg-icon icon-filled" viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42A8.962 8.962 0 0 0 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9a8.994 8.994 0 0 0 7.03-14.61zM13 14h-2V8h2v6z"/></svg>
+                </div>
                 <span>Exam</span>
             </button>
+
             <button class="nav-item" onclick="openSidebarDrawer()">
-                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                <div class="nav-indicator-pill">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zm0 7a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5zM3 21.5h8v-8H3v8zm2-6h4v4H5v-4z"/></svg>
+                </div>
                 <span>Topics</span>
             </button>
         </nav>
     </div>
 
+    <!-- SHARED FLOATING CUSTOM DROPDOWN MENU -->
+    <div id="customDropdownMenu" class="custom-dropdown-menu" role="listbox"></div>
+
     <!-- FAB BACK TO TOP -->
     <button id="backToTop" class="md-fab" title="Scroll to top" aria-label="Scroll to top">
-        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><polyline points="5 12 12 5 19 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="svg-icon md" viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
     </button>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="mdToast" class="md-toast"></div>
+    <!-- SNACKBAR TOAST -->
+    <div id="mdToast" class="md-toast" role="status" aria-live="polite">
+        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <span id="mdToastText"></span>
+    </div>
 
     <!-- Opera Mini / Legacy Browser Detection & Auto Redirect -->
-<script type="text/javascript">
-(function() {
-    var ua = navigator.userAgent || navigator.vendor || window.opera || '';
-    // জাভা, সিম্বিয়ান, অপেরা মিনি ও পুরনো ব্রাউজার ডিটেকশন
-    var isLegacy = /Opera Mini|Opera Mobi|J2ME|MIDP|NetFront|UCWEB|Series60|SymbianOS|NokiaBrowser|MAUI/i.test(ua);
-    var search = window.location.search || '';
-    
-    // যদি ব্রাউজার ওল্ড হয় এবং ইউজার জোর করে ডেক্সটপ মোডে না থাকে
-    if (isLegacy && search.indexOf('force_full=1') === -1) {
-        window.location.replace('lite.html' + search);
-    }
-})();
-        </script>
-    
+    <script type="text/javascript">
+    (function() {
+        var ua = navigator.userAgent || navigator.vendor || window.opera || '';
+        var isLegacy = /Opera Mini|Opera Mobi|J2ME|MIDP|NetFront|UCWEB|Series60|SymbianOS|NokiaBrowser|MAUI/i.test(ua);
+        var search = window.location.search || '';
+        if (isLegacy && search.indexOf('force_full=1') === -1) {
+            window.location.replace('lite.html' + search);
+        }
+    })();
+    </script>
+
     <!-- JAVASCRIPT ENGINE -->
     <script>
         "use strict";
@@ -1182,32 +1599,31 @@
             treeData: {},
             cart: JSON.parse(localStorage.getItem('gk_cart')) || [],
             isCartView: false,
-            
+
             currCat: null,
             currTopic: null,
             mode: 'quiz',
             shuffle: false,
             sortOrder: 'asc',
             searchQuery: '',
-            
+
             page: 1,
             perPage: 10,
             isLoading: true,
             targetPage: 1,
-            
+
             filesLoaded: 0,
             totalFiles: 0,
 
             examActive: false,
             examTimer: null,
             examTimeLeft: 0,
+            examTotalTime: 300,
             userAnswers: {}
         };
 
-        // PWA Install Prompt Holder
         let deferredPrompt = null;
 
-        // Built-in Demo Data (Used if data/main.json is unreachable)
         const sampleFallbackData = [
             {
                 id: 0,
@@ -1244,6 +1660,7 @@
 
         function initApp() {
             initDarkMode();
+            initAvroSearchKeyboard();
             readURLParams();
             setupEventListeners();
             setupPWA();
@@ -1252,30 +1669,436 @@
             startIncrementalLoad();
         }
 
+        /* ============================================================
+           CUSTOM INLINE SELECTBOX DROPDOWNS
+           ============================================================ */
+        var activeDropdownType = null;
+        var activeDropdownTrigger = null;
+
+        const DROPDOWN_CONFIG = {
+            mode: {
+                triggerId: 'customModeSelectBtn',
+                getValue: () => app.mode,
+                options: [
+                    { value: 'quiz', label: 'Quiz Mode', chip: 'Quiz Mode' },
+                    { value: 'study', label: 'Study Mode', chip: 'Study Mode' },
+                    { value: 'exam', label: 'Exam Mode', chip: 'Exam Mode' }
+                ],
+                onSelect: (opt) => {
+                    switchMode(opt.value);
+                }
+            },
+            sort: {
+                triggerId: 'customSortBtn',
+                getValue: () => app.sortOrder,
+                options: [
+                    { value: 'asc', label: 'Ascending (1 → 10)', chip: '1 → 10' },
+                    { value: 'desc', label: 'Descending (10 → 1)', chip: '10 → 1' }
+                ],
+                onSelect: (opt) => {
+                    app.sortOrder = opt.value;
+                    app.shuffle = false;
+                    document.getElementById('shuffleCheck').checked = false;
+                    document.getElementById('sortSelect').value = opt.value;
+                    document.getElementById('customSortLabel').textContent = opt.chip;
+                    runFilter();
+                }
+            },
+            perPage: {
+                triggerId: 'customPerPageBtn',
+                getValue: () => String(app.perPage),
+                options: [
+                    { value: '10', label: '10 / Page', chip: '10 / Page' },
+                    { value: '20', label: '20 / Page', chip: '20 / Page' },
+                    { value: '50', label: '50 / Page', chip: '50 / Page' },
+                    { value: '100', label: '100 / Page', chip: '100 / Page' }
+                ],
+                onSelect: (opt) => {
+                    app.perPage = parseInt(opt.value);
+                    app.page = 1;
+                    document.getElementById('perPageSelect').value = opt.value;
+                    document.getElementById('customPerPageLabel').textContent = opt.chip;
+                    render();
+                }
+            },
+            print: {
+                triggerId: 'customPrintBtn',
+                getValue: () => document.getElementById('printFormatSelect').value,
+                options: [
+                    { value: 'simple', label: 'Simple List' },
+                    { value: 'grid', label: '2×2 Grid' },
+                    { value: 'twocol', label: '2 Columns' }
+                ],
+                onSelect: (opt) => {
+                    document.getElementById('printFormatSelect').value = opt.value;
+                    printQuestions();
+                }
+            }
+        };
+
+        window.toggleCustomDropdown = function(e, type) {
+            e.stopPropagation();
+            const menu = document.getElementById('customDropdownMenu');
+            const cfg = DROPDOWN_CONFIG[type];
+            if (!cfg) return;
+
+            const trigger = document.getElementById(cfg.triggerId);
+            if (activeDropdownType === type && menu.classList.contains('show')) {
+                closeCustomDropdown();
+                return;
+            }
+
+            closeCustomDropdown();
+            activeDropdownType = type;
+            activeDropdownTrigger = trigger;
+            trigger.classList.add('open');
+
+            const currentVal = cfg.getValue();
+            menu.innerHTML = '';
+
+            cfg.options.forEach(opt => {
+                const item = document.createElement('button');
+                item.type = 'button';
+                const isSelected = (opt.value === currentVal);
+                item.className = 'dd-option-item' + (isSelected ? ' selected' : '');
+                item.innerHTML = `
+                    <span>${opt.label}</span>
+                    <svg class="svg-icon xs dd-check" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                `;
+                item.onclick = (ev) => {
+                    ev.stopPropagation();
+                    closeCustomDropdown();
+                    cfg.onSelect(opt);
+                };
+                menu.appendChild(item);
+            });
+
+            menu.classList.add('show');
+
+            // Position cleanly under/over trigger without viewport overflow
+            const rect = trigger.getBoundingClientRect();
+            const menuRect = menu.getBoundingClientRect();
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+
+            let left = rect.left;
+            if (left + menuRect.width > vw - 12) {
+                left = Math.max(12, rect.right - menuRect.width);
+            }
+
+            let top = rect.bottom + 6;
+            if (top + menuRect.height > vh - 16) {
+                top = Math.max(12, rect.top - menuRect.height - 6);
+            }
+
+            menu.style.left = left + 'px';
+            menu.style.top = top + 'px';
+        };
+
+        function closeCustomDropdown() {
+            const menu = document.getElementById('customDropdownMenu');
+            if (menu) menu.classList.remove('show');
+            if (activeDropdownTrigger) activeDropdownTrigger.classList.remove('open');
+            activeDropdownType = null;
+            activeDropdownTrigger = null;
+        }
+
+        /* ============================================================
+           AVRO PHONETIC + ENGLISH DEVICE KEYBOARD ENGINE (PC & ANDROID)
+           ============================================================ */
+        const avroState = {
+            active: false,
+            lastValue: '',
+            rawToken: '',
+            tokenStart: 0,
+            tokenEnd: 0
+        };
+
+        const AVRO_VOWELS = {
+            'rri': ['\u098B', '\u09C3'], // ঋ, ৃ
+            'OI':  ['\u0990', '\u09C8'], // ঐ, ৈ
+            'OU':  ['\u0994', '\u09CC'], // ঔ, ৌ
+            'o':   ['\u0985', ''],       // অ, inherent
+            'a':   ['\u0986', '\u09BE'], // আ, া
+            'i':   ['\u0987', '\u09BF'], // ই, ি
+            'I':   ['\u0988', '\u09C0'], // ঈ, ী
+            'u':   ['\u0989', '\u09C1'], // উ, ু
+            'U':   ['\u098A', '\u09C2'], // ঊ, ূ
+            'e':   ['\u098F', '\u09C7'], // এ, ে
+            'O':   ['\u0993', '\u09CB']  // ও, ো
+        };
+
+        const AVRO_CONSONANTS = {
+            'kSh': '\u0995\u09CD\u09B7', // ক্ষ
+            'jNG': '\u099C\u09CD\u099E', // জ্ঞ
+            'ngk': '\u0999\u09CD\u0995', // ঙ্ক
+            'ngg': '\u0999\u09CD\u0997', // ঙ্গ
+            'chh': '\u099B',             // ছ
+            'kh':  '\u0996',             // খ
+            'gh':  '\u0998',             // ঘ
+            'Ng':  '\u0999',             // ঙ
+            'NG':  '\u099E',             // ঞ
+            'ch':  '\u099A',             // চ
+            'jh':  '\u099D',             // ঝ
+            'Th':  '\u09A0',             // ঠ
+            'Dh':  '\u09A2',             // ঢ
+            'th':  '\u09A5',             // থ
+            'dh':  '\u09A7',             // ধ
+            'ph':  '\u09AB',             // ফ
+            'bh':  '\u09AD',             // ভ
+            'sh':  '\u09B6',             // শ
+            'Sh':  '\u09B7',             // ষ
+            'Rh':  '\u09DD',             // ঢ়
+            'k':   '\u0995',             // ক
+            'g':   '\u0997',             // গ
+            'c':   '\u099A',             // চ
+            'j':   '\u099C',             // জ
+            'T':   '\u099F',             // ট
+            'D':   '\u09A1',             // ড
+            'N':   '\u09A3',             // ণ
+            't':   '\u09A4',             // ত
+            'd':   '\u09A6',             // দ
+            'n':   '\u09A8',             // ন
+            'p':   '\u09AA',             // প
+            'f':   '\u09AB',             // ফ
+            'b':   '\u09AC',             // ব
+            'v':   '\u09AD',             // ভ
+            'm':   '\u09AE',             // ম
+            'z':   '\u09AF',             // য
+            'r':   '\u09B0',             // র
+            'l':   '\u09B2',             // ল
+            'S':   '\u09B6',             // শ
+            's':   '\u09B8',             // স
+            'h':   '\u09B9',             // হ
+            'R':   '\u09DC',             // ড়
+            'y':   '\u09DF',             // য়
+            'w':   '\u0993\u09DF',       // ওয় (non-post-consonant)
+            'q':   '\u0995',             // ক
+            'x':   '\u0995\u09CD\u09B8'  // ক্স
+        };
+
+        const AVRO_OTHER = {
+            't`': '\u09CE', // ৎ
+            'ng': '\u0982', // ং
+            ':':  '\u0983', // ঃ
+            '^':  '\u0981', // ঁ
+            ',,': '\u09CD', // ্
+            '`':  '',       // break conjunct
+            '0': '\u09E6', '1': '\u09E7', '2': '\u09E8', '3': '\u09E9', '4': '\u09EA',
+            '5': '\u09EB', '6': '\u09EC', '7': '\u09ED', '8': '\u09EE', '9': '\u09EF'
+        };
+
+        const AVRO_KEYS = []
+            .concat(Object.keys(AVRO_VOWELS), Object.keys(AVRO_CONSONANTS), Object.keys(AVRO_OTHER))
+            .sort((a, b) => b.length - a.length);
+
+        function avroParse(input) {
+            if (!input) return '';
+            let out = '';
+            let i = 0;
+            let prevType = 'NONE'; // NONE | CONSONANT | VOWEL | OTHER
+
+            while (i < input.length) {
+                // Ref rule: 'rr' followed by a consonant (not vowel/end)
+                if (input.slice(i, i + 2) === 'rr' && i + 2 < input.length && !input.slice(i, i + 3).startsWith('rri')) {
+                    const nextChar = input[i + 2];
+                    if (AVRO_CONSONANTS[nextChar]) {
+                        out += '\u09B0\u09CD';
+                        prevType = 'OTHER';
+                        i += 2;
+                        continue;
+                    }
+                }
+
+                let matched = null;
+                for (let k = 0; k < AVRO_KEYS.length; k++) {
+                    const key = AVRO_KEYS[k];
+                    if (input.startsWith(key, i)) {
+                        matched = key;
+                        break;
+                    }
+                }
+
+                if (!matched) {
+                    out += input[i];
+                    prevType = 'OTHER';
+                    i++;
+                    continue;
+                }
+
+                if (AVRO_VOWELS[matched]) {
+                    const pair = AVRO_VOWELS[matched];
+                    out += (prevType === 'CONSONANT') ? pair[1] : pair[0];
+                    prevType = 'VOWEL';
+                } else if (AVRO_CONSONANTS[matched]) {
+                    if (prevType === 'CONSONANT') {
+                        if (matched === 'y') {
+                            out += '\u09CD\u09AF'; // য-ফলা
+                        } else if (matched === 'w') {
+                            out += '\u09CD\u09AC'; // ব-ফলা
+                        } else {
+                            out += '\u09CD' + AVRO_CONSONANTS[matched];
+                        }
+                    } else {
+                        out += AVRO_CONSONANTS[matched];
+                    }
+                    prevType = 'CONSONANT';
+                } else {
+                    out += AVRO_OTHER[matched];
+                    prevType = 'OTHER';
+                }
+
+                i += matched.length;
+            }
+            return out;
+        }
+
+        function initAvroSearchKeyboard() {
+            const btn = document.getElementById('kbToggleBtn');
+            const label = document.getElementById('kbToggleLabel');
+            const input = document.getElementById('searchInput');
+
+            btn.onclick = function() {
+                avroState.active = !avroState.active;
+                avroState.rawToken = '';
+                avroState.lastValue = input.value;
+                avroState.tokenStart = input.value.length;
+                avroState.tokenEnd = input.value.length;
+
+                btn.classList.toggle('avro-on', avroState.active);
+                label.textContent = avroState.active ? 'অভ্র' : 'EN';
+                input.placeholder = avroState.active
+                    ? 'Avro Phonetic (e.g. biggan, bangla)...'
+                    : 'Search questions...';
+
+                input.focus();
+                showToast(avroState.active ? 'Avro Phonetic keyboard active' : 'English keyboard active');
+            };
+        }
+
+        function processAvroInput(el) {
+            const val = el.value;
+            if (!avroState.active) {
+                avroState.lastValue = val;
+                avroState.rawToken = '';
+                return;
+            }
+
+            const prev = avroState.lastValue;
+            let prefixLen = 0;
+            const minLen = Math.min(prev.length, val.length);
+            while (prefixLen < minLen && prev[prefixLen] === val[prefixLen]) {
+                prefixLen++;
+            }
+
+            let suffixLen = 0;
+            while (
+                suffixLen < (prev.length - prefixLen) &&
+                suffixLen < (val.length - prefixLen) &&
+                prev[prev.length - 1 - suffixLen] === val[val.length - 1 - suffixLen]
+            ) {
+                suffixLen++;
+            }
+
+            const removed = prev.slice(prefixLen, prev.length - suffixLen);
+            const inserted = val.slice(prefixLen, val.length - suffixLen);
+            const isAsciiWord = /^[a-zA-Z0-9^:`~]+$/.test(inserted);
+
+            const insideActiveToken = (
+                prefixLen >= avroState.tokenStart &&
+                prefixLen <= avroState.tokenEnd &&
+                (prev.length - suffixLen) <= avroState.tokenEnd
+            );
+
+            if (insideActiveToken && removed === '' && isAsciiWord) {
+                // Handle Android IME composition buffer re-send vs normal single-char append
+                if (inserted.length > 1 && avroState.rawToken && inserted.toLowerCase().startsWith(avroState.rawToken.toLowerCase())) {
+                    avroState.rawToken = inserted;
+                } else {
+                    avroState.rawToken += inserted;
+                }
+                const bn = avroParse(avroState.rawToken);
+                const newVal = val.slice(0, avroState.tokenStart) + bn + val.slice(val.length - suffixLen);
+                const caret = avroState.tokenStart + bn.length;
+
+                el.value = newVal;
+                try { el.setSelectionRange(caret, caret); } catch (err) {}
+                avroState.tokenEnd = caret;
+                avroState.lastValue = newVal;
+            } else if (insideActiveToken && inserted === '' && removed.length > 0 && avroState.rawToken.length > 0) {
+                // Smooth Avro Backspace
+                avroState.rawToken = avroState.rawToken.slice(0, -1);
+                const bn = avroParse(avroState.rawToken);
+                const newVal = val.slice(0, avroState.tokenStart) + bn + val.slice(val.length - suffixLen);
+                const caret = avroState.tokenStart + bn.length;
+
+                el.value = newVal;
+                try { el.setSelectionRange(caret, caret); } catch (err) {}
+                avroState.tokenEnd = caret;
+                avroState.lastValue = newVal;
+            } else if (removed === '' && isAsciiWord) {
+                // New word started
+                avroState.tokenStart = prefixLen;
+                avroState.rawToken = inserted;
+                const bn = avroParse(inserted);
+                const newVal = val.slice(0, prefixLen) + bn + val.slice(val.length - suffixLen);
+                const caret = prefixLen + bn.length;
+
+                el.value = newVal;
+                try { el.setSelectionRange(caret, caret); } catch (err) {}
+                avroState.tokenEnd = caret;
+                avroState.lastValue = newVal;
+            } else if (inserted && /^[a-zA-Z0-9^:`~\s]+$/.test(inserted) && /[a-zA-Z]/.test(inserted)) {
+                // Pasted multi-word ASCII phrase
+                const converted = inserted.replace(/[a-zA-Z0-9^:`~]+/g, w => avroParse(w));
+                const newVal = val.slice(0, prefixLen) + converted + val.slice(val.length - suffixLen);
+                const caret = prefixLen + converted.length;
+
+                el.value = newVal;
+                try { el.setSelectionRange(caret, caret); } catch (err) {}
+                avroState.rawToken = '';
+                avroState.tokenStart = caret;
+                avroState.tokenEnd = caret;
+                avroState.lastValue = newVal;
+            } else {
+                // Space, punctuation, or native Bangla device keyboard input passes through cleanly
+                avroState.rawToken = '';
+                const caret = val.length - suffixLen;
+                avroState.tokenStart = caret;
+                avroState.tokenEnd = caret;
+                avroState.lastValue = val;
+            }
+        }
+
         function showToast(message) {
             const toast = document.getElementById('mdToast');
-            if (!toast) return;
-            toast.textContent = message;
+            const textEl = document.getElementById('mdToastText');
+            if (!toast || !textEl) return;
+            textEl.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => {
+            clearTimeout(toast._hideTimer);
+            toast._hideTimer = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 2500);
+            }, 2400);
         }
 
         function initDarkMode() {
             let isDark = localStorage.getItem('gk_dark_mode') === 'true';
             const moon = document.getElementById('moonIcon');
             const sun = document.getElementById('sunIcon');
-            
+            const metaTheme = document.getElementById('metaThemeColor');
+
             function applyTheme(dark) {
-                if(dark) {
+                if (dark) {
                     document.documentElement.setAttribute('data-theme', 'dark');
                     moon.style.display = 'none';
                     sun.style.display = 'block';
+                    if (metaTheme) metaTheme.setAttribute('content', '#111318');
                 } else {
                     document.documentElement.setAttribute('data-theme', 'light');
                     moon.style.display = 'block';
                     sun.style.display = 'none';
+                    if (metaTheme) metaTheme.setAttribute('content', '#f8f9fd');
                 }
             }
             applyTheme(isDark);
@@ -1291,33 +2114,31 @@
         function readAloud(text) {
             if (!window.speechSynthesis) {
                 if (typeof AndroidBridge !== "undefined" && typeof AndroidBridge.speak === "function") {
-        AndroidBridge.speak(text);
-        
-    } else {
-            showToast('Speech synthesis is not supported on your browser.');
-                return;
+                    AndroidBridge.speak(text);
+                } else {
+                    showToast('Speech synthesis is not supported on your browser.');
                 }
+                return;
             }
-            window.speechSynthesis.cancel(); 
+            window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(text);
-            //utterance.lang = 'en-US'; 
-            utterance.rate = 0.95;     
+            utterance.rate = 0.95;
             window.speechSynthesis.speak(utterance);
         }
 
         function readURLParams() {
-    const params = new URLSearchParams(window.location.search);
-    app.currCat = params.get('cat') || null;
-    app.currTopic = params.get('topic') || null;
-    app.page = parseInt(params.get('page')) || 1;
-    app.targetPage = app.page; // <-- এই লাইনটি যুক্ত করুন (ইউআরএল-এর পেজ মনে রাখার জন্য)
-    app.mode = params.get('mode') || 'quiz';
-    app.isCartView = params.get('cart') === 'true';
+            const params = new URLSearchParams(window.location.search);
+            app.currCat = params.get('cat') || null;
+            app.currTopic = params.get('topic') || null;
+            app.page = parseInt(params.get('page')) || 1;
+            app.targetPage = app.page;
+            app.mode = params.get('mode') || 'quiz';
+            app.isCartView = params.get('cart') === 'true';
 
-    var modeSelect = document.getElementById('viewMode');
-    if(modeSelect) modeSelect.value = app.mode;
-    syncBottomNav(app.mode);
-    updateSEO();
+            var modeSelect = document.getElementById('viewMode');
+            if (modeSelect) modeSelect.value = app.mode;
+            syncModeIndicators(app.mode);
+            updateSEO();
         }
 
         function updateURL() {
@@ -1330,7 +2151,7 @@
 
             const queryString = params.toString();
             const newUrl = window.location.pathname + (queryString ? '?' + queryString : '');
-            
+
             if (newUrl !== window.location.pathname + window.location.search) {
                 window.history.pushState({ path: newUrl }, '', newUrl);
                 updateSEO();
@@ -1338,31 +2159,30 @@
         }
 
         function updateSEO() {
-    let titleParts = [];
-    if (app.isCartView) {
-        titleParts.push("Saved Questions");
-    } else {
-        if (app.currTopic) titleParts.push(app.currTopic);
-        if (app.currCat) titleParts.push(app.currCat);
-    }
-    
-    let baseTitle = "Daily GK MCQ - General Knowledge & Quiz";
-    let fullTitle = titleParts.length > 0 ? `${titleParts.join(' - ')} | ${baseTitle}` : baseTitle;
-    document.title = fullTitle;
+            let titleParts = [];
+            if (app.isCartView) {
+                titleParts.push("Saved Questions");
+            } else {
+                if (app.currTopic) titleParts.push(app.currTopic);
+                if (app.currCat) titleParts.push(app.currCat);
+            }
 
-    // Dynamically update Meta Description for better Google indexing
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-        let desc = titleParts.length > 0 
-            ? `Practice MCQs on ${titleParts.join(', ')}. Prepare for competitive exams with Quiz and Exam modes.`
-            : "Master General Knowledge with Daily GK MCQ. Practice Science, Geography, History, and IT questions.";
-        metaDesc.setAttribute("content", desc);
-    }
+            let baseTitle = "Daily GK MCQ - General Knowledge & Quiz";
+            let fullTitle = titleParts.length > 0 ? `${titleParts.join(' - ')} | ${baseTitle}` : baseTitle;
+            document.title = fullTitle;
+
+            let metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                let desc = titleParts.length > 0
+                    ? `Practice MCQs on ${titleParts.join(', ')}. Prepare for competitive exams with Quiz and Exam modes.`
+                    : "Master General Knowledge with Daily GK MCQ. Practice Science, Geography, History, and IT questions.";
+                metaDesc.setAttribute("content", desc);
+            }
         }
 
         function setupEventListeners() {
             var toggle = document.getElementById('menuToggle');
-            if(toggle) toggle.onclick = openSidebarDrawer;
+            if (toggle) toggle.onclick = openSidebarDrawer;
 
             var modeSelect = document.getElementById('viewMode');
             if (modeSelect) {
@@ -1371,14 +2191,32 @@
                 };
             }
 
+            var searchInput = document.getElementById('searchInput');
+            var clearSearchBtn = document.getElementById('clearSearchBtn');
             var searchTimeout;
-            document.getElementById('searchInput').onkeyup = function(e) {
+
+            searchInput.addEventListener('input', function(e) {
+                processAvroInput(e.target);
+                clearSearchBtn.classList.toggle('visible', e.target.value.length > 0);
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     app.searchQuery = e.target.value.toLowerCase().trim();
                     app.page = 1;
                     runFilter();
-                }, 250);
+                }, 220);
+            });
+
+            clearSearchBtn.onclick = function() {
+                searchInput.value = '';
+                avroState.rawToken = '';
+                avroState.lastValue = '';
+                avroState.tokenStart = 0;
+                avroState.tokenEnd = 0;
+                clearSearchBtn.classList.remove('visible');
+                app.searchQuery = '';
+                app.page = 1;
+                runFilter();
+                searchInput.focus();
             };
 
             document.getElementById('shuffleCheck').onchange = (e) => {
@@ -1415,18 +2253,33 @@
 
             document.getElementById('submitExamBtn').onclick = submitExam;
 
-            // Back to top inside main scroll
             var bttBtn = document.getElementById('backToTop');
+            var topBar = document.getElementById('topAppBar');
             var scrollContainer = document.getElementById('mainScroll');
             scrollContainer.onscroll = () => {
-                if (scrollContainer.scrollTop > 250) bttBtn.classList.add('show');
+                closeCustomDropdown();
+                var st = scrollContainer.scrollTop;
+                if (st > 8) topBar.classList.add('scrolled');
+                else topBar.classList.remove('scrolled');
+
+                if (st > 250) bttBtn.classList.add('show');
                 else bttBtn.classList.remove('show');
             };
             bttBtn.onclick = () => scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
 
+            document.addEventListener('click', closeCustomDropdown);
+            window.addEventListener('resize', closeCustomDropdown);
+
             window.addEventListener('popstate', function() {
                 readURLParams();
                 runFilter();
+            });
+
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeCustomDropdown();
+                    closeSidebarDrawer();
+                }
             });
 
             updateCartBadge();
@@ -1445,21 +2298,25 @@
         function switchMode(newMode) {
             app.mode = newMode;
             var modeSelect = document.getElementById('viewMode');
-            if(modeSelect) modeSelect.value = newMode;
-            syncBottomNav(newMode);
+            if (modeSelect) modeSelect.value = newMode;
+            syncModeIndicators(newMode);
             updateURL();
 
-            if(app.mode === 'exam') startExam();
+            if (app.mode === 'exam') startExam();
             else endExam();
             render();
         }
 
-        function syncBottomNav(mode) {
+        function syncModeIndicators(mode) {
             const navItems = document.querySelectorAll('.md-bottom-nav .nav-item');
             navItems.forEach(item => item.classList.remove('active'));
             if (mode === 'quiz' && navItems[0]) navItems[0].classList.add('active');
             if (mode === 'study' && navItems[1]) navItems[1].classList.add('active');
             if (mode === 'exam' && navItems[2]) navItems[2].classList.add('active');
+
+            const modeLabelMap = { quiz: 'Quiz Mode', study: 'Study Mode', exam: 'Exam Mode' };
+            const modeLabelEl = document.getElementById('customModeLabel');
+            if (modeLabelEl) modeLabelEl.textContent = modeLabelMap[mode] || 'Quiz Mode';
         }
 
         window.setModeNav = function(mode) {
@@ -1481,7 +2338,7 @@
                         files.forEach(function(f) {
                             currentCatTasks.push({ url: f.path, cat: cat.title, topic: f.title });
                         });
-                        
+
                         tasksPerCat[index] = currentCatTasks;
                         pendingCats--;
                         if (pendingCats === 0) {
@@ -1500,54 +2357,65 @@
         }
 
         function loadFallbackData() {
+            app.isLoading = false;
             sampleFallbackData.forEach(item => {
                 app.data.push(item);
                 if (!app.treeData[item.cat]) app.treeData[item.cat] = {};
                 app.treeData[item.cat][item.topic] = (app.treeData[item.cat][item.topic] || 0) + 1;
             });
+            updateHeaderSubtitle();
             buildSidebarTree();
             runFilter();
             document.getElementById('lastUpdateDate').textContent = new Date().toLocaleDateString('en-US');
         }
 
-        function processFilesSequentially(tasks, index) {
-    if (index >= tasks.length) {
-        app.isLoading = false;      // <-- লোডিং শেষ চিহ্নিত করা
-        app.page = app.targetPage;  // <-- ইউআরএল-এর মূল পেজে ফিরে যাওয়া
-        runFilter();                // <-- পেজ সহ পুনরায় রেন্ডার
-        document.getElementById('lastUpdateDate').textContent = new Date().toLocaleDateString('en-US');
-        return;
-    }
-
-    var task = tasks[index];
-    ajaxGet(task.url, function(text) {
-        parseAndStore(text, task.cat, task.topic);
-        app.filesLoaded++;
-        buildSidebarTree();
-        if(!app.isCartView) runFilter();
-        processFilesSequentially(tasks, index + 1);
-    }, function() {
-        processFilesSequentially(tasks, index + 1);
-    }, true);
+        function updateHeaderSubtitle() {
+            const sub = document.getElementById('headerSubtitle');
+            if (sub && app.data.length > 0) {
+                sub.textContent = `General Knowledge • ${app.data.length} MCQs`;
             }
+        }
+
+        function processFilesSequentially(tasks, index) {
+            if (index >= tasks.length) {
+                app.isLoading = false;
+                app.page = app.targetPage;
+                updateHeaderSubtitle();
+                runFilter();
+                document.getElementById('lastUpdateDate').textContent = new Date().toLocaleDateString('en-US');
+                return;
+            }
+
+            var task = tasks[index];
+            ajaxGet(task.url, function(text) {
+                parseAndStore(text, task.cat, task.topic);
+                app.filesLoaded++;
+                updateHeaderSubtitle();
+                buildSidebarTree();
+                if (!app.isCartView) runFilter();
+                processFilesSequentially(tasks, index + 1);
+            }, function() {
+                processFilesSequentially(tasks, index + 1);
+            }, true);
+        }
 
         function parseAndStore(text, cat, topic) {
             var lines = text.replace(/\r\n/g, '\n').split('\n');
             for (var i = 0; i < lines.length; i += 2) {
                 var line1 = (lines[i] || "").trim();
-                var line2 = (lines[i+1] || "").trim();
-                if(!line1 || !line2) continue;
+                var line2 = (lines[i + 1] || "").trim();
+                if (!line1 || !line2) continue;
 
                 var parts = line2.split('|');
-                if(parts[parts.length-1] === '') parts.pop();
+                if (parts[parts.length - 1] === '') parts.pop();
 
                 var ans, desc = null, opts;
-                var last = parts[parts.length-1];
-                if(!isNaN(last) && last !== "") {
+                var last = parts[parts.length - 1];
+                if (!isNaN(last) && last !== "") {
                     ans = parseInt(last);
                     opts = parts.slice(0, -1);
                 } else {
-                    ans = parseInt(parts[parts.length-2]);
+                    ans = parseInt(parts[parts.length - 2]);
                     desc = last;
                     opts = parts.slice(0, -2);
                 }
@@ -1570,20 +2438,24 @@
             var index = app.cart.indexOf(qId);
             if (index === -1) {
                 app.cart.push(qId);
-                showToast("Question saved to bookmarks");
+                showToast("Saved to bookmarks");
             } else {
                 app.cart.splice(index, 1);
-                showToast("Question removed from bookmarks");
+                showToast("Removed from bookmarks");
             }
-            
+
             localStorage.setItem('gk_cart', JSON.stringify(app.cart));
             updateCartBadge();
-            
-            if(app.isCartView) {
-                render(); 
+
+            if (app.isCartView) {
+                render();
             } else {
                 var btn = document.querySelector(`.cart-btn-node[data-qid="${qId}"]`);
-                if(btn) btn.innerHTML = getBookmarkSvg(app.cart.includes(qId));
+                if (btn) {
+                    var isSaved = app.cart.includes(qId);
+                    btn.innerHTML = getBookmarkSvg(isSaved);
+                    btn.style.color = isSaved ? 'var(--md-primary)' : '';
+                }
             }
         };
 
@@ -1593,12 +2465,11 @@
         }
 
         function getBookmarkSvg(isSaved) {
-            return isSaved 
-                ? `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="var(--md-primary)" stroke="var(--md-primary)" stroke-width="2"/></svg>`
-                : `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/></svg>`;
+            return isSaved
+                ? `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>`
+                : `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V6c0-.55.45-1 1-1h8c.55 0 1 .45 1 1v12z"/></svg>`;
         }
 
-        // Direct Download for Saved Questions
         window.downloadSavedQuestions = function() {
             var savedItems = app.data.filter(q => app.cart.includes(q.id));
             if (savedItems.length === 0) {
@@ -1652,20 +2523,21 @@
         function startExam() {
             app.examActive = true;
             app.userAnswers = {};
-            document.getElementById('mainControls').style.display = 'none'; 
-            document.getElementById('seoTextSec').style.display = 'none'; 
+            document.getElementById('mainControls').style.display = 'none';
+            document.getElementById('seoTextSec').style.display = 'none';
             document.getElementById('examHeader').style.display = 'flex';
             document.getElementById('examResultBox').style.display = 'none';
-            
+
             let currentQuestionsCount = Math.min(app.perPage, app.filteredData.length - ((app.page - 1) * app.perPage));
-            app.examTimeLeft = (currentQuestionsCount || 10) * 30; 
-            
+            app.examTotalTime = (currentQuestionsCount || 10) * 30;
+            app.examTimeLeft = app.examTotalTime;
+
             clearInterval(app.examTimer);
             updateTimerDisplay();
             app.examTimer = setInterval(() => {
                 app.examTimeLeft--;
                 updateTimerDisplay();
-                if(app.examTimeLeft <= 0) submitExam(); 
+                if (app.examTimeLeft <= 0) submitExam();
             }, 1000);
         }
 
@@ -1673,6 +2545,12 @@
             let m = Math.floor(app.examTimeLeft / 60).toString().padStart(2, '0');
             let s = (app.examTimeLeft % 60).toString().padStart(2, '0');
             document.getElementById('examTimerDisplay').textContent = `${m}:${s}`;
+
+            var bar = document.getElementById('examProgressBar');
+            if (bar && app.examTotalTime > 0) {
+                var pct = Math.max(0, (app.examTimeLeft / app.examTotalTime) * 100);
+                bar.style.width = pct + '%';
+            }
         }
 
         function endExam() {
@@ -1687,13 +2565,13 @@
         function submitExam() {
             app.examActive = false;
             clearInterval(app.examTimer);
-            
+
             let sourceData = app.isCartView ? app.data.filter(q => app.cart.includes(q.id)) : app.filteredData;
             let start = (app.page - 1) * app.perPage;
             let pageItems = sourceData.slice(start, start + app.perPage);
-            
+
             let correct = 0, wrong = 0, skipped = 0;
-            
+
             pageItems.forEach(q => {
                 let userAns = app.userAnswers[q.id];
                 if (userAns === undefined) skipped++;
@@ -1703,28 +2581,28 @@
 
             let resBox = document.getElementById('examResultBox');
             resBox.innerHTML = `
-                <h3 style="margin-bottom:8px; font-weight:700; color:var(--md-primary);">Exam Results Summary</h3>
+                <h3 style="margin-bottom:4px; font-weight:700; color:var(--md-primary);">Exam Results Summary</h3>
                 <div class="score-stat-grid">
                     <div class="score-pill correct">
-                        <svg class="svg-icon sm" style="margin:auto" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>
+                        <svg class="svg-icon md" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <span>Correct: ${correct}</span>
                     </div>
                     <div class="score-pill wrong">
-                        <svg class="svg-icon sm" style="margin:auto" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2.5"/><line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2.5"/></svg>
+                        <svg class="svg-icon md" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
                         <span>Wrong: ${wrong}</span>
                     </div>
                     <div class="score-pill skipped">
-                        <svg class="svg-icon sm" style="margin:auto" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4" fill="none" stroke="currentColor" stroke-width="2"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+                        <svg class="svg-icon md" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                         <span>Skipped: ${skipped}</span>
                     </div>
                 </div>
-                <p style="font-size:0.84rem; color:var(--md-on-surface-variant);">Review your answers in detail below.</p>
+                <p style="font-size:0.82rem; color:var(--md-on-surface-variant);">Review your answers in detail below.</p>
             `;
             resBox.style.display = 'block';
             document.getElementById('examHeader').style.display = 'none';
             document.getElementById('mainControls').style.display = 'flex';
-            
-            render(); 
+
+            render();
         }
 
         function runFilter() {
@@ -1753,33 +2631,32 @@
 
             container.innerHTML = '';
             var sourceData = app.isCartView ? app.data.filter(q => app.cart.includes(q.id)) : app.filteredData;
-            
-            if(cartActions) cartActions.style.display = app.isCartView ? 'flex' : 'none';
-            if(topicHeaderCard) {
+
+            if (cartActions) cartActions.style.display = app.isCartView ? 'flex' : 'none';
+            if (topicHeaderCard) {
                 topicHeaderCard.style.display = (app.currCat || app.currTopic || app.isCartView) ? 'flex' : 'none';
                 topicName.textContent = app.isCartView ? "Saved Questions (Bookmarks)" : (app.currTopic || app.currCat || "All Questions");
             }
 
-            if(sourceData.length === 0) {
+            if (sourceData.length === 0) {
                 container.innerHTML = `
-                    <div class="md-card" style="text-align:center; padding:40px; color:var(--md-on-surface-variant);">
-                        <svg class="svg-icon md" style="opacity:0.5; margin-bottom:10px;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2"/></svg>
-                        <div>${app.isCartView ? 'No saved questions yet. Tap bookmark icon to save.' : 'No questions found matching your criteria.'}</div>
+                    <div class="md-card" style="text-align:center; padding:38px 20px; color:var(--md-on-surface-variant);">
+                        <svg class="svg-icon lg" style="opacity:0.45; margin-bottom:10px;" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <div style="font-size:0.9rem; font-weight:500;">${app.isCartView ? 'No saved questions yet. Tap the bookmark icon to save.' : 'No questions found matching your criteria.'}</div>
                     </div>`;
                 document.getElementById('paginationControls').innerHTML = '';
                 return;
             }
 
             var totalPages = Math.ceil(sourceData.length / app.perPage) || 1;
-    
 
-    if (!app.isLoading) {
-        if (app.page > totalPages) { 
-            app.page = totalPages; 
-            updateURL(); 
-        }
-    }
-            
+            if (!app.isLoading) {
+                if (app.page > totalPages) {
+                    app.page = totalPages;
+                    updateURL();
+                }
+            }
+
             var start = (app.page - 1) * app.perPage;
             var pageItems = sourceData.slice(start, start + app.perPage);
 
@@ -1790,36 +2667,56 @@
         function createCard(q, container, index) {
             var card = document.createElement('article');
             card.className = 'q-card';
-            
+
             var isAdded = app.cart.includes(q.id);
 
             var metaBar = document.createElement('div');
             metaBar.className = 'q-meta-bar';
             metaBar.innerHTML = `
                 <span class="q-category-tag">${q.cat} &bull; ${q.topic}</span>
-                <span>#${index}</span>
+                <span class="q-num-badge">#${index}</span>
             `;
             card.appendChild(metaBar);
 
             var titleRow = document.createElement('div');
             titleRow.className = 'q-header-title';
 
+            var titleSpan = document.createElement('span');
+            titleSpan.textContent = q.title;
+            titleRow.appendChild(titleSpan);
+
+            var actionBtns = document.createElement('div');
+            actionBtns.className = 'q-action-btns';
+
             let fullTextToRead = q.title + ". অপশনগুলো হলো: " + q.opts.join(", ");
-            
-            titleRow.innerHTML = `
-                <span>${q.title}</span>
-                <div class="q-action-btns">
-                    <button class="md-icon-btn" onclick="readAloud('${fullTextToRead.replace(/'/g, "\\'")}')" title="Listen (Read Aloud)">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                    </button>
-                    <button class="md-icon-btn" onclick="shareQuestion('${q.title.replace(/'/g, "\\'")}', ${JSON.stringify(q.opts).replace(/"/g, '&quot;')})" title="Share Question">
-                        <svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="3" fill="none" stroke="currentColor" stroke-width="2"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="currentColor" stroke-width="2"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="currentColor" stroke-width="2"/></svg>
-                    </button>
-                    <button class="md-icon-btn cart-btn-node" data-qid="${q.id}" onclick="toggleCart(${q.id})" title="${isAdded ? 'Remove Bookmark' : 'Save Bookmark'}">
-                        ${getBookmarkSvg(isAdded)}
-                    </button>
-                </div>
-            `;
+
+            var speakBtn = document.createElement('button');
+            speakBtn.className = 'md-icon-btn compact';
+            speakBtn.title = 'Listen (Read Aloud)';
+            speakBtn.setAttribute('aria-label', 'Read Aloud');
+            speakBtn.innerHTML = `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
+            speakBtn.onclick = () => readAloud(fullTextToRead);
+
+            var shareBtn = document.createElement('button');
+            shareBtn.className = 'md-icon-btn compact';
+            shareBtn.title = 'Share Question';
+            shareBtn.setAttribute('aria-label', 'Share Question');
+            shareBtn.innerHTML = `<svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>`;
+            shareBtn.onclick = () => shareQuestion(q.title, q.opts);
+
+            var cartBtn = document.createElement('button');
+            cartBtn.className = 'md-icon-btn compact cart-btn-node';
+            cartBtn.setAttribute('data-qid', q.id);
+            cartBtn.title = isAdded ? 'Remove Bookmark' : 'Save Bookmark';
+            cartBtn.setAttribute('aria-label', isAdded ? 'Remove Bookmark' : 'Save Bookmark');
+            if (isAdded) cartBtn.style.color = 'var(--md-primary)';
+            cartBtn.innerHTML = getBookmarkSvg(isAdded);
+            cartBtn.onclick = () => toggleCart(q.id);
+
+            actionBtns.appendChild(speakBtn);
+            actionBtns.appendChild(shareBtn);
+            actionBtns.appendChild(cartBtn);
+            titleRow.appendChild(actionBtns);
             card.appendChild(titleRow);
 
             var optsDiv = document.createElement('div');
@@ -1834,20 +2731,26 @@
             q.opts.forEach((opt, idx) => {
                 var btn = document.createElement('button');
                 btn.className = 'opt-btn';
-                
-                var badge = `<span class="opt-index-badge">${letters[idx] || (idx+1)}</span>`;
-                btn.innerHTML = `${badge} <span>${opt}</span>`;
-                
-                if(app.mode === 'study') {
+
+                btn.innerHTML = `
+                    <span class="opt-index-badge">${letters[idx] || (idx + 1)}</span>
+                    <span class="opt-text">${opt}</span>
+                    <span class="opt-status-icon is-correct">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </span>
+                    <span class="opt-status-icon is-wrong">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
+                    </span>
+                `;
+
+                if (app.mode === 'study') {
                     btn.disabled = true;
-                    if(idx === q.ans) {
-                        btn.classList.add('correct');
-                    }
-                    if(q.desc) {
+                    if (idx === q.ans) btn.classList.add('correct');
+                    if (q.desc) {
                         explanationBox.style.display = 'block';
                         explanationBox.innerHTML = `<strong>Explanation:</strong> ${q.desc}`;
                     }
-                } 
+                }
                 else if (app.mode === 'exam') {
                     if (app.examActive) {
                         if (app.userAnswers[q.id] === idx) btn.classList.add('exam-selected');
@@ -1859,9 +2762,9 @@
                         };
                     } else {
                         btn.disabled = true;
-                        if(idx === q.ans) btn.classList.add('correct');
+                        if (idx === q.ans) btn.classList.add('correct');
                         else if (app.userAnswers[q.id] === idx) btn.classList.add('wrong');
-                        if(q.desc) {
+                        if (q.desc) {
                             explanationBox.style.display = 'block';
                             explanationBox.innerHTML = `<strong>Explanation:</strong> ${q.desc}`;
                         }
@@ -1873,11 +2776,11 @@
                         siblings.forEach(sb => sb.disabled = true);
                         siblings[q.ans].classList.add('correct');
 
-                        if(idx !== q.ans) {
+                        if (idx !== q.ans) {
                             this.classList.add('wrong');
                             explanationBox.style.display = 'block';
                             explanationBox.innerHTML = `<strong>Correct Answer:</strong> ${q.opts[q.ans]} ${q.desc ? '<br><strong>Explanation:</strong> ' + q.desc : ''}`;
-                        } else if(q.desc) {
+                        } else if (q.desc) {
                             explanationBox.style.display = 'block';
                             explanationBox.innerHTML = `<strong>Explanation:</strong> ${q.desc}`;
                         }
@@ -1893,11 +2796,17 @@
 
         function buildSidebarTree() {
             var ul = document.getElementById('categoryTree');
-            if(!ul) return;
+            if (!ul) return;
+            var isAllActive = (!app.currCat && !app.currTopic);
             ul.innerHTML = `
-                <li class="tree-parent-node" onclick="setFilter(null, null)">
-                    <span>All Questions</span>
-                    <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <li class="tree-parent-node ${isAllActive ? 'active-cat' : ''}" onclick="setFilter(null, null)">
+                    <div class="tree-parent-left">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+                        <span>All Questions</span>
+                    </div>
+                    <div class="tree-parent-right">
+                        <span class="tree-count-pill">${app.data.length}</span>
+                    </div>
                 </li>`;
 
             for (var cat in app.treeData) {
@@ -1906,14 +2815,20 @@
 
                 var li = document.createElement('li');
                 var isCurrentCat = (app.currCat === cat);
-                var activeStyle = isCurrentCat ? 'style="background:var(--md-primary-container); color:var(--md-on-primary-container);"' : '';
-                
-                li.innerHTML = `
-                    <div class="tree-parent-node" ${activeStyle}>
+
+                var parentDiv = document.createElement('div');
+                parentDiv.className = 'tree-parent-node' + (isCurrentCat ? ' active-cat expanded' : '');
+                parentDiv.innerHTML = `
+                    <div class="tree-parent-left">
+                        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
                         <span>${cat}</span>
-                        <span style="font-size:0.75rem; background:var(--md-surface); padding:2px 6px; border-radius:10px;">${total}</span>
-                    </div>`;
-                
+                    </div>
+                    <div class="tree-parent-right">
+                        <span class="tree-count-pill">${total}</span>
+                        <svg class="svg-icon sm tree-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </div>
+                `;
+
                 var childUl = document.createElement('ul');
                 childUl.className = 'tree-children-list' + (isCurrentCat ? ' open' : '');
 
@@ -1930,10 +2845,13 @@
                     childUl.appendChild(tLi);
                 }
 
-                li.onclick = function() {
-                    var cul = this.querySelector('.tree-children-list');
-                    if(cul) cul.classList.toggle('open');
+                parentDiv.onclick = function() {
+                    var cul = this.nextElementSibling;
+                    this.classList.toggle('expanded');
+                    if (cul) cul.classList.toggle('open');
                 };
+
+                li.appendChild(parentDiv);
                 li.appendChild(childUl);
                 ul.appendChild(li);
             }
@@ -1944,7 +2862,7 @@
             app.currTopic = topic;
             app.isCartView = false;
             app.page = 1;
-            
+
             updateURL();
             runFilter();
             buildSidebarTree();
@@ -1954,60 +2872,63 @@
         function renderPagination(total) {
             var box = document.getElementById('paginationControls');
             box.innerHTML = '';
-            if(total <= 1 || app.examActive) return; 
+            if (total <= 1 || app.examActive) return;
 
             var prev = document.createElement('button');
             prev.className = 'md-btn md-btn-outlined sm';
-            prev.innerHTML = `<svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" fill="none" stroke="currentColor" stroke-width="2"/></svg> <span>Prev</span>`;
+            prev.innerHTML = `<svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg> <span>Prev</span>`;
             prev.disabled = app.page === 1;
-            prev.onclick = () => { app.page--; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0,0); };
+            prev.onclick = () => { app.page--; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0, 0); };
 
             var info = document.createElement('span');
-            info.style.cssText = "font-size:0.84rem; font-weight:600; padding:0 8px;";
-            info.innerHTML = `Page ${app.page} of ${total}`;
+            info.className = 'page-status-pill';
+            info.textContent = `${app.page} / ${total}`;
 
             var next = document.createElement('button');
             next.className = 'md-btn md-btn-outlined sm';
-            next.innerHTML = `<span>Next</span> <svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>`;
+            next.innerHTML = `<span>Next</span> <svg class="svg-icon xs" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>`;
             next.disabled = app.page === total;
-            next.onclick = () => { app.page++; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0,0); };
+            next.onclick = () => { app.page++; updateURL(); render(); document.getElementById('mainScroll').scrollTo(0, 0); };
 
-            var jumpContainer = document.createElement('div');
-            jumpContainer.className = 'jump-group';
-
-            var jumpInput = document.createElement('input');
-            jumpInput.type = "number";
-            jumpInput.className = "jump-input";
-            jumpInput.min = 1;
-            jumpInput.max = total;
-            jumpInput.placeholder = "Page";
-
-            var jumpBtn = document.createElement('button');
-            jumpBtn.className = 'md-btn md-btn-tonal sm';
-            jumpBtn.textContent = "Go";
-            
-            var goToPage = () => {
-                var p = parseInt(jumpInput.value);
-                if(p >= 1 && p <= total) {
-                    app.page = p;
-                    updateURL();
-                    render();
-                    document.getElementById('mainScroll').scrollTo(0,0);
-                } else {
-                    showToast(`Please enter a page between 1 and ${total}`);
-                }
-            };
-
-            jumpBtn.onclick = goToPage;
-            jumpInput.onkeypress = (e) => { if(e.key === 'Enter') goToPage(); };
-
-            jumpContainer.appendChild(jumpInput);
-            jumpContainer.appendChild(jumpBtn);
-            
-            box.appendChild(prev); 
-            box.appendChild(info); 
+            box.appendChild(prev);
+            box.appendChild(info);
             box.appendChild(next);
-            box.appendChild(jumpContainer); 
+
+            // Show page jump input only when necessary (more than 2 pages)
+            if (total > 2) {
+                var jumpContainer = document.createElement('div');
+                jumpContainer.className = 'jump-group';
+
+                var jumpInput = document.createElement('input');
+                jumpInput.type = "number";
+                jumpInput.className = "jump-input";
+                jumpInput.min = 1;
+                jumpInput.max = total;
+                jumpInput.placeholder = "Page";
+
+                var jumpBtn = document.createElement('button');
+                jumpBtn.className = 'jump-go-btn';
+                jumpBtn.textContent = "Go";
+
+                var goToPage = () => {
+                    var p = parseInt(jumpInput.value);
+                    if (p >= 1 && p <= total) {
+                        app.page = p;
+                        updateURL();
+                        render();
+                        document.getElementById('mainScroll').scrollTo(0, 0);
+                    } else {
+                        showToast(`Please enter a page between 1 and ${total}`);
+                    }
+                };
+
+                jumpBtn.onclick = goToPage;
+                jumpInput.onkeypress = (e) => { if (e.key === 'Enter') goToPage(); };
+
+                jumpContainer.appendChild(jumpInput);
+                jumpContainer.appendChild(jumpBtn);
+                box.appendChild(jumpContainer);
+            }
         }
 
         function renderSkeleton() {
@@ -2020,13 +2941,13 @@
             xhr.open('GET', url + '?t=' + Date.now(), true);
             xhr.onload = function() {
                 if (xhr.status === 200) success(isText ? xhr.responseText : JSON.parse(xhr.responseText));
-                else if(error) error();
+                else if (error) error();
             };
             xhr.onerror = error;
             try {
                 xhr.send();
-            } catch(e) {
-                if(error) error(e);
+            } catch (e) {
+                if (error) error(e);
             }
         }
 
@@ -2037,13 +2958,12 @@
             body.classList.remove('print-simple', 'print-grid', 'print-twocol');
             body.classList.add('print-' + format);
             window.print();
-            
+
             setTimeout(() => {
                 body.classList.remove('print-' + format);
             }, 1000);
         }
 
-        // Direct PWA Setup & Installation Trigger
         function setupPWA() {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
@@ -2075,7 +2995,10 @@
 
         function setupSecurity() {
             document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('selectstart', e => {
+                if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+                e.preventDefault();
+            });
             document.addEventListener('keydown', function(e) {
                 if (e.keyCode === 123 || (e.ctrlKey && (e.shiftKey && e.keyCode === 73)) || (e.ctrlKey && e.keyCode === 85)) {
                     e.preventDefault();
