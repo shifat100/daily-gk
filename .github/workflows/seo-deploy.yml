@@ -30,7 +30,7 @@ jobs:
           node-version: "20"
 
       - name: Generate SEO Topic Pages, Sitemap & Robots.txt
-        run: node scripts/build-seo.js
+        run: node build-seo.js
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
